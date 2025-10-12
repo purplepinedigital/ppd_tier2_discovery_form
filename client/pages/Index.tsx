@@ -26,14 +26,14 @@ export default function Index() {
     {
       src: "https://api.builder.io/api/v1/image/assets/TEMP/403fa1458c2163a90e288f9f520ed3d92679fba9?width=731",
       alt: "Birds in flight",
-      className: "md:col-span-2 lg:col-span-1"
+      className: "md:col-span-1 lg:col-span-1"
     },
   ];
 
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
-      <header className="px-4 md:px-12 lg:px-24 py-8 md:py-10">
+      <header className="px-4 md:px-12 lg:px-24 py-8 md:py-10 max-w-[1332px] mx-auto w-full">
         <img
           src="https://api.builder.io/api/v1/image/assets/TEMP/5ae482a3264989e7b7e1cd057876826b46db9d6e?width=330"
           alt="Purple Pine Digital"
@@ -42,7 +42,7 @@ export default function Index() {
       </header>
 
       {/* Main Content */}
-      <main className="px-4 md:px-12 lg:px-24 pb-12 md:pb-16 lg:pb-20">
+      <main className="px-4 md:px-12 lg:px-24 pb-12 md:pb-16 lg:pb-20 max-w-[1332px] mx-auto w-full">
         {/* Hero Section */}
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-8 lg:gap-12 mb-12 md:mb-16 lg:mb-20">
           {/* Left Column - Heading */}
@@ -93,7 +93,7 @@ export default function Index() {
         </div>
 
         {/* Image Gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 md:gap-5">
           {images.map((image, index) => (
             <div
               key={index}
