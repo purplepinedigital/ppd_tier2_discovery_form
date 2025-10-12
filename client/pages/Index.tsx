@@ -263,9 +263,9 @@ export default function Index() {
                     I'll ask about real moments
                   </h3>
                   <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    {realMomentsPrompts.map((prompt) => (
+                    {realMomentsPrompts.map((prompt, index) => (
                       <div
-                        key={prompt}
+                        key={`${index}-${prompt}`}
                         className="rounded-[7px] bg-[#FFC741] px-4 py-3 text-sm"
                         style={{ fontFamily: "Literata, serif" }}
                       >
