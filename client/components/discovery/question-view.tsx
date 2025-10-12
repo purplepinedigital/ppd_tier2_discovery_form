@@ -50,10 +50,8 @@ export function QuestionView({
           )}
         >
           {question.guidance.map((item, index) => (
-            <>
-              <div key={`${question.overallNumber}-guidance-${item.title}`}
-                className="space-y-2"
-              >
+            <Fragment key={`${question.overallNumber}-guidance-${index}`}>
+              <div className="space-y-2">
                 <p
                   className="text-sm font-semibold uppercase tracking-wide text-[#37306B]"
                   style={{ fontFamily: "Epilogue, sans-serif" }}
@@ -69,12 +67,11 @@ export function QuestionView({
               </div>
               {question.guidance.length === 2 && index === 0 ? (
                 <div
-                  key={`${question.overallNumber}-divider`}
                   className="hidden h-full w-px bg-[#ACACAC] lg:block"
                   aria-hidden="true"
                 />
               ) : null}
-            </>
+            </Fragment>
           ))}
         </div>
 
