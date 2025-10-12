@@ -382,8 +382,14 @@ export default function Index() {
                     </p>
                     <p>
                       Now we'll read every word. Look for patterns. Listen for your voice. And we'll
-                      translate it all into a brand experience that feels unmistakably like you.
+                      translate it all into:
                     </p>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>A brand that feels like you</li>
+                      <li>A website that speaks like you</li>
+                      <li>Colors and shapes that represent you</li>
+                      <li>Messages that resonate with your customers</li>
+                    </ul>
                     <div>
                       <h4 className="font-semibold">What happens next:</h4>
                       <p>
