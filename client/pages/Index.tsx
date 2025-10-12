@@ -29,11 +29,6 @@ const heroImages = [
     alt: "Golden hour field",
     className: "",
   },
-  {
-    src: "https://api.builder.io/api/v1/image/assets/TEMP/979371b4127485fe613222d3a8315a3e914a27dc?width=731",
-    alt: "Birds in flight",
-    className: "",
-  },
 ];
 
 const realMomentsPrompts = [
