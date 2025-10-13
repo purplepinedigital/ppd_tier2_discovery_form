@@ -109,7 +109,7 @@ export function QuestionView({
               className="w-full justify-center rounded-md border border-[#37306B] bg-transparent px-8 py-4 text-base font-normal text-[#37306B] hover:bg-[#37306B]/10 sm:w-auto"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Back to last
+              Back to Last
             </Button>
           ) : (
             <div className="hidden sm:block" aria-hidden="true" />
