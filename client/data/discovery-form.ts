@@ -283,7 +283,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `1) Initial call to understand their situation. 2) Visit their facility to see how they currently work. 3) Proposal with timeline and cost. 4) Setup and training. 5) Go-live support for first month.`,
+          `"1) Initial consultation to understand their health, lifestyle, and goals. 2) Custom nutrition plan created for them specifically. 3) Weekly check-ins via call or message to track progress and adjust. 4) Monthly review to measure results and set new goals."`,
         exampleLabel: "Example:",
       },
       {
@@ -301,7 +301,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I visit their facility before quoting. It adds 3-4 hours and travel cost, but I can't recommend the right system without seeing how they actually work. Most competitors quote over a phone call.`,
+          `"I create custom recipes for each client based on what they actually eat and what's available in their kitchen. Most coaches give the same 20 recipes to everyone. It takes me 3-4 extra hours per client, but generic plans don't work."`,
         exampleLabel: "Example:",
       },
       {
@@ -318,7 +318,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Others sell the same package to everyone. "This is our system, adapt to it." I think that's lazy. Every business is different — the solution should fit them, not the other way around.`,
+          `"Other trainers sell the same package to everyone — 'this is the program, follow it.' No customization. I think that's lazy. Everyone's body, schedule, and lifestyle are different. One-size-fits-all doesn't work for fitness."`,
         exampleLabel: "Example:",
       },
       {
@@ -336,7 +336,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `A client wanted to launch in 2 weeks. The timeline was impossible if we did proper discovery. They offered to pay 50% extra. I said no — rushing means mistakes, and my name goes on the work.`,
+          `"A client wanted me to promise 10kg weight loss in 3 weeks for her wedding. That's not healthy or sustainable. She offered double my fee. I said no — I'm not going to compromise someone's health for money, and that kind of result would damage my reputation."`,
         exampleLabel: "Example:",
       },
       {
@@ -353,7 +353,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I respond the same day, even if I don't have a solution yet. I acknowledge it, explain what I'm doing to fix it, and give a timeline. I never ghost or make excuses.`,
+          `"I respond the same day. Even if I don't have a solution yet, I let them know I received their message and I'm looking into it. I never ignore or make excuses. If something was my mistake, I own it and fix it."`,
         exampleLabel: "Example:",
       },
       {
@@ -371,7 +371,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Every file we hand over must be clearly labeled. "Logo_Final_RGB.png" not "final_v3_NEW.png." It's small, but it shows respect for the client's time.`,
+          `"I taste-test every batch before it ships. My team thinks it's excessive because we follow the same recipe every time. But consistency matters — one bad batch and trust is gone."`,
         exampleLabel: "Example:",
       },
     ],
