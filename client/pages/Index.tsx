@@ -1,7 +1,11 @@
 import { useMemo, useState } from "react";
 import { QuestionView } from "@/components/discovery/question-view";
 import { Button } from "@/components/ui/button";
-import { formQuestions, formSections, totalQuestions } from "@/data/discovery-form";
+import {
+  formQuestions,
+  formSections,
+  totalQuestions,
+} from "@/data/discovery-form";
 
 const heroList = [
   "Conversational questions, that help develop a narrative of your business.",
@@ -59,13 +63,15 @@ export default function Index() {
   const progressPercentage = useMemo(() => {
     if (!currentQuestion) return 0;
     if (currentQuestion.sectionTotalQuestions <= 1) {
-      return currentQuestion.sectionQuestionNumber === currentQuestion.sectionTotalQuestions
+      return currentQuestion.sectionQuestionNumber ===
+        currentQuestion.sectionTotalQuestions
         ? 100
         : 0;
     }
 
     return (
-      ((currentQuestion.sectionQuestionNumber - 1) / currentQuestion.sectionTotalQuestions) *
+      ((currentQuestion.sectionQuestionNumber - 1) /
+        currentQuestion.sectionTotalQuestions) *
       100
     );
   }, [currentQuestion]);
@@ -103,7 +109,9 @@ export default function Index() {
     setCurrentQuestionIndex(nextIndex);
 
     if (nextQuestion.sectionId !== currentQuestion.sectionId) {
-      setActiveSectionIndex(nextSectionIndex === -1 ? activeSectionIndex : nextSectionIndex);
+      setActiveSectionIndex(
+        nextSectionIndex === -1 ? activeSectionIndex : nextSectionIndex,
+      );
       setScreen("sectionWelcome");
       return;
     }
@@ -123,7 +131,9 @@ export default function Index() {
 
     const previousIndex = currentQuestionIndex - 1;
     const previousQuestion = formQuestions[previousIndex];
-    const previousSectionIndex = getSectionIndexById(previousQuestion.sectionId);
+    const previousSectionIndex = getSectionIndexById(
+      previousQuestion.sectionId,
+    );
 
     setCurrentQuestionIndex(previousIndex);
 
@@ -288,10 +298,11 @@ export default function Index() {
                   className="text-lg leading-relaxed"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  I'm not a bureaucratic form. I'm a conversation starter. You're here because
-                  you've chosen to build your brand seriously. My questions aren't an exam,
-                  they're prompts that help you tell the story you've been living but haven't
-                  written down yet.
+                  I'm not a bureaucratic form. I'm a conversation starter.
+                  You're here because you've chosen to build your brand
+                  seriously. My questions aren't an exam, they're prompts that
+                  help you tell the story you've been living but haven't written
+                  down yet.
                 </p>
               </div>
 
@@ -327,15 +338,16 @@ export default function Index() {
                     className="mt-5 rounded-md bg-[#FFC741] p-4 text-sm leading-relaxed"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    Make you pick colors, buzzwords, or "traits." That's our job. Yours is to describe
-                    reality. Every question exists for a reason; nothing here is filler.
+                    Make you pick colors, buzzwords, or "traits." That's our
+                    job. Yours is to describe reality. Every question exists for
+                    a reason; nothing here is filler.
                   </div>
                   <p
                     className="mt-4 text-sm leading-relaxed"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    Depth matters—which is why there are 30 questions. They save you from vague brands
-                    and rework later.
+                    Depth matters—which is why there are 30 questions. They save
+                    you from vague brands and rework later.
                   </p>
                 </div>
 
@@ -384,7 +396,10 @@ export default function Index() {
               >
                 {activeSection.title}
               </h2>
-              <div className="space-y-3 text-base leading-relaxed" style={{ fontFamily: "Literata, serif" }}>
+              <div
+                className="space-y-3 text-base leading-relaxed"
+                style={{ fontFamily: "Literata, serif" }}
+              >
                 <p>
                   You are all set. Let's start with Section {activeSection.id}.
                 </p>
@@ -430,18 +445,21 @@ export default function Index() {
                         index < activeSectionIndex
                           ? "complete"
                           : index === activeSectionIndex
-                          ? "current"
-                          : "upcoming";
+                            ? "current"
+                            : "upcoming";
 
                       const dotClasses =
                         status === "complete"
                           ? "bg-[#37306B]"
                           : status === "current"
-                          ? "bg-[#37306B]"
-                          : "bg-[#BAB8B8]";
+                            ? "bg-[#37306B]"
+                            : "bg-[#BAB8B8]";
 
                       return (
-                        <div key={section.id} className="relative flex flex-col items-center gap-2">
+                        <div
+                          key={section.id}
+                          className="relative flex flex-col items-center gap-2"
+                        >
                           <span
                             className={`flex h-3 w-3 items-center justify-center rounded-full ${dotClasses}`}
                           />
@@ -451,7 +469,10 @@ export default function Index() {
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-2 text-center text-xs uppercase tracking-[0.15em] text-[#4F4A7A] md:grid-cols-6">
                     {formSections.map((section) => (
-                      <span key={section.id} style={{ fontFamily: "Literata, serif" }}>
+                      <span
+                        key={section.id}
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
                         {section.title}
                       </span>
                     ))}
@@ -483,7 +504,10 @@ export default function Index() {
                       </p>
                     ) : null}
                   </div>
-                  <div className="space-y-3 text-sm leading-relaxed" style={{ fontFamily: "Literata, serif" }}>
+                  <div
+                    className="space-y-3 text-sm leading-relaxed"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
                     <p>{activeSection.description}</p>
                     {activeSection.note ? (
                       <p className="text-[#37306B]">{activeSection.note}</p>
@@ -497,13 +521,15 @@ export default function Index() {
                       className="text-sm font-semibold uppercase tracking-wide text-[#37306B]"
                       style={{ fontFamily: "Epilogue, sans-serif" }}
                     >
-                      Question {currentQuestion.sectionQuestionNumber} of {currentQuestion.sectionTotalQuestions}
+                      Question {currentQuestion.sectionQuestionNumber} of{" "}
+                      {currentQuestion.sectionTotalQuestions}
                     </p>
                     <p
                       className="text-sm text-[#4F4A7A]"
                       style={{ fontFamily: "Literata, serif" }}
                     >
-                      Click “Save & Move to Next” when you're ready. Pause anytime.
+                      Click “Save & Move to Next” when you're ready. Pause
+                      anytime.
                     </p>
                   </div>
                   <div className="h-[10px] w-full overflow-hidden rounded-full bg-[#D9D9D9]">
@@ -533,7 +559,10 @@ export default function Index() {
         {screen === "complete" ? (
           <section className="w-full max-w-[1332px]">
             <div className="rounded-[18px] border border-[#E3DCD2] bg-white/60 p-6 md:p-10">
-              <div className="space-y-6 text-center" style={{ fontFamily: "Literata, serif" }}>
+              <div
+                className="space-y-6 text-center"
+                style={{ fontFamily: "Literata, serif" }}
+              >
                 <p className="text-lg">Whew! You're one hell of a Founder.</p>
                 <h2
                   className="text-3xl font-normal md:text-[45px]"
@@ -542,18 +571,27 @@ export default function Index() {
                   YOU'RE DONE!
                 </h2>
                 <p className="text-sm leading-relaxed md:text-base">
-                  You're building it solid. You're building it right. Filling out these questions took
-                  honesty, clarity, and time—and you did it. Kudos to your perseverance.
+                  You're building it solid. You're building it right. Filling
+                  out these questions took honesty, clarity, and time—and you
+                  did it. Kudos to your perseverance.
                 </p>
                 <div className="space-y-4">
-                  <p className="text-sm font-semibold md:text-base">Now, here's what we'll do:</p>
+                  <p className="text-sm font-semibold md:text-base">
+                    Now, here's what we'll do:
+                  </p>
                   <p className="text-sm leading-relaxed md:text-base">
-                    We'll read every single word. Not skim—actually read. We'll look for patterns, listen for
-                    your voice, and notice where you light up. Then we'll translate it all into:
+                    We'll read every single word. Not skim—actually read. We'll
+                    look for patterns, listen for your voice, and notice where
+                    you light up. Then we'll translate it all into:
                   </p>
                   <ul className="list-disc space-y-1 text-left text-sm md:text-base">
-                    <li>A brand that feels like you—no templates, no trends, just you.</li>
-                    <li>A website that speaks in your voice, not corporate-speak.</li>
+                    <li>
+                      A brand that feels like you—no templates, no trends, just
+                      you.
+                    </li>
+                    <li>
+                      A website that speaks in your voice, not corporate-speak.
+                    </li>
                     <li>Colors and shapes that represent who you are.</li>
                     <li>Messages that resonate with your customers.</li>
                   </ul>
@@ -565,9 +603,15 @@ export default function Index() {
                     <li>Positioning Map — where you fit in your market.</li>
                     <li>Strategic Brief — the blueprint for your brand.</li>
                   </ul>
-                  <p>We'll then schedule a call to walk through everything together.</p>
+                  <p>
+                    We'll then schedule a call to walk through everything
+                    together.
+                  </p>
                 </div>
-                <p className="text-sm md:text-base">Thank you for trusting us with your story. — Purple Pine Digital</p>
+                <p className="text-sm md:text-base">
+                  Thank you for trusting us with your story. — Purple Pine
+                  Digital
+                </p>
               </div>
 
               <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-center">

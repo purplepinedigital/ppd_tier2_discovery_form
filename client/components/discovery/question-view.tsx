@@ -80,8 +80,14 @@ export function QuestionView({
 
         {question.example ? (
           <div className="flex flex-col gap-4 rounded-md border border-transparent bg-[#FFF3D8] p-6 text-sm text-black md:flex-row md:items-start md:gap-6">
-            <div className="hidden h-full w-3 rounded-sm bg-[#FFC741] md:block" aria-hidden="true" />
-            <div className="space-y-2" style={{ fontFamily: "Literata, serif" }}>
+            <div
+              className="hidden h-full w-3 rounded-sm bg-[#FFC741] md:block"
+              aria-hidden="true"
+            />
+            <div
+              className="space-y-2"
+              style={{ fontFamily: "Literata, serif" }}
+            >
               <p className="text-sm font-semibold">
                 {question.exampleLabel ?? "Example:"}
               </p>

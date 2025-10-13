@@ -39,8 +39,7 @@ export const formSections: FormSection[] = [
     title: "Your Story",
     description: "Every business starts somewhere. Let's understand yours.",
     emphasis: "This section has 5 questions",
-    note:
-      "Take your time. Write naturally. Your honest answers matter more than perfect prose.",
+    note: "Take your time. Write naturally. Your honest answers matter more than perfect prose.",
     questions: [
       {
         overallNumber: 1,
@@ -55,8 +54,7 @@ export const formSections: FormSection[] = [
             body: `Write it like you're telling a friend over coffee. What was going on in your life? What did you see that others missed? What made you think "I can do this better"? A few sentences are enough — just give us the honest version.`,
           },
         ],
-        example:
-          `"My mother has diabetes and couldn't find sugar-free sweets that actually tasted good. Everything was either bland or full of chemicals. I learned to make them at home, friends loved them, and I thought — why isn't anyone doing this right?"`,
+        example: `"My mother has diabetes and couldn't find sugar-free sweets that actually tasted good. Everything was either bland or full of chemicals. I learned to make them at home, friends loved them, and I thought — why isn't anyone doing this right?"`,
         exampleLabel: "Example:",
       },
       {
@@ -72,8 +70,7 @@ export const formSections: FormSection[] = [
             body: `Describe it simply, as if you're explaining to someone who knows nothing about your industry. What's broken? What hurts? What's the struggle?`,
           },
         ],
-        example:
-          `"Working professionals want to stay fit but can't commit to gyms — unpredictable schedules, intimidating environments, trainers who don't pay attention. They need fitness that fits their life, not the other way around."`,
+        example: `"Working professionals want to stay fit but can't commit to gyms — unpredictable schedules, intimidating environments, trainers who don't pay attention. They need fitness that fits their life, not the other way around."`,
         exampleLabel: "Example:",
       },
       {
@@ -89,8 +86,7 @@ export const formSections: FormSection[] = [
             body: `Try a "Before → After" structure if it helps. Keep it real — what actually changes in their world?`,
           },
         ],
-        example:
-          `"Before: They're stressed about their health but don't know where to start. After: They have a personalized nutrition plan, weekly check-ins, and they've lost weight without feeling deprived or overwhelmed."`,
+        example: `"Before: They're stressed about their health but don't know where to start. After: They have a personalized nutrition plan, weekly check-ins, and they've lost weight without feeling deprived or overwhelmed."`,
         exampleLabel: "Example:",
       },
       {
@@ -107,8 +103,7 @@ export const formSections: FormSection[] = [
             body: "One clear sentence. What's the non-negotiable core?",
           },
         ],
-        example:
-          `"The initial consultation where I understand their lifestyle, habits, and goals. Without that, I'm just giving generic advice that won't stick."`,
+        example: `"The initial consultation where I understand their lifestyle, habits, and goals. Without that, I'm just giving generic advice that won't stick."`,
         exampleLabel: "Example:",
       },
       {
@@ -124,8 +119,7 @@ export const formSections: FormSection[] = [
             body: "Tell us what it is, and if you can, why it matters to you. Even a brief explanation helps us understand what you stand for.",
           },
         ],
-        example:
-          `"I'll never use artificial sweeteners or preservatives in my products, even though it would triple shelf life and reduce costs. Quality and health come first — that's the whole point."`,
+        example: `"I'll never use artificial sweeteners or preservatives in my products, even though it would triple shelf life and reduce costs. Quality and health come first — that's the whole point."`,
         exampleLabel: "Example:",
       },
     ],
@@ -134,7 +128,8 @@ export const formSections: FormSection[] = [
     id: 2,
     label: "Section 2 of 6",
     title: "The People You Serve",
-    description: "Let's talk about your customers — the real people, not demographics.",
+    description:
+      "Let's talk about your customers — the real people, not demographics.",
     emphasis: "This section has 7 questions",
     questions: [
       {
@@ -151,8 +146,7 @@ export const formSections: FormSection[] = [
             body: `For each person, write 2-3 lines: Who they are, what they were dealing with, what matters to them. Paint a picture.`,
           },
         ],
-        example:
-          `"Priya, 34, corporate manager, works 10-hour days. Gained 15kg in 3 years, tried diets but couldn't sustain them. She values convenience — needs something that doesn't require her to cook separate meals or spend hours at the gym."`,
+        example: `"Priya, 34, corporate manager, works 10-hour days. Gained 15kg in 3 years, tried diets but couldn't sustain them. She values convenience — needs something that doesn't require her to cook separate meals or spend hours at the gym."`,
         exampleLabel: "Example:",
       },
       {
@@ -166,11 +160,10 @@ export const formSections: FormSection[] = [
           },
           {
             title: "How to organize your answer:",
-            body: "Just trace the path from \"didn't know you\" to \"contacted you.\" Keep it factual.",
+            body: 'Just trace the path from "didn\'t know you" to "contacted you." Keep it factual.',
           },
         ],
-        example:
-          `"Mostly Instagram. They see my posts about healthy recipes, transformation stories from other clients, or tips on managing diabetes through diet. Sometimes referrals from existing clients."`,
+        example: `"Mostly Instagram. They see my posts about healthy recipes, transformation stories from other clients, or tips on managing diabetes through diet. Sometimes referrals from existing clients."`,
         exampleLabel: "Example:",
       },
       {
@@ -187,8 +180,7 @@ export const formSections: FormSection[] = [
             body: `Use their words if you've heard them. If you're starting, use the words you imagine hearing. Make it real.`,
           },
         ],
-        example:
-          `"They'd say things like 'I've tried everything and nothing works' or 'I don't have time to cook separate meals' or 'Gyms intimidate me and I never go.' They're frustrated and tired of failing."`,
+        example: `"They'd say things like 'I've tried everything and nothing works' or 'I don't have time to cook separate meals' or 'Gyms intimidate me and I never go.' They're frustrated and tired of failing."`,
         exampleLabel: "Example:",
       },
       {
@@ -205,8 +197,7 @@ export const formSections: FormSection[] = [
             body: "List 2-3 real concerns. The ones that come up in conversations or the ones you think are most likely.",
           },
         ],
-        example:
-          `"Will I have to give up foods I love? How much time will this take? I've tried trainers before and quit — what makes this different?"`,
+        example: `"Will I have to give up foods I love? How much time will this take? I've tried trainers before and quit — what makes this different?"`,
         exampleLabel: "Example:",
       },
       {
@@ -222,8 +213,7 @@ export const formSections: FormSection[] = [
             body: `Describe the warning signs. Be honest — there's no judgment here. Knowing who you DON'T want to serve is as important as knowing who you do.`,
           },
         ],
-        example:
-          `"When they want results in 2 weeks with zero effort. Or when they're looking for the cheapest option and will question every recommendation. They're not ready to commit, and I can't help people who won't meet me halfway."`,
+        example: `"When they want results in 2 weeks with zero effort. Or when they're looking for the cheapest option and will question every recommendation. They're not ready to commit, and I can't help people who won't meet me halfway."`,
         exampleLabel: "Example:",
       },
       {
@@ -240,8 +230,7 @@ export const formSections: FormSection[] = [
             body: `Quote them if you can. Their exact words matter more than polished sentences. If you're imagining it, make it sound like something a real person would actually say.`,
           },
         ],
-        example:
-          `"They say things like 'You actually listened to my lifestyle instead of giving a cookie-cutter plan' or 'I finally found something I can stick to' or 'You explain things without making me feel dumb.'"`,
+        example: `"They say things like 'You actually listened to my lifestyle instead of giving a cookie-cutter plan' or 'I finally found something I can stick to' or 'You explain things without making me feel dumb.'"`,
         exampleLabel: "Example:",
       },
       {
@@ -258,8 +247,7 @@ export const formSections: FormSection[] = [
             body: `Complete the sentence: "You should work with them because..." Keep it real and specific.`,
           },
         ],
-        example:
-          `"You should work with them because they customize everything to your life — no generic meal plans or workouts. And they actually check in on you, not just take your money and disappear."`,
+        example: `"You should work with them because they customize everything to your life — no generic meal plans or workouts. And they actually check in on you, not just take your money and disappear."`,
         exampleLabel: "Example:",
       },
     ],
@@ -284,8 +272,7 @@ export const formSections: FormSection[] = [
             body: `Number the steps if that helps. 3-6 main stages is usually enough. Keep it simple and clear.`,
           },
         ],
-        example:
-          `"1) Initial consultation to understand their health, lifestyle, and goals. 2) Custom nutrition plan created for them specifically. 3) Weekly check-ins via call or message to track progress and adjust. 4) Monthly review to measure results and set new goals."`,
+        example: `"1) Initial consultation to understand their health, lifestyle, and goals. 2) Custom nutrition plan created for them specifically. 3) Weekly check-ins via call or message to track progress and adjust. 4) Monthly review to measure results and set new goals."`,
         exampleLabel: "Example:",
       },
       {
@@ -302,13 +289,13 @@ export const formSections: FormSection[] = [
             body: `Describe what you do, and if you can, why it matters enough to keep doing it despite the cost.`,
           },
         ],
-        example:
-          `"I create custom recipes for each client based on what they actually eat and what's available in their kitchen. Most coaches give the same 20 recipes to everyone. It takes me 3-4 extra hours per client, but generic plans don't work."`,
+        example: `"I create custom recipes for each client based on what they actually eat and what's available in their kitchen. Most coaches give the same 20 recipes to everyone. It takes me 3-4 extra hours per client, but generic plans don't work."`,
         exampleLabel: "Example:",
       },
       {
         overallNumber: 15,
-        prompt: "What shortcuts do you see others take that you refuse to take?",
+        prompt:
+          "What shortcuts do you see others take that you refuse to take?",
         guidance: [
           {
             title: "Before you answer, think about:",
@@ -319,8 +306,7 @@ export const formSections: FormSection[] = [
             body: `Describe the shortcut, and if possible, why you think it's wrong or why you avoid it.`,
           },
         ],
-        example:
-          `"Other trainers sell the same package to everyone — 'this is the program, follow it.' No customization. I think that's lazy. Everyone's body, schedule, and lifestyle are different. One-size-fits-all doesn't work for fitness."`,
+        example: `"Other trainers sell the same package to everyone — 'this is the program, follow it.' No customization. I think that's lazy. Everyone's body, schedule, and lifestyle are different. One-size-fits-all doesn't work for fitness."`,
         exampleLabel: "Example:",
       },
       {
@@ -337,13 +323,13 @@ export const formSections: FormSection[] = [
             body: `Tell the story if you have one. What happened? What did you do? Why? If you're imagining it, describe the situation that would make you say no.`,
           },
         ],
-        example:
-          `"A client wanted me to promise 10kg weight loss in 3 weeks for her wedding. That's not healthy or sustainable. She offered double my fee. I said no — I'm not going to compromise someone's health for money, and that kind of result would damage my reputation."`,
+        example: `"A client wanted me to promise 10kg weight loss in 3 weeks for her wedding. That's not healthy or sustainable. She offered double my fee. I said no — I'm not going to compromise someone's health for money, and that kind of result would damage my reputation."`,
         exampleLabel: "Example:",
       },
       {
         overallNumber: 17,
-        prompt: "If something goes wrong or a customer has a problem, what do you do?",
+        prompt:
+          "If something goes wrong or a customer has a problem, what do you do?",
         guidance: [
           {
             title: "Before you answer, think about:",
@@ -354,8 +340,7 @@ export const formSections: FormSection[] = [
             body: `Describe your approach simply. What's your first move? What matters most to you in that moment?`,
           },
         ],
-        example:
-          `"I respond the same day. Even if I don't have a solution yet, I let them know I received their message and I'm looking into it. I never ignore or make excuses. If something was my mistake, I own it and fix it."`,
+        example: `"I respond the same day. Even if I don't have a solution yet, I let them know I received their message and I'm looking into it. I never ignore or make excuses. If something was my mistake, I own it and fix it."`,
         exampleLabel: "Example:",
       },
       {
@@ -372,8 +357,7 @@ export const formSections: FormSection[] = [
             body: `Describe the rule and, if you can, explain why you care about it even though it might seem small.`,
           },
         ],
-        example:
-          `"I taste-test every batch before it ships. My team thinks it's excessive because we follow the same recipe every time. But consistency matters — one bad batch and trust is gone."`,
+        example: `"I taste-test every batch before it ships. My team thinks it's excessive because we follow the same recipe every time. But consistency matters — one bad batch and trust is gone."`,
         exampleLabel: "Example:",
       },
     ],
@@ -388,7 +372,7 @@ export const formSections: FormSection[] = [
       {
         overallNumber: 19,
         prompt:
-          "Before you started (or as you were planning), what did you notice that made you think \"there's space for this\"?",
+          'Before you started (or as you were planning), what did you notice that made you think "there\'s space for this"?',
         guidance: [
           {
             title: "Before you answer, think about:",
@@ -399,13 +383,13 @@ export const formSections: FormSection[] = [
             body: `Describe what you observed and what it told you. Paint the picture of the gap you spotted.`,
           },
         ],
-        example:
-          `"I noticed diabetes patients in India struggle to find tasty sugar-free snacks. Everything was imported and expensive, or local but bland. Nobody was making Indian sweets — ladoos, barfis — without sugar in a way that actually tasted good."`,
+        example: `"I noticed diabetes patients in India struggle to find tasty sugar-free snacks. Everything was imported and expensive, or local but bland. Nobody was making Indian sweets — ladoos, barfis — without sugar in a way that actually tasted good."`,
         exampleLabel: "Example:",
       },
       {
         overallNumber: 20,
-        prompt: "Name 2-4 businesses that people might compare you to or consider instead.",
+        prompt:
+          "Name 2-4 businesses that people might compare you to or consider instead.",
         guidance: [
           {
             title: "Before you answer, think about:",
@@ -416,8 +400,7 @@ export const formSections: FormSection[] = [
             body: `List them. Names if you know them, or types/categories if you don't. Be realistic about what you're up against.`,
           },
         ],
-        example:
-          `"Local gyms (cheaper but crowded and impersonal), celebrity trainer programs online (flashy but generic), YouTube free workouts (no accountability), or just doing nothing and hoping for the best."`,
+        example: `"Local gyms (cheaper but crowded and impersonal), celebrity trainer programs online (flashy but generic), YouTube free workouts (no accountability), or just doing nothing and hoping for the best."`,
         exampleLabel: "Example:",
       },
       {
@@ -434,13 +417,13 @@ export const formSections: FormSection[] = [
             body: `List 2-3 common complaints. Use their language if you remember it.`,
           },
         ],
-        example:
-          `"They say trainers take payment for 3 months upfront and then disappear — no follow-ups, no adjustments. Or the plans are impossible to follow with a job and family. Or gyms feel intimidating and judgy."`,
+        example: `"They say trainers take payment for 3 months upfront and then disappear — no follow-ups, no adjustments. Or the plans are impossible to follow with a job and family. Or gyms feel intimidating and judgy."`,
         exampleLabel: "Example:",
       },
       {
         overallNumber: 22,
-        prompt: "Where do your prices sit compared to others? OR where will they sit?",
+        prompt:
+          "Where do your prices sit compared to others? OR where will they sit?",
         guidance: [
           {
             title: "Before you answer, think about:",
@@ -451,8 +434,7 @@ export const formSections: FormSection[] = [
             body: `State it plainly. Higher, lower, similar? By how much if you know.`,
           },
         ],
-        example:
-          `"I'm more expensive than generic gym memberships (₹2-3K/month) but much cheaper than celebrity trainers (₹50K+). I'm around ₹8-12K/month — mid-range, but with personalized attention."`,
+        example: `"I'm more expensive than generic gym memberships (₹2-3K/month) but much cheaper than celebrity trainers (₹50K+). I'm around ₹8-12K/month — mid-range, but with personalized attention."`,
         exampleLabel: "Example:",
       },
       {
@@ -469,8 +451,7 @@ export const formSections: FormSection[] = [
             body: `Describe it simply. Don't overthink it — just what feels true or what you're aiming for.`,
           },
         ],
-        example:
-          `"Right now, small and personal — people know they're working with me, not some assistant. But I want to be seen as credible and established too — not just a side hustle, but a serious practice they can trust."`,
+        example: `"Right now, small and personal — people know they're working with me, not some assistant. But I want to be seen as credible and established too — not just a side hustle, but a serious practice they can trust."`,
         exampleLabel: "Example:",
       },
     ],
@@ -496,8 +477,7 @@ export const formSections: FormSection[] = [
             body: `Copy-paste if you have something recent. If you're writing a sample, make it realistic — like something you'd actually send.`,
           },
         ],
-        example:
-          `"Hi Priya! Hope you're doing well. Just checking in — how did this week's meal plan go? Were you able to try the millet khichdi recipe? Let me know if anything felt too difficult or didn't fit your schedule. We'll adjust for next week. You're doing great! 💪"`,
+        example: `"Hi Priya! Hope you're doing well. Just checking in — how did this week's meal plan go? Were you able to try the millet khichdi recipe? Let me know if anything felt too difficult or didn't fit your schedule. We'll adjust for next week. You're doing great! 💪"`,
         exampleLabel: "Example:",
       },
       {
@@ -514,8 +494,7 @@ export const formSections: FormSection[] = [
             body: `Write it like you're speaking. Keep it conversational.`,
           },
         ],
-        example:
-          `"I help working professionals lose weight and get fit without having to go to a gym or follow crazy diets. Custom plans that fit their actual life — what they like to eat, how much time they have. Mostly online, weekly check-ins."`,
+        example: `"I help working professionals lose weight and get fit without having to go to a gym or follow crazy diets. Custom plans that fit their actual life — what they like to eat, how much time they have. Mostly online, weekly check-ins."`,
         exampleLabel: "Example:",
       },
       {
@@ -549,8 +528,7 @@ export const formSections: FormSection[] = [
             body: `Name one you'd like, one you wouldn't. Explain briefly why if you can.`,
           },
         ],
-        example:
-          `"I'd be happy being compared to Fabindia — authentic, rooted in Indian culture, quality-first, not trying to be Western. I'd hate being compared to a fast-fashion brand — cheap, mass-produced, no soul."`,
+        example: `"I'd be happy being compared to Fabindia — authentic, rooted in Indian culture, quality-first, not trying to be Western. I'd hate being compared to a fast-fashion brand — cheap, mass-produced, no soul."`,
         exampleLabel: "Example:",
       },
     ],
@@ -576,8 +554,7 @@ export const formSections: FormSection[] = [
             body: `Describe what you have, share links or files if available, or paint the picture of what's in your mind.`,
           },
         ],
-        example:
-          `"I have an Instagram page with a Canva logo — very basic, green and white colors. No website yet. I've been thinking earthy, natural tones since my food is all organic and homemade."`,
+        example: `"I have an Instagram page with a Canva logo — very basic, green and white colors. No website yet. I've been thinking earthy, natural tones since my food is all organic and homemade."`,
         exampleLabel: "Example:",
       },
       {
@@ -593,8 +570,7 @@ export const formSections: FormSection[] = [
             body: `List any strong preferences or dislikes. If nothing comes to mind, that's fine too.`,
           },
         ],
-        example:
-          `"I love earthy greens and browns — natural, warm, healthy. I dislike bright reds or neon colors — they feel too aggressive or artificial for what I'm doing."`,
+        example: `"I love earthy greens and browns — natural, warm, healthy. I dislike bright reds or neon colors — they feel too aggressive or artificial for what I'm doing."`,
         exampleLabel: "Example:",
       },
       {
@@ -611,8 +587,7 @@ export const formSections: FormSection[] = [
             body: `Describe it if something resonates. If not, just say so.`,
           },
         ],
-        example:
-          `"Leaves or grains — they represent natural, whole foods. That connects to what I do — helping people eat real food, not processed or chemical-heavy stuff."`,
+        example: `"Leaves or grains — they represent natural, whole foods. That connects to what I do — helping people eat real food, not processed or chemical-heavy stuff."`,
         exampleLabel: "Example:",
       },
     ],
