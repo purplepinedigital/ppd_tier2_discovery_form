@@ -23,7 +23,9 @@ export function QuestionView({
   isFirst,
   isLast,
 }: QuestionViewProps) {
-  const paddedNumber = question.overallNumber.toString().padStart(2, "0");
+  const paddedNumber = question.sectionQuestionNumber
+    ? question.sectionQuestionNumber.toString().padStart(2, "0")
+    : question.overallNumber.toString().padStart(2, "0");
 
   return (
     <div className="flex flex-col gap-8">
@@ -107,7 +109,7 @@ export function QuestionView({
               className="w-full justify-center rounded-md border border-[#37306B] bg-transparent px-8 py-4 text-base font-normal text-[#37306B] hover:bg-[#37306B]/10 sm:w-auto"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Go Back
+              Back to last
             </Button>
           ) : (
             <div className="hidden sm:block" aria-hidden="true" />
@@ -118,7 +120,7 @@ export function QuestionView({
             className="w-full justify-center rounded-md bg-[#37306B] px-8 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] sm:w-auto"
             style={{ fontFamily: "Literata, serif" }}
           >
-            {isLast ? "Submit responses" : "Move to next"}
+            {isLast ? "Submit responses" : "Save & Move to Next"}
             <svg
               className="ml-2 h-4 w-4"
               viewBox="0 0 21 8"
