@@ -313,7 +313,10 @@ export default function Index() {
 
         {(screen === "form" || screen === "complete") && !isComplete ? (
           <section className="w-full max-w-[1332px]">
-            <div className="rounded-[18px] border border-transparent p-10 backdrop-blur-sm">
+            <div
+              className="rounded-[18px] p-10 backdrop-blur-sm"
+              style={{ borderWidth: "1px", borderStyle: "none" }}
+            >
               <div className="space-y-6">
                 <div className="space-y-3">
                   <p
@@ -445,7 +448,7 @@ export default function Index() {
                     <h4 className="font-semibold">What happens next:</h4>
                     <p>Within 3-5 days, you'll receive:</p>
                     <ul className="list-disc space-y-1 pl-5">
-                      <li>Identity Statement — who you are at your core</li>
+                      <li>Identity Statement �� who you are at your core</li>
                       <li>Positioning Map — where you fit in your market</li>
                       <li>Strategic Brief — the blueprint for your brand</li>
                     </ul>
