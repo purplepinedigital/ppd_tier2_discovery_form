@@ -96,7 +96,7 @@ export function QuestionView({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder="Add your answer here."
-          className="min-h-[180px] rounded-md border border-[#D9D9D9] bg-[#FFFAEE] text-base leading-relaxed text-black placeholder:text-[#ACACAC]"
+          className="min-h-[180px] rounded-none border-0 border-b border-[#D9D9D9] bg-[#FFFAEE] text-base leading-relaxed text-black placeholder:text-[#ACACAC] focus-visible:ring-0"
           style={{ fontFamily: "Epilogue, sans-serif" }}
         />
         <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-end">
