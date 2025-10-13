@@ -398,7 +398,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I noticed small manufacturers couldn't afford ₹10L+ ERP systems, but Excel wasn't cutting it anymore. There was nothing in between — that's the gap I wanted to fill.`,
+          `"I noticed diabetes patients in India struggle to find tasty sugar-free snacks. Everything was imported and expensive, or local but bland. Nobody was making Indian sweets — ladoos, barfis — without sugar in a way that actually tasted good."`,
         exampleLabel: "Example:",
       },
       {
@@ -415,7 +415,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Tally (too accounting-focused, not inventory-focused), big ERP vendors like SAP (way too expensive), custom Excel consultants (works short-term, doesn't scale).`,
+          `"Local gyms (cheaper but crowded and impersonal), celebrity trainer programs online (flashy but generic), YouTube free workouts (no accountability), or just doing nothing and hoping for the best."`,
         exampleLabel: "Example:",
       },
       {
@@ -433,7 +433,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Previous vendors disappeared after installation. No support. Or the software was so complicated, employees never used it.`,
+          `"They say trainers take payment for 3 months upfront and then disappear — no follow-ups, no adjustments. Or the plans are impossible to follow with a job and family. Or gyms feel intimidating and judgy."`,
         exampleLabel: "Example:",
       },
       {
@@ -450,7 +450,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `We're about 30-40% more expensive than the cheapest options, but half the price of big ERP vendors. Mid-range, but with high-end quality.`,
+          `"I'm more expensive than generic gym memberships (₹2-3K/month) but much cheaper than celebrity trainers (₹50K+). I'm around ₹8-12K/month — mid-range, but with personalized attention."`,
         exampleLabel: "Example:",
       },
       {
@@ -468,7 +468,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Right now, probably small and personal. But I want to be seen as established and reliable — like we've been doing this for years, even though we're only 3 years old.`,
+          `"Right now, small and personal — people know they're working with me, not some assistant. But I want to be seen as credible and established too — not just a side hustle, but a serious practice they can trust."`,
         exampleLabel: "Example:",
       },
     ],
