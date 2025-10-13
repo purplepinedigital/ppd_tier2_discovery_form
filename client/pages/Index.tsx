@@ -115,25 +115,6 @@ export default function Index() {
           alt="Purple Pine Digital"
           className="h-10 w-auto md:h-12 lg:h-[50px]"
         />
-        {screen !== "hero" && screen !== "complete" ? (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => {
-              if (screen === "intro") {
-                setScreen("hero");
-              }
-
-              if (screen === "form") {
-                setScreen("intro");
-              }
-            }}
-            className="hidden text-sm font-normal text-[#37306B] hover:bg-transparent hover:text-[#2C2758] sm:inline-flex"
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Back
-          </Button>
-        ) : null}
       </header>
 
       <main className="flex flex-1 items-center justify-center px-4 pb-12 sm:px-8 sm:pb-16 md:px-12 lg:px-24">
