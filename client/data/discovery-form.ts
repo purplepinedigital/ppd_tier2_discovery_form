@@ -54,7 +54,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I'm a CA. I worked at a big firm for 8 years. Clients were treated like file numbers — rushed meetings, templated advice. I wanted to build a practice where people felt heard.`,
+          `"My mother has diabetes and couldn't find sugar-free sweets that actually tasted good. Everything was either bland or full of chemicals. I learned to make them at home, friends loved them, and I thought — why isn't anyone doing this right?"`,
         exampleLabel: "Example:",
       },
       {
@@ -71,7 +71,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Small manufacturers maintain inventory in Excel. It works initially, but as they grow, they lose track — stock-outs happen, reordering is guesswork, and they can't see what's actually moving.`,
+          `"Working professionals want to stay fit but can't commit to gyms — unpredictable schedules, intimidating environments, trainers who don't pay attention. They need fitness that fits their life, not the other way around."`,
         exampleLabel: "Example:",
       },
       {
@@ -88,7 +88,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Before: Their inventory was chaos. After: They have real-time visibility, automated alerts when stock is low, and they can make decisions based on data, not guesswork.`,
+          `"Before: They're stressed about their health but don't know where to start. After: They have a personalized nutrition plan, weekly check-ins, and they've lost weight without feeling deprived or overwhelmed."`,
         exampleLabel: "Example:",
       },
       {
@@ -106,7 +106,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Understanding their actual needs before recommending anything. If I can't do discovery properly, I'd rather not take the project.`,
+          `"The initial consultation where I understand their lifestyle, habits, and goals. Without that, I'm just giving generic advice that won't stick."`,
         exampleLabel: "Example:",
       },
       {
@@ -123,7 +123,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I'll never take on more than 5 clients at once. Quality drops when you're spread thin, and I've seen what happens when agencies overcommit — everyone suffers.`,
+          `"I'll never use artificial sweeteners or preservatives in my products, even though it would triple shelf life and reduce costs. Quality and health come first — that's the whole point."`,
         exampleLabel: "Example:",
       },
     ],
@@ -540,7 +540,7 @@ export const formSections: FormSection[] = [
         guidance: [
           {
             title: "Before you answer, think about:",
-            body: `Comparisons reveal a lot. "Oh, you're like the [X] of [your industry]" — what X would make you smile? What X would make you uncomfortable? It doesn't have to be in your industry. Could be a bank, a car brand, a restaurant chain. Think about who you'd be proud to be mentioned alongside, and who you'd want to distance yourself from.`,
+            body: `Comparisons reveal a lot. "Oh, you're like the [X] of [your industry]" ��� what X would make you smile? What X would make you uncomfortable? It doesn't have to be in your industry. Could be a bank, a car brand, a restaurant chain. Think about who you'd be proud to be mentioned alongside, and who you'd want to distance yourself from.`,
           },
           {
             title: "How to organize your answer:",
