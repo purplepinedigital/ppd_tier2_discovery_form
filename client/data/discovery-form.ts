@@ -575,7 +575,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `We have a basic logo made on Canva. Blue and grey colors. Very generic. Website is a template we bought. It works but doesn't feel like "us."`,
+          `"I have an Instagram page with a Canva logo — very basic, green and white colors. No website yet. I've been thinking earthy, natural tones since my food is all organic and homemade."`,
         exampleLabel: "Example:",
       },
       {
@@ -592,7 +592,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I like deep blues and greens — calm, trustworthy. I dislike bright orange or neon anything — feels too loud for what we do.`,
+          `"I love earthy greens and browns — natural, warm, healthy. I dislike bright reds or neon colors — they feel too aggressive or artificial for what I'm doing."`,
         exampleLabel: "Example:",
       },
       {
@@ -610,7 +610,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Gears or cogs — represent manufacturing, movement, things working together. That resonates with what we do — helping all the parts of inventory work smoothly.`,
+          `"Leaves or grains — they represent natural, whole foods. That connects to what I do — helping people eat real food, not processed or chemical-heavy stuff."`,
         exampleLabel: "Example:",
       },
     ],
