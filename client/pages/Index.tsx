@@ -286,15 +286,6 @@ export default function Index() {
                   <div className="flex flex-wrap items-center gap-3">
                     <Button
                       type="button"
-                      onClick={() => setScreen("hero")}
-                      variant="ghost"
-                      className="justify-center px-6 py-4 text-base font-normal text-[#37306B] hover:bg-transparent hover:text-[#2C2758]"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      type="button"
                       onClick={startForm}
                       className="inline-flex items-center gap-2 rounded-md bg-[#37306B] px-8 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
                       style={{ fontFamily: "Literata, serif" }}
