@@ -495,7 +495,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Hi Ramesh, hope you're doing well. Just checking in on the dashboard — is the stock alert feature working smoothly? Let me know if anything needs adjusting. Always here if you have questions. Best, Amit.`,
+          `"Hi Priya! Hope you're doing well. Just checking in — how did this week's meal plan go? Were you able to try the millet khichdi recipe? Let me know if anything felt too difficult or didn't fit your schedule. We'll adjust for next week. You're doing great! 💪"`,
         exampleLabel: "Example:",
       },
       {
@@ -513,7 +513,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I make software for small factories to track their inventory — basically, what comes in, what goes out, what's running low. Helps them avoid stockouts and know what's actually selling.`,
+          `"I help working professionals lose weight and get fit without having to go to a gym or follow crazy diets. Custom plans that fit their actual life — what they like to eat, how much time they have. Mostly online, weekly check-ins."`,
         exampleLabel: "Example:",
       },
       {
@@ -530,7 +530,7 @@ export const formSections: FormSection[] = [
             body: "Just list 3 words. Nothing fancy.",
           },
         ],
-        example: `Reliable. Clear. Responsive.`,
+        example: `"Supportive. Realistic. Consistent."`,
         exampleLabel: "Example:",
       },
       {
@@ -548,7 +548,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `I'd be happy being compared to Tata — reliable, decades of trust, quality first. I'd hate being compared to a bargain brand — nothing wrong with them, but that's not who we are.`,
+          `"I'd be happy being compared to Fabindia — authentic, rooted in Indian culture, quality-first, not trying to be Western. I'd hate being compared to a fast-fashion brand — cheap, mass-produced, no soul."`,
         exampleLabel: "Example:",
       },
     ],
