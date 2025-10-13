@@ -28,6 +28,8 @@ export interface FlattenedQuestion extends FormQuestion {
   sectionDescription: string;
   sectionEmphasis?: string;
   sectionNote?: string;
+  sectionQuestionNumber: number;
+  sectionTotalQuestions: number;
 }
 
 export const formSections: FormSection[] = [
@@ -619,7 +621,7 @@ export const formSections: FormSection[] = [
 
 export const formQuestions: FlattenedQuestion[] = formSections.flatMap(
   (section) =>
-    section.questions.map((question) => ({
+    section.questions.map((question, index) => ({
       ...question,
       sectionId: section.id,
       sectionLabel: section.label,
@@ -627,6 +629,8 @@ export const formQuestions: FlattenedQuestion[] = formSections.flatMap(
       sectionDescription: section.description,
       sectionEmphasis: section.emphasis,
       sectionNote: section.note,
+      sectionQuestionNumber: index + 1,
+      sectionTotalQuestions: section.questions.length,
     })),
 );
 
