@@ -150,7 +150,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Rajesh, 48, owns a small auto parts manufacturing unit. 25 employees. Revenue around ₹3Cr. He's not tech-savvy but smart. He values reliability over fancy features — wants things that just work.`,
+          `"Priya, 34, corporate manager, works 10-hour days. Gained 15kg in 3 years, tried diets but couldn't sustain them. She values convenience — needs something that doesn't require her to cook separate meals or spend hours at the gym."`,
         exampleLabel: "Example:",
       },
       {
@@ -168,7 +168,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Mostly referrals. One happy client mentions us to another business owner. Sometimes through LinkedIn — someone sees my posts about manufacturing software and reaches out.`,
+          `"Mostly Instagram. They see my posts about healthy recipes, transformation stories from other clients, or tips on managing diabetes through diet. Sometimes referrals from existing clients."`,
         exampleLabel: "Example:",
       },
       {
@@ -186,7 +186,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `They'd say things like "We're growing but we're losing track of stock" or "We reorder too late and run out, or we reorder too much and money's stuck in inventory."`,
+          `"They'd say things like 'I've tried everything and nothing works' or 'I don't have time to cook separate meals' or 'Gyms intimidate me and I never go.' They're frustrated and tired of failing."`,
         exampleLabel: "Example:",
       },
       {
@@ -204,7 +204,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `Will this be too complicated to learn? How long will setup take? What if our team doesn't use it?`,
+          `"Will I have to give up foods I love? How much time will this take? I've tried trainers before and quit — what makes this different?"`,
         exampleLabel: "Example:",
       },
       {
@@ -221,7 +221,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `When they want the cheapest option and will haggle endlessly. Or when they want it done in 2 days — they don't understand or value the process.`,
+          `"When they want results in 2 weeks with zero effort. Or when they're looking for the cheapest option and will question every recommendation. They're not ready to commit, and I can't help people who won't meet me halfway."`,
         exampleLabel: "Example:",
       },
       {
@@ -239,7 +239,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `They say things like "You actually understood our business" or "You explained everything clearly without making us feel stupid" or "You were never late, never vague."`,
+          `"They say things like 'You actually listened to my lifestyle instead of giving a cookie-cutter plan' or 'I finally found something I can stick to' or 'You explain things without making me feel dumb.'"`,
         exampleLabel: "Example:",
       },
       {
@@ -257,7 +257,7 @@ export const formSections: FormSection[] = [
           },
         ],
         example:
-          `You should work with them because they actually take time to understand what you need, they don't oversell, and they're always available when you have questions.`,
+          `"You should work with them because they customize everything to your life — no generic meal plans or workouts. And they actually check in on you, not just take your money and disappear."`,
         exampleLabel: "Example:",
       },
     ],
@@ -540,7 +540,7 @@ export const formSections: FormSection[] = [
         guidance: [
           {
             title: "Before you answer, think about:",
-            body: `Comparisons reveal a lot. "Oh, you're like the [X] of [your industry]" ��� what X would make you smile? What X would make you uncomfortable? It doesn't have to be in your industry. Could be a bank, a car brand, a restaurant chain. Think about who you'd be proud to be mentioned alongside, and who you'd want to distance yourself from.`,
+            body: `Comparisons reveal a lot. "Oh, you're like the [X] of [your industry]" — what X would make you smile? What X would make you uncomfortable? It doesn't have to be in your industry. Could be a bank, a car brand, a restaurant chain. Think about who you'd be proud to be mentioned alongside, and who you'd want to distance yourself from.`,
           },
           {
             title: "How to organize your answer:",
