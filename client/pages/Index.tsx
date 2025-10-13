@@ -313,7 +313,7 @@ export default function Index() {
 
         {(screen === "form" || screen === "complete") && !isComplete ? (
           <section className="w-full max-w-[1332px]">
-            <div className="rounded-[18px] p-6 shadow-sm backdrop-blur-sm md:p-10">
+            <div className="rounded-[18px] border border-transparent p-10 backdrop-blur-sm">
               <div className="space-y-6">
                 <div className="space-y-3">
                   <p
