@@ -72,7 +72,11 @@ export default function AdminDashboard() {
                 .eq("user_id", response.user_id);
 
               if (error) {
-                console.error("Error fetching signup for user:", response.user_id, error);
+                console.error(
+                  "Error fetching signup for user:",
+                  response.user_id,
+                  error,
+                );
                 return {
                   ...response,
                   user_name: "Unknown",
@@ -81,7 +85,10 @@ export default function AdminDashboard() {
 
               return {
                 ...response,
-                user_name: signupData && signupData.length > 0 ? signupData[0].name : "Unknown",
+                user_name:
+                  signupData && signupData.length > 0
+                    ? signupData[0].name
+                    : "Unknown",
               };
             } catch (err) {
               console.error("Exception fetching signup:", err);
@@ -452,7 +459,10 @@ export default function AdminDashboard() {
                         {sectionQuestions.map((question) => {
                           const answerIndex = question.overallNumber - 1;
                           return (
-                            <div key={question.overallNumber} className="bg-gray-50 p-4 rounded">
+                            <div
+                              key={question.overallNumber}
+                              className="bg-gray-50 p-4 rounded"
+                            >
                               <p
                                 className="font-bold text-gray-800 mb-2"
                                 style={{ fontFamily: "Epilogue, sans-serif" }}
