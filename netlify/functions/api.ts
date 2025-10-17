@@ -121,58 +121,90 @@ async function handleKlaviyoContact(body: any) {
   }
 }
 
-async function subscribeToList(profileId: string): Promise<void> {
+async function subscribeProfileToListWithConsent(
+  email: string,
+  profileId: string,
+): Promise<void> {
   if (!KLAVIYO_API_KEY) {
     console.error("Cannot subscribe to list: Klaviyo API key not configured");
     return;
   }
 
-  if (!profileId) {
-    console.error("Cannot subscribe to list: No profile ID provided");
+  if (!email || !profileId) {
+    console.error("Cannot subscribe to list: Missing email or profile ID");
     return;
   }
 
   try {
-    const listPayload = {
-      data: [
-        {
-          type: "profile",
-          id: profileId,
+    // Use the profile-subscription-bulk-create-jobs endpoint to set consent and add to list
+    const subscriptionPayload = {
+      data: {
+        type: "profile-subscription-bulk-create-job",
+        attributes: {
+          profiles: {
+            data: [
+              {
+                type: "profile",
+                attributes: {
+                  email,
+                  subscriptions: {
+                    email: {
+                      marketing: {
+                        consent: "SUBSCRIBED",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
         },
-      ],
+        relationships: {
+          list: {
+            data: {
+              type: "list",
+              id: KLAVIYO_LIST_ID,
+            },
+          },
+        },
+      },
     };
 
     console.log(
-      `Subscribing profile ${profileId} to list ${KLAVIYO_LIST_ID}:`,
-      listPayload,
+      `Subscribing profile ${profileId} (${email}) to list ${KLAVIYO_LIST_ID}`,
     );
 
     const response = await fetch(
-      `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
+      "https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/vnd.api+json",
-          Accept: "application/vnd.api+json",
+          "Content-Type": "application/json",
+          Accept: "application/json",
           Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
           revision: "2024-10-15",
         },
-        body: JSON.stringify(listPayload),
+        body: JSON.stringify(subscriptionPayload),
       },
     );
 
     const responseData = await response.json();
 
     if (!response.ok) {
-      console.error("Klaviyo list subscription error:", {
+      const errorDetail = responseData?.errors?.[0];
+      console.error("Klaviyo subscription job error:", {
         status: response.status,
         statusText: response.statusText,
-        data: responseData,
+        errorDetail,
+        fullResponse: responseData,
       });
       return;
     }
 
-    console.log("Profile subscribed to list successfully:", responseData);
+    console.log(
+      "Profile subscribed to list with consent successfully:",
+      responseData,
+    );
   } catch (error: any) {
     console.error("Failed to subscribe to list:", error.message, error);
   }
