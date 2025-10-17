@@ -53,10 +53,23 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
       body: JSON.stringify(payload),
     });
 
-    const responseData = await response.json();
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch (parseError: any) {
+      console.error("Failed to parse Klaviyo response:", parseError);
+      return res.status(502).json({
+        error: "Invalid Klaviyo API response",
+        message: parseError.message,
+      });
+    }
 
     if (!response.ok) {
-      console.error("Klaviyo API error:", responseData);
+      console.error("Klaviyo API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: responseData,
+      });
       return res.status(response.status).json({
         error: "Klaviyo API error",
         details: responseData,
