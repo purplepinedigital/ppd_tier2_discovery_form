@@ -45,9 +45,10 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
     const response = await fetch("https://a.klaviyo.com/api/profiles/", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-        revision: "2024-10-15",
+        "Content-Type": "application/vnd.api+json",
+        "Accept": "application/vnd.api+json",
+        "Authorization": `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        "revision": "2024-10-15",
       },
       body: JSON.stringify(payload),
     });
