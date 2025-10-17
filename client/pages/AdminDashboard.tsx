@@ -351,6 +351,109 @@ export default function AdminDashboard() {
             )}
           </>
         )}
+
+        {/* Detail Modal */}
+        {selectedResponse && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
+                <h2
+                  className="text-2xl font-bold"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  Response Details
+                </h2>
+                <button
+                  onClick={() => setSelectedResponse(null)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="p-6">
+                <p
+                  className="mb-6 text-gray-600"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  <strong>User ID:</strong> {selectedResponse.user_id}
+                  <br />
+                  <strong>Submitted:</strong>{" "}
+                  {new Date(selectedResponse.created_at).toLocaleString()}
+                </p>
+
+                {/* Responses grouped by section */}
+                {formSections.map((section) => {
+                  const sectionQuestions = formQuestions.filter(
+                    (q) => q.sectionId === section.id,
+                  );
+                  const sectionResponses = sectionQuestions.map(
+                    (q, idx) => selectedResponse.responses[q.overallNumber - 1] || "",
+                  );
+                  const hasAnyResponse = sectionResponses.some((r) => r.trim());
+
+                  if (!hasAnyResponse && !sectionQuestions.length) return null;
+
+                  return (
+                    <div key={section.id} className="mb-8">
+                      <div className="mb-4 pb-2 border-b-2 border-[#37306B]">
+                        <h3
+                          className="text-xl font-bold text-[#37306B]"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
+                        >
+                          {section.title}
+                        </h3>
+                        <p
+                          className="text-sm text-gray-600"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {section.description}
+                        </p>
+                      </div>
+
+                      <div className="space-y-6">
+                        {sectionQuestions.map((question, idx) => {
+                          const answer =
+                            selectedResponse.responses[question.overallNumber - 1] || "";
+                          return (
+                            <div key={question.overallNumber} className="bg-gray-50 p-4 rounded">
+                              <p
+                                className="font-bold text-gray-800 mb-2"
+                                style={{ fontFamily: "Epilogue, sans-serif" }}
+                              >
+                                Q{question.overallNumber}. {question.prompt}
+                              </p>
+                              <p
+                                className="text-gray-700 whitespace-pre-wrap"
+                                style={{ fontFamily: "Literata, serif" }}
+                              >
+                                {answer || (
+                                  <span className="text-gray-400 italic">
+                                    No response provided
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="sticky bottom-0 bg-white border-t p-6 flex justify-end gap-4">
+                <Button
+                  onClick={() => setSelectedResponse(null)}
+                  className="bg-gray-300 hover:bg-gray-400 text-black"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
