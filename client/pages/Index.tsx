@@ -383,7 +383,7 @@ export default function Index() {
 
         {screen === "sectionWelcome" && activeSection ? (
           <section className="w-full max-w-[900px]">
-            <div className="flex flex-col items-center gap-6 rounded-[18px] border border-[#E3DCD2] bg-white/60 p-10 text-center">
+            <div className="flex flex-col items-center gap-6 rounded-[18px] border border-[#E3DCD2] p-10 text-center">
               <span
                 className="text-sm uppercase tracking-wide text-[#37306B]"
                 style={{ fontFamily: "Epilogue, sans-serif" }}
