@@ -5,17 +5,6 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export function getRedirectUrl(path: string = "/"): string {
-  if (typeof window === "undefined") {
-    return path;
-  }
-
-  // Use the current origin to ensure it works in all environments
-  // (localhost, staging, production)
-  const baseUrl = window.location.origin;
-  return `${baseUrl}${path}`;
-}
-
 export interface FormProgress {
   id?: string;
   user_id: string;
