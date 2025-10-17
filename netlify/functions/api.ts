@@ -181,11 +181,15 @@ async function updateSubscriptionStatus(
     const responseData = await response.json();
 
     if (!response.ok) {
+      const errorDetail = responseData?.errors?.[0];
       console.error("Klaviyo subscription update error:", {
         status: response.status,
         statusText: response.statusText,
-        errorDetail: responseData?.errors?.[0],
-        data: responseData,
+        errorTitle: errorDetail?.title,
+        errorDetail: errorDetail?.detail,
+        errorSource: errorDetail?.source,
+        fullError: errorDetail,
+        fullResponse: responseData,
       });
       return;
     }
