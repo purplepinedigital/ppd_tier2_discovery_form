@@ -57,13 +57,13 @@ export function QuestionView({
               <div className="space-y-2">
                 <p
                   className="text-sm font-semibold uppercase tracking-wide text-[#37306B]"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                  style={{ fontFamily: "Literata, serif" }}
                 >
                   {item.title}
                 </p>
                 <p
                   className="text-sm whitespace-pre-line"
-                  style={{ fontFamily: "Literata, serif" }}
+                  style={{ fontFamily: "Literata, serif", fontWeight: "300" }}
                 >
                   {item.body}
                 </p>
