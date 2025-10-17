@@ -408,7 +408,7 @@ export default function AdminDashboard() {
                             {response.responses.filter((r) => r.trim()).length}{" "}
                             / {response.responses.length}
                           </td>
-                          <td className="px-6 py-4 text-sm">
+                          <td className="px-6 py-4 text-sm flex gap-2">
                             <button
                               onClick={() => {
                                 setEditingResponse(response);
@@ -418,6 +418,18 @@ export default function AdminDashboard() {
                               style={{ fontFamily: "Literata, serif" }}
                             >
                               Edit
+                            </button>
+                            <button
+                              onClick={() =>
+                                setDeleteConfirm({
+                                  type: "response",
+                                  id: response.id,
+                                })
+                              }
+                              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              Delete
                             </button>
                           </td>
                         </tr>
