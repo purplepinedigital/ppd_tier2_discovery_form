@@ -78,6 +78,7 @@ export default function Index() {
   const [userName, setUserName] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<string | null>(null);
 
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
