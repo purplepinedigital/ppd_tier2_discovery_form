@@ -52,6 +52,12 @@ export default function AdminDashboard() {
     null,
   );
   const [editResponses, setEditResponses] = useState<string[]>([]);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    type: "response" | "signup";
+    id: string;
+    email?: string;
+  } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     // Check authentication
