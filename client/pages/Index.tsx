@@ -903,6 +903,22 @@ export default function Index() {
                   Messages that resonate with your customers
                 </p>
               </div>
+              <div className="mt-8 flex gap-4 justify-center">
+                <Button
+                  onClick={() => {
+                    const firstIndex = getFirstQuestionIndexForSection(
+                      formSections[0].id,
+                    );
+                    setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+                    setActiveSectionIndex(0);
+                    setScreen("question");
+                  }}
+                  className="bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE] px-8 py-3"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Edit your responses
+                </Button>
+              </div>
             </div>
           </section>
         ) : null}
