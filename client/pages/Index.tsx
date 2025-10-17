@@ -312,7 +312,7 @@ export default function Index() {
     setAuthError(null);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: getRedirectUrl("/"),
+        redirectTo: typeof window !== "undefined" ? window.location.origin : "",
       });
       if (error) throw error;
       setScreen("resetSent");
