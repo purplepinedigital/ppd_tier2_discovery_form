@@ -67,6 +67,25 @@ export function Signup({ onSignup, onSwitchToLogin, isLoading }: SignupProps) {
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="space-y-2.5">
             <label
+              htmlFor="signup-name"
+              className="block text-base font-bold"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Full Name
+            </label>
+            <input
+              id="signup-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full border-0 border-b border-[#7C7C7C] bg-transparent pb-2.5 pt-1 text-base font-normal outline-none focus:border-[#37306B]"
+              style={{ fontFamily: "Literata, serif" }}
+            />
+          </div>
+
+          <div className="space-y-2.5">
+            <label
               htmlFor="signup-email"
               className="block text-base font-bold"
               style={{ fontFamily: "Literata, serif" }}
