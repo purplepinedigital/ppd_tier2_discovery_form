@@ -77,7 +77,8 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
 
     return res.json({
       success: true,
-      message: "Contact sent to Klaviyo successfully and added to Discovery Sign-up list",
+      message:
+        "Contact sent to Klaviyo successfully and added to Discovery Sign-up list",
       data: responseData,
     });
   } catch (error: any) {
