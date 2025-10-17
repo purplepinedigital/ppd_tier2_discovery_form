@@ -15,7 +15,10 @@ async function handleKlaviyoContact(body: any) {
   const { email, firstName, lastName, subscribed } = body;
 
   if (!email) {
-    return { status: 400, body: JSON.stringify({ error: "Email is required" }) };
+    return {
+      status: 400,
+      body: JSON.stringify({ error: "Email is required" }),
+    };
   }
 
   if (!KLAVIYO_API_KEY) {
@@ -86,7 +89,10 @@ async function handleKlaviyoContact(body: any) {
         body: JSON.stringify({
           error: "Klaviyo API error",
           details: responseData,
-          message: errorDetails?.detail || responseData?.errors?.[0]?.detail || "Unknown error",
+          message:
+            errorDetails?.detail ||
+            responseData?.errors?.[0]?.detail ||
+            "Unknown error",
         }),
       };
     }
@@ -145,7 +151,7 @@ async function subscribeToList(profileId: string): Promise<void> {
 
     console.log(
       `Subscribing profile ${profileId} to list ${KLAVIYO_LIST_ID}:`,
-      listPayload
+      listPayload,
     );
 
     const response = await fetch(
@@ -159,7 +165,7 @@ async function subscribeToList(profileId: string): Promise<void> {
           revision: "2024-10-15",
         },
         body: JSON.stringify(listPayload),
-      }
+      },
     );
 
     const responseData = await response.json();
