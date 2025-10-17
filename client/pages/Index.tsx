@@ -73,6 +73,7 @@ export default function Index() {
   const [responses, setResponses] = useState<string[]>(createInitialResponses);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [user, setUser] = useState<User | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
@@ -121,14 +122,34 @@ export default function Index() {
   };
 
   useEffect(() => {
+    const fetchUserName = async (userId: string) => {
+      const { data } = await supabase
+        .from("signups")
+        .select("name")
+        .eq("user_id", userId)
+        .single();
+
+      if (data?.name) {
+        setUserName(data.name);
+      }
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserName(session.user.id);
+      }
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserName(session.user.id);
+      } else {
+        setUserName(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -340,15 +361,38 @@ export default function Index() {
           alt="Purple Pine Digital"
           className="h-10 w-auto md:h-12 lg:h-[50px]"
         />
-        <a
-          href="https://purplepine.digital"
-          target="_blank"
-          rel="noreferrer"
-          className="hidden text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline sm:inline"
-          style={{ fontFamily: "Literata, serif" }}
-        >
-          Go to PurplePine.Digital
-        </a>
+        {user && userName ? (
+          <div className="flex items-center gap-6">
+            <span
+              className="text-base font-bold text-[#37306B]"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Hi {userName.split(" ")[0]}
+            </span>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                setUser(null);
+                setUserName(null);
+                setScreen("hero");
+              }}
+              className="text-base font-bold text-[#37306B] underline-offset-4 hover:underline"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <a
+            href="https://purplepine.digital"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline sm:inline"
+            style={{ fontFamily: "Literata, serif" }}
+          >
+            Go to PurplePine.Digital
+          </a>
+        )}
       </header>
 
       <main className="flex flex-1 items-center justify-center px-4 pb-12 sm:px-8 sm:pb-16 md:px-12 lg:px-24">
