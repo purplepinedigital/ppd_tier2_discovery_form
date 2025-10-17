@@ -66,8 +66,8 @@ export default function AdminDashboard() {
     setIsLoading(true);
     setError(null);
     try {
-      // Fetch form responses with user names
-      const { data: responsesData, error: responsesError } = await supabase
+      // Fetch form responses with user names using admin client to bypass RLS
+      const { data: responsesData, error: responsesError } = await adminSupabase
         .from("form_progress")
         .select("*")
         .order("created_at", { ascending: false });
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
         const enrichedResponses = await Promise.all(
           responsesData.map(async (response) => {
             try {
-              const { data: signupData, error } = await supabase
+              const { data: signupData, error } = await adminSupabase
                 .from("signups")
                 .select("name")
                 .eq("user_id", response.user_id);
@@ -115,8 +115,8 @@ export default function AdminDashboard() {
         setResponses(enrichedResponses);
       }
 
-      // Fetch signups
-      const { data: signupsData, error: signupsError } = await supabase
+      // Fetch signups using admin client to bypass RLS
+      const { data: signupsData, error: signupsError } = await adminSupabase
         .from("signups")
         .select("*")
         .order("created_at", { ascending: false });
