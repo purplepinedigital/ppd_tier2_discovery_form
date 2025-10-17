@@ -220,12 +220,15 @@ export default function Index() {
         setUserName(name);
         setPendingVerificationEmail(email);
 
-        // Save signup to Supabase signups table
-        const { error: signupError } = await supabase.from("signups").insert({
-          email,
-          name,
-          user_id: data.user.id,
-        });
+        // Save signup to Supabase signups table (or update if exists)
+        const { error: signupError } = await supabase.from("signups").upsert(
+          {
+            email,
+            name,
+            user_id: data.user.id,
+          },
+          { onConflict: "email" }
+        );
 
         if (signupError) {
           console.error("Error saving signup:", signupError);
