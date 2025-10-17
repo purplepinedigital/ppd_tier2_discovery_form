@@ -30,28 +30,21 @@ async function handleKlaviyoContact(body: any) {
   }
 
   try {
-    // Create profile with subscription consent included at creation time
-    const payload = {
+    // First, create profile with basic fields only
+    const createProfilePayload = {
       data: {
         type: "profile",
         attributes: {
           email,
           first_name: firstName || "",
           last_name: lastName || "",
-          subscriptions: {
-            email: {
-              marketing: {
-                consent: "SUBSCRIBED",
-              },
-            },
-          },
         },
       },
     };
 
     console.log("Sending to Klaviyo:", { email, firstName, lastName });
 
-    const response = await fetch("https://a.klaviyo.com/api/profiles/", {
+    const createResponse = await fetch("https://a.klaviyo.com/api/profiles/", {
       method: "POST",
       headers: {
         "Content-Type": "application/vnd.api+json",
@@ -59,12 +52,12 @@ async function handleKlaviyoContact(body: any) {
         Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
         revision: "2024-10-15",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(createProfilePayload),
     });
 
-    let responseData;
+    let createResponseData;
     try {
-      responseData = await response.json();
+      createResponseData = await createResponse.json();
     } catch (parseError: any) {
       console.error("Failed to parse Klaviyo response:", parseError);
       return {
@@ -76,34 +69,33 @@ async function handleKlaviyoContact(body: any) {
       };
     }
 
-    if (!response.ok) {
-      // Log detailed error information
-      const errorDetails = responseData?.errors?.[0];
+    if (!createResponse.ok) {
+      const errorDetails = createResponseData?.errors?.[0];
       console.error("Klaviyo API error:", {
-        status: response.status,
-        statusText: response.statusText,
+        status: createResponse.status,
+        statusText: createResponse.statusText,
         errorDetail: errorDetails,
-        fullResponse: responseData,
+        fullResponse: createResponseData,
       });
       return {
-        status: response.status,
+        status: createResponse.status,
         body: JSON.stringify({
           error: "Klaviyo API error",
-          details: responseData,
+          details: createResponseData,
           message:
             errorDetails?.detail ||
-            responseData?.errors?.[0]?.detail ||
+            createResponseData?.errors?.[0]?.detail ||
             "Unknown error",
         }),
       };
     }
 
-    console.log("Contact created in Klaviyo successfully:", responseData);
+    console.log("Contact created in Klaviyo successfully:", createResponseData);
 
-    // Subscribe the profile to the list
-    const profileId = responseData.data?.id;
+    // Now subscribe the profile and set consent using the bulk subscription job endpoint
+    const profileId = createResponseData.data?.id;
     if (profileId) {
-      subscribeToList(profileId).catch((error: any) => {
+      subscribeProfileToListWithConsent(email, profileId).catch((error: any) => {
         console.error("Error subscribing to list:", error.message);
       });
     }
@@ -114,7 +106,7 @@ async function handleKlaviyoContact(body: any) {
         success: true,
         message:
           "Contact sent to Klaviyo successfully and added to Discovery Sign-up list",
-        data: responseData,
+        data: createResponseData,
       }),
     };
   } catch (error: any) {
