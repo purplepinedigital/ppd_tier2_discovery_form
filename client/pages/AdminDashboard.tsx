@@ -394,6 +394,110 @@ export default function AdminDashboard() {
           </>
         )}
 
+        {/* Edit Modal */}
+        {editingResponse && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
+                <h2
+                  className="text-2xl font-bold"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  Edit Responses - {editingResponse.user_name}
+                </h2>
+                <button
+                  onClick={() => setEditingResponse(null)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="p-6">
+                {formSections.map((section) => {
+                  const sectionQuestions = formQuestions.filter(
+                    (q) => q.sectionId === section.id,
+                  );
+
+                  if (!sectionQuestions.length) return null;
+
+                  return (
+                    <div key={section.id} className="mb-8">
+                      <div className="mb-4 pb-2 border-b-2 border-[#37306B]">
+                        <h3
+                          className="text-xl font-bold text-[#37306B]"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
+                        >
+                          {section.title}
+                        </h3>
+                      </div>
+
+                      <div className="space-y-6">
+                        {sectionQuestions.map((question) => {
+                          const answerIndex = question.overallNumber - 1;
+                          return (
+                            <div key={question.overallNumber} className="bg-gray-50 p-4 rounded">
+                              <p
+                                className="font-bold text-gray-800 mb-2"
+                                style={{ fontFamily: "Epilogue, sans-serif" }}
+                              >
+                                Q{question.overallNumber}. {question.prompt}
+                              </p>
+                              <textarea
+                                value={editResponses[answerIndex] || ""}
+                                onChange={(e) => {
+                                  const newResponses = [...editResponses];
+                                  newResponses[answerIndex] = e.target.value;
+                                  setEditResponses(newResponses);
+                                }}
+                                className="w-full border border-gray-300 rounded p-2 min-h-[100px]"
+                                style={{ fontFamily: "Literata, serif" }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="sticky bottom-0 bg-white border-t p-6 flex justify-end gap-4">
+                <Button
+                  onClick={() => setEditingResponse(null)}
+                  className="bg-gray-300 hover:bg-gray-400 text-black"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={async () => {
+                    if (!editingResponse) return;
+                    try {
+                      const { error } = await supabase
+                        .from("form_progress")
+                        .update({ responses: editResponses })
+                        .eq("id", editingResponse.id);
+
+                      if (error) throw error;
+
+                      // Refresh data
+                      await fetchData();
+                      setEditingResponse(null);
+                    } catch (err: any) {
+                      setError(err.message || "Failed to save changes");
+                    }
+                  }}
+                  className="bg-[#37306B] hover:bg-[#2C2758] text-white"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Detail Modal */}
         {selectedResponse && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
