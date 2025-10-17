@@ -391,7 +391,7 @@ export default function Index() {
                 Section {activeSection.id} of {totalSections}
               </span>
               <h2
-                className="text-4xl font-normal md:text-[45px]"
+                className="text-4xl font-bold md:text-[45px]"
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
                 {activeSection.title}
