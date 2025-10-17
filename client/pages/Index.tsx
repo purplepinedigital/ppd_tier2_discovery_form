@@ -776,7 +776,10 @@ export default function Index() {
                 className="max-w-[560px] text-center text-base font-normal leading-normal"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                You're building it solid. You're building it right. We know filling all these questions wasn't easy — it takes real thought, honesty, and clarity. But you did it. Kudos to your perseverance.
+                You're building it solid. You're building it right. We know
+                filling all these questions wasn't easy — it takes real thought,
+                honesty, and clarity. But you did it. Kudos to your
+                perseverance.
               </p>
               <div className="flex flex-col items-center">
                 <p
@@ -786,17 +789,23 @@ export default function Index() {
                   <span className="font-bold">Now, here's what we'll do:</span>
                   <br />
                   <br />
-                  We'll read every single word. Not skim — actually read. We'll look for patterns. Listen for your voice. Notice where you light up and what you care about most. And we'll translate it all into:
+                  We'll read every single word. Not skim — actually read. We'll
+                  look for patterns. Listen for your voice. Notice where you
+                  light up and what you care about most. And we'll translate it
+                  all into:
                 </p>
                 <p
                   className="mt-4 max-w-[672px] text-center text-base font-normal leading-normal"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  A brand that feels like you — not a template, not a trend, but YOU
+                  A brand that feels like you — not a template, not a trend, but
+                  YOU
                   <br />
-                  A website that speaks like you — in your voice, not corporate-speak
+                  A website that speaks like you — in your voice, not
+                  corporate-speak
                   <br />
-                  Colors and shapes that represent you — visuals that match who you are
+                  Colors and shapes that represent you — visuals that match who
+                  you are
                   <br />
                   Messages that resonate with your customers
                 </p>
