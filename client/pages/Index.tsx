@@ -636,7 +636,7 @@ export default function Index() {
 
         {screen === "question" && currentQuestion && activeSection ? (
           <section className="w-full max-w-[1332px]">
-            <div className="rounded-[18px] border border-[#E3DCD2] bg-white/60 p-6 md:p-10">
+            <div className="rounded-[18px] p-6 md:p-10" style={{ border: "1px none rgb(227, 220, 210)" }}>
               <div className="space-y-8">
                 <div className="hidden md:block">
                   <div className="relative flex items-center justify-between">
@@ -759,7 +759,7 @@ export default function Index() {
 
         {screen === "complete" ? (
           <section className="w-full max-w-[1332px]">
-            <div className="rounded-[18px] border border-[#E3DCD2] bg-white/60 p-6 md:p-10">
+            <div className="rounded-[18px] p-6 md:p-10" style={{ border: "1px none rgb(227, 220, 210)" }}>
               <div
                 className="space-y-6 text-center"
                 style={{ fontFamily: "Literata, serif" }}
