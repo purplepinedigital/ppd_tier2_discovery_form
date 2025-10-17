@@ -735,6 +735,54 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-md">
+              <div className="p-6">
+                <h2
+                  className="text-2xl font-bold text-red-600 mb-4"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  Confirm Delete
+                </h2>
+                <p
+                  className="text-gray-700 mb-6"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  {deleteConfirm.type === "response"
+                    ? "Are you sure you want to delete this form response? This action cannot be undone."
+                    : `Are you sure you want to delete this signup (${deleteConfirm.email})? This will also remove the email from Klaviyo and delete any associated form responses. This action cannot be undone.`}
+                </p>
+                <div className="flex justify-end gap-4">
+                  <button
+                    onClick={() => setDeleteConfirm(null)}
+                    disabled={isDeleting}
+                    className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (deleteConfirm.type === "response") {
+                        handleDeleteResponse(deleteConfirm.id);
+                      } else {
+                        handleDeleteSignup(deleteConfirm.id, deleteConfirm.email!);
+                      }
+                    }}
+                    disabled={isDeleting}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
