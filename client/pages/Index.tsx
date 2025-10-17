@@ -542,16 +542,9 @@ export default function Index() {
                 <p>
                   You are all set. Let's start with Section {activeSection.id}.
                 </p>
-                <div>
-                  <p />
-                </div>
-                <div className="font-semibold">
-                  This section has {activeSection.questions?.length || 0} questions
-                </div>
-                <div>
-                  Take your time. Write naturally. Your honest answers matter
-                  more than perfect prose.
-                </div>
+                <p className="font-semibold">
+                  This section has {activeSection.questions?.length || 0} questions. Take your time. Write naturally. Your honest answers matter more than perfect prose.
+                </p>
               </div>
               <Button
                 type="button"
