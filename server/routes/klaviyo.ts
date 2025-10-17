@@ -62,17 +62,12 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
 
     console.log("Contact created in Klaviyo successfully:", responseData);
 
-    // Subscribe the profile to the "Discovery Sign-up" list
+    // Subscribe the profile to the "Discovery Sign-up" list (async, don't wait)
     const profileId = responseData.data?.id;
     if (profileId) {
-      try {
-        await subscribeToList(profileId);
-        console.log("Profile subscribed to list successfully");
-      } catch (listError: any) {
-        console.error("Error subscribing to list:", listError.message);
-        // Don't fail the entire request if list subscription fails
-        // The profile was created successfully
-      }
+      subscribeToList(profileId).catch((error: any) => {
+        console.error("Error subscribing to list:", error.message);
+      });
     }
 
     return res.json({
