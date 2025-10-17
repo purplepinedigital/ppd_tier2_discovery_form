@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 const KLAVIYO_API_KEY = process.env.VITE_KLAVIYO_API_KEY || "";
+const KLAVIYO_LIST_ID = "U6ned9"; // Discovery Sign-up list
 
 export async function handleKlaviyoContact(req: Request, res: Response) {
   if (req.method !== "POST") {
@@ -60,9 +61,23 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
     }
 
     console.log("Contact created in Klaviyo successfully:", responseData);
+
+    // Subscribe the profile to the "Discovery Sign-up" list
+    const profileId = responseData.data?.id;
+    if (profileId) {
+      try {
+        await subscribeToList(profileId);
+        console.log("Profile subscribed to list successfully");
+      } catch (listError: any) {
+        console.error("Error subscribing to list:", listError.message);
+        // Don't fail the entire request if list subscription fails
+        // The profile was created successfully
+      }
+    }
+
     return res.json({
       success: true,
-      message: "Contact sent to Klaviyo successfully",
+      message: "Contact sent to Klaviyo successfully and added to Discovery Sign-up list",
       data: responseData,
     });
   } catch (error: any) {
@@ -71,5 +86,36 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
       error: "Error sending to Klaviyo",
       message: error.message,
     });
+  }
+}
+
+async function subscribeToList(profileId: string): Promise<void> {
+  const response = await fetch(
+    `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        revision: "2024-10-15",
+      },
+      body: JSON.stringify({
+        data: [
+          {
+            type: "profile",
+            id: profileId,
+          },
+        ],
+      }),
+    },
+  );
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    console.error("Klaviyo list subscription error:", responseData);
+    throw new Error(
+      `Failed to subscribe to list: ${responseData.errors?.[0]?.detail || response.statusText}`,
+    );
   }
 }
