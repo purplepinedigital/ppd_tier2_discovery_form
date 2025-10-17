@@ -245,6 +245,14 @@ export default function Index() {
       });
       if (error) throw error;
       if (data.user) {
+        // Check if email is verified
+        if (!data.user.email_confirmed_at) {
+          setPendingVerificationEmail(email);
+          setScreen("verifyEmail");
+          setAuthLoading(false);
+          return;
+        }
+
         setUser(data.user);
 
         // Fetch user name
