@@ -257,7 +257,8 @@ export default function AdminDashboard() {
                       {responses.map((response) => (
                         <tr
                           key={response.id}
-                          className="border-b hover:bg-gray-50"
+                          className="border-b hover:bg-gray-50 cursor-pointer"
+                          onClick={() => setSelectedResponse(response)}
                         >
                           <td
                             className="px-6 py-4 text-sm"
