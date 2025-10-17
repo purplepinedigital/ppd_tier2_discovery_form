@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 interface SignupProps {
-  onSignup: (email: string, password: string) => Promise<void>;
+  onSignup: (email: string, name: string, password: string) => Promise<void>;
   onSwitchToLogin: () => void;
   isLoading?: boolean;
 }
 
 export function Signup({ onSignup, onSwitchToLogin, isLoading }: SignupProps) {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
