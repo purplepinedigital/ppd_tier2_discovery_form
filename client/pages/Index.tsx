@@ -639,44 +639,52 @@ export default function Index() {
             <div className="space-y-8 p-6 md:p-10">
               <div className="space-y-8">
                 <div className="hidden md:block">
-                  <div className="relative flex items-center justify-between">
-                    <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#D9D9D9]" />
-                    {formSections.map((section, index) => {
-                      const status =
-                        index < activeSectionIndex
-                          ? "complete"
-                          : index === activeSectionIndex
-                            ? "current"
-                            : "upcoming";
+                  <div className="relative h-[30px]">
+                    <div className="absolute left-0 right-0 top-[6px] h-0 bg-[#ACACAC]" style={{ borderTop: "1px solid #ACACAC" }} />
+                    <div className="flex items-start justify-between">
+                      {formSections.map((section, index) => {
+                        const status =
+                          index < activeSectionIndex
+                            ? "complete"
+                            : index === activeSectionIndex
+                              ? "current"
+                              : "upcoming";
 
-                      const dotClasses =
-                        status === "complete"
-                          ? "bg-[#37306B]"
-                          : status === "current"
-                            ? "bg-[#37306B]"
-                            : "bg-[#BAB8B8]";
+                        const widthMap: Record<string, string> = {
+                          "The Customer You Deserve": "192px",
+                          "How You Communicate": "163px",
+                          "Visual & Symbolic": "132px",
+                          "How You Work": "105px",
+                          "Your Market": "93px",
+                          "Your Story": "81px"
+                        };
 
-                      return (
-                        <div
-                          key={section.id}
-                          className="relative flex flex-col items-center gap-2"
-                        >
-                          <span
-                            className={`flex h-3 w-3 items-center justify-center rounded-full ${dotClasses}`}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-center text-xs uppercase tracking-[0.15em] text-[#4F4A7A] md:grid-cols-6">
-                    {formSections.map((section) => (
-                      <span
-                        key={section.id}
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        {section.title}
-                      </span>
-                    ))}
+                        return (
+                          <div
+                            key={section.id}
+                            className="relative z-10 flex flex-col items-start gap-0.5"
+                          >
+                            <svg
+                              className="h-2.5 w-2.5"
+                              viewBox="0 0 10 10"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="5" cy="5" r="5" fill={status === "upcoming" ? "#BAB8B8" : "#37306B"} />
+                            </svg>
+                            <span
+                              className="text-center text-xs font-normal"
+                              style={{
+                                fontFamily: "Literata, serif",
+                                width: widthMap[section.title] || "81px"
+                              }}
+                            >
+                              {section.title.toUpperCase()}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
 
