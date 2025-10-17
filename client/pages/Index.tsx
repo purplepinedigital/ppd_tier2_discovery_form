@@ -191,11 +191,15 @@ export default function Index() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: getRedirectUrl("/"),
+        },
       });
       if (error) throw error;
       if (data.user) {
         setUser(data.user);
         setUserName(name);
+        setPendingVerificationEmail(email);
 
         // Save signup to Supabase signups table
         const { error: signupError } = await supabase.from("signups").insert({
@@ -220,11 +224,8 @@ export default function Index() {
           console.error("Error sending to Klaviyo:", klaviyoError);
         }
 
-        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-        setResponses(createInitialResponses());
-        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-        setActiveSectionIndex(0);
-        setScreen("sectionWelcome");
+        // Show verification pending screen
+        setScreen("verifyEmail");
       }
     } catch (error: any) {
       setAuthError(error.message);
