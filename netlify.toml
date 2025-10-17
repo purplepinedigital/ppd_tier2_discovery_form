@@ -1,11 +1,11 @@
 [build]
-  command = "npm run build:client && npm run build:server"
+  command = "npm run build:client"
   functions = "netlify/functions"
   publish = "dist/spa"
 
 
 [functions]
-  external_node_modules = ["express"]
+  external_node_modules = ["express", "cors"]
   node_bundler = "esbuild"
 
 [[redirects]]
