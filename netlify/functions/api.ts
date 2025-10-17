@@ -287,56 +287,49 @@ async function handleKlaviyoUnsubscribe(body: any) {
 
     const profileId = profile.id;
 
-    // Unsubscribe the profile from email marketing
-    const unsubscribePayload = {
-      data: {
-        type: "profile-subscription-bulk-create-job",
-        attributes: {
-          profiles: {
-            data: [
-              {
-                type: "profile",
-                attributes: {
-                  email,
-                  subscriptions: {
-                    email: {
-                      marketing: {
-                        consent: "UNSUBSCRIBED",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        },
-      },
-    };
+    // Remove the profile from the list using DELETE endpoint
+    console.log(
+      `Removing email ${email} (${profileId}) from list ${KLAVIYO_LIST_ID}`,
+    );
 
-    console.log(`Unsubscribing email ${email} from Klaviyo`);
-
-    const unsubscribeResponse = await fetch(
-      "https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/",
+    const deleteResponse = await fetch(
+      `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
       {
-        method: "POST",
+        method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          "Content-Type": "application/vnd.api+json",
+          Accept: "application/vnd.api+json",
           Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
           revision: "2024-10-15",
         },
-        body: JSON.stringify(unsubscribePayload),
+        body: JSON.stringify({
+          data: [
+            {
+              type: "profile",
+              id: profileId,
+            },
+          ],
+        }),
       },
     );
 
-    let unsubscribeData;
+    let deleteData;
     try {
-      unsubscribeData = await unsubscribeResponse.json();
+      deleteData = await deleteResponse.json();
     } catch (parseError: any) {
-      console.error(
-        "Failed to parse Klaviyo unsubscribe response:",
-        parseError,
-      );
+      // 204 No Content is also a success response
+      if (deleteResponse.status === 204) {
+        console.log(`Successfully removed email ${email} from Klaviyo list`);
+        return {
+          status: 200,
+          body: JSON.stringify({
+            success: true,
+            message: "Email removed from Klaviyo list successfully",
+          }),
+        };
+      }
+
+      console.error("Failed to parse Klaviyo delete response:", parseError);
       return {
         status: 502,
         body: JSON.stringify({
@@ -346,38 +339,38 @@ async function handleKlaviyoUnsubscribe(body: any) {
       };
     }
 
-    if (!unsubscribeResponse.ok) {
-      const errorDetail = unsubscribeData?.errors?.[0];
+    if (!deleteResponse.ok && deleteResponse.status !== 204) {
+      const errorDetail = deleteData?.errors?.[0];
       console.error("Klaviyo unsubscribe error:", {
-        status: unsubscribeResponse.status,
-        statusText: unsubscribeResponse.statusText,
+        status: deleteResponse.status,
+        statusText: deleteResponse.statusText,
         errorDetail,
-        fullResponse: unsubscribeData,
+        fullResponse: deleteData,
       });
       return {
-        status: unsubscribeResponse.status,
+        status: deleteResponse.status,
         body: JSON.stringify({
           error: "Klaviyo API error",
-          details: unsubscribeData,
+          details: deleteData,
         }),
       };
     }
 
-    console.log(`Successfully unsubscribed email ${email} from Klaviyo`);
+    console.log(`Successfully removed email ${email} from Klaviyo list`);
 
     return {
       status: 200,
       body: JSON.stringify({
         success: true,
-        message: "Email unsubscribed from Klaviyo successfully",
+        message: "Email removed from Klaviyo list successfully",
       }),
     };
   } catch (error: any) {
-    console.error("Error unsubscribing from Klaviyo:", error);
+    console.error("Error removing email from Klaviyo:", error);
     return {
       status: 500,
       body: JSON.stringify({
-        error: "Error unsubscribing from Klaviyo",
+        error: "Error removing email from Klaviyo",
         message: error.message,
       }),
     };
