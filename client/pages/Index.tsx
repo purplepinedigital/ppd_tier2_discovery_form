@@ -540,7 +540,7 @@ export default function Index() {
                 className="max-w-[689px] text-center text-base font-normal leading-normal"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                Every business starts somewhere. Let's understand yours.{" "}
+                {activeSection.description}{" "}
                 <span className="font-bold">
                   This section has {activeSection.questions?.length || 0}{" "}
                   questions
@@ -724,7 +724,7 @@ export default function Index() {
                       className="text-sm text-[#4F4A7A]"
                       style={{ fontFamily: "Literata, serif" }}
                     >
-                      Click “Save & Move to Next” when you're ready. Pause
+                      Click “Save & Move to Next��� when you're ready. Pause
                       anytime.
                     </p>
                   </div>
