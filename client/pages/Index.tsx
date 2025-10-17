@@ -10,11 +10,7 @@ import {
   formSections,
   totalQuestions,
 } from "@/data/discovery-form";
-import {
-  supabase,
-  saveFormProgress,
-  loadFormProgress,
-} from "@/lib/supabase";
+import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
 const heroList = [
@@ -640,7 +636,10 @@ export default function Index() {
               <div className="space-y-8">
                 <div className="hidden md:block">
                   <div className="relative h-[30px]">
-                    <div className="absolute left-0 right-0 top-[6px] h-0 bg-[#ACACAC]" style={{ borderTop: "1px solid #ACACAC" }} />
+                    <div
+                      className="absolute left-0 right-0 top-[6px] h-0 bg-[#ACACAC]"
+                      style={{ borderTop: "1px solid #ACACAC" }}
+                    />
                     <div className="flex items-start justify-between">
                       {formSections.map((section, index) => {
                         const status =
@@ -656,7 +655,7 @@ export default function Index() {
                           "Visual & Symbolic": "132px",
                           "How You Work": "105px",
                           "Your Market": "93px",
-                          "Your Story": "81px"
+                          "Your Story": "81px",
                         };
 
                         return (
@@ -670,13 +669,20 @@ export default function Index() {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <circle cx="5" cy="5" r="5" fill={status === "upcoming" ? "#BAB8B8" : "#37306B"} />
+                              <circle
+                                cx="5"
+                                cy="5"
+                                r="5"
+                                fill={
+                                  status === "upcoming" ? "#BAB8B8" : "#37306B"
+                                }
+                              />
                             </svg>
                             <span
                               className="text-center text-xs font-normal"
                               style={{
                                 fontFamily: "Literata, serif",
-                                width: widthMap[section.title] || "81px"
+                                width: widthMap[section.title] || "81px",
                               }}
                             >
                               {section.title.toUpperCase()}
@@ -748,7 +754,10 @@ export default function Index() {
 
         {screen === "complete" ? (
           <section className="w-full max-w-[1332px]">
-            <div className="rounded-[18px] p-6 md:p-10" style={{ border: "1px none rgb(227, 220, 210)" }}>
+            <div
+              className="rounded-[18px] p-6 md:p-10"
+              style={{ border: "1px none rgb(227, 220, 210)" }}
+            >
               <div
                 className="space-y-6 text-center"
                 style={{ fontFamily: "Literata, serif" }}
