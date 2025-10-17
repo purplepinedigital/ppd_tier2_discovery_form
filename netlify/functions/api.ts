@@ -93,11 +93,16 @@ async function handleKlaviyoContact(body: any) {
 
     console.log("Contact created in Klaviyo successfully:", responseData);
 
-    // Subscribe the profile to the list (async, don't wait)
+    // Subscribe the profile to the list and set subscription status
     const profileId = responseData.data?.id;
     if (profileId) {
       subscribeToList(profileId).catch((error: any) => {
         console.error("Error subscribing to list:", error.message);
+      });
+
+      // Set email subscription status to SUBSCRIBED
+      updateSubscriptionStatus(profileId, "SUBSCRIBED").catch((error: any) => {
+        console.error("Error updating subscription status:", error.message);
       });
     }
 
