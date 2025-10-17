@@ -495,6 +495,21 @@ export default function AdminDashboard() {
                           >
                             {new Date(signup.subscribed_at).toLocaleString()}
                           </td>
+                          <td className="px-6 py-4 text-sm">
+                            <button
+                              onClick={() =>
+                                setDeleteConfirm({
+                                  type: "signup",
+                                  id: signup.user_id,
+                                  email: signup.email,
+                                })
+                              }
+                              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              Delete
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
