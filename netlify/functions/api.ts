@@ -73,16 +73,20 @@ async function handleKlaviyoContact(body: any) {
     }
 
     if (!response.ok) {
+      // Log detailed error information
+      const errorDetails = responseData?.errors?.[0];
       console.error("Klaviyo API error:", {
         status: response.status,
         statusText: response.statusText,
-        data: responseData,
+        errorDetail: errorDetails,
+        fullResponse: responseData,
       });
       return {
         status: response.status,
         body: JSON.stringify({
           error: "Klaviyo API error",
           details: responseData,
+          message: errorDetails?.detail || responseData?.errors?.[0]?.detail || "Unknown error",
         }),
       };
     }
