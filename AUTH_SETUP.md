@@ -87,7 +87,8 @@ For password reset and confirmation emails, you can customize the email template
 
 The application includes:
 - ✅ User signup with email/password
-- ✅ User login
+- ✅ Email verification required before login
+- ✅ User login (with email verification check)
 - ✅ Password reset flow
 - ✅ Automatic form progress saving
 - ✅ Session persistence
