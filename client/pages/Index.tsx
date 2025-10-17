@@ -127,16 +127,15 @@ export default function Index() {
         const { data, error } = await supabase
           .from("signups")
           .select("name")
-          .eq("user_id", userId)
-          .single();
+          .eq("user_id", userId);
 
         if (error) {
-          console.error("Error fetching user name:", error);
+          console.error("Error fetching user name:", error.message, error.code);
           return;
         }
 
-        if (data?.name) {
-          setUserName(data.name);
+        if (data && data.length > 0 && data[0]?.name) {
+          setUserName(data[0].name);
         }
       } catch (err) {
         console.error("Exception fetching user name:", err);
