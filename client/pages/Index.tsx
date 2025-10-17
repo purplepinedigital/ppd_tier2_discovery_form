@@ -735,6 +735,24 @@ export default function Index() {
           </section>
         ) : null}
 
+        {screen === "verifyEmail" && pendingVerificationEmail ? (
+          <section className="w-full max-w-[1360px]">
+            {authError && (
+              <div className="mb-4 rounded-md bg-red-100 p-4 text-sm text-red-800">
+                {authError}
+              </div>
+            )}
+            <VerifyEmail
+              email={pendingVerificationEmail}
+              onSwitchToLogin={() => {
+                setScreen("login");
+                setPendingVerificationEmail(null);
+                setAuthError(null);
+              }}
+            />
+          </section>
+        ) : null}
+
         {screen === "question" && currentQuestion && activeSection ? (
           <section className="w-full max-w-[1332px]">
             <div className="space-y-8 p-6 md:p-10">
