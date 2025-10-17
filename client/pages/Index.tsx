@@ -11,11 +11,7 @@ import {
   formSections,
   totalQuestions,
 } from "@/data/discovery-form";
-import {
-  supabase,
-  saveFormProgress,
-  loadFormProgress,
-} from "@/lib/supabase";
+import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
 import { sendToKlaviyo } from "@/lib/klaviyo";
 import type { User } from "@supabase/supabase-js";
 
@@ -223,7 +219,7 @@ export default function Index() {
             name,
             user_id: data.user.id,
           },
-          { onConflict: "email" }
+          { onConflict: "email" },
         );
 
         if (signupError) {
