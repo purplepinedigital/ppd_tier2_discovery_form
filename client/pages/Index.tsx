@@ -1,11 +1,21 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QuestionView } from "@/components/discovery/question-view";
 import { Button } from "@/components/ui/button";
+import { Signup } from "@/components/auth/signup";
+import { Login } from "@/components/auth/login";
+import { ResetPassword } from "@/components/auth/reset-password";
+import { ResetSent } from "@/components/auth/reset-sent";
 import {
   formQuestions,
   formSections,
   totalQuestions,
 } from "@/data/discovery-form";
+import {
+  supabase,
+  saveFormProgress,
+  loadFormProgress,
+} from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
 
 const heroList = [
   "Conversational questions, that help develop a narrative of your business.",
@@ -49,13 +59,25 @@ const getSectionIndexById = (sectionId: number) =>
 const getFirstQuestionIndexForSection = (sectionId: number) =>
   formQuestions.findIndex((question) => question.sectionId === sectionId);
 
-type Screen = "hero" | "intro" | "sectionWelcome" | "question" | "complete";
+type Screen =
+  | "hero"
+  | "intro"
+  | "signup"
+  | "login"
+  | "resetPassword"
+  | "resetSent"
+  | "sectionWelcome"
+  | "question"
+  | "complete";
 
 export default function Index() {
   const [screen, setScreen] = useState<Screen>("hero");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState<string[]>(createInitialResponses);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
@@ -80,12 +102,129 @@ export default function Index() {
     setScreen("intro");
   };
 
-  const startForm = () => {
-    const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-    setResponses(createInitialResponses());
-    setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-    setActiveSectionIndex(0);
-    setScreen("sectionWelcome");
+  const startForm = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      const progress = await loadFormProgress(data.session.user.id);
+      if (progress) {
+        setResponses(progress.responses);
+        setCurrentQuestionIndex(progress.current_question_index);
+        setActiveSectionIndex(progress.active_section_index);
+        setScreen("question");
+      } else {
+        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+        setResponses(createInitialResponses());
+        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+        setActiveSectionIndex(0);
+        setScreen("sectionWelcome");
+      }
+    } else {
+      setScreen("signup");
+    }
+  };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (user && screen === "question") {
+      const timer = setTimeout(() => {
+        saveFormProgress(
+          user.id,
+          responses,
+          currentQuestionIndex,
+          activeSectionIndex,
+        ).catch(console.error);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [user, responses, currentQuestionIndex, activeSectionIndex, screen]);
+
+  const handleSignup = async (email: string, password: string) => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) throw error;
+      if (data.user) {
+        setUser(data.user);
+        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+        setResponses(createInitialResponses());
+        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+        setActiveSectionIndex(0);
+        setScreen("sectionWelcome");
+      }
+    } catch (error: any) {
+      setAuthError(error.message);
+      console.error("Signup error:", error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogin = async (email: string, password: string) => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      if (data.user) {
+        setUser(data.user);
+        const progress = await loadFormProgress(data.user.id);
+        if (progress) {
+          setResponses(progress.responses);
+          setCurrentQuestionIndex(progress.current_question_index);
+          setActiveSectionIndex(progress.active_section_index);
+          setScreen("question");
+        } else {
+          const firstIndex = getFirstQuestionIndexForSection(
+            formSections[0].id,
+          );
+          setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+          setActiveSectionIndex(0);
+          setScreen("sectionWelcome");
+        }
+      }
+    } catch (error: any) {
+      setAuthError(error.message);
+      console.error("Login error:", error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (email: string) => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin,
+      });
+      if (error) throw error;
+      setScreen("resetSent");
+    } catch (error: any) {
+      setAuthError(error.message);
+      console.error("Reset password error:", error);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const handleProceedFromSectionWelcome = () => {
@@ -430,6 +569,58 @@ export default function Index() {
                 </svg>
               </Button>
             </div>
+          </section>
+        ) : null}
+
+        {screen === "signup" ? (
+          <section className="w-full max-w-[1360px]">
+            {authError && (
+              <div className="mb-4 rounded-md bg-red-100 p-4 text-sm text-red-800">
+                {authError}
+              </div>
+            )}
+            <Signup
+              onSignup={handleSignup}
+              onSwitchToLogin={() => setScreen("login")}
+              isLoading={authLoading}
+            />
+          </section>
+        ) : null}
+
+        {screen === "login" ? (
+          <section className="w-full max-w-[1360px]">
+            {authError && (
+              <div className="mb-4 rounded-md bg-red-100 p-4 text-sm text-red-800">
+                {authError}
+              </div>
+            )}
+            <Login
+              onLogin={handleLogin}
+              onSwitchToSignup={() => setScreen("signup")}
+              onSwitchToReset={() => setScreen("resetPassword")}
+              isLoading={authLoading}
+            />
+          </section>
+        ) : null}
+
+        {screen === "resetPassword" ? (
+          <section className="w-full max-w-[1360px]">
+            {authError && (
+              <div className="mb-4 rounded-md bg-red-100 p-4 text-sm text-red-800">
+                {authError}
+              </div>
+            )}
+            <ResetPassword
+              onResetPassword={handleResetPassword}
+              onSwitchToLogin={() => setScreen("login")}
+              isLoading={authLoading}
+            />
+          </section>
+        ) : null}
+
+        {screen === "resetSent" ? (
+          <section className="w-full max-w-[1360px]">
+            <ResetSent />
           </section>
         ) : null}
 
