@@ -522,22 +522,11 @@ export default function Index() {
 
         {screen === "sectionWelcome" && activeSection ? (
           <section className="flex w-full max-w-[1332px] flex-col items-center justify-center gap-8">
-            <svg
-              className="h-[52px] w-[56px]"
-              viewBox="0 0 56 52"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <circle cx="28" cy="26" r="26" fill="#37306B" />
-              <path
-                d="M18 26L25 33L38 20"
-                stroke="#FFFAEE"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src="https://api.builder.io/api/v1/image/assets/TEMP/c3f13d5b4b0c214b0258c5ca6f0bb4d54867b0da?width=112"
+              alt="Checkmark"
+              className="h-auto w-[56px]"
+            />
             <div className="flex flex-col items-center justify-center gap-8">
               <p
                 className="text-center text-2xl font-normal"
