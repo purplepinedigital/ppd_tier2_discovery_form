@@ -33,6 +33,10 @@ export default function AdminDashboard() {
   const [selectedResponse, setSelectedResponse] = useState<FormResponse | null>(
     null,
   );
+  const [editingResponse, setEditingResponse] = useState<FormResponse | null>(
+    null,
+  );
+  const [editResponses, setEditResponses] = useState<string[]>([]);
 
   useEffect(() => {
     // Check authentication
