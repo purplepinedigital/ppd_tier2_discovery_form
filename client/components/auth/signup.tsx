@@ -14,7 +14,7 @@ export function Signup({ onSignup, onSwitchToLogin, isLoading }: SignupProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSignup(email, password);
+    await onSignup(email, name, password);
   };
 
   return (
