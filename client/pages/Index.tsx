@@ -11,6 +11,7 @@ import {
   totalQuestions,
 } from "@/data/discovery-form";
 import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
+import { sendToKlaviyo } from "@/lib/klaviyo";
 import type { User } from "@supabase/supabase-js";
 
 const heroList = [
