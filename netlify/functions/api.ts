@@ -175,6 +175,7 @@ async function subscribeProfileToListWithConsent(
     console.log(
       `Subscribing profile ${profileId} (${email}) to list ${KLAVIYO_LIST_ID}`,
     );
+    console.log("Subscription payload:", JSON.stringify(subscriptionPayload));
 
     const response = await fetch(
       "https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/",
@@ -190,7 +191,21 @@ async function subscribeProfileToListWithConsent(
       },
     );
 
-    const responseData = await response.json();
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch (parseError: any) {
+      console.error(
+        "Failed to parse subscription response:",
+        parseError.message,
+      );
+      return;
+    }
+
+    console.log(
+      `Subscription request status: ${response.status} ${response.statusText}`,
+    );
+    console.log("Subscription response:", responseData);
 
     if (!response.ok) {
       const errorDetail = responseData?.errors?.[0];
