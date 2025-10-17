@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
-import { formQuestions } from "@/data/discovery-form";
+import { formQuestions, formSections } from "@/data/discovery-form";
 
 interface FormResponse {
   id: string;
@@ -29,6 +29,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<"responses" | "signups">(
     "responses",
   );
+  const [selectedResponse, setSelectedResponse] = useState<FormResponse | null>(null);
 
   useEffect(() => {
     // Check authentication
