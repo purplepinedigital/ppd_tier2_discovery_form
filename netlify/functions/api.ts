@@ -30,7 +30,7 @@ async function handleKlaviyoContact(body: any) {
   }
 
   try {
-    // Create profile without subscriptions (subscriptions handled separately)
+    // Create profile with subscription consent included at creation time
     const payload = {
       data: {
         type: "profile",
@@ -38,6 +38,13 @@ async function handleKlaviyoContact(body: any) {
           email,
           first_name: firstName || "",
           last_name: lastName || "",
+          subscriptions: {
+            email: {
+              marketing: {
+                consent: "SUBSCRIBED",
+              },
+            },
+          },
         },
       },
     };
@@ -93,16 +100,11 @@ async function handleKlaviyoContact(body: any) {
 
     console.log("Contact created in Klaviyo successfully:", responseData);
 
-    // Subscribe the profile to the list and set subscription status
+    // Subscribe the profile to the list
     const profileId = responseData.data?.id;
     if (profileId) {
       subscribeToList(profileId).catch((error: any) => {
         console.error("Error subscribing to list:", error.message);
-      });
-
-      // Set email subscription status to SUBSCRIBED
-      updateSubscriptionStatus(profileId, "SUBSCRIBED").catch((error: any) => {
-        console.error("Error updating subscription status:", error.message);
       });
     }
 
