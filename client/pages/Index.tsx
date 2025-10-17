@@ -148,7 +148,7 @@ export default function Index() {
     }
   }, [user, responses, currentQuestionIndex, activeSectionIndex, screen]);
 
-  const handleSignup = async (email: string, password: string) => {
+  const handleSignup = async (email: string, name: string, password: string) => {
     setAuthLoading(true);
     setAuthError(null);
     try {
@@ -159,6 +159,30 @@ export default function Index() {
       if (error) throw error;
       if (data.user) {
         setUser(data.user);
+
+        // Save signup to Supabase signups table
+        const { error: signupError } = await supabase.from("signups").insert({
+          email,
+          name,
+          user_id: data.user.id,
+        });
+
+        if (signupError) {
+          console.error("Error saving signup:", signupError);
+        }
+
+        // Send to Klaviyo
+        try {
+          await sendToKlaviyo({
+            email,
+            firstName: name.split(" ")[0],
+            lastName: name.split(" ").slice(1).join(" "),
+            subscribed: true,
+          });
+        } catch (klaviyoError) {
+          console.error("Error sending to Klaviyo:", klaviyoError);
+        }
+
         const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
         setResponses(createInitialResponses());
         setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
