@@ -95,9 +95,11 @@ async function handleKlaviyoContact(body: any) {
     // Now subscribe the profile and set consent using the bulk subscription job endpoint
     const profileId = createResponseData.data?.id;
     if (profileId) {
-      subscribeProfileToListWithConsent(email, profileId).catch((error: any) => {
-        console.error("Error subscribing to list:", error.message);
-      });
+      subscribeProfileToListWithConsent(email, profileId).catch(
+        (error: any) => {
+          console.error("Error subscribing to list:", error.message);
+        },
+      );
     }
 
     return {
