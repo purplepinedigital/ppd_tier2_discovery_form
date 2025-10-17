@@ -86,32 +86,45 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
 }
 
 async function subscribeToList(profileId: string): Promise<void> {
-  const response = await fetch(
-    `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-        revision: "2024-10-15",
+  if (!KLAVIYO_API_KEY) {
+    console.warn("Cannot subscribe to list: Klaviyo API key not configured");
+    return;
+  }
+
+  if (!profileId) {
+    console.warn("Cannot subscribe to list: No profile ID provided");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+          revision: "2024-10-15",
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              type: "profile",
+              id: profileId,
+            },
+          ],
+        }),
       },
-      body: JSON.stringify({
-        data: [
-          {
-            type: "profile",
-            id: profileId,
-          },
-        ],
-      }),
-    },
-  );
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error("Klaviyo list subscription error:", responseData);
-    throw new Error(
-      `Failed to subscribe to list: ${responseData.errors?.[0]?.detail || response.statusText}`,
     );
+
+    if (!response.ok) {
+      const responseData = await response.json();
+      console.error("Klaviyo list subscription error:", responseData);
+      return;
+    }
+
+    console.log("Profile subscribed to list successfully");
+  } catch (error: any) {
+    console.error("Failed to subscribe to list:", error.message);
   }
 }
