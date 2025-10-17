@@ -7,18 +7,30 @@ import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
 import { formQuestions, formSections } from "@/data/discovery-form";
 
 // Create an admin client that bypasses RLS using service role key
-const adminSupabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || "",
-  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
-    import.meta.env.VITE_SUPABASE_ANON_KEY ||
-    "",
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  },
-);
+let adminSupabase: any = null;
+
+const getAdminSupabase = () => {
+  if (!adminSupabase) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const serviceRoleKey =
+      import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
+      import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      throw new Error(
+        "Supabase URL and API key are required for admin operations",
+      );
+    }
+
+    adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+  }
+  return adminSupabase;
+};
 
 interface FormResponse {
   id: string;
