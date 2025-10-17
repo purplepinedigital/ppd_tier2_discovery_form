@@ -11,7 +11,12 @@ import {
   formSections,
   totalQuestions,
 } from "@/data/discovery-form";
-import { supabase, saveFormProgress, loadFormProgress, getRedirectUrl } from "@/lib/supabase";
+import {
+  supabase,
+  saveFormProgress,
+  loadFormProgress,
+  getRedirectUrl,
+} from "@/lib/supabase";
 import { sendToKlaviyo } from "@/lib/klaviyo";
 import type { User } from "@supabase/supabase-js";
 
@@ -78,7 +83,9 @@ export default function Index() {
   const [userName, setUserName] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<string | null>(null);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<
+    string | null
+  >(null);
 
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
@@ -157,7 +164,12 @@ export default function Index() {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         // Check if email is verified and we're in a protected screen
-        if (!session.user.email_confirmed_at && screen !== "verifyEmail" && screen !== "hero" && screen !== "intro") {
+        if (
+          !session.user.email_confirmed_at &&
+          screen !== "verifyEmail" &&
+          screen !== "hero" &&
+          screen !== "intro"
+        ) {
           setPendingVerificationEmail(session.user.email ?? null);
           setScreen("verifyEmail");
         }

@@ -64,7 +64,9 @@ export function VerifyEmail({ email, onSwitchToLogin }: VerifyEmailProps) {
             <ol className="list-decimal list-inside space-y-2">
               <li>Check your email inbox and spam folder</li>
               <li>Click the verification link</li>
-              <li>Once verified, you can log in and continue your Discovery Form</li>
+              <li>
+                Once verified, you can log in and continue your Discovery Form
+              </li>
             </ol>
           </div>
 

@@ -18,6 +18,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 You can find these values in your Supabase project:
+
 - Go to **Project Settings** → **API**
 - Copy the **Project URL** (for `VITE_SUPABASE_URL`)
 - Copy the **anon/public key** (for `VITE_SUPABASE_ANON_KEY`)
@@ -28,7 +29,6 @@ You can set environment variables in two ways:
 
 1. **Using DevServerControl tool** (Recommended - keeps secrets secure):
    - The AI assistant can set these for you using the DevServerControl tool
-   
 2. **Using .env file**:
    - Create a `.env` file in the project root
    - Copy the contents from `.env.example`
@@ -86,6 +86,7 @@ For password reset and confirmation emails, you can customize the email template
 ## Authentication Features
 
 The application includes:
+
 - ✅ User signup with email/password
 - ✅ Email verification required before login
 - ✅ User login (with email verification check)
@@ -116,13 +117,16 @@ To test the authentication flow:
 ## Troubleshooting
 
 **Error: "Invalid Supabase URL or anon key"**
+
 - Check that your environment variables are set correctly
 - Restart the dev server after setting environment variables
 
 **Error: "relation 'form_progress' does not exist"**
+
 - Run the database migration from `supabase-migration.sql`
 
 **Password reset email not received**
+
 - Check your spam folder
 - Verify email templates are enabled in Supabase
 - Check Supabase logs for email delivery errors
