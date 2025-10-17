@@ -227,6 +227,163 @@ async function subscribeProfileToListWithConsent(
   }
 }
 
+async function handleKlaviyoUnsubscribe(body: any) {
+  const { email } = body;
+
+  if (!email) {
+    return {
+      status: 400,
+      body: JSON.stringify({ error: "Email is required" }),
+    };
+  }
+
+  if (!KLAVIYO_API_KEY) {
+    console.warn("Klaviyo API key not configured");
+    return {
+      status: 500,
+      body: JSON.stringify({ error: "Klaviyo API key not configured" }),
+    };
+  }
+
+  try {
+    // First, find the profile by email
+    const searchResponse = await fetch(
+      `https://a.klaviyo.com/api/profiles/?filter=equals(email,"${encodeURIComponent(email)}")`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+          revision: "2024-10-15",
+        },
+      },
+    );
+
+    let profileData;
+    try {
+      profileData = await searchResponse.json();
+    } catch (parseError: any) {
+      console.error("Failed to parse Klaviyo search response:", parseError);
+      return {
+        status: 502,
+        body: JSON.stringify({
+          error: "Invalid Klaviyo API response",
+          message: parseError.message,
+        }),
+      };
+    }
+
+    const profile = profileData.data?.[0];
+    if (!profile) {
+      console.log(`Profile not found for email: ${email}`);
+      return {
+        status: 200,
+        body: JSON.stringify({
+          success: true,
+          message: "Profile not found in Klaviyo (may already be deleted)",
+        }),
+      };
+    }
+
+    const profileId = profile.id;
+
+    // Unsubscribe the profile from email marketing
+    const unsubscribePayload = {
+      data: {
+        type: "profile-subscription-bulk-create-job",
+        attributes: {
+          profiles: {
+            data: [
+              {
+                type: "profile",
+                attributes: {
+                  email,
+                  subscriptions: {
+                    email: {
+                      marketing: {
+                        consent: "UNSUBSCRIBED",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    console.log(`Unsubscribing email ${email} from Klaviyo`);
+
+    const unsubscribeResponse = await fetch(
+      "https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+          revision: "2024-10-15",
+        },
+        body: JSON.stringify(unsubscribePayload),
+      },
+    );
+
+    let unsubscribeData;
+    try {
+      unsubscribeData = await unsubscribeResponse.json();
+    } catch (parseError: any) {
+      console.error(
+        "Failed to parse Klaviyo unsubscribe response:",
+        parseError,
+      );
+      return {
+        status: 502,
+        body: JSON.stringify({
+          error: "Invalid Klaviyo API response",
+          message: parseError.message,
+        }),
+      };
+    }
+
+    if (!unsubscribeResponse.ok) {
+      const errorDetail = unsubscribeData?.errors?.[0];
+      console.error("Klaviyo unsubscribe error:", {
+        status: unsubscribeResponse.status,
+        statusText: unsubscribeResponse.statusText,
+        errorDetail,
+        fullResponse: unsubscribeData,
+      });
+      return {
+        status: unsubscribeResponse.status,
+        body: JSON.stringify({
+          error: "Klaviyo API error",
+          details: unsubscribeData,
+        }),
+      };
+    }
+
+    console.log(`Successfully unsubscribed email ${email} from Klaviyo`);
+
+    return {
+      status: 200,
+      body: JSON.stringify({
+        success: true,
+        message: "Email unsubscribed from Klaviyo successfully",
+      }),
+    };
+  } catch (error: any) {
+    console.error("Error unsubscribing from Klaviyo:", error);
+    return {
+      status: 500,
+      body: JSON.stringify({
+        error: "Error unsubscribing from Klaviyo",
+        message: error.message,
+      }),
+    };
+  }
+}
+
 const handler: Handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === "OPTIONS") {
@@ -239,11 +396,33 @@ const handler: Handler = async (event) => {
 
   const path = event.path || "";
 
-  // Klaviyo route
+  // Klaviyo contact route
   if (path.includes("/api/klaviyo/contact") && event.httpMethod === "POST") {
     try {
       const body = JSON.parse(event.body || "{}");
       const result = await handleKlaviyoContact(body);
+      return {
+        statusCode: result.status,
+        headers,
+        body: result.body,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          error: "Failed to process request",
+          message: error.message,
+        }),
+      };
+    }
+  }
+
+  // Klaviyo unsubscribe route
+  if (path.includes("/api/klaviyo/unsubscribe") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const result = await handleKlaviyoUnsubscribe(body);
       return {
         statusCode: result.status,
         headers,
