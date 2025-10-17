@@ -228,10 +228,8 @@ export default function AdminDashboard() {
   const handleDeleteResponse = async (id: string) => {
     setIsDeleting(true);
     try {
-      const { error } = await adminSupabase
-        .from("form_progress")
-        .delete()
-        .eq("id", id);
+      const client = getAdminSupabase();
+      const { error } = await client.from("form_progress").delete().eq("id", id);
 
       if (error) throw error;
 
@@ -247,6 +245,8 @@ export default function AdminDashboard() {
   const handleDeleteSignup = async (userId: string, email: string) => {
     setIsDeleting(true);
     try {
+      const client = getAdminSupabase();
+
       // Delete from Klaviyo first
       const klaviyoDeleteResponse = await fetch("/api/klaviyo/unsubscribe", {
         method: "POST",
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
       }
 
       // Delete from signups table
-      const { error } = await adminSupabase
+      const { error } = await client
         .from("signups")
         .delete()
         .eq("user_id", userId);
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
       if (error) throw error;
 
       // Also delete form progress if it exists
-      await adminSupabase.from("form_progress").delete().eq("user_id", userId);
+      await client.from("form_progress").delete().eq("user_id", userId);
 
       setSignups(signups.filter((s) => s.user_id !== userId));
       setDeleteConfirm(null);
