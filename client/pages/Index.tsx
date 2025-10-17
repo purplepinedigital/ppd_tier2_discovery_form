@@ -753,83 +753,53 @@ export default function Index() {
         ) : null}
 
         {screen === "complete" ? (
-          <section className="w-full max-w-[1332px]">
-            <div
-              className="rounded-[18px] p-6 md:p-10"
-              style={{ border: "1px none rgb(227, 220, 210)" }}
-            >
-              <div
-                className="space-y-6 text-center"
+          <section className="flex w-full max-w-[1332px] flex-col items-center justify-center gap-5">
+            <img
+              src="https://api.builder.io/api/v1/image/assets/TEMP/ac1599db89c35cde8b69edbb53cc04fa356a0685?width=112"
+              alt="Completion checkmark"
+              className="h-auto w-14"
+            />
+            <div className="flex flex-col items-center justify-center gap-[30px] self-stretch">
+              <p
+                className="self-stretch text-center text-[25px] font-normal leading-normal"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                <p className="text-lg">Whew! You're one hell of a Founder.</p>
-                <h2
-                  className="text-3xl font-normal md:text-[45px]"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
-                >
-                  YOU'RE DONE!
-                </h2>
-                <p className="text-sm leading-relaxed md:text-base">
-                  You're building it solid. You're building it right. Filling
-                  out these questions took honesty, clarity, and time—and you
-                  did it. Kudos to your perseverance.
-                </p>
-                <div className="space-y-4">
-                  <p className="text-sm font-semibold md:text-base">
-                    Now, here's what we'll do:
-                  </p>
-                  <p className="text-sm leading-relaxed md:text-base">
-                    We'll read every single word. Not skim—actually read. We'll
-                    look for patterns, listen for your voice, and notice where
-                    you light up. Then we'll translate it all into:
-                  </p>
-                  <ul className="list-disc space-y-1 text-left text-sm md:text-base">
-                    <li>
-                      A brand that feels like you—no templates, no trends, just
-                      you.
-                    </li>
-                    <li>
-                      A website that speaks in your voice, not corporate-speak.
-                    </li>
-                    <li>Colors and shapes that represent who you are.</li>
-                    <li>Messages that resonate with your customers.</li>
-                  </ul>
-                </div>
-                <div className="space-y-2 text-sm leading-relaxed md:text-base">
-                  <p>Within 3-5 days, you'll receive:</p>
-                  <ul className="list-disc space-y-1 text-left">
-                    <li>Identity Statement — the heart of who you are.</li>
-                    <li>Positioning Map — where you fit in your market.</li>
-                    <li>Strategic Brief — the blueprint for your brand.</li>
-                  </ul>
-                  <p>
-                    We'll then schedule a call to walk through everything
-                    together.
-                  </p>
-                </div>
-                <p className="text-sm md:text-base">
-                  Thank you for trusting us with your story. — Purple Pine
-                  Digital
-                </p>
-              </div>
-
-              <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-center">
-                <Button
-                  type="button"
-                  onClick={handleReview}
-                  className="w-full rounded-md border border-[#37306B] bg-transparent px-8 py-4 text-base font-normal text-[#37306B] hover:bg-[#37306B]/10 md:w-auto"
+                Whew! You're one hell of a Founder.
+              </p>
+              <h2
+                className="self-stretch text-center text-[45px] font-black leading-normal"
+                style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 900 }}
+              >
+                YOU'RE DONE!
+              </h2>
+              <p
+                className="max-w-[560px] text-center text-base font-normal leading-normal"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                You're building it solid. You're building it right. We know filling all these questions wasn't easy — it takes real thought, honesty, and clarity. But you did it. Kudos to your perseverance.
+              </p>
+              <div className="flex flex-col items-center">
+                <p
+                  className="max-w-[566px] text-center text-base font-normal leading-normal"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  Review your responses
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleRestart}
-                  className="w-full rounded-md bg-[#37306B] px-8 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] md:w-auto"
+                  <span className="font-bold">Now, here's what we'll do:</span>
+                  <br />
+                  <br />
+                  We'll read every single word. Not skim — actually read. We'll look for patterns. Listen for your voice. Notice where you light up and what you care about most. And we'll translate it all into:
+                </p>
+                <p
+                  className="mt-4 max-w-[672px] text-center text-base font-normal leading-normal"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  Start a new form
-                </Button>
+                  A brand that feels like you — not a template, not a trend, but YOU
+                  <br />
+                  A website that speaks like you — in your voice, not corporate-speak
+                  <br />
+                  Colors and shapes that represent you — visuals that match who you are
+                  <br />
+                  Messages that resonate with your customers
+                </p>
               </div>
             </div>
           </section>
