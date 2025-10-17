@@ -26,7 +26,9 @@ export default function AdminDashboard() {
   const [signups, setSignups] = useState<SignupData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"responses" | "signups">("responses");
+  const [activeTab, setActiveTab] = useState<"responses" | "signups">(
+    "responses",
+  );
 
   useEffect(() => {
     // Check authentication
@@ -94,7 +96,7 @@ export default function AdminDashboard() {
     const csvContent = [
       headers.map((h) => `"${h}"`).join(","),
       ...rows.map((row) =>
-        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
       ),
     ].join("\n");
 
@@ -113,7 +115,9 @@ export default function AdminDashboard() {
     const csvContent = [
       headers.map((h) => `"${h}"`).join(","),
       ...rows.map((row) =>
-        row.map((cell) => `"${String(cell || "").replace(/"/g, '""')}"`).join(",")
+        row
+          .map((cell) => `"${String(cell || "").replace(/"/g, '""')}"`)
+          .join(","),
       ),
     ].join("\n");
 
@@ -124,7 +128,7 @@ export default function AdminDashboard() {
     const element = document.createElement("a");
     element.setAttribute(
       "href",
-      "data:text/csv;charset=utf-8," + encodeURIComponent(content)
+      "data:text/csv;charset=utf-8," + encodeURIComponent(content),
     );
     element.setAttribute("download", filename);
     element.style.display = "none";
@@ -197,7 +201,12 @@ export default function AdminDashboard() {
         <div className="mb-6">
           <Button
             onClick={handleExportCSV}
-            disabled={isLoading || (activeTab === "responses" ? responses.length === 0 : signups.length === 0)}
+            disabled={
+              isLoading ||
+              (activeTab === "responses"
+                ? responses.length === 0
+                : signups.length === 0)
+            }
             className="bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE]"
             style={{ fontFamily: "Literata, serif" }}
           >
@@ -223,28 +232,50 @@ export default function AdminDashboard() {
                   <table className="w-full">
                     <thead className="bg-gray-100 border-b">
                       <tr>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           User ID
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           Created At
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           Questions Answered
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {responses.map((response) => (
-                        <tr key={response.id} className="border-b hover:bg-gray-50">
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
+                        <tr
+                          key={response.id}
+                          className="border-b hover:bg-gray-50"
+                        >
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
                             {response.user_id.slice(0, 8)}...
                           </td>
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
                             {new Date(response.created_at).toLocaleString()}
                           </td>
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
-                            {response.responses.filter((r) => r.trim()).length} / {response.responses.length}
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            {response.responses.filter((r) => r.trim()).length}{" "}
+                            / {response.responses.length}
                           </td>
                         </tr>
                       ))}
@@ -265,27 +296,48 @@ export default function AdminDashboard() {
                   <table className="w-full">
                     <thead className="bg-gray-100 border-b">
                       <tr>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           Email
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           Name
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-bold" style={{ fontFamily: "Literata, serif" }}>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
                           Signed Up
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {signups.map((signup) => (
-                        <tr key={signup.user_id} className="border-b hover:bg-gray-50">
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
+                        <tr
+                          key={signup.user_id}
+                          className="border-b hover:bg-gray-50"
+                        >
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
                             {signup.email}
                           </td>
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
                             {signup.name}
                           </td>
-                          <td className="px-6 py-4 text-sm" style={{ fontFamily: "Literata, serif" }}>
+                          <td
+                            className="px-6 py-4 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
                             {new Date(signup.subscribed_at).toLocaleString()}
                           </td>
                         </tr>

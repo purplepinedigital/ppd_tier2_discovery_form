@@ -148,7 +148,11 @@ export default function Index() {
     }
   }, [user, responses, currentQuestionIndex, activeSectionIndex, screen]);
 
-  const handleSignup = async (email: string, name: string, password: string) => {
+  const handleSignup = async (
+    email: string,
+    name: string,
+    password: string,
+  ) => {
     setAuthLoading(true);
     setAuthError(null);
     try {

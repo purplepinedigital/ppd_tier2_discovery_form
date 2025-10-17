@@ -25,7 +25,8 @@ export async function sendToKlaviyo(contact: KlaviyoContact): Promise<void> {
           subscriptions: {
             email: {
               marketing: {
-                consent: contact.subscribed !== false ? "SUBSCRIBED" : "UNSUBSCRIBED",
+                consent:
+                  contact.subscribed !== false ? "SUBSCRIBED" : "UNSUBSCRIBED",
               },
             },
           },
@@ -37,8 +38,8 @@ export async function sendToKlaviyo(contact: KlaviyoContact): Promise<void> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-        "revision": "2024-10-15",
+        Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        revision: "2024-10-15",
       },
       body: JSON.stringify(payload),
     });
