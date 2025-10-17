@@ -261,7 +261,7 @@ export default function AdminDashboard() {
                           className="px-6 py-3 text-left text-sm font-bold"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          User ID
+                          Name
                         </th>
                         <th
                           className="px-6 py-3 text-left text-sm font-bold"
@@ -275,20 +275,26 @@ export default function AdminDashboard() {
                         >
                           Questions Answered
                         </th>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {responses.map((response) => (
                         <tr
                           key={response.id}
-                          className="border-b hover:bg-gray-50 cursor-pointer"
-                          onClick={() => setSelectedResponse(response)}
+                          className="border-b hover:bg-gray-50"
                         >
                           <td
-                            className="px-6 py-4 text-sm"
+                            className="px-6 py-4 text-sm cursor-pointer hover:text-[#37306B]"
+                            onClick={() => setSelectedResponse(response)}
                             style={{ fontFamily: "Literata, serif" }}
                           >
-                            {response.user_id.slice(0, 8)}...
+                            {response.user_name}
                           </td>
                           <td
                             className="px-6 py-4 text-sm"
@@ -302,6 +308,18 @@ export default function AdminDashboard() {
                           >
                             {response.responses.filter((r) => r.trim()).length}{" "}
                             / {response.responses.length}
+                          </td>
+                          <td className="px-6 py-4 text-sm">
+                            <button
+                              onClick={() => {
+                                setEditingResponse(response);
+                                setEditResponses([...response.responses]);
+                              }}
+                              className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-1 rounded text-xs font-bold"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              Edit
+                            </button>
                           </td>
                         </tr>
                       ))}
