@@ -522,7 +522,7 @@ export default function Index() {
 
         {screen === "sectionWelcome" && activeSection ? (
           <section className="w-full max-w-[900px]">
-            <div className="flex flex-col items-center gap-6 rounded-[18px] border border-[#E3DCD2] p-10 text-center">
+            <div className="flex flex-col items-center gap-6 rounded-[18px] p-10 text-center" style={{ border: "1px none rgb(227, 220, 210)" }}>
               <span
                 className="text-sm uppercase tracking-wide text-[#37306B]"
                 style={{ fontFamily: "Epilogue, sans-serif" }}
@@ -542,11 +542,16 @@ export default function Index() {
                 <p>
                   You are all set. Let's start with Section {activeSection.id}.
                 </p>
-                <p>{activeSection.description}</p>
-                {activeSection.emphasis ? (
-                  <p className="font-semibold">{activeSection.emphasis}</p>
-                ) : null}
-                {activeSection.note ? <p>{activeSection.note}</p> : null}
+                <div>
+                  <p />
+                </div>
+                <div className="font-semibold">
+                  This section has {activeSection.questions?.length || 0} questions
+                </div>
+                <div>
+                  Take your time. Write naturally. Your honest answers matter
+                  more than perfect prose.
+                </div>
               </div>
               <Button
                 type="button"
