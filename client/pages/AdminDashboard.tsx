@@ -211,6 +211,61 @@ export default function AdminDashboard() {
     navigate("/admin/login");
   };
 
+  const handleDeleteResponse = async (id: string) => {
+    setIsDeleting(true);
+    try {
+      const { error } = await adminSupabase
+        .from("form_progress")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      setResponses(responses.filter((r) => r.id !== id));
+      setDeleteConfirm(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete form response");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteSignup = async (userId: string, email: string) => {
+    setIsDeleting(true);
+    try {
+      // Delete from Klaviyo first
+      const klaviyoDeleteResponse = await fetch("/api/klaviyo/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!klaviyoDeleteResponse.ok) {
+        const errorData = await klaviyoDeleteResponse.json();
+        console.error("Klaviyo unsubscribe error:", errorData);
+        // Continue with deletion even if Klaviyo fails
+      }
+
+      // Delete from signups table
+      const { error } = await adminSupabase
+        .from("signups")
+        .delete()
+        .eq("user_id", userId);
+
+      if (error) throw error;
+
+      // Also delete form progress if it exists
+      await adminSupabase.from("form_progress").delete().eq("user_id", userId);
+
+      setSignups(signups.filter((s) => s.user_id !== userId));
+      setDeleteConfirm(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete signup");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
