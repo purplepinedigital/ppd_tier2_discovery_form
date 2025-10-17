@@ -9,7 +9,9 @@ import { formQuestions, formSections } from "@/data/discovery-form";
 // Create an admin client that bypasses RLS using service role key
 const adminSupabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
-  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || "",
+  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
+    import.meta.env.VITE_SUPABASE_ANON_KEY ||
+    "",
   {
     auth: {
       persistSession: false,
