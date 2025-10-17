@@ -53,14 +53,31 @@ export default function AdminDashboard() {
     setIsLoading(true);
     setError(null);
     try {
-      // Fetch form responses
+      // Fetch form responses with user names
       const { data: responsesData, error: responsesError } = await supabase
         .from("form_progress")
         .select("*")
         .order("created_at", { ascending: false });
 
       if (responsesError) throw responsesError;
-      setResponses(responsesData || []);
+
+      // Enrich responses with user names
+      if (responsesData) {
+        const enrichedResponses = await Promise.all(
+          responsesData.map(async (response) => {
+            const { data: signupData } = await supabase
+              .from("signups")
+              .select("name")
+              .eq("user_id", response.user_id)
+              .single();
+            return {
+              ...response,
+              user_name: signupData?.name || "Unknown",
+            };
+          }),
+        );
+        setResponses(enrichedResponses);
+      }
 
       // Fetch signups
       const { data: signupsData, error: signupsError } = await supabase
