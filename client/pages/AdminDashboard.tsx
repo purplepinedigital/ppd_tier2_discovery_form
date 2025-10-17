@@ -29,7 +29,9 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<"responses" | "signups">(
     "responses",
   );
-  const [selectedResponse, setSelectedResponse] = useState<FormResponse | null>(null);
+  const [selectedResponse, setSelectedResponse] = useState<FormResponse | null>(
+    null,
+  );
 
   useEffect(() => {
     // Check authentication
@@ -388,7 +390,8 @@ export default function AdminDashboard() {
                     (q) => q.sectionId === section.id,
                   );
                   const sectionResponses = sectionQuestions.map(
-                    (q, idx) => selectedResponse.responses[q.overallNumber - 1] || "",
+                    (q, idx) =>
+                      selectedResponse.responses[q.overallNumber - 1] || "",
                   );
                   const hasAnyResponse = sectionResponses.some((r) => r.trim());
 
@@ -414,9 +417,14 @@ export default function AdminDashboard() {
                       <div className="space-y-6">
                         {sectionQuestions.map((question, idx) => {
                           const answer =
-                            selectedResponse.responses[question.overallNumber - 1] || "";
+                            selectedResponse.responses[
+                              question.overallNumber - 1
+                            ] || "";
                           return (
-                            <div key={question.overallNumber} className="bg-gray-50 p-4 rounded">
+                            <div
+                              key={question.overallNumber}
+                              className="bg-gray-50 p-4 rounded"
+                            >
                               <p
                                 className="font-bold text-gray-800 mb-2"
                                 style={{ fontFamily: "Epilogue, sans-serif" }}
