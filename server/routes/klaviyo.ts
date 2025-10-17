@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 
 // Support both VITE_KLAVIYO_API_KEY (from Vite) and KLAVIYO_API_KEY (from Netlify env)
-const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY || process.env.VITE_KLAVIYO_API_KEY || "";
+const KLAVIYO_API_KEY =
+  process.env.KLAVIYO_API_KEY || process.env.VITE_KLAVIYO_API_KEY || "";
 const KLAVIYO_LIST_ID = "U6ned9"; // Discovery Sign-up list
 
 export async function handleKlaviyoContact(req: Request, res: Response) {
