@@ -229,7 +229,10 @@ export default function AdminDashboard() {
     setIsDeleting(true);
     try {
       const client = getAdminSupabase();
-      const { error } = await client.from("form_progress").delete().eq("id", id);
+      const { error } = await client
+        .from("form_progress")
+        .delete()
+        .eq("id", id);
 
       if (error) throw error;
 

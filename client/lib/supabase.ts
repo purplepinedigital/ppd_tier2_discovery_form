@@ -19,7 +19,11 @@ export const getSupabase = (): SupabaseClient => {
 };
 
 export const supabase = {
-  auth: { getSession: () => getSupabase().auth.getSession(), onAuthStateChange: (...args: any[]) => getSupabase().auth.onAuthStateChange(...args) },
+  auth: {
+    getSession: () => getSupabase().auth.getSession(),
+    onAuthStateChange: (...args: any[]) =>
+      getSupabase().auth.onAuthStateChange(...args),
+  },
   from: (table: string) => getSupabase().from(table),
 } as any;
 
