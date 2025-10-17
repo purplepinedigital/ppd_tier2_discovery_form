@@ -32,7 +32,7 @@ export function QuestionView({
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-[#37306B] text-base font-medium text-[#FFFAEE]">
+            <span className="inline-flex h-12 items-center justify-center rounded-md bg-[#37306B] px-5 text-base font-medium text-[#FFFAEE]">
               {paddedNumber}
             </span>
             <h3
