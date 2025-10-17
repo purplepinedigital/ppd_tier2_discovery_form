@@ -521,52 +521,75 @@ export default function Index() {
         ) : null}
 
         {screen === "sectionWelcome" && activeSection ? (
-          <section className="w-full max-w-[900px]">
-            <div className="flex flex-col items-center gap-6 rounded-[18px] p-10 text-center" style={{ border: "1px none rgb(227, 220, 210)" }}>
-              <span
-                className="text-sm uppercase tracking-wide text-[#37306B]"
-                style={{ fontFamily: "Epilogue, sans-serif" }}
+          <section className="flex w-full max-w-[1332px] flex-col items-center justify-center gap-8">
+            <svg
+              className="h-[52px] w-[56px]"
+              viewBox="0 0 56 52"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <circle cx="28" cy="26" r="26" fill="#37306B" />
+              <path
+                d="M18 26L25 33L38 20"
+                stroke="#FFFAEE"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <div className="flex flex-col items-center justify-center gap-8">
+              <p
+                className="text-center text-2xl font-normal"
+                style={{ fontFamily: "Literata, serif" }}
               >
-                Section {activeSection.id} of {totalSections}
-              </span>
+                You are all set. Let's Start with Section {activeSection.id}
+              </p>
               <h2
-                className="text-4xl font-bold md:text-[45px]"
-                style={{ fontFamily: "Epilogue, sans-serif" }}
+                className="text-center text-4xl font-black md:text-[45px]"
+                style={{ fontFamily: "Epilogue, sans-serif", fontWeight: 900 }}
               >
                 {activeSection.title}
               </h2>
-              <div
-                className="space-y-3 text-base leading-relaxed"
+              <p
+                className="max-w-[689px] text-center text-base font-normal leading-normal"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                <p>
-                  You are all set. Let's start with Section {activeSection.id}.
-                  <br />
-                  <br />
-                  This section has {activeSection.questions?.length || 0} questions. Take your time. Write naturally. Your honest answers matter more than perfect prose.
-                </p>
-              </div>
-              <Button
-                type="button"
-                onClick={handleProceedFromSectionWelcome}
-                className="inline-flex items-center gap-2 rounded-md bg-[#37306B] px-8 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
-                style={{ fontFamily: "Literata, serif" }}
-              >
-                Get Started
-                <svg
-                  className="ml-2 h-4 w-4"
-                  viewBox="0 0 21 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M20.3536 4.21122C20.5488 4.01596 20.5488 3.69937 20.3536 3.50411L17.1716 0.322132C16.9763 0.12687 16.6597 0.12687 16.4645 0.322132C16.2692 0.517394 16.2692 0.833977 16.4645 1.02924L19.2929 3.85767L16.4645 6.68609C16.2692 6.88136 16.2692 7.19794 16.4645 7.3932C16.6597 7.58846 16.9763 7.58846 17.1716 7.3932L20.3536 4.21122ZM0 3.85767V4.35767H20V3.85767V3.35767H0V3.85767Z"
-                    fill="white"
-                  />
-                </svg>
-              </Button>
+                Every business starts somewhere. Let's understand yours.{" "}
+                <span className="font-bold">
+                  This section has {activeSection.questions?.length || 0}{" "}
+                  questions
+                </span>{" "}
+                Take your time. Write naturally. Your honest answers matter more
+                than perfect prose.
+              </p>
             </div>
+            <img
+              src="https://api.builder.io/api/v1/image/assets/TEMP/f60d4205ffcaa1856f02fd2361df50c5bbd1e141?width=583"
+              alt="Decorative illustration"
+              className="h-auto w-full max-w-[291px]"
+              style={{ transform: "rotate(-0.353deg)" }}
+            />
+            <Button
+              type="button"
+              onClick={handleProceedFromSectionWelcome}
+              className="inline-flex items-center gap-2 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Get Started
+              <svg
+                className="h-2 w-5"
+                viewBox="0 0 21 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20.3536 4.03544C20.5488 3.84018 20.5488 3.52359 20.3536 3.32833L17.1716 0.146351C16.9763 -0.0489113 16.6597 -0.0489113 16.4645 0.146351C16.2692 0.341613 16.2692 0.658195 16.4645 0.853458L19.2929 3.68188L16.4645 6.51031C16.2692 6.70557 16.2692 7.02216 16.4645 7.21742C16.6597 7.41268 16.9763 7.41268 17.1716 7.21742L20.3536 4.03544ZM0 3.68188V4.18188H20V3.68188V3.18188H0V3.68188Z"
+                  fill="white"
+                />
+              </svg>
+            </Button>
           </section>
         ) : null}
 
