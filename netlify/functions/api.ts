@@ -419,7 +419,10 @@ const handler: Handler = async (event) => {
   }
 
   // Klaviyo unsubscribe route
-  if (path.includes("/api/klaviyo/unsubscribe") && event.httpMethod === "POST") {
+  if (
+    path.includes("/api/klaviyo/unsubscribe") &&
+    event.httpMethod === "POST"
+  ) {
     try {
       const body = JSON.parse(event.body || "{}");
       const result = await handleKlaviyoUnsubscribe(body);

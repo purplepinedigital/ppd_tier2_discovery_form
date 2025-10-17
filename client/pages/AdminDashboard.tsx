@@ -769,7 +769,10 @@ export default function AdminDashboard() {
                       if (deleteConfirm.type === "response") {
                         handleDeleteResponse(deleteConfirm.id);
                       } else {
-                        handleDeleteSignup(deleteConfirm.id, deleteConfirm.email!);
+                        handleDeleteSignup(
+                          deleteConfirm.id,
+                          deleteConfirm.email!,
+                        );
                       }
                     }}
                     disabled={isDeleting}
