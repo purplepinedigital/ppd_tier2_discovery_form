@@ -1,9 +1,29 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+let supabaseInstance: SupabaseClient | null = null;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const initSupabase = (): SupabaseClient => {
+  if (!supabaseInstance) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error(
+        "Supabase URL and anonymous key are required. Please check your environment variables.",
+      );
+    }
+
+    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+  }
+  return supabaseInstance;
+};
+
+export const supabase = new Proxy({} as SupabaseClient, {
+  get: (target, prop) => {
+    const instance = initSupabase();
+    return (instance as any)[prop];
+  },
+});
 
 export interface FormProgress {
   id?: string;
