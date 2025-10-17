@@ -129,12 +129,10 @@ async function handleKlaviyoContact(body: any) {
 
 async function updateSubscriptionStatus(
   profileId: string,
-  consent: "SUBSCRIBED" | "UNSUBSCRIBED" | "NEVER_SUBSCRIBED"
+  consent: "SUBSCRIBED" | "UNSUBSCRIBED" | "NEVER_SUBSCRIBED",
 ): Promise<void> {
   if (!KLAVIYO_API_KEY) {
-    console.error(
-      "Cannot update subscription: Klaviyo API key not configured"
-    );
+    console.error("Cannot update subscription: Klaviyo API key not configured");
     return;
   }
 
@@ -182,7 +180,7 @@ async function updateSubscriptionStatus(
           revision: "2024-10-15",
         },
         body: JSON.stringify(payload),
-      }
+      },
     );
 
     const responseData = await response.json();
@@ -198,7 +196,11 @@ async function updateSubscriptionStatus(
 
     console.log("Subscription status updated successfully:", responseData);
   } catch (error: any) {
-    console.error("Failed to update subscription status:", error.message, error);
+    console.error(
+      "Failed to update subscription status:",
+      error.message,
+      error,
+    );
   }
 }
 
