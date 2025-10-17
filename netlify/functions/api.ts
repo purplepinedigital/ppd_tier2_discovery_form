@@ -161,7 +161,7 @@ async function updateSubscriptionStatus(
 
     console.log(
       `Updating subscription status to ${consent} for ${profileId}`,
-      payload
+      payload,
     );
 
     const response = await fetch(
@@ -175,7 +175,7 @@ async function updateSubscriptionStatus(
           revision: "2024-10-15",
         },
         body: JSON.stringify(payload),
-      }
+      },
     );
 
     const responseData = await response.json();
@@ -199,7 +199,7 @@ async function updateSubscriptionStatus(
     console.error(
       "Failed to update subscription status:",
       error.message,
-      error
+      error,
     );
   }
 }
