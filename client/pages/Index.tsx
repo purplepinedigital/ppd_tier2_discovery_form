@@ -64,6 +64,7 @@ type Screen =
   | "login"
   | "resetPassword"
   | "resetSent"
+  | "verifyEmail"
   | "sectionWelcome"
   | "question"
   | "complete";
