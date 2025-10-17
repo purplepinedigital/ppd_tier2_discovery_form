@@ -1,30 +1,72 @@
-import serverless from "serverless-http";
-import "dotenv/config";
-import express from "express";
-import cors from "cors";
-import { handleDemo } from "../../server/routes/demo";
 import { handleKlaviyoContact } from "../../server/routes/klaviyo";
 
-function createServer() {
-  const app = express();
+export default async (req: Request) => {
+  // Handle CORS
+  if (req.method === "OPTIONS") {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
 
-  // Middleware
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-
-  // Example API routes
-  app.get("/api/ping", (_req, res) => {
-    const ping = process.env.PING_MESSAGE ?? "ping";
-    res.json({ message: ping });
-  });
-
-  app.get("/api/demo", handleDemo);
+  const url = new URL(req.url);
+  const path = url.pathname;
 
   // Klaviyo route
-  app.post("/api/klaviyo/contact", handleKlaviyoContact);
+  if (path === "/.netlify/functions/api/klaviyo/contact" && req.method === "POST") {
+    try {
+      const body = await req.json();
+      // Manually call the handler with a mock Response object
+      const mockRes = {
+        status: (code: number) => ({
+          json: (data: any) => {
+            return new Response(JSON.stringify(data), {
+              status: code,
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+              },
+            });
+          },
+        }),
+        json: (data: any) => {
+          return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          });
+        },
+      };
 
-  return app;
-}
+      await handleKlaviyoContact(
+        { method: "POST", body } as any,
+        mockRes as any
+      );
 
-export const handler = serverless(createServer());
+      return mockRes.json({ success: true });
+    } catch (error: any) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    }
+  }
+
+  // Default response
+  return new Response(JSON.stringify({ error: "Not Found" }), {
+    status: 404,
+    headers: { "Content-Type": "application/json" },
+  });
+};
