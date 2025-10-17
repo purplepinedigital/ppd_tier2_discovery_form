@@ -5,12 +5,13 @@ import { Signup } from "@/components/auth/signup";
 import { Login } from "@/components/auth/login";
 import { ResetPassword } from "@/components/auth/reset-password";
 import { ResetSent } from "@/components/auth/reset-sent";
+import { VerifyEmail } from "@/components/auth/verify-email";
 import {
   formQuestions,
   formSections,
   totalQuestions,
 } from "@/data/discovery-form";
-import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
+import { supabase, saveFormProgress, loadFormProgress, getRedirectUrl } from "@/lib/supabase";
 import { sendToKlaviyo } from "@/lib/klaviyo";
 import type { User } from "@supabase/supabase-js";
 
