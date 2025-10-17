@@ -688,41 +688,22 @@ export default function Index() {
                   </div>
                 </div>
 
-                <div className="space-y-6 border-b border-[#E3DCD2] pb-6">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                    <div>
-                      <p
-                        className="text-sm uppercase tracking-wide text-[#37306B]"
-                        style={{ fontFamily: "Epilogue, sans-serif" }}
-                      >
-                        {activeSection.label}
-                      </p>
-                      <h2
-                        className="mt-2 text-3xl font-normal md:text-[40px]"
-                        style={{ fontFamily: "Epilogue, sans-serif" }}
-                      >
-                        {activeSection.title}
-                      </h2>
-                    </div>
-                    {activeSection.emphasis ? (
-                      <p
-                        className="text-sm font-semibold"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        {activeSection.emphasis}
-                      </p>
-                    ) : null}
-                  </div>
-                  <div
-                    className="space-y-3 text-sm leading-relaxed"
+                <div className="flex items-center justify-between">
+                  <h2
+                    className="text-4xl font-normal md:text-[45px]"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    {activeSection.title}
+                  </h2>
+                  <p
+                    className="text-base font-bold"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    <p>{activeSection.description}</p>
-                    {activeSection.note ? (
-                      <p className="text-[#37306B]">{activeSection.note}</p>
-                    ) : null}
-                  </div>
+                    Section {activeSection.id} of {totalSections}
+                  </p>
                 </div>
+
+                <div className="h-px bg-[#ACACAC]" />
 
                 <div className="space-y-4">
                   <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
