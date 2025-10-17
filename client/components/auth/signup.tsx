@@ -39,9 +39,10 @@ export function Signup({ onSignup, onSwitchToLogin, isLoading }: SignupProps) {
           breaks and return anytime ✓ Complete the form at your convenience
         </p>
         <img
-          src="https://api.builder.io/api/v1/image/assets/TEMP/1c8a95f7d0c0d76df8e3a5191f5c5ce73c314ac4?width=1013"
+          src="https://cdn.builder.io/api/v1/image/assets%2Ffd4153c1315b49e2bfd04849b8708971%2F2d058d27788c49d7a91835d82478b7b3"
           alt="Decorative illustration"
-          className="-ml-10 mt-5 w-full max-w-[507px] -rotate-[37deg]"
+          className="w-full max-w-[507px]"
+          style={{ transform: "rotate(30deg)", margin: "20px 0 0 -40px" }}
         />
       </div>
 
