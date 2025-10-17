@@ -15,7 +15,6 @@ import {
   supabase,
   saveFormProgress,
   loadFormProgress,
-  getRedirectUrl,
 } from "@/lib/supabase";
 import { sendToKlaviyo } from "@/lib/klaviyo";
 import type { User } from "@supabase/supabase-js";
