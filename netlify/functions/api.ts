@@ -30,6 +30,7 @@ async function handleKlaviyoContact(body: any) {
   }
 
   try {
+    // Create profile without subscriptions (subscriptions handled separately)
     const payload = {
       data: {
         type: "profile",
@@ -37,13 +38,6 @@ async function handleKlaviyoContact(body: any) {
           email,
           first_name: firstName || "",
           last_name: lastName || "",
-          subscriptions: {
-            email: {
-              marketing: {
-                consent: subscribed !== false ? "SUBSCRIBED" : "UNSUBSCRIBED",
-              },
-            },
-          },
         },
       },
     };
