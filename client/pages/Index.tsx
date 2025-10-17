@@ -242,6 +242,17 @@ export default function Index() {
       if (error) throw error;
       if (data.user) {
         setUser(data.user);
+
+        // Fetch user name
+        const { data: signupData } = await supabase
+          .from("signups")
+          .select("name")
+          .eq("user_id", data.user.id);
+
+        if (signupData && signupData.length > 0 && signupData[0]?.name) {
+          setUserName(signupData[0].name);
+        }
+
         const progress = await loadFormProgress(data.user.id);
         if (progress) {
           setResponses(progress.responses);
