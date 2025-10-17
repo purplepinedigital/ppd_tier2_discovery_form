@@ -2,7 +2,7 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 let supabaseInstance: SupabaseClient | null = null;
 
-export const getSupabase = (): SupabaseClient => {
+const getSupabaseInstance = (): SupabaseClient => {
   if (!supabaseInstance) {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -18,14 +18,11 @@ export const getSupabase = (): SupabaseClient => {
   return supabaseInstance;
 };
 
-export const supabase = {
-  auth: {
-    getSession: () => getSupabase().auth.getSession(),
-    onAuthStateChange: (...args: any[]) =>
-      getSupabase().auth.onAuthStateChange(...args),
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(target, prop: string | symbol) {
+    return (getSupabaseInstance() as any)[prop];
   },
-  from: (table: string) => getSupabase().from(table),
-} as any;
+}) as SupabaseClient;
 
 export interface FormProgress {
   id?: string;
