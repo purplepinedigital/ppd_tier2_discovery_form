@@ -155,11 +155,18 @@ export default function Index() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
       if (session?.user) {
+        // Check if email is verified and we're in a protected screen
+        if (!session.user.email_confirmed_at && screen !== "verifyEmail" && screen !== "hero" && screen !== "intro") {
+          setPendingVerificationEmail(session.user.email ?? null);
+          setScreen("verifyEmail");
+        }
+        setUser(session.user);
         fetchUserName(session.user.id);
       } else {
+        setUser(null);
         setUserName(null);
+        setPendingVerificationEmail(null);
       }
     });
 
