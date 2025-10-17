@@ -617,7 +617,8 @@ export default function AdminDashboard() {
                   onClick={async () => {
                     if (!editingResponse) return;
                     try {
-                      const { error } = await adminSupabase
+                      const client = getAdminSupabase();
+                      const { error } = await client
                         .from("form_progress")
                         .update({ responses: editResponses })
                         .eq("id", editingResponse.id);
