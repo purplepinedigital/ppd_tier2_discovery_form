@@ -90,44 +90,57 @@ export async function handleKlaviyoContact(req: Request, res: Response) {
 
 async function subscribeToList(profileId: string): Promise<void> {
   if (!KLAVIYO_API_KEY) {
-    console.warn("Cannot subscribe to list: Klaviyo API key not configured");
+    console.error("Cannot subscribe to list: Klaviyo API key not configured");
     return;
   }
 
   if (!profileId) {
-    console.warn("Cannot subscribe to list: No profile ID provided");
+    console.error("Cannot subscribe to list: No profile ID provided");
     return;
   }
 
   try {
+    const listPayload = {
+      data: [
+        {
+          type: "profile",
+          id: profileId,
+        },
+      ],
+    };
+
+    console.log(
+      `Subscribing profile ${profileId} to list ${KLAVIYO_LIST_ID}:`,
+      listPayload,
+    );
+
     const response = await fetch(
       `https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-          revision: "2024-10-15",
+          "Content-Type": "application/vnd.api+json",
+          "Accept": "application/vnd.api+json",
+          "Authorization": `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+          "revision": "2024-10-15",
         },
-        body: JSON.stringify({
-          data: [
-            {
-              type: "profile",
-              id: profileId,
-            },
-          ],
-        }),
+        body: JSON.stringify(listPayload),
       },
     );
 
+    const responseData = await response.json();
+
     if (!response.ok) {
-      const responseData = await response.json();
-      console.error("Klaviyo list subscription error:", responseData);
+      console.error("Klaviyo list subscription error:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: responseData,
+      });
       return;
     }
 
-    console.log("Profile subscribed to list successfully");
+    console.log("Profile subscribed to list successfully:", responseData);
   } catch (error: any) {
-    console.error("Failed to subscribe to list:", error.message);
+    console.error("Failed to subscribe to list:", error.message, error);
   }
 }
