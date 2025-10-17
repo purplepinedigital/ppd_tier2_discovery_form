@@ -142,37 +142,32 @@ async function updateSubscriptionStatus(
   }
 
   try {
+    // Update profile to set subscription consent via PATCH
     const payload = {
       data: {
-        type: "profile-subscription-bulk-create-job",
+        type: "profile",
+        id: profileId,
         attributes: {
-          profiles: {
-            data: [
-              {
-                type: "profile",
-                id: profileId,
-                attributes: {
-                  subscriptions: {
-                    email: {
-                      marketing: {
-                        consent,
-                      },
-                    },
-                  },
-                },
+          subscriptions: {
+            email: {
+              marketing: {
+                consent,
               },
-            ],
+            },
           },
         },
       },
     };
 
-    console.log(`Updating subscription status to ${consent} for ${profileId}`);
+    console.log(
+      `Updating subscription status to ${consent} for ${profileId}`,
+      payload
+    );
 
     const response = await fetch(
-      "https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/",
+      `https://a.klaviyo.com/api/profiles/${profileId}/`,
       {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/vnd.api+json",
           Accept: "application/vnd.api+json",
@@ -180,7 +175,7 @@ async function updateSubscriptionStatus(
           revision: "2024-10-15",
         },
         body: JSON.stringify(payload),
-      },
+      }
     );
 
     const responseData = await response.json();
@@ -189,6 +184,7 @@ async function updateSubscriptionStatus(
       console.error("Klaviyo subscription update error:", {
         status: response.status,
         statusText: response.statusText,
+        errorDetail: responseData?.errors?.[0],
         data: responseData,
       });
       return;
@@ -199,7 +195,7 @@ async function updateSubscriptionStatus(
     console.error(
       "Failed to update subscription status:",
       error.message,
-      error,
+      error
     );
   }
 }
