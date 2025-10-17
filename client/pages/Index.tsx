@@ -123,14 +123,23 @@ export default function Index() {
 
   useEffect(() => {
     const fetchUserName = async (userId: string) => {
-      const { data } = await supabase
-        .from("signups")
-        .select("name")
-        .eq("user_id", userId)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("signups")
+          .select("name")
+          .eq("user_id", userId)
+          .single();
 
-      if (data?.name) {
-        setUserName(data.name);
+        if (error) {
+          console.error("Error fetching user name:", error);
+          return;
+        }
+
+        if (data?.name) {
+          setUserName(data.name);
+        }
+      } catch (err) {
+        console.error("Exception fetching user name:", err);
       }
     };
 
@@ -184,6 +193,7 @@ export default function Index() {
       if (error) throw error;
       if (data.user) {
         setUser(data.user);
+        setUserName(name);
 
         // Save signup to Supabase signups table
         const { error: signupError } = await supabase.from("signups").insert({
