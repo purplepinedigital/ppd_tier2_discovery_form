@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS admin_credentials (
 -- VALUES ('lovish.bishnoi@purplepine.digital', crypt('rGaneshaL123#', gen_salt('bf')));
 -- Make sure pgcrypto extension is enabled in Supabase before running the INSERT statement.
 
--- Enable Row Level Security (RLS) on signups - disabled for now since we'll authenticate differently for admin
+-- Enable Row Level Security (RLS) on signups
 ALTER TABLE signups ENABLE ROW LEVEL SECURITY;
 
 -- Allow service role to manage signups (for Klaviyo integration)
@@ -35,3 +35,20 @@ CREATE POLICY "Service role can manage signups"
   FOR ALL
   USING (TRUE)
   WITH CHECK (TRUE);
+
+-- Allow authenticated users to create/update their own signup records
+CREATE POLICY "Users can create their own signup"
+  ON signups
+  FOR INSERT
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "Users can update their own signup"
+  ON signups
+  FOR UPDATE
+  USING (user_id = auth.uid())
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "Users can read their own signup"
+  ON signups
+  FOR SELECT
+  USING (user_id = auth.uid());
