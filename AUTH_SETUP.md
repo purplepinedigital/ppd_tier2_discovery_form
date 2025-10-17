@@ -44,13 +44,44 @@ Apply the database migration to create the `form_progress` table:
 
 Alternatively, if you've connected Supabase MCP, the AI can run the migration for you.
 
-## Step 4: Configure Email Templates (Optional)
+## Step 4: Enable Email Confirmation (Email Verification)
 
-For password reset emails, you can customize the email template:
+Email verification requires new users to confirm their email address before they can log in.
+
+### Enable Email Confirmation:
+
+1. Go to **Supabase Dashboard** → **Authentication** → **Providers** → **Email**
+2. Under **Email Confirmation**, toggle **Enable email confirmations**
+3. You should see the toggle switch turn ON (blue)
+4. Save the settings
+
+### Configure Redirect URLs:
+
+1. In the same Email section, look for **Redirect URLs** (or go to **Authentication** → **URL Configuration**)
+2. Add your application URL(s):
+   - For local development: `http://localhost:5173` (or your dev server port)
+   - For production: `https://your-netlify-domain.netlify.app`
+   - For staging: Any staging URLs you use
+3. Save these settings
+
+### How It Works:
+
+- When a user signs up, Supabase automatically sends a verification email
+- The verification email contains a link that redirects to your application
+- Once the user clicks the link, their `email_confirmed_at` field is automatically set
+- The application checks this field during login and won't allow access until email is verified
+- Users see a "Verify Your Email" page while waiting to confirm their address
+
+## Step 5: Configure Email Templates (Optional)
+
+For password reset and confirmation emails, you can customize the email templates:
 
 1. Go to **Authentication** → **Email Templates** in Supabase
-2. Find the "Reset Password" template
+2. Find the relevant template:
+   - **"Confirm your email"** - Sent to new signups
+   - **"Reset password"** - Sent when user requests password reset
 3. Customize the subject and body as needed
+4. The default templates already include the confirmation link
 
 ## Authentication Features
 
