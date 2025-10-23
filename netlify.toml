@@ -3,6 +3,12 @@
   functions = "netlify/functions"
   publish = "dist/spa"
 
+[build.environment]
+  VITE_SUPABASE_URL = ""
+  VITE_SUPABASE_ANON_KEY = ""
+  VITE_SUPABASE_SERVICE_ROLE_KEY = ""
+  VITE_KLAVIYO_API_KEY = ""
+  KLAVIYO_API_KEY = ""
 
 [functions]
   external_node_modules = ["express", "cors"]
