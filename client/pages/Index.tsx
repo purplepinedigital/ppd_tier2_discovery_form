@@ -469,7 +469,7 @@ export default function Index() {
                     </p>
                     <h1
                       className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight uppercase"
-                      style={{ fontFamily: "Epilogue, sans-serif" }}
+                      style={{ fontFamily: "Epilogue, sans-serif", lineHeight: "56px" }}
                     >
                       Welcome to the Discovery Room.
                     </h1>
@@ -1000,7 +1000,7 @@ export default function Index() {
                   A website that speaks like you — in your voice, not
                   corporate-speak
                   <br />
-                  Colors and shapes that represent you — visuals that match who
+                  Colors and shapes that represent you �� visuals that match who
                   you are
                   <br />
                   Messages that resonate with your customers
