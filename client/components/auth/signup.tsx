@@ -133,7 +133,7 @@ export function Signup({ onSignup, onSwitchToLogin, isLoading }: SignupProps) {
             type="submit"
             disabled={isLoading}
             className="flex w-full items-center justify-center gap-2 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] disabled:opacity-50"
-            style={{ fontFamily: "Literata, serif" }}
+            style={{ fontFamily: "Literata, serif", height: "auto", alignSelf: "center", flexGrow: "0" }}
           >
             {isLoading ? "Signing up..." : "Sign up and continue"}
             <svg
