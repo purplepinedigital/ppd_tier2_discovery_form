@@ -202,6 +202,16 @@ export default function Index() {
     setAuthLoading(true);
     setAuthError(null);
     try {
+      // Check if email already exists in Supabase auth
+      const { data: existingUser, error: lookupError } = await supabase.auth.admin.listUsers();
+      const emailExists = existingUser?.users?.some(u => u.email === email);
+
+      if (emailExists) {
+        setAuthError("This email is already registered. Please log in instead.");
+        setAuthLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
