@@ -65,7 +65,7 @@ async function handleKlaviyoContact(body: any) {
         "Content-Type": "application/vnd.api+json",
         Accept: "application/vnd.api+json",
         Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-        revision: "2024-10-15",
+        Revision: "2024-10-15",
       },
       body: JSON.stringify(createProfilePayload),
     });
