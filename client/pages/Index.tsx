@@ -244,7 +244,7 @@ export default function Index() {
         );
 
         if (signupError) {
-          console.error("Error saving signup:", signupError);
+          console.error("Error saving signup:", signupError.message || JSON.stringify(signupError));
         }
 
         // Send to Klaviyo
