@@ -255,8 +255,8 @@ export default function Index() {
             lastName: name.split(" ").slice(1).join(" "),
             subscribed: true,
           });
-        } catch (klaviyoError) {
-          console.error("Error sending to Klaviyo:", klaviyoError);
+        } catch (klaviyoError: any) {
+          console.error("Error sending to Klaviyo:", klaviyoError?.message || JSON.stringify(klaviyoError));
         }
 
         // Show verification pending screen
