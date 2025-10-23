@@ -202,7 +202,7 @@ async function subscribeProfileToListWithConsent(
           "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-          revision: "2024-10-15",
+          Revision: "2024-10-15",
         },
         body: JSON.stringify(subscriptionPayload),
       },
