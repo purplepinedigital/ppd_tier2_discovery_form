@@ -574,7 +574,7 @@ export default function Index() {
                   </p>
                   <h2
                     className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight"
-                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                    style={{ fontFamily: "Epilogue, sans-serif", lineHeight: "72px" }}
                   >
                     ~1.2 million businesses launch every month.
                   </h2>
