@@ -414,7 +414,7 @@ export default function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FFFAEE] text-black">
-      <header className="mx-auto flex w-full max-w-[1332px] items-center justify-between px-4 py-8 sm:px-8 md:px-12 lg:px-24">
+      <header className="mx-auto flex w-full max-w-[1332px] items-center justify-between px-4 py-8 sm:px-8 md:px-12" style={{ padding: "30px 90px" }}>
         <img
           src="https://api.builder.io/api/v1/image/assets/TEMP/243e9e26600924d4d43f0793db0944381e2ae2b0?width=330"
           alt="Purple Pine Digital"
