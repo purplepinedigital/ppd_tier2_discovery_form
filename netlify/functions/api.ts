@@ -89,6 +89,8 @@ async function handleKlaviyoContact(body: any) {
       console.error("Klaviyo API error:", {
         status: createResponse.status,
         statusText: createResponse.statusText,
+        apiKeyPresent: !!KLAVIYO_API_KEY,
+        apiKeyLength: KLAVIYO_API_KEY?.length,
         errorDetail: errorDetails,
         fullResponse: createResponseData,
       });
