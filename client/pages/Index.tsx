@@ -232,58 +232,51 @@ export default function Index() {
         throw error;
       }
 
-      // If auth signup failed but no error object (edge case)
-      if (!data.user) {
-        setAuthError("Signup failed. Please try again.");
-        setAuthLoading(false);
-        return;
-      }
-      if (data.user) {
-        setUser(data.user);
-        setUserName(name);
-        setPendingVerificationEmail(email);
+      // If we get here, auth signup succeeded and user exists
+      setUser(data.user);
+      setUserName(name);
+      setPendingVerificationEmail(email);
 
-        // Save signup to Supabase signups table using API endpoint (to bypass RLS)
-        try {
-          const saveResponse = await fetch("/api/save-signup", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email,
-              name,
-              user_id: data.user.id,
-            }),
-          });
-
-          if (!saveResponse.ok) {
-            try {
-              const errorData = await saveResponse.json().catch(() => ({}));
-              console.error("Error saving signup:", errorData?.message || `Status ${saveResponse.status}`);
-            } catch (e) {
-              console.error("Error saving signup:", `Status ${saveResponse.status}`);
-            }
-          }
-        } catch (saveError: any) {
-          console.error("Error saving signup:", saveError?.message || "Network error");
-        }
-
-        // Send to Klaviyo
-        try {
-          await sendToKlaviyo({
+      // Save signup to Supabase signups table using API endpoint (to bypass RLS)
+      try {
+        const saveResponse = await fetch("/api/save-signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             email,
-            firstName: name.split(" ")[0],
-            lastName: name.split(" ").slice(1).join(" "),
-            subscribed: true,
-          });
-        } catch (klaviyoError: any) {
-          console.error("Error sending to Klaviyo:", klaviyoError?.message || JSON.stringify(klaviyoError));
-        }
+            name,
+            user_id: data.user.id,
+          }),
+        });
 
-        // Show verification pending screen
-        setScreen("verifyEmail");
+        if (!saveResponse.ok) {
+          try {
+            const errorData = await saveResponse.json().catch(() => ({}));
+            console.error("Error saving signup:", errorData?.message || `Status ${saveResponse.status}`);
+          } catch (e) {
+            console.error("Error saving signup:", `Status ${saveResponse.status}`);
+          }
+        }
+      } catch (saveError: any) {
+        console.error("Error saving signup:", saveError?.message || "Network error");
       }
+
+      // ONLY send to Klaviyo if email was successfully saved (duplicate check already passed)
+      try {
+        await sendToKlaviyo({
+          email,
+          firstName: name.split(" ")[0],
+          lastName: name.split(" ").slice(1).join(" "),
+          subscribed: true,
+        });
+      } catch (klaviyoError: any) {
+        console.error("Error sending to Klaviyo:", klaviyoError?.message || JSON.stringify(klaviyoError));
+      }
+
+      // Show verification pending screen
+      setScreen("verifyEmail");
     } catch (error: any) {
       setAuthError(error.message);
       console.error("Signup error:", error);
