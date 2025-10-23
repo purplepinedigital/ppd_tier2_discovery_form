@@ -225,7 +225,9 @@ export default function Index() {
       // Check for auth errors
       if (error) {
         if (error.message && error.message.includes("already registered")) {
-          setAuthError("This email is already registered. Please log in instead.");
+          setAuthError(
+            "This email is already registered. Please log in instead.",
+          );
           setAuthLoading(false);
           return;
         }
@@ -254,13 +256,22 @@ export default function Index() {
         if (!saveResponse.ok) {
           try {
             const errorData = await saveResponse.json().catch(() => ({}));
-            console.error("Error saving signup:", errorData?.message || `Status ${saveResponse.status}`);
+            console.error(
+              "Error saving signup:",
+              errorData?.message || `Status ${saveResponse.status}`,
+            );
           } catch (e) {
-            console.error("Error saving signup:", `Status ${saveResponse.status}`);
+            console.error(
+              "Error saving signup:",
+              `Status ${saveResponse.status}`,
+            );
           }
         }
       } catch (saveError: any) {
-        console.error("Error saving signup:", saveError?.message || "Network error");
+        console.error(
+          "Error saving signup:",
+          saveError?.message || "Network error",
+        );
       }
 
       // ONLY send to Klaviyo if email was successfully saved (duplicate check already passed)
@@ -272,7 +283,10 @@ export default function Index() {
           subscribed: true,
         });
       } catch (klaviyoError: any) {
-        console.error("Error sending to Klaviyo:", klaviyoError?.message || JSON.stringify(klaviyoError));
+        console.error(
+          "Error sending to Klaviyo:",
+          klaviyoError?.message || JSON.stringify(klaviyoError),
+        );
       }
 
       // Show verification pending screen

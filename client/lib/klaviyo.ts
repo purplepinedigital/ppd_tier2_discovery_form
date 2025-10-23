@@ -20,7 +20,11 @@ export async function sendToKlaviyo(contact: KlaviyoContact): Promise<void> {
         const errorData = await response.json();
         console.error("Klaviyo API error:", errorData);
       } catch (e) {
-        console.error("Klaviyo API error (status):", response.status, response.statusText);
+        console.error(
+          "Klaviyo API error (status):",
+          response.status,
+          response.statusText,
+        );
       }
       throw new Error(`Klaviyo API error: ${response.statusText}`);
     }
