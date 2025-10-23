@@ -58,7 +58,10 @@ async function handleKlaviyoContact(body: any) {
     };
 
     console.log("Sending to Klaviyo:", { email, firstName, lastName });
-    console.log("Using Klaviyo API key:", KLAVIYO_API_KEY ? "Present" : "MISSING");
+    console.log(
+      "Using Klaviyo API key:",
+      KLAVIYO_API_KEY ? "Present" : "MISSING",
+    );
 
     const createResponse = await fetch("https://a.klaviyo.com/api/profiles/", {
       method: "POST",
@@ -71,7 +74,11 @@ async function handleKlaviyoContact(body: any) {
       body: JSON.stringify(createProfilePayload),
     });
 
-    console.log("Klaviyo response status:", createResponse.status, createResponse.statusText);
+    console.log(
+      "Klaviyo response status:",
+      createResponse.status,
+      createResponse.statusText,
+    );
 
     let createResponseData;
     try {
