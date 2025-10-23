@@ -233,18 +233,27 @@ export default function Index() {
         setUserName(name);
         setPendingVerificationEmail(email);
 
-        // Save signup to Supabase signups table (or update if exists)
-        const { error: signupError } = await supabase.from("signups").upsert(
-          {
-            email,
-            name,
-            user_id: data.user.id,
-          },
-          { onConflict: "email" },
-        );
+        // Save signup to Supabase signups table using API endpoint (to bypass RLS)
+        try {
+          const saveResponse = await fetch("/api/save-signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${data.session?.access_token || ""}`,
+            },
+            body: JSON.stringify({
+              email,
+              name,
+              user_id: data.user.id,
+            }),
+          });
 
-        if (signupError) {
-          console.error("Error saving signup:", signupError.message || JSON.stringify(signupError));
+          if (!saveResponse.ok) {
+            const errorData = await saveResponse.json();
+            console.error("Error saving signup:", errorData?.message || "Unknown error");
+          }
+        } catch (saveError: any) {
+          console.error("Error saving signup:", saveError?.message || JSON.stringify(saveError));
         }
 
         // Send to Klaviyo
