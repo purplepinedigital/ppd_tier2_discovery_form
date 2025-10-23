@@ -1,13 +1,21 @@
 import { Handler } from "@netlify/functions";
 
-const KLAVIYO_API_KEY =
-  process.env.KLAVIYO_API_KEY || process.env.VITE_KLAVIYO_API_KEY || "";
+const KLAVIYO_API_KEY = (
+  process.env.KLAVIYO_API_KEY ||
+  process.env.VITE_KLAVIYO_API_KEY ||
+  ""
+).trim();
 const KLAVIYO_LIST_ID = "U6ned9";
 
 // Debug logging for environment variables
 if (!KLAVIYO_API_KEY) {
   console.warn(
     "Klaviyo API key not configured. Set KLAVIYO_API_KEY environment variable in Netlify.",
+  );
+} else {
+  console.log(
+    "Klaviyo API key loaded (first 20 chars):",
+    KLAVIYO_API_KEY.substring(0, 20) + "...",
   );
 }
 
