@@ -203,13 +203,12 @@ export default function Index() {
     setAuthError(null);
     try {
       // Check if email already exists in signups table
-      const { data: existingSignup, error: checkError } = await supabase
+      const { data: existingSignups, error: checkError } = await supabase
         .from("signups")
         .select("email")
-        .eq("email", email)
-        .single();
+        .eq("email", email);
 
-      if (existingSignup) {
+      if (existingSignups && existingSignups.length > 0) {
         setAuthError(
           "This email is already registered. Please log in instead.",
         );
@@ -221,7 +220,14 @@ export default function Index() {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        if (error.message && error.message.includes("already registered")) {
+          setAuthError("This email is already registered. Please log in instead.");
+          setAuthLoading(false);
+          return;
+        }
+        throw error;
+      }
       if (data.user) {
         setUser(data.user);
         setUserName(name);
