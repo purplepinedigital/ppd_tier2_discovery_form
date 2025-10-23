@@ -436,6 +436,75 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Save signup route
+  if (path.includes("/api/save-signup") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const { email, name, user_id } = body;
+
+      if (!email || !user_id) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: "Email and user_id are required" }),
+        };
+      }
+
+      // Use service role key to bypass RLS
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !supabaseServiceKey) {
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify({ error: "Supabase configuration missing" }),
+        };
+      }
+
+      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+      const { error: signupError } = await supabaseAdmin
+        .from("signups")
+        .upsert(
+          {
+            email,
+            name,
+            user_id,
+          },
+          { onConflict: "email" },
+        );
+
+      if (signupError) {
+        console.error("Error saving signup:", signupError);
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: "Error saving signup",
+            message: signupError.message,
+          }),
+        };
+      }
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, message: "Signup saved" }),
+      };
+    } catch (error: any) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          error: "Failed to process request",
+          message: error.message,
+        }),
+      };
+    }
+  }
+
   // Default 404
   return {
     statusCode: 404,
