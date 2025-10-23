@@ -500,6 +500,7 @@ export default function Index() {
                     src="https://api.builder.io/api/v1/image/assets/TEMP/f351a0ecba667b552b03d0817fc3b067111075fc?width=1097"
                     alt="Discovery room illustration"
                     className="h-auto w-full"
+                    style={{ display: "none" }}
                   />
                 </div>
               </div>
