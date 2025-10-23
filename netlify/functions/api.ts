@@ -4,6 +4,13 @@ const KLAVIYO_API_KEY =
   process.env.KLAVIYO_API_KEY || process.env.VITE_KLAVIYO_API_KEY || "";
 const KLAVIYO_LIST_ID = "U6ned9";
 
+// Debug logging for environment variables
+if (!KLAVIYO_API_KEY) {
+  console.warn(
+    "Klaviyo API key not configured. Set KLAVIYO_API_KEY environment variable in Netlify.",
+  );
+}
+
 const headers = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
