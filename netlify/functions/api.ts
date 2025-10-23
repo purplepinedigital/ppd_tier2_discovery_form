@@ -474,7 +474,10 @@ const handler: Handler = async (event) => {
         return {
           statusCode: 200,
           headers,
-          body: JSON.stringify({ success: true, note: "Skipped: missing data" }),
+          body: JSON.stringify({
+            success: true,
+            note: "Skipped: missing data",
+          }),
         };
       }
 
