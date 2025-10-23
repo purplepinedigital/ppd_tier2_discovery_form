@@ -470,6 +470,8 @@ const handler: Handler = async (event) => {
       const body = JSON.parse(event.body || "{}");
       const { email, name, user_id } = body;
 
+      console.log("Save signup request:", { email, name, user_id });
+
       if (!email || !user_id) {
         return {
           statusCode: 400,
@@ -479,28 +481,47 @@ const handler: Handler = async (event) => {
       }
 
       // Use service role key to bypass RLS
-      const { createClient } = await import("@supabase/supabase-js");
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
+      console.log("Supabase config:", {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseServiceKey,
+      });
+
       if (!supabaseUrl || !supabaseServiceKey) {
+        console.error(
+          "Supabase config missing:",
+          "URL:",
+          !!supabaseUrl,
+          "Key:",
+          !!supabaseServiceKey,
+        );
         return {
           statusCode: 500,
           headers,
-          body: JSON.stringify({ error: "Supabase configuration missing" }),
+          body: JSON.stringify({
+            error: "Supabase configuration missing",
+            details: {
+              url: !!supabaseUrl,
+              key: !!supabaseServiceKey
+            }
+          }),
         };
       }
 
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-      const { error: signupError } = await supabaseAdmin.from("signups").upsert(
-        {
-          email,
-          name,
-          user_id,
-        },
-        { onConflict: "email" },
-      );
+      const { error: signupError } = await supabaseAdmin
+        .from("signups")
+        .upsert(
+          {
+            email,
+            name,
+            user_id,
+          },
+          { onConflict: "email" },
+        );
 
       if (signupError) {
         console.error("Error saving signup:", signupError);
@@ -514,18 +535,20 @@ const handler: Handler = async (event) => {
         };
       }
 
+      console.log("Signup saved successfully:", email);
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({ success: true, message: "Signup saved" }),
       };
     } catch (error: any) {
+      console.error("Save signup error:", error);
       return {
         statusCode: 500,
         headers,
         body: JSON.stringify({
           error: "Failed to process request",
-          message: error.message,
+          message: error?.message || "Unknown error",
         }),
       };
     }
