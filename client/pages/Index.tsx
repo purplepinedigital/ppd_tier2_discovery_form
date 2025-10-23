@@ -562,92 +562,120 @@ export default function Index() {
 
         {screen === "intro" ? (
           <section className="w-full max-w-[1332px]">
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10">
-                <div className="space-y-4">
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 md:p-12">
+                <div className="space-y-6">
                   <p
-                    className="text-sm font-normal md:text-base"
+                    className="text-base font-normal"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    60 Minute Business Discovery Form
+                    Why should you fill this?
                   </p>
                   <h2
-                    className="text-4xl font-normal leading-tight md:text-[60px]"
+                    className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
-                    Introduction
+                    ~1.2 million businesses launch every month.
                   </h2>
                 </div>
                 <p
                   className="text-lg leading-relaxed"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  I'm not a bureaucratic form. I'm a conversation starter.
-                  You're here because you've chosen to build your brand
-                  seriously. My questions aren't an exam, they're prompts that
-                  help you tell the story you've been living but haven't written
-                  down yet.
+                  And most of them find that their brand doesn't clearly explain what they do or why someone should choose them — because they started building before they understood their own story.
                 </p>
               </div>
 
               <div className="flex flex-col gap-6">
-                <div className="rounded-[10px] bg-[#FFEDC3] p-8">
+                <div className="rounded-[10px] bg-[#FFEDC3] p-8 md:p-10">
                   <h3
-                    className="text-2xl font-normal"
+                    className="text-2xl font-normal mb-6"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
-                    I'll ask about real moments
+                    I won't ask you to guess
                   </h3>
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    {realMomentsPrompts.map((prompt, index) => (
-                      <div
-                        key={`${index}-${prompt}`}
-                        className="rounded-[7px] bg-[#FFC741] px-4 py-3 text-sm"
+                  <div className="flex flex-col gap-5 sm:gap-6">
+                    <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
+                      <p
+                        className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        {prompt}
-                      </div>
-                    ))}
+                        Not "pick three values" — but about a time you said no to money.
+                      </p>
+                    </div>
+                    <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
+                      <p
+                        className="text-base font-normal"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Not "define your audience" — but describe your last real customer.
+                      </p>
+                    </div>
+                    <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
+                      <p
+                        className="text-base font-normal"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Not "choose a personality" — but how you talk when things go wrong.
+                      </p>
+                    </div>
+                    <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
+                      <p
+                        className="text-base font-normal"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Not "what makes you different" — but what people say about you.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="rounded-[10px] bg-[#FFEDC3] p-8">
+                <div className="rounded-[10px] bg-[#FFEDC3] p-8 md:p-10">
                   <h3
-                    className="text-2xl font-normal"
+                    className="text-2xl font-normal mb-6"
                     style={{ fontFamily: "Epilogue, sans-serif" }}
                   >
-                    What I won't do
+                    What happens next?
                   </h3>
-                  <div
-                    className="mt-5 rounded-md bg-[#FFC741] p-4 text-sm leading-relaxed"
-                    style={{ fontFamily: "Literata, serif" }}
-                  >
-                    Make you pick colors, buzzwords, or "traits." That's our
-                    job. Yours is to describe reality. Every question exists for
-                    a reason; nothing here is filler.
+                  <div className="mb-6 rounded-md bg-[#FFC741] p-4 md:p-5">
+                    <p
+                      className="text-base font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      30 questions. 60 minutes. One clarity session.
+                    </p>
                   </div>
                   <p
-                    className="mt-4 text-sm leading-relaxed"
+                    className="text-base leading-relaxed space-y-2"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    Depth matters—which is why there are 30 questions. They save
-                    you from vague brands and rework later.
+                    <span className="font-bold">Your positioning</span>
+                    <span>, where you actually fit in the market | </span>
+                    <span className="font-bold">Your messaging</span>
+                    <span>, words that sound like you, not a template | </span>
+                    <span className="font-bold">Your visual direction</span>
+                    <span>, colors and design rooted in your story | </span>
+                    <span className="font-bold">Your brand blueprint</span>
+                    <span>, so nothing gets built on guesswork</span>
                   </p>
                 </div>
 
-                <div className="flex flex-col items-start justify-between gap-4 rounded-[10px] bg-transparent py-6 text-sm sm:flex-row sm:items-center">
-                  <p style={{ fontFamily: "Literata, serif" }}>
+                <div className="flex flex-col items-start gap-4 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p
+                    className="text-base font-normal"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
                     Every business starts somewhere. Let's understand yours.
                   </p>
                   <Button
                     type="button"
                     onClick={startForm}
-                    className="inline-flex items-center gap-2 rounded-md bg-[#37306B] px-8 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
+                    className="w-fit inline-flex items-center gap-2 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] whitespace-nowrap"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    Begin your story
+                    Begin Your story
                     <svg
-                      className="ml-2 h-4 w-4"
+                      className="h-4 w-4"
                       viewBox="0 0 14 6"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
