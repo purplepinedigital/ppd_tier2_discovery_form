@@ -271,7 +271,7 @@ async function handleKlaviyoUnsubscribe(body: any) {
         headers: {
           Accept: "application/json",
           Authorization: `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-          revision: "2024-10-15",
+          Revision: "2024-10-15",
         },
       },
     );
