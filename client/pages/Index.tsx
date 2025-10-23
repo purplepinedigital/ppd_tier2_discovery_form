@@ -239,7 +239,6 @@ export default function Index() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${data.session?.access_token || ""}`,
             },
             body: JSON.stringify({
               email,
@@ -249,11 +248,15 @@ export default function Index() {
           });
 
           if (!saveResponse.ok) {
-            const errorData = await saveResponse.json();
-            console.error("Error saving signup:", errorData?.message || "Unknown error");
+            try {
+              const errorData = await saveResponse.json().catch(() => ({}));
+              console.error("Error saving signup:", errorData?.message || `Status ${saveResponse.status}`);
+            } catch (e) {
+              console.error("Error saving signup:", `Status ${saveResponse.status}`);
+            }
           }
         } catch (saveError: any) {
-          console.error("Error saving signup:", saveError?.message || JSON.stringify(saveError));
+          console.error("Error saving signup:", saveError?.message || "Network error");
         }
 
         // Send to Klaviyo
