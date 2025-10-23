@@ -506,7 +506,7 @@ export default function Index() {
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+              <div className="rounded-[6px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
                 <div className="space-y-6">
                   <h3
                     className="text-4xl font-bold"
@@ -523,7 +523,7 @@ export default function Index() {
                 </div>
               </div>
 
-              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+              <div className="rounded-[6px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
                 <div className="space-y-6">
                   <h3
                     className="text-4xl font-bold"
@@ -540,7 +540,7 @@ export default function Index() {
                 </div>
               </div>
 
-              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+              <div className="rounded-[6px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
                 <div className="space-y-6">
                   <h3
                     className="text-4xl font-bold"
