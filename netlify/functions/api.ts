@@ -504,24 +504,22 @@ const handler: Handler = async (event) => {
             error: "Supabase configuration missing",
             details: {
               url: !!supabaseUrl,
-              key: !!supabaseServiceKey
-            }
+              key: !!supabaseServiceKey,
+            },
           }),
         };
       }
 
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-      const { error: signupError } = await supabaseAdmin
-        .from("signups")
-        .upsert(
-          {
-            email,
-            name,
-            user_id,
-          },
-          { onConflict: "email" },
-        );
+      const { error: signupError } = await supabaseAdmin.from("signups").upsert(
+        {
+          email,
+          name,
+          user_id,
+        },
+        { onConflict: "email" },
+      );
 
       if (signupError) {
         console.error("Error saving signup:", signupError);
