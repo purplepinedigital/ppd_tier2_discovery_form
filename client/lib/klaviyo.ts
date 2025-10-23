@@ -16,14 +16,18 @@ export async function sendToKlaviyo(contact: KlaviyoContact): Promise<void> {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Klaviyo API error:", errorData);
+      try {
+        const errorData = await response.json();
+        console.error("Klaviyo API error:", errorData);
+      } catch (e) {
+        console.error("Klaviyo API error (status):", response.status, response.statusText);
+      }
       throw new Error(`Klaviyo API error: ${response.statusText}`);
     }
 
     console.log("Contact sent to Klaviyo successfully");
-  } catch (error) {
-    console.error("Error sending to Klaviyo:", error);
+  } catch (error: any) {
+    console.error("Error sending to Klaviyo:", error?.message || error);
     throw error;
   }
 }
