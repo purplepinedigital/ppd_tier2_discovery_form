@@ -210,7 +210,9 @@ export default function Index() {
         .single();
 
       if (existingSignup) {
-        setAuthError("This email is already registered. Please log in instead.");
+        setAuthError(
+          "This email is already registered. Please log in instead.",
+        );
         setAuthLoading(false);
         return;
       }
@@ -414,7 +416,10 @@ export default function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FFFAEE] text-black">
-      <header className="mx-auto flex w-full items-center justify-between px-4 py-8 sm:px-8 md:px-12" style={{ padding: "30px 90px", maxWidth: "100%" }}>
+      <header
+        className="mx-auto flex w-full items-center justify-between px-4 py-8 sm:px-8 md:px-12"
+        style={{ padding: "30px 90px", maxWidth: "100%" }}
+      >
         <img
           src="https://api.builder.io/api/v1/image/assets/TEMP/243e9e26600924d4d43f0793db0944381e2ae2b0?width=330"
           alt="Purple Pine Digital"
@@ -454,7 +459,10 @@ export default function Index() {
         )}
       </header>
 
-      <main className="flex flex-1 items-center justify-center" style={{ padding: "50px 90px 64px" }}>
+      <main
+        className="flex flex-1 items-center justify-center"
+        style={{ padding: "50px 90px 64px" }}
+      >
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
             <div className="flex flex-col gap-8 lg:gap-12">
@@ -469,7 +477,10 @@ export default function Index() {
                     </p>
                     <h1
                       className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight uppercase"
-                      style={{ fontFamily: "Epilogue, sans-serif", lineHeight: "56px" }}
+                      style={{
+                        fontFamily: "Epilogue, sans-serif",
+                        lineHeight: "56px",
+                      }}
                     >
                       Welcome to the Discovery Room.
                     </h1>
@@ -478,7 +489,12 @@ export default function Index() {
                     type="button"
                     onClick={startIntro}
                     className="w-fit inline-flex items-center gap-2 rounded bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] overflow-hidden"
-                    style={{ fontFamily: "Literata, serif", borderRadius: "3px", height: "auto", flexGrow: "0" }}
+                    style={{
+                      fontFamily: "Literata, serif",
+                      borderRadius: "3px",
+                      height: "auto",
+                      flexGrow: "0",
+                    }}
                   >
                     Get Started
                     <svg
@@ -519,7 +535,8 @@ export default function Index() {
                     className="text-xl leading-relaxed"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    You've been running your business, learning as you go. Now let's capture that story and make it clear.
+                    You've been running your business, learning as you go. Now
+                    let's capture that story and make it clear.
                   </p>
                 </div>
               </div>
@@ -536,7 +553,9 @@ export default function Index() {
                     className="text-xl leading-relaxed"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    We won't ask you to design your brand. We'll ask you to tell us your story — and we'll translate it into everything you need.
+                    We won't ask you to design your brand. We'll ask you to tell
+                    us your story — and we'll translate it into everything you
+                    need.
                   </p>
                 </div>
               </div>
@@ -553,7 +572,8 @@ export default function Index() {
                     className="text-xl leading-relaxed"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    By the end of this conversation, we'll know exactly how to build a brand that feels like you.
+                    By the end of this conversation, we'll know exactly how to
+                    build a brand that feels like you.
                   </p>
                 </div>
               </div>
@@ -574,7 +594,10 @@ export default function Index() {
                   </p>
                   <h2
                     className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight"
-                    style={{ fontFamily: "Epilogue, sans-serif", lineHeight: "72px" }}
+                    style={{
+                      fontFamily: "Epilogue, sans-serif",
+                      lineHeight: "72px",
+                    }}
                   >
                     ~1.2 million businesses launch every month.
                   </h2>
@@ -583,7 +606,9 @@ export default function Index() {
                   className="text-lg leading-relaxed"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  And most of them find that their brand doesn't clearly explain what they do or why someone should choose them — because they started building before they understood their own story.
+                  And most of them find that their brand doesn't clearly explain
+                  what they do or why someone should choose them — because they
+                  started building before they understood their own story.
                 </p>
               </div>
 
@@ -601,7 +626,8 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "pick three values" — but about a time you said no to money.
+                        Not "pick three values" — but about a time you said no
+                        to money.
                       </p>
                     </div>
                     <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
@@ -609,7 +635,8 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "define your audience" — but describe your last real customer.
+                        Not "define your audience" — but describe your last real
+                        customer.
                       </p>
                     </div>
                     <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
@@ -617,7 +644,8 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "choose a personality" — but how you talk when things go wrong.
+                        Not "choose a personality" — but how you talk when
+                        things go wrong.
                       </p>
                     </div>
                     <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">
@@ -625,7 +653,8 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "what makes you different" — but what people say about you.
+                        Not "what makes you different" — but what people say
+                        about you.
                       </p>
                     </div>
                   </div>
@@ -672,7 +701,14 @@ export default function Index() {
                     type="button"
                     onClick={startForm}
                     className="w-fit inline-flex items-center gap-2 rounded bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] whitespace-nowrap overflow-hidden"
-                    style={{ fontFamily: "Literata, serif", borderRadius: "3px", height: "auto", width: "auto", alignSelf: "center", flexGrow: "0" }}
+                    style={{
+                      fontFamily: "Literata, serif",
+                      borderRadius: "3px",
+                      height: "auto",
+                      width: "auto",
+                      alignSelf: "center",
+                      flexGrow: "0",
+                    }}
                   >
                     Begin Your story
                     <svg
