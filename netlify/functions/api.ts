@@ -470,13 +470,11 @@ const handler: Handler = async (event) => {
       const body = JSON.parse(event.body || "{}");
       const { email, name, user_id } = body;
 
-      console.log("Save signup request:", { email, name, user_id });
-
       if (!email || !user_id) {
         return {
-          statusCode: 400,
+          statusCode: 200,
           headers,
-          body: JSON.stringify({ error: "Email and user_id are required" }),
+          body: JSON.stringify({ success: true, note: "Skipped: missing data" }),
         };
       }
 
@@ -484,70 +482,49 @@ const handler: Handler = async (event) => {
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
-      console.log("Supabase config:", {
-        hasUrl: !!supabaseUrl,
-        hasKey: !!supabaseServiceKey,
-      });
-
       if (!supabaseUrl || !supabaseServiceKey) {
-        console.error(
-          "Supabase config missing:",
-          "URL:",
-          !!supabaseUrl,
-          "Key:",
-          !!supabaseServiceKey,
-        );
+        console.warn("Supabase config missing - save-signup skipped");
+        // Don't block signup flow - always return 200
         return {
-          statusCode: 500,
+          statusCode: 200,
           headers,
-          body: JSON.stringify({
-            error: "Supabase configuration missing",
-            details: {
-              url: !!supabaseUrl,
-              key: !!supabaseServiceKey,
+          body: JSON.stringify({ success: true, note: "Config missing" }),
+        };
+      }
+
+      try {
+        const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+        const { error: signupError } = await supabaseAdmin
+          .from("signups")
+          .upsert(
+            {
+              email,
+              name,
+              user_id,
             },
-          }),
-        };
+            { onConflict: "email" },
+          );
+
+        if (signupError) {
+          console.error("Supabase error:", signupError.message);
+        }
+      } catch (supabaseError: any) {
+        console.error("Supabase client error:", supabaseError?.message);
       }
 
-      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
-
-      const { error: signupError } = await supabaseAdmin.from("signups").upsert(
-        {
-          email,
-          name,
-          user_id,
-        },
-        { onConflict: "email" },
-      );
-
-      if (signupError) {
-        console.error("Error saving signup:", signupError);
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            error: "Error saving signup",
-            message: signupError.message,
-          }),
-        };
-      }
-
-      console.log("Signup saved successfully:", email);
+      // Always return success - this endpoint doesn't block the signup
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({ success: true, message: "Signup saved" }),
+        body: JSON.stringify({ success: true }),
       };
     } catch (error: any) {
-      console.error("Save signup error:", error);
+      console.error("Save signup error:", error?.message);
+      // Always return 200 for this non-critical endpoint
       return {
-        statusCode: 500,
+        statusCode: 200,
         headers,
-        body: JSON.stringify({
-          error: "Failed to process request",
-          message: error?.message || "Unknown error",
-        }),
+        body: JSON.stringify({ success: true }),
       };
     }
   }
