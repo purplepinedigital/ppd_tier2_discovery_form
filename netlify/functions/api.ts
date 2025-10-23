@@ -1,4 +1,5 @@
 import { Handler } from "@netlify/functions";
+import { createClient } from "@supabase/supabase-js";
 
 const KLAVIYO_API_KEY = (
   process.env.KLAVIYO_API_KEY ||
