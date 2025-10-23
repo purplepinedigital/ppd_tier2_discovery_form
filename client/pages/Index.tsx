@@ -477,8 +477,8 @@ export default function Index() {
                   <Button
                     type="button"
                     onClick={startIntro}
-                    className="w-fit inline-flex items-center gap-2 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
-                    style={{ fontFamily: "Literata, serif" }}
+                    className="w-fit inline-flex items-center gap-2 rounded bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758] overflow-hidden"
+                    style={{ fontFamily: "Literata, serif", borderRadius: "3px" }}
                   >
                     Get Started
                     <svg
