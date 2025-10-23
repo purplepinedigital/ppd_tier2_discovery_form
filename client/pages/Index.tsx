@@ -456,89 +456,106 @@ export default function Index() {
 
       <main className="flex flex-1 items-center justify-center px-4 pb-12 sm:px-8 sm:pb-16 md:px-12 lg:px-24">
         {screen === "hero" ? (
-          <section className="w-full max-w-[1332px] space-y-10">
-            <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-              <div className="flex max-w-[665px] flex-col gap-6">
-                <p
-                  className="text-sm font-normal md:text-base"
-                  style={{ fontFamily: "Literata, serif" }}
-                >
-                  60 Minute Business Discovery Form
-                </p>
-                <h1
-                  className="text-4xl font-normal leading-tight md:text-6xl lg:text-[71px] lg:leading-none"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
-                >
-                  The Conversation Starter
-                </h1>
-              </div>
-              <div className="flex max-w-[430px] flex-col gap-5">
-                <h2
-                  className="text-xl font-normal md:text-2xl"
-                  style={{ fontFamily: "Epilogue, sans-serif" }}
-                >
-                  What to Expect:
-                </h2>
-                <ul className="flex flex-col gap-5">
-                  {heroList.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <svg
-                        className="mt-1 h-4 w-4 flex-shrink-0"
-                        viewBox="0 0 15 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M14.2071 2.04344C14.2311 1.49167 13.8032 1.02493 13.2514 1.00094L4.25994 0.610009C3.70818 0.586019 3.24144 1.01386 3.21745 1.56563C3.19346 2.11739 3.6213 2.58413 4.17307 2.60812L12.1655 2.95562L11.818 10.9481C11.794 11.4998 12.2219 11.9666 12.7736 11.9906C13.3254 12.0146 13.7921 11.5867 13.8161 11.0349L14.2071 2.04344ZM1.20801 13L1.88373 13.7372L13.8837 2.73715L13.208 2L12.5323 1.26285L0.532283 12.2628L1.20801 13Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                      <span
-                        className="flex-1 text-sm font-normal md:text-base"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  type="button"
-                  onClick={startIntro}
-                  className="mt-2 inline-flex w-fit items-center gap-3 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
-                  style={{ fontFamily: "Literata, serif" }}
-                >
-                  Get Started
-                  <svg
-                    className="ml-2 inline h-4 w-4"
-                    viewBox="0 0 15 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+          <section className="w-full max-w-[1332px] space-y-12">
+            <div className="flex flex-col gap-8 lg:gap-12">
+              <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+                <div className="flex max-w-[665px] flex-col gap-8">
+                  <div className="space-y-6">
+                    <p
+                      className="text-sm font-normal md:text-base"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      60 Minute Business Discovery Form
+                    </p>
+                    <h1
+                      className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight uppercase"
+                      style={{ fontFamily: "Epilogue, sans-serif" }}
+                    >
+                      Welcome to the Discovery Room.
+                    </h1>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={startIntro}
+                    className="w-fit inline-flex items-center gap-2 rounded-md bg-[#37306B] px-10 py-4 text-base font-normal text-[#FFFAEE] hover:bg-[#2C2758]"
+                    style={{ fontFamily: "Literata, serif" }}
                   >
-                    <path
-                      d="M14.6732 3.25492C14.814 3.11413 14.814 2.88587 14.6732 2.74508L12.3789 0.4508C12.2381 0.310012 12.0098 0.310012 11.8691 0.4508C11.7283 0.591589 11.7283 0.819852 11.8691 0.96064L13.9084 3L11.8691 5.03936C11.7283 5.18015 11.7283 5.40841 11.8691 5.5492C12.0098 5.68999 12.2381 5.68999 12.3789 5.5492L14.6732 3.25492ZM-0.00219727 3V3.36051H14.4183V3V2.63949H-0.00219727V3Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </Button>
+                    Get Started
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 15 6"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M14.6732 3.25492C14.814 3.11413 14.814 2.88587 14.6732 2.74508L12.3789 0.4508C12.2381 0.310012 12.0098 0.310012 11.8691 0.4508C11.7283 0.591589 11.7283 0.819852 11.8691 0.96064L13.9084 3L11.8691 5.03936C11.7283 5.18015 11.7283 5.40841 11.8691 5.5492C12.0098 5.68999 12.2381 5.68999 12.3789 5.5492L14.6732 3.25492ZM-0.00219727 3V3.36051H14.4183V3V2.63949H-0.00219727V3Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </Button>
+                </div>
+                <div className="w-full max-w-[548px]">
+                  <img
+                    src="https://api.builder.io/api/v1/image/assets/TEMP/f351a0ecba667b552b03d0817fc3b067111075fc?width=1097"
+                    alt="Discovery room illustration"
+                    className="h-auto w-full"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-              {heroImages.map((image) => (
-                <div
-                  key={image.src}
-                  className={`group relative overflow-hidden rounded-[15px] ${image.className}`}
-                >
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105 md:h-72 lg:h-[365px]"
-                  />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+                <div className="space-y-6">
+                  <h3
+                    className="text-4xl font-bold"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    1Origin
+                  </h3>
+                  <p
+                    className="text-xl leading-relaxed"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    You've been running your business, learning as you go. Now let's capture that story and make it clear.
+                  </p>
                 </div>
-              ))}
+              </div>
+
+              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+                <div className="space-y-6">
+                  <h3
+                    className="text-4xl font-bold"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    2Discovery
+                  </h3>
+                  <p
+                    className="text-xl leading-relaxed"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    We won't ask you to design your brand. We'll ask you to tell us your story — and we'll translate it into everything you need.
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-[15px] bg-[#37306B] p-12 text-[#FFFAEE] flex flex-col justify-between">
+                <div className="space-y-6">
+                  <h3
+                    className="text-4xl font-bold"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    3Blueprint
+                  </h3>
+                  <p
+                    className="text-xl leading-relaxed"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    By the end of this conversation, we'll know exactly how to build a brand that feels like you.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
         ) : null}
