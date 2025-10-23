@@ -414,7 +414,7 @@ export default function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FFFAEE] text-black">
-      <header className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-8 sm:px-8 md:px-12" style={{ padding: "30px 90px" }}>
+      <header className="mx-auto flex w-full items-center justify-between px-4 py-8 sm:px-8 md:px-12" style={{ padding: "30px 90px", maxWidth: "100%" }}>
         <img
           src="https://api.builder.io/api/v1/image/assets/TEMP/243e9e26600924d4d43f0793db0944381e2ae2b0?width=330"
           alt="Purple Pine Digital"
@@ -454,7 +454,7 @@ export default function Index() {
         )}
       </header>
 
-      <main className="flex flex-1 items-center justify-center px-4 pb-12 sm:px-8 sm:pb-16 md:px-12 lg:px-24">
+      <main className="flex flex-1 items-center justify-center" style={{ padding: "50px 90px 64px" }}>
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
             <div className="flex flex-col gap-8 lg:gap-12">
