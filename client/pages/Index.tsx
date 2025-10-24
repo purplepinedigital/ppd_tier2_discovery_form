@@ -494,7 +494,15 @@ export default function Index() {
         )}
       </header>
 
-      <main className="flex flex-1 items-center justify-center px-[30px] py-[30px] pb-[44px] md:px-[90px] md:py-[50px] md:pb-[64px]">
+      <main
+        className="flex flex-1 items-center justify-center"
+        style={{
+          "@media (max-width: 640px)": {
+            padding: "0 20px",
+          },
+          padding: "30px 30px 44px",
+        }}
+      >
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
             <div className="flex flex-col gap-8 lg:gap-12">
@@ -615,8 +623,24 @@ export default function Index() {
         {screen === "intro" ? (
           <section className="w-full max-w-[1332px]">
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 md:p-12">
-                <div className="space-y-6">
+              <div
+                className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3]"
+                style={{
+                  "@media (max-width: 640px)": {
+                    padding: "30px 20px 30px 30px",
+                  },
+                  padding: "40px",
+                }}
+              >
+                <div
+                  className="space-y-6"
+                  style={{
+                    "@media (max-width: 640px)": {
+                      display: "flex",
+                      flexDirection: "column",
+                    },
+                  }}
+                >
                   <p
                     className="text-base font-normal"
                     style={{ fontFamily: "Literata, serif" }}
@@ -628,6 +652,11 @@ export default function Index() {
                     style={{
                       fontFamily: "Epilogue, sans-serif",
                       lineHeight: "72px",
+                      "@media (max-width: 640px)": {
+                        fontSize: "32px",
+                        lineHeight: "34px",
+                        width: "100%",
+                      },
                     }}
                   >
                     ~1.2 million businesses launch every month.
