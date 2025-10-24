@@ -494,9 +494,7 @@ export default function Index() {
         )}
       </header>
 
-      <main
-        className="flex flex-1 items-center justify-center px-[30px] py-[30px] pb-[44px] md:px-[90px] md:py-[50px] md:pb-[64px]"
-      >
+      <main className="flex flex-1 items-center justify-center px-[30px] py-[30px] pb-[44px] md:px-[90px] md:py-[50px] md:pb-[64px]">
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
             <div className="flex flex-col gap-8 lg:gap-12">
