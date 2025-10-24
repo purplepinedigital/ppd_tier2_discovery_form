@@ -452,8 +452,8 @@ export default function Index() {
   return (
     <div className="flex min-h-screen flex-col bg-[#FFFAEE] text-black">
       <header
-        className="mx-auto flex w-full items-center justify-between px-4 py-8 sm:px-8 md:px-12"
-        style={{ padding: "30px 90px", maxWidth: "100%" }}
+        className="mx-auto flex w-full items-center justify-between px-[30px] py-[30px] md:px-[90px]"
+        style={{ maxWidth: "100%" }}
       >
         <img
           src="https://api.builder.io/api/v1/image/assets/TEMP/243e9e26600924d4d43f0793db0944381e2ae2b0?width=330"
@@ -495,8 +495,7 @@ export default function Index() {
       </header>
 
       <main
-        className="flex flex-1 items-center justify-center"
-        style={{ padding: "50px 90px 64px" }}
+        className="flex flex-1 items-center justify-center px-[30px] py-[30px] pb-[44px] md:px-[90px] md:py-[50px] md:pb-[64px]"
       >
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
@@ -511,10 +510,9 @@ export default function Index() {
                       60 Minute Business Discovery Form
                     </p>
                     <h1
-                      className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight uppercase"
+                      className="text-[40px] leading-[42px] font-bold uppercase md:text-5xl md:leading-tight md:text-6xl lg:text-[71px] lg:leading-tight"
                       style={{
                         fontFamily: "Epilogue, sans-serif",
-                        lineHeight: "56px",
                       }}
                     >
                       Welcome to the Discovery Room.
