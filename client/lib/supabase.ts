@@ -96,6 +96,9 @@ export async function saveFormProgress(
         console.error("Error inserting form progress:", {
           code: insertError.code,
           message: insertError.message,
+          status: insertError.status,
+          hint: insertError.hint,
+          details: insertError.details,
         });
         throw insertError;
       }
