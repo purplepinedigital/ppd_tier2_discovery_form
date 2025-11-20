@@ -72,6 +72,15 @@ export default function AdminEngagements() {
 
       if (engagementsError) throw engagementsError;
 
+      // Fetch Tier 1 assessments for all engagements
+      const { data: tier1Data } = await client
+        .from("tier1_assessments")
+        .select("id, engagement_id, recommended_package");
+
+      const tier1Map = new Map(
+        (tier1Data || []).map((t: any) => [t.engagement_id, t])
+      );
+
       if (engagementsData) {
         const enrichedEngagements = await Promise.all(
           engagementsData.map(async (engagement) => {
@@ -82,16 +91,25 @@ export default function AdminEngagements() {
                 .eq("user_id", engagement.user_id)
                 .single();
 
+              const tier1Assessment = tier1Map.get(engagement.id);
+
               return {
                 ...engagement,
                 user_email: signupData?.email || "Unknown",
                 user_name: signupData?.name || "Unknown",
+                tier1_completed: !!tier1Assessment,
+                tier1_assessment_id: tier1Assessment?.id,
+                recommended_package: tier1Assessment?.recommended_package,
               };
             } catch (err) {
+              const tier1Assessment = tier1Map.get(engagement.id);
               return {
                 ...engagement,
                 user_email: "Unknown",
                 user_name: "Unknown",
+                tier1_completed: !!tier1Assessment,
+                tier1_assessment_id: tier1Assessment?.id,
+                recommended_package: tier1Assessment?.recommended_package,
               };
             }
           }),
