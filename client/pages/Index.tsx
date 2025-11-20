@@ -148,18 +148,33 @@ export default function Index() {
         const { data, error } = await supabase
           .from("signups")
           .select("name")
-          .eq("user_id", userId);
+          .eq("user_id", userId)
+          .single();
 
         if (error) {
-          console.error("Error fetching user name:", error.message, error.code);
+          if (error.code === "PGRST116") {
+            // Record not found - this is okay
+            console.debug("Signup record not found for user");
+            return;
+          }
+          console.error("Error fetching user name:", {
+            message: error.message,
+            code: error.code,
+            hint: error.hint,
+          });
           return;
         }
 
-        if (data && data.length > 0 && data[0]?.name) {
-          setUserName(data[0].name);
+        if (data && data.name) {
+          setUserName(data.name);
         }
-      } catch (err) {
-        console.error("Exception fetching user name:", err);
+      } catch (err: any) {
+        console.error("Exception fetching user name:", {
+          message: err.message,
+          name: err.name,
+          stack: err.stack,
+        });
+        // Don't block app on name fetch failure
       }
     };
 
