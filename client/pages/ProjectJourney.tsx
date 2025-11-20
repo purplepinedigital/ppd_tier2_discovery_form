@@ -209,7 +209,11 @@ export default function ProjectJourney() {
     try {
       const client = getClientSupabase();
 
-      // Delete all related data
+      // Delete all related data in correct order (respecting foreign keys)
+      await client
+        .from("form_progress")
+        .delete()
+        .eq("engagement_id", engagementId);
       await client
         .from("stage_completion")
         .delete()
@@ -218,12 +222,24 @@ export default function ProjectJourney() {
         .from("deliverables")
         .delete()
         .eq("engagement_id", engagementId);
-      await client.from("engagements").delete().eq("id", engagementId);
 
+      // Finally delete the engagement
+      const { error } = await client
+        .from("engagements")
+        .delete()
+        .eq("id", engagementId);
+
+      if (error) {
+        console.error("Supabase delete error:", error);
+        alert(`Failed to delete project: ${error.message}`);
+        return;
+      }
+
+      // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
     } catch (error) {
       console.error("Error deleting project:", error);
-      alert("Failed to delete project");
+      alert("Failed to delete project. Please check the browser console for details.");
     }
   };
 
