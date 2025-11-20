@@ -106,7 +106,29 @@ export default function ProjectJourney() {
     setIsLoading(true);
     setError(null);
     try {
-      const client = getClientSupabase();
+      // If impersonating, use admin client to bypass RLS; otherwise use regular client
+      let client;
+      if (isImpersonating()) {
+        // Use admin client for impersonation
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const serviceRoleKey =
+          import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
+          import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+        if (supabaseUrl && serviceRoleKey) {
+          const { createClient } = await import("@supabase/supabase-js");
+          client = createClient(supabaseUrl, serviceRoleKey, {
+            auth: {
+              persistSession: false,
+              autoRefreshToken: false,
+            },
+          });
+        } else {
+          client = getClientSupabase();
+        }
+      } else {
+        client = getClientSupabase();
+      }
 
       const { data: engagementsData, error: engagementsError } = await client
         .from("engagements")
