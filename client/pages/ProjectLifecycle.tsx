@@ -28,6 +28,27 @@ interface Engagement {
   program_rationale: string | null;
   created_at: string;
   updated_at: string;
+  tier1_completed: boolean;
+  tier1_assessment_id: string | null;
+  recommended_package: string | null;
+}
+
+interface Tier1Assessment {
+  id: string;
+  project_name: string;
+  business_name: string;
+  industry: string;
+  phone: string;
+  current_state: string;
+  needs_array: string[];
+  website_scope: string;
+  marketing_timing: string;
+  budget_range: string;
+  timeline_expectation: string;
+  target_date: string | null;
+  primary_goal: string;
+  recommended_package: string;
+  recommendation_confidence: string;
 }
 
 interface Stage {
