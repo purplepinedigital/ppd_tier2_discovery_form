@@ -243,8 +243,24 @@ export default function AdminEngagementDetail() {
       setSelectedProgram(program);
       await fetchStageCoverage(program);
 
-      // TODO: Send email notification to client
-      console.log(`Program set to ${program} for engagement ${engagement.id}`);
+      // Send email notification to client
+      try {
+        await fetch("/api/engagement-program", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            engagement_id: engagement.id,
+            program,
+            user_id: engagement.user_id,
+            project_name: engagement.project_name,
+            user_email: engagement.user_email,
+            user_name: engagement.user_name,
+          }),
+        });
+      } catch (notificationError: any) {
+        console.error("Error sending notification:", notificationError);
+        // Don't block the program assignment if notification fails
+      }
     } catch (err: any) {
       setError(err.message || "Failed to update program");
     } finally {
