@@ -414,8 +414,7 @@ export default function ProjectLifecycle() {
     if (!engagement || !newPackage) return;
 
     try {
-      const client = getClientSupabase();
-      const { error } = await client
+      const { error } = await supabase
         .from("engagements")
         .update({ recommended_package: newPackage })
         .eq("id", engagement.id);
