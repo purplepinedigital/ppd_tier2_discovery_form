@@ -560,13 +560,7 @@ export default function Index() {
       </header>
 
       <main
-        className="flex flex-1 items-center justify-center"
-        style={{
-          "@media (max-width: 640px)": {
-            padding: "0 20px",
-          },
-          padding: "30px 30px 44px",
-        }}
+        className="flex flex-1 items-center justify-center px-5 sm:px-7.5 py-8 sm:py-11"
       >
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
