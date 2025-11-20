@@ -557,35 +557,31 @@ export default function Index() {
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("API error response:", {
-          status: response.status,
-          statusText: response.statusText,
-          body: errorText,
-        });
-        throw new Error(
-          `HTTP ${response.status}: ${errorText || response.statusText}`,
-        );
-      }
-
       let data;
       try {
         data = await response.json();
       } catch (parseError) {
         console.error("Failed to parse engagement response:", {
-          message: parseError instanceof Error ? parseError.message : String(parseError),
-          parseError,
+          status: response.status,
+          statusText: response.statusText,
+          parseErrorMessage:
+            parseError instanceof Error ? parseError.message : String(parseError),
         });
         throw new Error("Invalid response format from server");
       }
 
-      console.debug("Engagement created successfully:", {
-        success: data.success,
-        engagement_id: data.engagement_id,
-      });
+      if (!response.ok) {
+        const errorMsg = data?.error || data?.message || response.statusText || "Unknown error";
+        console.error("API error response:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorMsg,
+        });
+        throw new Error(`HTTP ${response.status}: ${errorMsg}`);
+      }
 
       if (data.success && data.engagement_id) {
+        console.debug("Engagement created successfully");
         setEngagementId(data.engagement_id);
 
         // Start new form - no progress to load yet
@@ -595,9 +591,9 @@ export default function Index() {
         setActiveSectionIndex(0);
         setScreen("sectionWelcome");
       } else {
-        const errorMsg = data.error || data.message || "Failed to create engagement";
+        const errorMsg = data?.error || data?.message || "Failed to create engagement";
         console.error("Engagement creation failed:", {
-          data,
+          success: data?.success,
           error: errorMsg,
         });
         throw new Error(errorMsg);
