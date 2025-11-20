@@ -88,6 +88,16 @@ export default function ProjectJourney() {
       if (engagementsError) throw engagementsError;
 
       setEngagements(engagementsData || []);
+
+      // Fetch form progress for each engagement
+      const progressMap: Record<string, number> = {};
+      if (engagementsData) {
+        for (const engagement of engagementsData) {
+          const progress = await getFormProgress(engagement.id);
+          progressMap[engagement.id] = progress;
+        }
+      }
+      setFormProgressMap(progressMap);
     } catch (err: any) {
       setError(err.message || "Failed to fetch engagements");
       console.error("Fetch error:", err);
