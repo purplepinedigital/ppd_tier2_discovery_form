@@ -1153,6 +1153,18 @@ export default function AdminEngagementDetail() {
                 + Add Decision Document
               </button>
             )}
+
+            {/* Mark Stage 0 Complete Button */}
+            {deliverables.filter((d) => d.stage_number === 0).length > 0 && (
+              <button
+                onClick={() => handleMarkStageComplete(0)}
+                disabled={isSaving}
+                className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                ✓ Mark This Stage Complete
+              </button>
+            )}
           </div>
         </div>
 
