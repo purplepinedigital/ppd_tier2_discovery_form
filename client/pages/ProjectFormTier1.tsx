@@ -282,23 +282,18 @@ export default function ProjectFormTier1() {
               {/* Project Name */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  What should we call your project?
+                  Project Name
                 </label>
                 <p className="text-sm text-gray-500 mb-3">
-                  Give your project a name - this is how you'll see it throughout
-                  your dashboard. Keep it simple!
+                  This is your project name from the dashboard.
                 </p>
                 <input
                   type="text"
                   value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="e.g., Acme Realty Website Redesign"
-                  maxLength={60}
-                  className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                  readOnly
+                  placeholder="Project name"
+                  className="w-full rounded border border-gray-300 px-4 py-2 bg-gray-50 text-gray-600 cursor-not-allowed"
                 />
-                <p className="text-xs text-gray-400 mt-1">
-                  {projectName.length}/60 characters
-                </p>
               </div>
 
               {/* Business Name */}
