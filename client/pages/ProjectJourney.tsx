@@ -192,6 +192,13 @@ export default function ProjectJourney() {
           </div>
           <div className="flex items-center gap-2 md:gap-4">
             <Button
+              onClick={() => navigate("/?newProject=true")}
+              className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              + Create New Project
+            </Button>
+            <Button
               onClick={() => navigate("/project/notifications")}
               className="relative bg-[#37306B] hover:bg-[#2C2758] text-white text-sm md:text-base px-2 md:px-4"
               style={{ fontFamily: "Literata, serif" }}
