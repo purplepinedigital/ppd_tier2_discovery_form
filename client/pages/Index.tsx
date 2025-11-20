@@ -444,12 +444,10 @@ export default function Index() {
           console.error("Error checking engagements:", error);
         }
 
-        // No projects yet - start fresh form
-        setResponses(createInitialResponses());
-        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-        setActiveSectionIndex(0);
-        setScreen("sectionWelcome");
+        // No projects yet - ask for project name first (Tier 1)
+        setProjectName("");
+        setEngagementId(null);
+        setScreen("projectName");
       }
     } catch (error: any) {
       setAuthError(error.message);
