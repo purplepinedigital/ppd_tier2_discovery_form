@@ -569,15 +569,29 @@ export default function Index() {
 
     try {
       console.log("Creating engagement for project:", projectName);
-      const response = await fetch("/api/engagements", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          project_name: projectName,
-          user_id: user.id,
-          form_responses: responses,
-        }),
-      });
+      let response: Response;
+
+      try {
+        response = await fetch("/api/engagements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            project_name: projectName,
+            user_id: user.id,
+            form_responses: responses,
+          }),
+        });
+      } catch (fetchError: any) {
+        const fetchErrorDetails = {
+          message: fetchError?.message || "Unknown fetch error",
+          name: fetchError?.name || "Error",
+          stack: fetchError?.stack,
+        };
+        console.error("Network fetch error:", fetchErrorDetails);
+        throw new Error(
+          `Network error: ${fetchErrorDetails.message}. Please check your connection.`,
+        );
+      }
 
       console.log("Engagement response received:", {
         status: response.status,
@@ -644,6 +658,7 @@ export default function Index() {
       console.debug("Error details:", {
         message: errorMessage,
         name: error?.name,
+        stack: error?.stack,
       });
       alert(`Failed to create project: ${errorMessage}. Please try again.`);
     }
