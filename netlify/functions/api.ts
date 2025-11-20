@@ -523,6 +523,28 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Engagement creation route
+  if (path.includes("/api/engagements") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const result = await handleEngagementCreate(body);
+      return {
+        statusCode: result.status,
+        headers,
+        body: result.body,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          error: "Failed to create engagement",
+          message: error.message,
+        }),
+      };
+    }
+  }
+
   // Save signup route
   if (path.includes("/api/save-signup") && event.httpMethod === "POST") {
     try {
