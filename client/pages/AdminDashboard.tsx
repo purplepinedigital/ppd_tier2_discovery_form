@@ -98,40 +98,52 @@ export default function AdminDashboard() {
 
       if (responsesError) throw responsesError;
 
-      // Enrich responses with user names
+      // Enrich responses with user names and project names
       if (responsesData) {
         const enrichedResponses = await Promise.all(
           responsesData.map(async (response) => {
             try {
-              const { data: signupData, error } = await client
+              // Fetch user name
+              const { data: signupData, error: signupError } = await client
                 .from("signups")
                 .select("name")
                 .eq("user_id", response.user_id);
 
-              if (error) {
-                console.error(
-                  "Error fetching signup for user:",
-                  response.user_id,
-                  error,
-                );
-                return {
-                  ...response,
-                  user_name: "Unknown",
-                };
+              const userName =
+                signupData && signupData.length > 0
+                  ? signupData[0].name
+                  : "Unknown";
+
+              // Fetch project name if engagement_id exists
+              let projectName = "No Project";
+              if (response.engagement_id) {
+                try {
+                  const { data: engagementData, error: engagementError } =
+                    await client
+                      .from("engagements")
+                      .select("project_name")
+                      .eq("id", response.engagement_id)
+                      .maybeSingle();
+
+                  if (engagementData && engagementData.project_name) {
+                    projectName = engagementData.project_name;
+                  }
+                } catch (err) {
+                  console.error("Error fetching engagement:", err);
+                }
               }
 
               return {
                 ...response,
-                user_name:
-                  signupData && signupData.length > 0
-                    ? signupData[0].name
-                    : "Unknown",
+                user_name: userName,
+                project_name: projectName,
               };
             } catch (err) {
-              console.error("Exception fetching signup:", err);
+              console.error("Exception enriching response:", err);
               return {
                 ...response,
                 user_name: "Unknown",
+                project_name: "No Project",
               };
             }
           }),
