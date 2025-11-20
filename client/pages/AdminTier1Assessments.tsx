@@ -33,7 +33,7 @@ export default function AdminTier1Assessments() {
 
       setUser(data.session.user);
 
-      // Fetch Tier 1 assessments with user email
+      // Fetch Tier 1 assessments
       const { data: assessmentsData, error } = await supabase
         .from("tier1_assessments")
         .select(
@@ -45,26 +45,36 @@ export default function AdminTier1Assessments() {
           recommended_package,
           recommendation_confidence,
           has_mismatch,
-          created_at,
-          users:user_id (email)
+          created_at
         `
         )
         .order("created_at", { ascending: false });
 
       if (error) {
         console.error("Error fetching assessments:", error);
-      } else {
-        const formatted = assessmentsData?.map((a: any) => ({
+      } else if (assessmentsData) {
+        // Fetch user emails separately
+        const userIds = [...new Set(assessmentsData.map((a: any) => a.user_id))];
+        const { data: usersData } = await supabase
+          .from("auth.users")
+          .select("id, email")
+          .in("id", userIds);
+
+        const userEmailMap = new Map(
+          (usersData || []).map((u: any) => [u.id, u.email])
+        );
+
+        const formatted = assessmentsData.map((a: any) => ({
           id: a.id,
           project_name: a.project_name,
           business_name: a.business_name,
           user_id: a.user_id,
-          user_email: a.users?.email || "Unknown",
+          user_email: userEmailMap.get(a.user_id) || "Unknown",
           recommended_package: a.recommended_package,
           recommendation_confidence: a.recommendation_confidence,
           has_mismatch: a.has_mismatch,
           created_at: a.created_at,
-        })) || [];
+        }));
 
         setAssessments(formatted);
       }
