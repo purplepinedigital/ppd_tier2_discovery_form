@@ -512,36 +512,6 @@ export default function Index() {
     }
   };
 
-  const updateEngagementProjectName = async (newName: string) => {
-    if (!newName.trim()) {
-      alert("Please enter a project name");
-      return;
-    }
-
-    if (!engagementId || !user) {
-      alert("Unable to update project name");
-      return;
-    }
-
-    try {
-      const client = supabase;
-      const { error } = await client
-        .from("engagements")
-        .update({ project_name: newName })
-        .eq("id", engagementId)
-        .eq("user_id", user.id);
-
-      if (error) throw error;
-
-      setEditedProjectName(newName);
-      setIsEditingProjectName(false);
-      alert("Project name updated successfully!");
-    } catch (error) {
-      console.error("Error updating project name:", error);
-      alert("Failed to update project name. Please try again.");
-    }
-  };
-
   const startNewProject = async () => {
     if (!user) {
       alert("Please log in to continue");
@@ -553,9 +523,8 @@ export default function Index() {
     setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
     setActiveSectionIndex(0);
     setProjectName("");
-    setEditedProjectName("");
     setEngagementId(null);
-    setScreen("sectionWelcome");
+    setScreen("projectName");
   };
 
   const questionValue = responses[currentQuestionIndex] ?? "";
