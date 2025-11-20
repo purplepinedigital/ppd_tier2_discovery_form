@@ -105,6 +105,11 @@ export default function Index() {
   }, [currentQuestion]);
 
   const startIntro = () => {
+    // If user is already logged in, redirect to journey instead of starting form
+    if (user) {
+      window.location.href = "/project/journey";
+      return;
+    }
     setScreen("intro");
   };
 
