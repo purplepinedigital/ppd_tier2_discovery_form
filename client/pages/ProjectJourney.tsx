@@ -579,6 +579,48 @@ export default function ProjectJourney() {
           </div>
         )}
       </main>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteConfirm.isOpen} onOpenChange={(open) => {
+        if (!open) {
+          setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+        }
+      }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Project?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <p className="mb-4">
+                You're about to permanently delete this project:
+              </p>
+              <p className="font-semibold text-gray-900 mb-4">
+                "{deleteConfirm.projectName}"
+              </p>
+              <p className="text-red-600 font-medium">
+                This action cannot be undone. All associated data will be permanently deleted, including:
+              </p>
+              <ul className="list-disc list-inside mt-2 text-sm text-gray-700 mb-4">
+                <li>Form responses and progress</li>
+                <li>Stage completions</li>
+                <li>Deliverables</li>
+                <li>All project information</li>
+              </ul>
+              <p className="font-semibold text-gray-900">
+                Are you absolutely sure you want to delete this project?
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDeleteProject}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Yes, Delete Project
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
