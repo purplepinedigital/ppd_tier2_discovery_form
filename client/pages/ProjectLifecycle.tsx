@@ -521,6 +521,27 @@ export default function ProjectLifecycle() {
 
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
+      {/* Impersonation Banner */}
+      {isImpersonating() && (
+        <div className="bg-yellow-100 border-b-2 border-yellow-400 p-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="text-yellow-800 font-semibold">
+              👤 You are viewing as: <span className="font-bold">{getImpersonationSession()?.impersonatedEmail}</span>
+            </div>
+            <Button
+              onClick={() => {
+                clearImpersonationSession();
+                window.location.href = "/admin/dashboard";
+              }}
+              className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Stop Impersonating
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-white shadow sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 md:py-6 flex justify-between items-center">
