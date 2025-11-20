@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
+import {
+  getImpersonationSession,
+  clearImpersonationSession,
+  isImpersonating,
+} from "@/lib/admin-impersonate";
 
 let clientSupabase: any = null;
 
