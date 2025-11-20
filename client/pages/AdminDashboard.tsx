@@ -290,6 +290,9 @@ export default function AdminDashboard() {
       // Also delete form progress if it exists
       await client.from("form_progress").delete().eq("user_id", userId);
 
+      // Also delete engagements if they exist
+      await client.from("engagements").delete().eq("user_id", userId);
+
       setSignups(signups.filter((s) => s.user_id !== userId));
       setDeleteConfirm(null);
     } catch (err: any) {
