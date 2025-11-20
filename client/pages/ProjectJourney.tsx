@@ -158,8 +158,8 @@ export default function ProjectJourney() {
       // Form complete - go to lifecycle page
       navigate(`/project/lifecycle/${engagementId}`);
     } else {
-      // Form incomplete - go to form filling page
-      navigate(`/project/form/${engagementId}`);
+      // Form incomplete - go back to Index.tsx to fill form
+      window.location.href = `/?engagement=${engagementId}`;
     }
   };
 
