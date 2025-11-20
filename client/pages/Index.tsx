@@ -446,55 +446,7 @@ export default function Index() {
     }
 
     if (currentQuestionIndex === totalQuestions - 1) {
-      // Form is complete - auto-create engagement if user is logged in
-      if (user) {
-        try {
-          const response = await fetch("/api/engagements", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              project_name: `Project - ${new Date().toLocaleDateString()}`,
-              user_id: user.id,
-              form_responses: responses,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error(
-              `HTTP ${response.status}: Failed to create engagement`,
-            );
-          }
-
-          let data;
-          try {
-            data = await response.json();
-          } catch (parseError) {
-            console.error("Failed to parse response:", parseError);
-            throw new Error("Invalid response from server");
-          }
-
-          if (data.success && data.engagement_id) {
-            setEngagementId(data.engagement_id);
-            setScreen("complete");
-            return;
-          } else {
-            throw new Error(data.error || "Failed to create engagement");
-          }
-        } catch (error: any) {
-          console.error("Error auto-creating engagement:", {
-            message: error?.message || "Unknown error",
-            name: error?.name || "Error",
-            status: error?.status,
-            statusText: error?.statusText,
-            toString: error?.toString(),
-            full: error,
-          });
-          // Fall back to project name screen
-          setScreen("projectName");
-          return;
-        }
-      }
-
+      // Form is complete - just go to project name screen for manual engagement creation
       setScreen("projectName");
       return;
     }
