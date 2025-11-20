@@ -525,7 +525,7 @@ const handler: Handler = async (event) => {
   }
 
   // Engagement creation route
-  if (path.includes("/api/engagements") && event.httpMethod === "POST") {
+  if ((path.includes("/api/engagements") || path.includes("/engagements")) && event.httpMethod === "POST") {
     try {
       const body = JSON.parse(event.body || "{}");
       const result = await handleEngagementCreate(body);
