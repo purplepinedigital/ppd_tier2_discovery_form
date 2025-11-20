@@ -32,6 +32,7 @@ const App = () => (
           <Route path="/admin/engagements/:engagementId" element={<AdminEngagementDetail />} />
           <Route path="/project/journey" element={<ProjectJourney />} />
           <Route path="/project/lifecycle/:engagementId" element={<ProjectLifecycle />} />
+          <Route path="/project/notifications" element={<ClientNotifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
