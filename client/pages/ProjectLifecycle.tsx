@@ -318,9 +318,11 @@ export default function ProjectLifecycle() {
   const fetchStageCoverage = async (
     program: string,
     completions: StageCompletion[],
+    client?: any,
   ) => {
     try {
-      const { data: coverageData } = await supabase
+      const supabaseClient = client || supabase;
+      const { data: coverageData } = await supabaseClient
         .from("stage_coverage")
         .select("*")
         .eq("program", program)
