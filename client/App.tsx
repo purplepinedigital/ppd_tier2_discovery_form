@@ -9,8 +9,11 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminEngagements from "./pages/AdminEngagements";
 import AdminEngagementDetail from "./pages/AdminEngagementDetail";
+import AdminTier1Assessments from "./pages/AdminTier1Assessments";
+import AdminTier1Detail from "./pages/AdminTier1Detail";
 import ProjectJourney from "./pages/ProjectJourney";
 import ProjectLifecycle from "./pages/ProjectLifecycle";
+import ProjectFormTier1 from "./pages/ProjectFormTier1";
 import ClientNotifications from "./pages/ClientNotifications";
 
 const queryClient = new QueryClient();
@@ -30,7 +33,13 @@ const App = () => (
             path="/admin/engagements/:engagementId"
             element={<AdminEngagementDetail />}
           />
+          <Route path="/admin/tier1" element={<AdminTier1Assessments />} />
+          <Route
+            path="/admin/tier1/:assessmentId"
+            element={<AdminTier1Detail />}
+          />
           <Route path="/project/journey" element={<ProjectJourney />} />
+          <Route path="/project/tier1" element={<ProjectFormTier1 />} />
           <Route
             path="/project/lifecycle/:engagementId"
             element={<ProjectLifecycle />}
