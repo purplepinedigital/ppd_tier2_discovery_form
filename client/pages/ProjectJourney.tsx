@@ -377,13 +377,18 @@ export default function ProjectJourney() {
                       </td>
                       <td className="px-6 py-4 text-sm space-x-2">
                         <Button
-                          onClick={() =>
-                            navigate(`/project/lifecycle/${engagement.id}`)
-                          }
+                          onClick={() => {
+                            const progress = formProgressMap[engagement.id] || 0;
+                            if (progress >= 30) {
+                              navigate(`/project/lifecycle/${engagement.id}`);
+                            } else {
+                              navigate(`/project/form/${engagement.id}`);
+                            }
+                          }}
                           className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          View
+                          View/Edit
                         </Button>
                         <Button
                           onClick={() => handleEditProject(engagement.id)}
