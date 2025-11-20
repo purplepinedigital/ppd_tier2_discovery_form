@@ -34,6 +34,7 @@ interface Engagement {
   user_id: string;
   project_name: string;
   program: string | null;
+  program_rationale: string | null;
   created_at: string;
   updated_at: string;
   user_email?: string;
