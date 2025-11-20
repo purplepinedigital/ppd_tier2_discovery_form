@@ -330,8 +330,15 @@ export default function ProjectLifecycle() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
+    if (isImpersonating()) {
+      // If impersonating, just clear the session and redirect to admin
+      clearImpersonationSession();
+      window.location.href = "/admin/dashboard";
+    } else {
+      // Otherwise, sign out and go to home
+      await supabase.auth.signOut();
+      navigate("/");
+    }
   };
 
   const handleMarkStageComplete = async (stageNumber: number) => {
@@ -365,7 +372,7 @@ export default function ProjectLifecycle() {
       );
 
       toast({
-        title: "���� Milestone Reached!",
+        title: "🎉 Milestone Reached!",
         description: `You've completed ${STAGE_NAMES[stageNumber]}!`,
       });
     } catch (err: any) {
