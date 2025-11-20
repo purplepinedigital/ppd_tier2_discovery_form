@@ -585,8 +585,16 @@ export default function AdminEngagementDetail() {
     });
   };
 
-  const handleConfirmStageCompletion = async () => {
-    if (!engagement || !stageCompletionDialog.stageNumber) return;
+  const handleConfirmStageCompletion = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (!engagement || !stageCompletionDialog.stageNumber) {
+      console.error("Missing engagement or stage number");
+      return;
+    }
 
     if (
       !stageCompletionDialog.clientSatisfied ||
@@ -603,20 +611,25 @@ export default function AdminEngagementDetail() {
 
     setIsSaving(true);
     try {
+      console.log("Inserting stage completion for stage:", stageCompletionDialog.stageNumber);
       const client = getAdminSupabase();
 
-      const { error } = await client.from("stage_completion").insert({
+      const { data, error } = await client.from("stage_completion").insert({
         engagement_id: engagement.id,
         stage_number: stageCompletionDialog.stageNumber,
-      });
+      }).select();
+
+      console.log("Insert result:", { data, error });
 
       if (error && error.code !== "23505") {
+        console.error("Insert error:", error);
         throw error;
       }
 
+      const stageName = STAGE_NAMES[stageCompletionDialog.stageNumber];
       toast({
         title: "✓ Stage Completed",
-        description: `${STAGE_NAMES[stageCompletionDialog.stageNumber]} has been marked as complete.`,
+        description: `${stageName} has been marked as complete.`,
       });
 
       setStageCompletionDialog({
@@ -626,8 +639,11 @@ export default function AdminEngagementDetail() {
         feedbackComplete: false,
       });
 
+      console.log("Refreshing engagement data...");
       await fetchEngagementData();
+      console.log("Engagement data refreshed");
     } catch (err: any) {
+      console.error("Error in handleConfirmStageCompletion:", err);
       const errorMsg = err?.message || err?.details || JSON.stringify(err);
       toast({
         title: "Error",
