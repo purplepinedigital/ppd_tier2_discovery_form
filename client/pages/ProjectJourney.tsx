@@ -589,27 +589,31 @@ export default function ProjectJourney() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Project?</AlertDialogTitle>
-            <AlertDialogDescription>
-              <p className="mb-4">
+          </AlertDialogHeader>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm">
                 You're about to permanently delete this project:
               </p>
-              <p className="font-semibold text-gray-900 mb-4">
+              <p className="font-semibold text-gray-900 mt-1">
                 "{deleteConfirm.projectName}"
               </p>
-              <p className="text-red-600 font-medium">
+            </div>
+            <div>
+              <p className="text-sm text-red-600 font-medium mb-2">
                 This action cannot be undone. All associated data will be permanently deleted, including:
               </p>
-              <ul className="list-disc list-inside mt-2 text-sm text-gray-700 mb-4">
+              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
                 <li>Form responses and progress</li>
                 <li>Stage completions</li>
                 <li>Deliverables</li>
                 <li>All project information</li>
               </ul>
-              <p className="font-semibold text-gray-900">
-                Are you absolutely sure you want to delete this project?
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+            </div>
+            <p className="font-semibold text-gray-900 text-sm">
+              Are you absolutely sure you want to delete this project?
+            </p>
+          </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
