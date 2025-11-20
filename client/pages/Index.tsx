@@ -234,8 +234,11 @@ export default function Index() {
         try {
           setEngagementId(engagementParam);
 
+          // Use impersonated user ID if available, otherwise use current user ID
+          const userIdForProgress = getImpersonatedUserId() || user.id;
+
           // Load form progress for this engagement
-          const progress = await loadFormProgress(user.id, engagementParam);
+          const progress = await loadFormProgress(userIdForProgress, engagementParam);
           if (progress && progress.responses) {
             // Convert Record format to array format if needed
             const responsesArray = Array.isArray(progress.responses)
