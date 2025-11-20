@@ -288,12 +288,21 @@ export default function AdminDashboard() {
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-          <h1
-            className="text-3xl font-bold"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
-          >
-            Admin Dashboard
-          </h1>
+          <div className="flex items-center gap-6">
+            <h1
+              className="text-3xl font-bold"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              Admin Dashboard
+            </h1>
+            <button
+              onClick={() => navigate("/admin/engagements")}
+              className="px-4 py-2 bg-[#37306B] hover:bg-[#2C2758] text-white rounded font-bold text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              View Engagements
+            </button>
+          </div>
           <Button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 text-white"
