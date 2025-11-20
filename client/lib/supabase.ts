@@ -149,10 +149,15 @@ export async function loadFormProgress(
 
     return data || null;
   } catch (err: any) {
-    console.error("Exception loading form progress:", {
-      message: err.message,
-      code: err.code,
-    });
+    const errorDetails = {
+      message: err?.message || "Unknown error",
+      code: err?.code,
+      status: err?.status,
+      hint: err?.hint,
+      details: err?.details,
+    };
+    console.error("Exception loading form progress:", errorDetails);
+    console.debug("Full error:", err);
     // Return null instead of throwing to prevent app crashes
     return null;
   }
