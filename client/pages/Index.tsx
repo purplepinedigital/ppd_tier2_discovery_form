@@ -547,6 +547,7 @@ export default function Index() {
     }
 
     try {
+      console.log("Creating engagement for project:", projectName);
       const response = await fetch("/api/engagements", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -555,6 +556,12 @@ export default function Index() {
           user_id: user.id,
           form_responses: responses,
         }),
+      });
+
+      console.log("Engagement response received:", {
+        status: response.status,
+        statusText: response.statusText,
+        contentType: response.headers.get("content-type"),
       });
 
       let data;
@@ -566,6 +573,8 @@ export default function Index() {
         console.error(
           "Failed to parse engagement response. Status:",
           response.status,
+          "ContentType:",
+          response.headers.get("content-type"),
           "Error:",
           parseErrorMessage,
         );
