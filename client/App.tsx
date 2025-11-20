@@ -12,6 +12,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminEngagements from "./pages/AdminEngagements";
 import AdminEngagementDetail from "./pages/AdminEngagementDetail";
+import ProjectJourney from "./pages/ProjectJourney";
+import ProjectLifecycle from "./pages/ProjectLifecycle";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/engagements" element={<AdminEngagements />} />
           <Route path="/admin/engagements/:engagementId" element={<AdminEngagementDetail />} />
+          <Route path="/project/journey" element={<ProjectJourney />} />
+          <Route path="/project/lifecycle/:engagementId" element={<ProjectLifecycle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
