@@ -450,6 +450,41 @@ export default function Index() {
     setScreen("sectionWelcome");
   };
 
+  const createEngagement = async () => {
+    if (!projectName.trim()) {
+      alert("Please enter a project name");
+      return;
+    }
+
+    if (!user) {
+      alert("Please log in to continue");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/engagements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          project_name: projectName,
+          user_id: user.id,
+          form_responses: responses,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success && data.engagement_id) {
+        setEngagementId(data.engagement_id);
+        setScreen("complete");
+      } else {
+        alert(data.error || "Failed to create engagement");
+      }
+    } catch (error) {
+      console.error("Error creating engagement:", error);
+      alert("Failed to save project. Please try again.");
+    }
+  };
+
   const questionValue = responses[currentQuestionIndex] ?? "";
 
   return (
