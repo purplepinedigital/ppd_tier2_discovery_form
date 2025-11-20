@@ -93,6 +93,8 @@ export default function AdminEngagementDetail() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditingProjectName, setIsEditingProjectName] = useState(false);
+  const [editedProjectName, setEditedProjectName] = useState("");
 
   // New deliverable form
   const [showNewDeliverableForm, setShowNewDeliverableForm] =
