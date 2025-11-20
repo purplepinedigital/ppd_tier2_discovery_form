@@ -380,15 +380,17 @@ export default function ProjectJourney() {
                           onClick={() => {
                             const progress = formProgressMap[engagement.id] || 0;
                             if (progress >= 30) {
+                              // Form complete - show lifecycle/project details
                               navigate(`/project/lifecycle/${engagement.id}`);
                             } else {
+                              // Form incomplete - continue filling form
                               navigate(`/project/form/${engagement.id}`);
                             }
                           }}
                           className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          View/Edit
+                          View
                         </Button>
                         <Button
                           onClick={() => handleEditProject(engagement.id)}
