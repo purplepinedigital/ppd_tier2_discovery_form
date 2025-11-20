@@ -150,6 +150,7 @@ export default function AdminEngagementDetail() {
         setEngagement(enriched);
         setEditedProjectName(enriched.project_name);
         setSelectedProgram(enriched.program);
+        setProgramRationale(enriched.program_rationale || "");
       }
 
       // Fetch deliverables
