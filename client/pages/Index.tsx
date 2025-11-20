@@ -67,6 +67,7 @@ type Screen =
   | "verifyEmail"
   | "sectionWelcome"
   | "question"
+  | "projectName"
   | "complete";
 
 export default function Index() {
@@ -81,6 +82,8 @@ export default function Index() {
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState<
     string | null
   >(null);
+  const [projectName, setProjectName] = useState("");
+  const [engagementId, setEngagementId] = useState<string | null>(null);
 
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
@@ -379,7 +382,7 @@ export default function Index() {
     }
 
     if (currentQuestionIndex === totalQuestions - 1) {
-      setScreen("complete");
+      setScreen("projectName");
       return;
     }
 
