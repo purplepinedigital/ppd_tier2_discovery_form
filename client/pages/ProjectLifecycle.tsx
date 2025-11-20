@@ -414,6 +414,35 @@ export default function ProjectLifecycle() {
     }
   };
 
+  const handleUpdatePackage = async () => {
+    if (!engagement || !newPackage) return;
+
+    try {
+      const client = getClientSupabase();
+      const { error } = await client
+        .from("engagements")
+        .update({ recommended_package: newPackage })
+        .eq("id", engagement.id);
+
+      if (error) throw error;
+
+      setEngagement({ ...engagement, recommended_package: newPackage });
+      setEditingPackage(false);
+
+      toast({
+        title: "✓ Package updated",
+        description: `Recommended package changed to ${newPackage}`,
+      });
+    } catch (err: any) {
+      console.error("Error updating package:", err);
+      toast({
+        title: "Error",
+        description: "Failed to update package",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getProgressPercentage = () => {
     const completedStages = completions.length;
     const totalStages = 8;
