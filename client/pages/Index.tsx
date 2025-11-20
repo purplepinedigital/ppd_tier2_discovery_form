@@ -678,7 +678,7 @@ export default function Index() {
         ) : (
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setScreen("signup")}
+              onClick={() => setScreen("login")}
               className="text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline"
               style={{ fontFamily: "Literata, serif" }}
             >
