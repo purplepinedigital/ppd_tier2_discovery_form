@@ -103,15 +103,13 @@ export async function saveFormProgress(
     } else {
       // Insert new record
       try {
-        const result = await supabase
-          .from("form_progress")
-          .insert({
-            user_id: userId,
-            engagement_id: engagementId,
-            responses,
-            current_question_index: currentQuestionIndex,
-            active_section_index: activeSectionIndex,
-          });
+        const result = await supabase.from("form_progress").insert({
+          user_id: userId,
+          engagement_id: engagementId,
+          responses,
+          current_question_index: currentQuestionIndex,
+          active_section_index: activeSectionIndex,
+        });
 
         if (result.error) {
           console.error("Error inserting form progress:", {
