@@ -53,24 +53,26 @@ export default function AdminTier1Detail() {
 
       if (!assessmentId) return;
 
-      // Fetch assessment with user email
+      // Fetch assessment
       const { data: assessmentData, error } = await supabase
         .from("tier1_assessments")
-        .select(
-          `
-          *,
-          users:user_id (email)
-        `
-        )
+        .select("*")
         .eq("id", assessmentId)
         .single();
 
       if (error) {
         console.error("Error fetching assessment:", error);
       } else if (assessmentData) {
+        // Fetch user email
+        const { data: userData } = await supabase
+          .from("auth.users")
+          .select("email")
+          .eq("id", assessmentData.user_id)
+          .single();
+
         const formatted: Tier1Assessment = {
           ...assessmentData,
-          user_email: assessmentData.users?.email || "Unknown",
+          user_email: userData?.email || "Unknown",
         };
         setAssessment(formatted);
         setInternalNotes(formatted.internal_notes || "");
