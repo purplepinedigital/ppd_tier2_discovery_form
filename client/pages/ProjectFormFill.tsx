@@ -106,9 +106,15 @@ export default function ProjectFormFill() {
           .select("*")
           .eq("id", engagementId)
           .eq("user_id", currentUser.id)
-          .single();
+          .maybeSingle();
 
-        if (engagementError) throw engagementError;
+        if (engagementError) {
+          console.error("Error loading engagement:", {
+            code: engagementError.code,
+            message: engagementError.message,
+          });
+          throw engagementError;
+        }
         if (!engagementData) {
           navigate("/project/journey");
           return;
