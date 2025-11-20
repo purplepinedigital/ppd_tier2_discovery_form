@@ -841,17 +841,25 @@ export default function AdminEngagementDetail() {
         <div className={`rounded-lg shadow p-6 mb-8 ${
           completedStages.includes(0) ? "bg-green-50" : "bg-white"
         }`}>
-          <div className="pb-6 border-b mb-6">
+          <div className={`pb-6 border-b mb-6 ${completedStages.includes(0) ? "border-green-400" : ""}`}>
             <div className="flex items-center gap-3 mb-4">
               <span
-                className="text-2xl font-bold text-[#37306B]"
+                className={`text-2xl font-bold ${
+                  completedStages.includes(0) ? "text-green-700" : "text-[#37306B]"
+                }`}
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
                 Stage 0
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                Program Selection & Decision
-              </span>
+              {completedStages.includes(0) ? (
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-200 text-green-800">
+                  ✓ Completed
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                  Program Selection & Decision
+                </span>
+              )}
             </div>
             <h4
               className="text-xl font-bold"
