@@ -89,8 +89,10 @@ export default function AdminLoginAsUser() {
     // Set impersonation session (adminUserId can be null, we just need the impersonated user)
     setImpersonationSession(adminUserId || "admin", user.user_id, user.email);
 
-    // Navigate to user's project journey
-    window.location.href = "/project/journey";
+    // Small delay to ensure localStorage is written, then navigate
+    setTimeout(() => {
+      navigate("/project/journey");
+    }, 100);
   };
 
   const filteredUsers = users.filter(
