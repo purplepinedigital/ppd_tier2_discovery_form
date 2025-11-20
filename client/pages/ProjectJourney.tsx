@@ -413,7 +413,7 @@ export default function ProjectJourney() {
               </table>
               <div className="p-6 border-t">
                 <Button
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/?newProject=true")}
                   className="bg-green-600 hover:bg-green-700 text-white"
                   style={{ fontFamily: "Literata, serif" }}
                 >
