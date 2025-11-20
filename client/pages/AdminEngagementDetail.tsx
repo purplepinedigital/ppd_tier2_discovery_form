@@ -562,6 +562,69 @@ export default function AdminEngagementDetail() {
     }
   };
 
+  const handleMarkStageComplete = async (stageNumber: number) => {
+    setStageCompletionDialog({
+      isOpen: true,
+      stageNumber,
+      clientSatisfied: false,
+      feedbackComplete: false,
+    });
+  };
+
+  const handleConfirmStageCompletion = async () => {
+    if (!engagement || !stageCompletionDialog.stageNumber) return;
+
+    if (
+      !stageCompletionDialog.clientSatisfied ||
+      !stageCompletionDialog.feedbackComplete
+    ) {
+      toast({
+        title: "Missing Confirmation",
+        description:
+          "Please confirm both that the client is satisfied and all feedback is complete.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const client = getAdminSupabase();
+
+      const { error } = await client.from("stage_completion").insert({
+        engagement_id: engagement.id,
+        stage_number: stageCompletionDialog.stageNumber,
+      });
+
+      if (error && error.code !== "23505") {
+        throw error;
+      }
+
+      toast({
+        title: "✓ Stage Completed",
+        description: `${STAGE_NAMES[stageCompletionDialog.stageNumber]} has been marked as complete.`,
+      });
+
+      setStageCompletionDialog({
+        isOpen: false,
+        stageNumber: null,
+        clientSatisfied: false,
+        feedbackComplete: false,
+      });
+
+      await fetchEngagementData();
+    } catch (err: any) {
+      const errorMsg = err?.message || err?.details || JSON.stringify(err);
+      toast({
+        title: "Error",
+        description: errorMsg || "Failed to mark stage complete",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleLogout = () => {
     adminLogout();
     navigate("/admin/login");
