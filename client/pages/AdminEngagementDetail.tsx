@@ -997,7 +997,20 @@ export default function AdminEngagementDetail() {
               style={{ fontFamily: "Literata, serif" }}
             >
               Select Program Package
+              {tier1Assessment && (
+                <span className="ml-2 text-xs text-blue-600 font-semibold">
+                  (Recommended by Tier 1: {tier1Assessment.recommended_package})
+                </span>
+              )}
             </h5>
+            {tier1Assessment && (
+              <p
+                className="text-xs text-blue-600 mb-3"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                💡 Tip: Based on Tier 1 assessment, {tier1Assessment.recommended_package} is recommended. You can override if needed.
+              </p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {["foundation", "growth", "performance"].map((program) => (
                 <button
