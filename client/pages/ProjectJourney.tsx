@@ -93,8 +93,6 @@ export default function ProjectJourney() {
 
           setUnreadNotifications(notificationData?.length || 0);
         }
-
-        setUnreadNotifications(notificationData?.length || 0);
       } catch (err) {
         console.error("Auth check error:", err);
         navigate("/");
