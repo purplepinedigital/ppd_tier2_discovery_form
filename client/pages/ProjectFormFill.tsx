@@ -5,6 +5,7 @@ import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { formQuestions, formSections } from "@/data/discovery-form";
 import { QuestionView } from "@/components/discovery/question-view";
+import { getImpersonatedUserId } from "@/lib/admin-impersonate";
 
 let clientSupabase: any = null;
 
