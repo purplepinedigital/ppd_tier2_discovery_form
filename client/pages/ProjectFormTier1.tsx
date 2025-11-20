@@ -51,6 +51,37 @@ export default function ProjectFormTier1() {
 
   useEffect(() => {
     const getUser = async () => {
+      const impersonation = getImpersonationSession();
+
+      // If impersonating, use impersonated user info
+      if (impersonation) {
+        // Create a mock user object for impersonated session
+        const mockUser = {
+          id: impersonation.impersonatedUserId,
+          email: impersonation.impersonatedEmail,
+          user_metadata: {},
+          app_metadata: {},
+          aud: "authenticated",
+          created_at: new Date().toISOString(),
+        } as User;
+        setUser(mockUser);
+
+        // Fetch engagement data to pre-fill project name
+        if (engagementId) {
+          const { data: engagementData } = await supabase
+            .from("engagements")
+            .select("project_name")
+            .eq("id", engagementId)
+            .single();
+
+          if (engagementData) {
+            setProjectName(engagementData.project_name);
+          }
+        }
+        return;
+      }
+
+      // Otherwise, check for regular session
       const { data } = await supabase.auth.getSession();
       if (data.session) {
         setUser(data.session.user);
