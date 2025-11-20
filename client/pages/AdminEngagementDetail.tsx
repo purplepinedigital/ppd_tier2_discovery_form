@@ -1445,7 +1445,8 @@ export default function AdminEngagementDetail() {
                     )}
 
                     {/* Mark Stage Complete Button */}
-                    {stage.included &&
+                    {!isStageCompleted &&
+                      stage.included &&
                       deliverables.filter((d) => d.stage_number === stage.number)
                         .length > 0 && (
                         <button
