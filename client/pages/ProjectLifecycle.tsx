@@ -1207,14 +1207,9 @@ export default function ProjectLifecycle() {
                       {/* Client Only: Mark Incomplete Button */}
                       {stage.completed && !isImpersonating() && (
                         <Button
-                          onClick={() => {
-                            // TODO: Implement mark incomplete functionality
-                            toast({
-                              title: "Feature Coming Soon",
-                              description:
-                                "Mark incomplete feature will be available soon",
-                            });
-                          }}
+                          onClick={() =>
+                            handleMarkStageIncomplete(stage.number)
+                          }
                           className="bg-orange-600 hover:bg-orange-700 text-white w-full"
                           style={{ fontFamily: "Literata, serif" }}
                         >
