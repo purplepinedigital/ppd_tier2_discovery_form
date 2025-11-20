@@ -159,7 +159,7 @@ export default function ProjectJourney() {
         .from("form_progress")
         .select("responses")
         .eq("engagement_id", engagementId)
-        .single();
+        .maybeSingle();
 
       if (data && data.responses) {
         const answeredQuestions = Object.keys(data.responses).filter(
@@ -465,15 +465,17 @@ export default function ProjectJourney() {
                         </td>
                         <td className="px-6 py-4 text-sm space-x-2">
                           {!engagement.tier1_completed ? (
-                            <Button
-                              onClick={() =>
-                                navigate(`/project/${engagement.id}/tier1`)
-                              }
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              Fill Tier 1
-                            </Button>
+                            formProgressMap[engagement.id] === 0 ? (
+                              <Button
+                                onClick={() =>
+                                  navigate(`/project/${engagement.id}/tier1`)
+                                }
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
+                                style={{ fontFamily: "Literata, serif" }}
+                              >
+                                Fill Tier 1
+                              </Button>
+                            ) : null
                           ) : (
                             <Button
                               onClick={() => {
