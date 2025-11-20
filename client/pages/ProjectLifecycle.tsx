@@ -147,7 +147,6 @@ export default function ProjectLifecycle() {
     setIsLoading(true);
     setError(null);
     try {
-      const client = getClientSupabase();
 
       // Fetch engagement
       try {
@@ -174,7 +173,7 @@ export default function ProjectLifecycle() {
           // Fetch Tier 1 assessment if completed
           if (engagementData.tier1_assessment_id) {
             try {
-              const { data: tier1Data } = await client
+              const { data: tier1Data } = await supabase
                 .from("tier1_assessments")
                 .select("*")
                 .eq("id", engagementData.tier1_assessment_id)
@@ -190,7 +189,7 @@ export default function ProjectLifecycle() {
 
           // Fetch deliverables visible to client
           try {
-            const { data: deliverableData } = await client
+            const { data: deliverableData } = await supabase
               .from("deliverables")
               .select("*")
               .eq("engagement_id", engagementId)
@@ -201,7 +200,7 @@ export default function ProjectLifecycle() {
 
             // Fetch stage completions
             try {
-              const { data: completionData } = await client
+              const { data: completionData } = await supabase
                 .from("stage_completion")
                 .select("*")
                 .eq("engagement_id", engagementId)
@@ -213,7 +212,7 @@ export default function ProjectLifecycle() {
               if (deliverableData && deliverableData.length > 0) {
                 try {
                   const deliverableIds = deliverableData.map((d) => d.id);
-                  const { data: feedbackData } = await client
+                  const { data: feedbackData } = await supabase
                     .from("client_feedback")
                     .select("*")
                     .in("deliverable_id", deliverableIds);
@@ -274,8 +273,7 @@ export default function ProjectLifecycle() {
     completions: StageCompletion[],
   ) => {
     try {
-      const client = getClientSupabase();
-      const { data: coverageData } = await client
+      const { data: coverageData } = await supabase
         .from("stage_coverage")
         .select("*")
         .eq("program", program)
@@ -317,8 +315,7 @@ export default function ProjectLifecycle() {
   };
 
   const handleLogout = async () => {
-    const client = getClientSupabase();
-    await client.auth.signOut();
+    await supabase.auth.signOut();
     navigate("/");
   };
 
@@ -326,9 +323,7 @@ export default function ProjectLifecycle() {
     if (!engagement || !currentUser) return;
 
     try {
-      const client = getClientSupabase();
-
-      const { error } = await client.from("stage_completion").insert({
+      const { error } = await supabase.from("stage_completion").insert({
         engagement_id: engagement.id,
         stage_number: stageNumber,
       });
@@ -339,7 +334,7 @@ export default function ProjectLifecycle() {
       }
 
       // Refresh completions
-      const { data: completionData } = await client
+      const { data: completionData } = await supabase
         .from("stage_completion")
         .select("*")
         .eq("engagement_id", engagement.id)
@@ -379,9 +374,7 @@ export default function ProjectLifecycle() {
     }
 
     try {
-      const client = getClientSupabase();
-
-      const { error } = await client.from("client_feedback").insert({
+      const { error } = await supabase.from("client_feedback").insert({
         deliverable_id: deliverableId,
         engagement_id: engagement.id,
         feedback_text: feedbackText,
@@ -391,7 +384,7 @@ export default function ProjectLifecycle() {
       if (error) throw error;
 
       // Refresh feedback
-      const { data: feedbackData } = await client
+      const { data: feedbackData } = await supabase
         .from("client_feedback")
         .select("*")
         .eq("deliverable_id", deliverableId);
