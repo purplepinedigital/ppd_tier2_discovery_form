@@ -86,10 +86,8 @@ export default function AdminLoginAsUser() {
   };
 
   const handleLoginAsUser = (user: User) => {
-    if (!adminUserId) return;
-
-    // Set impersonation session
-    setImpersonationSession(adminUserId, user.user_id, user.email);
+    // Set impersonation session (adminUserId can be null, we just need the impersonated user)
+    setImpersonationSession(adminUserId || "admin", user.user_id, user.email);
 
     // Navigate to user's project journey
     window.location.href = "/project/journey";
