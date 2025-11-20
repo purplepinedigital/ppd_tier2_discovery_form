@@ -252,6 +252,35 @@ export default function AdminEngagementDetail() {
     }
   };
 
+  const handleSaveProjectName = async () => {
+    if (!editedProjectName.trim()) {
+      setError("Project name cannot be empty");
+      return;
+    }
+
+    if (!engagement) return;
+
+    setIsSaving(true);
+    setError(null);
+    try {
+      const client = getAdminSupabase();
+
+      const { error: updateError } = await client
+        .from("engagements")
+        .update({ project_name: editedProjectName })
+        .eq("id", engagement.id);
+
+      if (updateError) throw updateError;
+
+      setEngagement({ ...engagement, project_name: editedProjectName });
+      setIsEditingProjectName(false);
+    } catch (err: any) {
+      setError(err.message || "Failed to update project name");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleAddDeliverable = async (stageNumber: number) => {
     if (!newDeliverable.title.trim()) {
       alert("Please enter a title for the deliverable");
