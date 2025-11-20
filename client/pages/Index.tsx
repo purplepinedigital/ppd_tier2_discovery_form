@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { QuestionView } from "@/components/discovery/question-view";
 import { Button } from "@/components/ui/button";
 import { Signup } from "@/components/auth/signup";
