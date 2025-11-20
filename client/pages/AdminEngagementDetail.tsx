@@ -259,6 +259,26 @@ export default function AdminEngagementDetail() {
       setEngagement({ ...engagement, program: selectedProgram, program_rationale: programRationale });
       await fetchStageCoverage(selectedProgram);
 
+      // Create client notification for program assignment
+      try {
+        const { error: notifError } = await client
+          .from("client_notifications")
+          .insert({
+            engagement_id: engagement.id,
+            user_id: engagement.user_id,
+            type: "program_assigned",
+            title: `Your Program Has Been Selected!`,
+            message: `Your project has been assigned to the ${selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)} program`,
+            related_stage_number: 0,
+          });
+
+        if (notifError) {
+          console.error("Error creating notification:", notifError);
+        }
+      } catch (notifError: any) {
+        console.error("Error creating client notification:", notifError);
+      }
+
       // Send email notification to client
       try {
         await fetch("/api/engagement-program", {
