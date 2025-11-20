@@ -181,11 +181,13 @@ export default function ProjectLifecycle() {
     setIsLoading(true);
     setError(null);
     try {
+      // Use admin client if impersonating to bypass RLS policies
+      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
 
       // Fetch engagement
       try {
         console.log("Fetching engagement:", { engagementId, userId, isImpersonating: isImpersonating() });
-        const { data: engagementData, error: engagementError } = await supabase
+        const { data: engagementData, error: engagementError } = await client
           .from("engagements")
           .select("*")
           .eq("id", engagementId)
