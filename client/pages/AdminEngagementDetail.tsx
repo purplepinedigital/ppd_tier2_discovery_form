@@ -99,8 +99,9 @@ export default function AdminEngagementDetail() {
   const [editedProjectName, setEditedProjectName] = useState("");
 
   // New deliverable form
-  const [showNewDeliverableForm, setShowNewDeliverableForm] =
-    useState<number | null>(null);
+  const [showNewDeliverableForm, setShowNewDeliverableForm] = useState<
+    number | null
+  >(null);
   const [newDeliverable, setNewDeliverable] = useState({
     title: "",
     description: "",
@@ -239,7 +240,9 @@ export default function AdminEngagementDetail() {
     if (!engagement || !selectedProgram) return;
 
     if (!programRationale.trim()) {
-      setError("Please provide a rationale/decision notes explaining why this program was chosen");
+      setError(
+        "Please provide a rationale/decision notes explaining why this program was chosen",
+      );
       return;
     }
 
@@ -251,12 +254,19 @@ export default function AdminEngagementDetail() {
       // Update engagement with selected program and rationale
       const { error: updateError } = await client
         .from("engagements")
-        .update({ program: selectedProgram, program_rationale: programRationale })
+        .update({
+          program: selectedProgram,
+          program_rationale: programRationale,
+        })
         .eq("id", engagement.id);
 
       if (updateError) throw updateError;
 
-      setEngagement({ ...engagement, program: selectedProgram, program_rationale: programRationale });
+      setEngagement({
+        ...engagement,
+        program: selectedProgram,
+        program_rationale: programRationale,
+      });
       await fetchStageCoverage(selectedProgram);
 
       // Create client notification for program assignment
@@ -309,11 +319,14 @@ export default function AdminEngagementDetail() {
 
     // Check if there are any deliverables
     if (deliverables.length > 0) {
-      setError("Cannot reset program when deliverables exist. Please delete all deliverables first.");
+      setError(
+        "Cannot reset program when deliverables exist. Please delete all deliverables first.",
+      );
       return;
     }
 
-    if (!confirm("Are you sure you want to reset the program selection?")) return;
+    if (!confirm("Are you sure you want to reset the program selection?"))
+      return;
 
     setIsSaving(true);
     setError(null);
@@ -644,10 +657,7 @@ export default function AdminEngagementDetail() {
               >
                 Created
               </p>
-              <p
-                className="text-lg"
-                style={{ fontFamily: "Literata, serif" }}
-              >
+              <p className="text-lg" style={{ fontFamily: "Literata, serif" }}>
                 {new Date(engagement.created_at).toLocaleDateString()}
               </p>
             </div>
@@ -739,7 +749,10 @@ export default function AdminEngagementDetail() {
                 className="text-sm text-gray-600 mb-3"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                Explain why you selected {selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)} and how you arrived at this decision.
+                Explain why you selected{" "}
+                {selectedProgram.charAt(0).toUpperCase() +
+                  selectedProgram.slice(1)}{" "}
+                and how you arrived at this decision.
               </p>
               <textarea
                 value={programRationale}
@@ -791,7 +804,9 @@ export default function AdminEngagementDetail() {
                 className="text-green-700 text-sm font-bold mb-2"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                ✓ Program confirmed: {engagement.program.charAt(0).toUpperCase() + engagement.program.slice(1)}
+                ✓ Program confirmed:{" "}
+                {engagement.program.charAt(0).toUpperCase() +
+                  engagement.program.slice(1)}
               </p>
               <p
                 className="text-green-700 text-xs"
@@ -881,15 +896,11 @@ export default function AdminEngagementDetail() {
                               : "bg-gray-200 text-gray-800"
                           }`}
                         >
-                          {deliverable.visible_to_client
-                            ? "Visible"
-                            : "Hidden"}
+                          {deliverable.visible_to_client ? "Visible" : "Hidden"}
                         </span>
                       </div>
                       <button
-                        onClick={() =>
-                          handleDeleteDeliverable(deliverable.id)
-                        }
+                        onClick={() => handleDeleteDeliverable(deliverable.id)}
                         disabled={isSaving}
                         className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
                         style={{ fontFamily: "Literata, serif" }}
@@ -953,9 +964,7 @@ export default function AdminEngagementDetail() {
                 </div>
                 <div className="flex gap-2 mt-3">
                   <button
-                    onClick={() =>
-                      handleAddDeliverable(0)
-                    }
+                    onClick={() => handleAddDeliverable(0)}
                     disabled={isSaving}
                     className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
                     style={{ fontFamily: "Literata, serif" }}
@@ -999,7 +1008,8 @@ export default function AdminEngagementDetail() {
               className="text-blue-800 font-bold"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Confirm a program package with decision rationale in Stage 0 above to view the remaining stages.
+              Confirm a program package with decision rationale in Stage 0 above
+              to view the remaining stages.
             </p>
           </div>
         )}
@@ -1011,216 +1021,218 @@ export default function AdminEngagementDetail() {
             >
               Program Stages (Stages 1-7)
             </h3>
-            {stages.filter(s => s.number > 0).map((stage) => (
-              <div key={stage.number} className="bg-white rounded-lg shadow p-6">
-              {/* Stage Header */}
-              <div className="flex items-start justify-between mb-4 pb-4 border-b">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span
-                      className="text-2xl font-bold text-[#37306B]"
-                      style={{ fontFamily: "Epilogue, sans-serif" }}
-                    >
-                      Stage {stage.number}
-                    </span>
-                    {stage.included && (
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          stage.isLite
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-green-100 text-green-800"
-                        }`}
-                      >
-                        {stage.isLite ? "Lite" : "Included"}
-                      </span>
-                    )}
-                    {!stage.included && selectedProgram && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
-                        Not Included
-                      </span>
-                    )}
-                  </div>
-                  <h4
-                    className="text-xl font-bold"
-                    style={{ fontFamily: "Epilogue, sans-serif" }}
-                  >
-                    {stage.name}
-                  </h4>
-                </div>
-              </div>
-
-              {/* Deliverables List */}
-              <div className="mb-6">
-                <h5
-                  className="font-bold text-gray-700 mb-3"
-                  style={{ fontFamily: "Literata, serif" }}
+            {stages
+              .filter((s) => s.number > 0)
+              .map((stage) => (
+                <div
+                  key={stage.number}
+                  className="bg-white rounded-lg shadow p-6"
                 >
-                  Deliverables
-                </h5>
-
-                {deliverables
-                  .filter((d) => d.stage_number === stage.number)
-                  .length > 0 ? (
-                  <div className="space-y-3 mb-4">
-                    {deliverables
-                      .filter((d) => d.stage_number === stage.number)
-                      .map((deliverable) => (
-                        <div
-                          key={deliverable.id}
-                          className="bg-gray-50 p-4 rounded border border-gray-200 flex items-start justify-between"
+                  {/* Stage Header */}
+                  <div className="flex items-start justify-between mb-4 pb-4 border-b">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span
+                          className="text-2xl font-bold text-[#37306B]"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
                         >
-                          <div className="flex-1">
-                            <p
-                              className="font-bold text-gray-800"
-                              style={{ fontFamily: "Epilogue, sans-serif" }}
+                          Stage {stage.number}
+                        </span>
+                        {stage.included && (
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-bold ${
+                              stage.isLite
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                            }`}
+                          >
+                            {stage.isLite ? "Lite" : "Included"}
+                          </span>
+                        )}
+                        {!stage.included && selectedProgram && (
+                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
+                            Not Included
+                          </span>
+                        )}
+                      </div>
+                      <h4
+                        className="text-xl font-bold"
+                        style={{ fontFamily: "Epilogue, sans-serif" }}
+                      >
+                        {stage.name}
+                      </h4>
+                    </div>
+                  </div>
+
+                  {/* Deliverables List */}
+                  <div className="mb-6">
+                    <h5
+                      className="font-bold text-gray-700 mb-3"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Deliverables
+                    </h5>
+
+                    {deliverables.filter((d) => d.stage_number === stage.number)
+                      .length > 0 ? (
+                      <div className="space-y-3 mb-4">
+                        {deliverables
+                          .filter((d) => d.stage_number === stage.number)
+                          .map((deliverable) => (
+                            <div
+                              key={deliverable.id}
+                              className="bg-gray-50 p-4 rounded border border-gray-200 flex items-start justify-between"
                             >
-                              {deliverable.title}
-                            </p>
-                            {deliverable.description && (
-                              <p
-                                className="text-sm text-gray-600 mt-1"
+                              <div className="flex-1">
+                                <p
+                                  className="font-bold text-gray-800"
+                                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                                >
+                                  {deliverable.title}
+                                </p>
+                                {deliverable.description && (
+                                  <p
+                                    className="text-sm text-gray-600 mt-1"
+                                    style={{ fontFamily: "Literata, serif" }}
+                                  >
+                                    {deliverable.description}
+                                  </p>
+                                )}
+                                {deliverable.url && (
+                                  <a
+                                    href={deliverable.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-sm text-[#37306B] hover:underline mt-2 break-all"
+                                    style={{ fontFamily: "Literata, serif" }}
+                                  >
+                                    {deliverable.url}
+                                  </a>
+                                )}
+                                {deliverable.original_filename && (
+                                  <p
+                                    className="text-xs text-gray-500 mt-1"
+                                    style={{ fontFamily: "Literata, serif" }}
+                                  >
+                                    File: {deliverable.original_filename}
+                                  </p>
+                                )}
+                                <span
+                                  className={`inline-block text-xs font-bold mt-2 px-2 py-1 rounded ${
+                                    deliverable.visible_to_client
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-gray-200 text-gray-800"
+                                  }`}
+                                >
+                                  {deliverable.visible_to_client
+                                    ? "Visible"
+                                    : "Hidden"}
+                                </span>
+                              </div>
+                              <button
+                                onClick={() =>
+                                  handleDeleteDeliverable(deliverable.id)
+                                }
+                                disabled={isSaving}
+                                className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
                                 style={{ fontFamily: "Literata, serif" }}
                               >
-                                {deliverable.description}
-                              </p>
-                            )}
-                            {deliverable.url && (
-                              <a
-                                href={deliverable.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sm text-[#37306B] hover:underline mt-2 break-all"
-                                style={{ fontFamily: "Literata, serif" }}
-                              >
-                                {deliverable.url}
-                              </a>
-                            )}
-                            {deliverable.original_filename && (
-                              <p
-                                className="text-xs text-gray-500 mt-1"
-                                style={{ fontFamily: "Literata, serif" }}
-                              >
-                                File: {deliverable.original_filename}
-                              </p>
-                            )}
-                            <span
-                              className={`inline-block text-xs font-bold mt-2 px-2 py-1 rounded ${
-                                deliverable.visible_to_client
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-gray-200 text-gray-800"
-                              }`}
-                            >
-                              {deliverable.visible_to_client
-                                ? "Visible"
-                                : "Hidden"}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() =>
-                              handleDeleteDeliverable(deliverable.id)
+                                Delete
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    ) : (
+                      <p
+                        className="text-gray-400 italic text-sm mb-4"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        No deliverables added yet
+                      </p>
+                    )}
+
+                    {/* Add Deliverable Form */}
+                    {showNewDeliverableForm === stage.number ? (
+                      <div className="bg-gray-50 p-4 rounded border-2 border-[#37306B]">
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            placeholder="Deliverable title"
+                            value={newDeliverable.title}
+                            onChange={(e) =>
+                              setNewDeliverable({
+                                ...newDeliverable,
+                                title: e.target.value,
+                              })
                             }
+                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                            style={{ fontFamily: "Literata, serif" }}
+                          />
+                          <textarea
+                            placeholder="Description (optional)"
+                            value={newDeliverable.description}
+                            onChange={(e) =>
+                              setNewDeliverable({
+                                ...newDeliverable,
+                                description: e.target.value,
+                              })
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded min-h-[80px] focus:outline-none focus:border-[#37306B]"
+                            style={{ fontFamily: "Literata, serif" }}
+                          />
+                          <input
+                            type="url"
+                            placeholder="URL or file link"
+                            value={newDeliverable.url}
+                            onChange={(e) =>
+                              setNewDeliverable({
+                                ...newDeliverable,
+                                url: e.target.value,
+                              })
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                            style={{ fontFamily: "Literata, serif" }}
+                          />
+                        </div>
+                        <div className="flex gap-2 mt-3">
+                          <button
+                            onClick={() => handleAddDeliverable(stage.number)}
                             disabled={isSaving}
-                            className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
+                            className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
                             style={{ fontFamily: "Literata, serif" }}
                           >
-                            Delete
+                            Add Deliverable
+                          </button>
+                          <button
+                            onClick={() => {
+                              setShowNewDeliverableForm(null);
+                              setNewDeliverable({
+                                title: "",
+                                description: "",
+                                url: "",
+                              });
+                            }}
+                            disabled={isSaving}
+                            className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            Cancel
                           </button>
                         </div>
-                      ))}
-                  </div>
-                ) : (
-                  <p
-                    className="text-gray-400 italic text-sm mb-4"
-                    style={{ fontFamily: "Literata, serif" }}
-                  >
-                    No deliverables added yet
-                  </p>
-                )}
-
-                {/* Add Deliverable Form */}
-                {showNewDeliverableForm === stage.number ? (
-                  <div className="bg-gray-50 p-4 rounded border-2 border-[#37306B]">
-                    <div className="space-y-3">
-                      <input
-                        type="text"
-                        placeholder="Deliverable title"
-                        value={newDeliverable.title}
-                        onChange={(e) =>
-                          setNewDeliverable({
-                            ...newDeliverable,
-                            title: e.target.value,
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
-                        style={{ fontFamily: "Literata, serif" }}
-                      />
-                      <textarea
-                        placeholder="Description (optional)"
-                        value={newDeliverable.description}
-                        onChange={(e) =>
-                          setNewDeliverable({
-                            ...newDeliverable,
-                            description: e.target.value,
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded min-h-[80px] focus:outline-none focus:border-[#37306B]"
-                        style={{ fontFamily: "Literata, serif" }}
-                      />
-                      <input
-                        type="url"
-                        placeholder="URL or file link"
-                        value={newDeliverable.url}
-                        onChange={(e) =>
-                          setNewDeliverable({
-                            ...newDeliverable,
-                            url: e.target.value,
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
-                        style={{ fontFamily: "Literata, serif" }}
-                      />
-                    </div>
-                    <div className="flex gap-2 mt-3">
+                      </div>
+                    ) : (
                       <button
-                        onClick={() =>
-                          handleAddDeliverable(stage.number)
-                        }
+                        onClick={() => setShowNewDeliverableForm(stage.number)}
                         disabled={isSaving}
                         className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Add Deliverable
+                        + Add Deliverable
                       </button>
-                      <button
-                        onClick={() => {
-                          setShowNewDeliverableForm(null);
-                          setNewDeliverable({
-                            title: "",
-                            description: "",
-                            url: "",
-                          });
-                        }}
-                        disabled={isSaving}
-                        className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                    )}
                   </div>
-                ) : (
-                  <button
-                    onClick={() => setShowNewDeliverableForm(stage.number)}
-                    disabled={isSaving}
-                    className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
-                    style={{ fontFamily: "Literata, serif" }}
-                  >
-                    + Add Deliverable
-                  </button>
-                )}
-              </div>
-              </div>
-            ))}
+                </div>
+              ))}
           </div>
         )}
       </main>

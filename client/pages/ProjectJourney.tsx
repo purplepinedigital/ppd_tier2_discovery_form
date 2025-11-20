@@ -42,7 +42,9 @@ export default function ProjectJourney() {
         const client = getClientSupabase();
 
         // Get current user
-        const { data: { user } } = await client.auth.getUser();
+        const {
+          data: { user },
+        } = await client.auth.getUser();
         if (!user) {
           navigate("/");
           return;
@@ -202,7 +204,9 @@ export default function ProjectJourney() {
         {/* Loading state */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p style={{ fontFamily: "Literata, serif" }}>Loading your projects...</p>
+            <p style={{ fontFamily: "Literata, serif" }}>
+              Loading your projects...
+            </p>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow overflow-x-auto">

@@ -8,7 +8,7 @@ interface EmailNotification {
 }
 
 export async function sendEmailNotification(
-  notification: EmailNotification
+  notification: EmailNotification,
 ): Promise<void> {
   try {
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
@@ -16,7 +16,7 @@ export async function sendEmailNotification(
 
     if (!supabaseUrl || !supabaseServiceKey) {
       console.warn(
-        "Email notification: Supabase configuration missing, logging instead"
+        "Email notification: Supabase configuration missing, logging instead",
       );
       logEmailNotification(notification);
       return;
@@ -43,7 +43,7 @@ export async function sendEmailNotification(
     // });
 
     console.log(
-      `Email notification queued for ${notification.to}: ${notification.subject}`
+      `Email notification queued for ${notification.to}: ${notification.subject}`,
     );
   } catch (error: any) {
     console.error("Error sending email notification:", error?.message || error);
@@ -54,7 +54,7 @@ export async function sendEmailNotification(
 export function generateProgramAssignedEmail(
   clientName: string,
   projectName: string,
-  program: string
+  program: string,
 ): string {
   const programDisplay =
     program.charAt(0).toUpperCase() + program.slice(1).toLowerCase();
@@ -89,7 +89,7 @@ export function generateDeliverableAddedEmail(
   clientName: string,
   projectName: string,
   stageName: string,
-  deliverableTitle: string
+  deliverableTitle: string,
 ): string {
   return `
     <html>

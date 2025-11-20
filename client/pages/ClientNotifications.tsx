@@ -41,7 +41,9 @@ export default function ClientNotifications() {
       try {
         const client = getClientSupabase();
 
-        const { data: { user } } = await client.auth.getUser();
+        const {
+          data: { user },
+        } = await client.auth.getUser();
         if (!user) {
           navigate("/");
           return;
@@ -98,8 +100,8 @@ export default function ClientNotifications() {
 
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === notificationId ? { ...n, is_read: true } : n
-        )
+          n.id === notificationId ? { ...n, is_read: true } : n,
+        ),
       );
     } catch (err) {
       console.error("Error marking notification as read:", err);
@@ -125,9 +127,7 @@ export default function ClientNotifications() {
 
       if (error) throw error;
 
-      setNotifications((prev) =>
-        prev.map((n) => ({ ...n, is_read: true }))
-      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
     } catch (err) {
       console.error("Error marking all as read:", err);
     }
@@ -190,7 +190,8 @@ export default function ClientNotifications() {
               className="text-gray-600 text-sm mt-1"
               style={{ fontFamily: "Literata, serif" }}
             >
-              {notifications.length} {notifications.length === 1 ? "notification" : "notifications"}
+              {notifications.length}{" "}
+              {notifications.length === 1 ? "notification" : "notifications"}
             </p>
           </div>
           {notifications.some((n) => !n.is_read) && (
@@ -207,7 +208,9 @@ export default function ClientNotifications() {
         {/* Notifications List */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p style={{ fontFamily: "Literata, serif" }}>Loading notifications...</p>
+            <p style={{ fontFamily: "Literata, serif" }}>
+              Loading notifications...
+            </p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-8 text-center">
@@ -235,8 +238,7 @@ export default function ClientNotifications() {
                     : "bg-white border-2 border-[#37306B]"
                 }`}
                 onClick={() =>
-                  !notification.is_read &&
-                  handleMarkAsRead(notification.id)
+                  !notification.is_read && handleMarkAsRead(notification.id)
                 }
               >
                 <div className="flex gap-4">
@@ -277,7 +279,7 @@ export default function ClientNotifications() {
                           day: "numeric",
                           hour: "2-digit",
                           minute: "2-digit",
-                        }
+                        },
                       )}
                     </p>
                   </div>

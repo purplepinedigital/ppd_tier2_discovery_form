@@ -97,7 +97,9 @@ export default function ProjectLifecycle() {
   const [stages, setStages] = useState<Stage[]>([]);
   const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
   const [completions, setCompletions] = useState<StageCompletion[]>([]);
-  const [feedbackMap, setFeedbackMap] = useState<Record<string, ClientFeedback[]>>({});
+  const [feedbackMap, setFeedbackMap] = useState<
+    Record<string, ClientFeedback[]>
+  >({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
@@ -110,13 +112,15 @@ export default function ProjectLifecycle() {
     const checkAuthAndFetchData = async () => {
       try {
         const client = getClientSupabase();
-        
-        const { data: { user } } = await client.auth.getUser();
+
+        const {
+          data: { user },
+        } = await client.auth.getUser();
         if (!user) {
           navigate("/");
           return;
         }
-        
+
         setCurrentUser(user.id);
 
         if (engagementId) {
@@ -198,7 +202,10 @@ export default function ProjectLifecycle() {
 
         // Fetch stage coverage if program is set
         if (engagementData.program) {
-          await fetchStageCoverage(engagementData.program, completionData || []);
+          await fetchStageCoverage(
+            engagementData.program,
+            completionData || [],
+          );
         } else {
           const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
             number: i,
@@ -219,7 +226,10 @@ export default function ProjectLifecycle() {
     }
   };
 
-  const fetchStageCoverage = async (program: string, completions: StageCompletion[]) => {
+  const fetchStageCoverage = async (
+    program: string,
+    completions: StageCompletion[],
+  ) => {
     try {
       const client = getClientSupabase();
       const { data: coverageData } = await client
@@ -237,7 +247,9 @@ export default function ProjectLifecycle() {
             description: STAGE_DESCRIPTIONS[coverage.stage_number],
             included: coverage.is_included,
             isLite: coverage.is_lite,
-            completed: completions.some((c) => c.stage_number === coverage.stage_number),
+            completed: completions.some(
+              (c) => c.stage_number === coverage.stage_number,
+            ),
           };
         });
       }
@@ -291,12 +303,12 @@ export default function ProjectLifecycle() {
         .order("stage_number", { ascending: true });
 
       setCompletions(completionData || []);
-      
+
       // Update stages to reflect completion
       setStages((prev) =>
         prev.map((s) =>
-          s.number === stageNumber ? { ...s, completed: true } : s
-        )
+          s.number === stageNumber ? { ...s, completed: true } : s,
+        ),
       );
 
       toast({
@@ -512,11 +524,16 @@ export default function ProjectLifecycle() {
           </h3>
 
           {stages.map((stage) => (
-            <div key={stage.number} className="bg-white rounded-lg shadow overflow-hidden">
+            <div
+              key={stage.number}
+              className="bg-white rounded-lg shadow overflow-hidden"
+            >
               {/* Stage Header */}
               <div
                 className={`p-4 md:p-6 cursor-pointer border-l-4 transition-all ${
-                  expandedStage === stage.number ? "bg-gray-50" : "hover:bg-gray-50"
+                  expandedStage === stage.number
+                    ? "bg-gray-50"
+                    : "hover:bg-gray-50"
                 } ${
                   stage.completed
                     ? "border-green-600 bg-green-50"
@@ -524,7 +541,7 @@ export default function ProjectLifecycle() {
                 }`}
                 onClick={() =>
                   setExpandedStage(
-                    expandedStage === stage.number ? null : stage.number
+                    expandedStage === stage.number ? null : stage.number,
                   )
                 }
               >
@@ -625,7 +642,9 @@ export default function ProjectLifecycle() {
                                 <div className="flex-1">
                                   <p
                                     className="font-bold text-gray-800"
-                                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                                    style={{
+                                      fontFamily: "Epilogue, sans-serif",
+                                    }}
                                   >
                                     {deliverable.title}
                                   </p>
@@ -654,7 +673,7 @@ export default function ProjectLifecycle() {
                                     setShowFeedback(
                                       showFeedback === deliverable.id
                                         ? null
-                                        : deliverable.id
+                                        : deliverable.id,
                                     );
                                   }}
                                   className="bg-[#37306B] hover:bg-[#2C2758] text-white text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 flex-shrink-0"
@@ -680,15 +699,21 @@ export default function ProjectLifecycle() {
                                         )}
                                         <p
                                           className="text-gray-700"
-                                          style={{ fontFamily: "Literata, serif" }}
+                                          style={{
+                                            fontFamily: "Literata, serif",
+                                          }}
                                         >
                                           {fb.feedback_text}
                                         </p>
                                         <p
                                           className="text-gray-400 text-xs mt-1"
-                                          style={{ fontFamily: "Literata, serif" }}
+                                          style={{
+                                            fontFamily: "Literata, serif",
+                                          }}
                                         >
-                                          {new Date(fb.created_at).toLocaleDateString()}
+                                          {new Date(
+                                            fb.created_at,
+                                          ).toLocaleDateString()}
                                         </p>
                                       </div>
                                     ))}
@@ -785,8 +810,9 @@ export default function ProjectLifecycle() {
               className="text-green-700 text-lg"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Congratulations! You've completed all stages of your lifecycle journey with us. 
-              We're excited about the amazing things you'll achieve with your new brand!
+              Congratulations! You've completed all stages of your lifecycle
+              journey with us. We're excited about the amazing things you'll
+              achieve with your new brand!
             </p>
           </div>
         )}

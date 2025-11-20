@@ -235,7 +235,9 @@ export default function AdminEngagements() {
         {/* Loading state */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p style={{ fontFamily: "Literata, serif" }}>Loading engagements...</p>
+            <p style={{ fontFamily: "Literata, serif" }}>
+              Loading engagements...
+            </p>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow overflow-x-auto">

@@ -559,9 +559,7 @@ export default function Index() {
         )}
       </header>
 
-      <main
-        className="flex flex-1 items-center justify-center px-5 sm:px-7.5 py-8 sm:py-11"
-      >
+      <main className="flex flex-1 items-center justify-center px-5 sm:px-7.5 py-8 sm:py-11">
         {screen === "hero" ? (
           <section className="w-full max-w-[1332px] space-y-12">
             <div className="flex flex-col gap-8 lg:gap-12">
@@ -682,12 +680,8 @@ export default function Index() {
         {screen === "intro" ? (
           <section className="w-full max-w-[1332px]">
             <div className="grid gap-6 lg:grid-cols-2">
-              <div
-                className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 sm:p-7.5"
-              >
-                <div
-                  className="space-y-6 flex flex-col sm:block"
-                >
+              <div className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 sm:p-7.5">
+                <div className="space-y-6 flex flex-col sm:block">
                   <p
                     className="text-base font-normal"
                     style={{ fontFamily: "Literata, serif" }}
@@ -1098,7 +1092,8 @@ export default function Index() {
                 className="max-w-[560px] text-center text-base font-normal leading-normal"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                Give your project a name so we can organize your discovery insights and track your journey through the program.
+                Give your project a name so we can organize your discovery
+                insights and track your journey through the program.
               </p>
             </div>
             <div className="w-full max-w-md space-y-4">

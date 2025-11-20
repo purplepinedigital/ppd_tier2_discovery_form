@@ -618,7 +618,14 @@ const handler: Handler = async (event) => {
   if (path.includes("/api/engagement-program") && event.httpMethod === "POST") {
     try {
       const body = JSON.parse(event.body || "{}");
-      const { engagement_id, program, user_id, project_name, user_email, user_name } = body;
+      const {
+        engagement_id,
+        program,
+        user_id,
+        project_name,
+        user_email,
+        user_name,
+      } = body;
 
       if (!engagement_id || !program || !user_id) {
         return {
@@ -629,7 +636,8 @@ const handler: Handler = async (event) => {
       }
 
       // Log the program assignment notification
-      const programDisplay = program.charAt(0).toUpperCase() + program.slice(1).toLowerCase();
+      const programDisplay =
+        program.charAt(0).toUpperCase() + program.slice(1).toLowerCase();
       console.log(`
         [${new Date().toISOString()}] PROGRAM ASSIGNMENT NOTIFICATION
         To: ${user_email}
@@ -657,10 +665,20 @@ const handler: Handler = async (event) => {
   }
 
   // Deliverable addition endpoint with email notification
-  if (path.includes("/api/deliverable-notification") && event.httpMethod === "POST") {
+  if (
+    path.includes("/api/deliverable-notification") &&
+    event.httpMethod === "POST"
+  ) {
     try {
       const body = JSON.parse(event.body || "{}");
-      const { engagement_id, deliverable_title, stage_name, project_name, user_email, user_name } = body;
+      const {
+        engagement_id,
+        deliverable_title,
+        stage_name,
+        project_name,
+        user_email,
+        user_name,
+      } = body;
 
       if (!engagement_id || !deliverable_title || !project_name) {
         return {
