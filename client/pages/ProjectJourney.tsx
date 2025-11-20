@@ -563,7 +563,7 @@ export default function ProjectJourney() {
                             </Button>
                           )}
                           <Button
-                            onClick={() => handleDeleteProject(engagement.id)}
+                            onClick={() => handleDeleteProject(engagement.id, engagement.project_name)}
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
                             style={{ fontFamily: "Literata, serif" }}
                           >
