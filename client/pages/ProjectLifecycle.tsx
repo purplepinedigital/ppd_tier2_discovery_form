@@ -115,6 +115,7 @@ export default function ProjectLifecycle() {
   const { toast } = useToast();
 
   const [engagement, setEngagement] = useState<Engagement | null>(null);
+  const [tier1Assessment, setTier1Assessment] = useState<Tier1Assessment | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
   const [completions, setCompletions] = useState<StageCompletion[]>([]);
@@ -128,6 +129,8 @@ export default function ProjectLifecycle() {
   const [feedbackText, setFeedbackText] = useState("");
   const [rating, setRating] = useState<number | null>(null);
   const [expandedStage, setExpandedStage] = useState<number | null>(null);
+  const [editingPackage, setEditingPackage] = useState(false);
+  const [newPackage, setNewPackage] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
