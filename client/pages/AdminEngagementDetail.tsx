@@ -61,6 +61,30 @@ interface Deliverable {
   visible_to_client: boolean;
 }
 
+interface Tier1Assessment {
+  id: string;
+  engagement_id: string;
+  business_name: string;
+  industry: string;
+  phone: string;
+  current_state: string;
+  needs_array: string[];
+  website_scope: string;
+  marketing_timing: string;
+  budget_range: string;
+  timeline_expectation: string;
+  target_date: string | null;
+  primary_goal: string;
+  recommended_package: string;
+  recommendation_confidence: string;
+  budget_aligned: boolean;
+  has_mismatch: boolean;
+  mismatch_type: string | null;
+  reasoning: any;
+  created_at: string;
+  updated_at: string;
+}
+
 const STAGE_DESCRIPTIONS: Record<number, string> = {
   0: "Deep Discovery & Package Decision - Initial discovery phase to determine program fit",
   1: "Identity & Positioning - Define who you are and where you fit in the market",
