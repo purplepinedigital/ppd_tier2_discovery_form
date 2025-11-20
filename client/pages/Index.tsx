@@ -580,15 +580,24 @@ export default function Index() {
             </button>
           </div>
         ) : (
-          <a
-            href="https://purplepine.digital"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline sm:inline"
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Go to PurplePine.Digital
-          </a>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setScreen("signup")}
+              className="text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Login
+            </button>
+            <a
+              href="https://purplepine.digital"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden text-sm font-semibold text-[#37306B] underline-offset-4 hover:underline sm:inline"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Go to PurplePine.Digital
+            </a>
+          </div>
         )}
       </header>
 
