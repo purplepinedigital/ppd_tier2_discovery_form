@@ -152,7 +152,15 @@ export default function ProjectJourney() {
   };
 
   const handleEditProject = (engagementId: string) => {
-    navigate(`/project/lifecycle/${engagementId}`);
+    // Check if form is complete (30 questions filled)
+    const progress = formProgressMap[engagementId] || 0;
+    if (progress >= 30) {
+      // Form complete - go to lifecycle page
+      navigate(`/project/lifecycle/${engagementId}`);
+    } else {
+      // Form incomplete - go to form filling page
+      navigate(`/project/form/${engagementId}`);
+    }
   };
 
   const handleLogout = async () => {
