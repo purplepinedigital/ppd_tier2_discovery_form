@@ -1207,12 +1207,12 @@ export default function Index() {
                 {engagementId && (
                   <Button
                     onClick={() => {
-                      window.location.href = `/project/journey/${engagementId}`;
+                      window.location.href = `/project/lifecycle/${engagementId}`;
                     }}
                     className="bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE] px-8 py-3"
                     style={{ fontFamily: "Literata, serif" }}
                   >
-                    See your next steps
+                    View Your Lifecycle Roadmap
                   </Button>
                 )}
                 <Button
