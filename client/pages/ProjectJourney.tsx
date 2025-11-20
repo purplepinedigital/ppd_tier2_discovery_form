@@ -83,12 +83,16 @@ export default function ProjectJourney() {
 
         await fetchEngagements(userToFetch);
 
-        // Fetch unread notifications count
-        const { data: notificationData } = await client
-          .from("client_notifications")
-          .select("id", { count: "exact" })
-          .eq("user_id", user.id)
-          .eq("is_read", false);
+        // Fetch unread notifications count (only if logged in, not impersonating)
+        if (user && !impersonation) {
+          const { data: notificationData } = await client
+            .from("client_notifications")
+            .select("id", { count: "exact" })
+            .eq("user_id", user.id)
+            .eq("is_read", false);
+
+          setUnreadNotifications(notificationData?.length || 0);
+        }
 
         setUnreadNotifications(notificationData?.length || 0);
       } catch (err) {
