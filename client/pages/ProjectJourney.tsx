@@ -151,18 +151,6 @@ export default function ProjectJourney() {
     }
   };
 
-  const handleEditProject = (engagementId: string) => {
-    // Check if form is complete (30 questions filled)
-    const progress = formProgressMap[engagementId] || 0;
-    if (progress >= 30) {
-      // Form complete - go to lifecycle page
-      navigate(`/project/lifecycle/${engagementId}`);
-    } else {
-      // Form incomplete - go back to Index.tsx to fill form
-      window.location.href = `/?engagement=${engagementId}`;
-    }
-  };
-
   const handleLogout = async () => {
     const client = getClientSupabase();
     await client.auth.signOut();
