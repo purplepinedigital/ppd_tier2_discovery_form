@@ -54,6 +54,9 @@ export async function saveFormProgress(
       console.error("Error checking form progress:", {
         code: checkError.code,
         message: checkError.message,
+        status: checkError.status,
+        hint: checkError.hint,
+        details: checkError.details,
       });
     }
 
