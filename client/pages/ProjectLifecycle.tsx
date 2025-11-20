@@ -165,6 +165,7 @@ export default function ProjectLifecycle() {
 
       // Fetch engagement
       try {
+        console.log("Fetching engagement:", { engagementId, userId, isImpersonating: isImpersonating() });
         const { data: engagementData, error: engagementError } = await supabase
           .from("engagements")
           .select("*")
@@ -172,12 +173,21 @@ export default function ProjectLifecycle() {
           .eq("user_id", userId)
           .maybeSingle();
 
+        console.log("Engagement fetch result:", { data: engagementData, error: engagementError });
+
         if (engagementError) {
+          console.error("Engagement fetch error:", engagementError);
           if (engagementError.code === "PGRST116") {
             setError("Engagement not found or you don't have access to it");
           } else {
             setError(engagementError.message);
           }
+          return;
+        }
+
+        if (!engagementData) {
+          console.warn("No engagement data found for:", { engagementId, userId });
+          setError(`Engagement ${engagementId} not found for user ${userId}`);
           return;
         }
 
