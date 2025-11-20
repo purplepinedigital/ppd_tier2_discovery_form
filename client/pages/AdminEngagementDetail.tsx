@@ -914,8 +914,15 @@ export default function AdminEngagementDetail() {
         </div>
 
         {/* Stages and Deliverables */}
-        <div className="space-y-6">
-          {stages.map((stage) => (
+        {selectedProgram && (
+          <div className="space-y-6">
+            <h3
+              className="text-2xl font-bold"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              Program Stages (Stages 1-7)
+            </h3>
+            {stages.filter(s => s.number > 0).map((stage) => (
             <div key={stage.number} className="bg-white rounded-lg shadow p-6">
               {/* Stage Header */}
               <div className="flex items-start justify-between mb-4 pb-4 border-b">
@@ -1124,8 +1131,9 @@ export default function AdminEngagementDetail() {
                 )}
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
