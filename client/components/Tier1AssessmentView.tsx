@@ -31,6 +31,7 @@ interface Tier1AssessmentViewProps {
 export default function Tier1AssessmentView({
   assessment,
   isLoading,
+  onViewFullAssessment,
 }: Tier1AssessmentViewProps) {
   if (isLoading) {
     return (
