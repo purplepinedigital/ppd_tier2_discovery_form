@@ -478,7 +478,7 @@ const handler: Handler = async (event) => {
   const path = event.path || "";
 
   // Klaviyo contact route
-  if (path.includes("/api/klaviyo/contact") && event.httpMethod === "POST") {
+  if ((path.includes("/api/klaviyo/contact") || path.includes("/klaviyo/contact")) && event.httpMethod === "POST") {
     try {
       const body = JSON.parse(event.body || "{}");
       const result = await handleKlaviyoContact(body);
