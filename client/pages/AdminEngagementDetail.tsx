@@ -1561,18 +1561,18 @@ export default function AdminEngagementDetail() {
               >
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction
+              <button
                 onClick={handleConfirmStageCompletion}
                 disabled={
                   isSaving ||
                   !stageCompletionDialog.clientSatisfied ||
                   !stageCompletionDialog.feedbackComplete
                 }
-                className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-50"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-bold disabled:opacity-50"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                Mark Complete
-              </AlertDialogAction>
+                {isSaving ? "Processing..." : "Mark Complete"}
+              </button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
