@@ -1219,39 +1219,58 @@ export default function AdminEngagementDetail() {
                   key={stage.number}
                   className="bg-white rounded-lg shadow p-6"
                 >
-                  {/* Stage Header */}
-                  <div className="flex items-start justify-between mb-4 pb-4 border-b">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span
-                          className="text-2xl font-bold text-[#37306B]"
+                  {/* Stage Header - Clickable for expand/collapse */}
+                  <div
+                    onClick={toggleExpand}
+                    className={`p-6 cursor-pointer transition-all ${
+                      isStageCompleted ? "bg-green-50 border-b-2 border-green-400" : "border-b"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span
+                            className={`text-2xl font-bold ${
+                              isStageCompleted ? "text-green-700" : "text-[#37306B]"
+                            }`}
+                            style={{ fontFamily: "Epilogue, sans-serif" }}
+                          >
+                            Stage {stage.number}
+                          </span>
+                          {isStageCompleted && (
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-200 text-green-800">
+                              ✓ Completed
+                            </span>
+                          )}
+                          {!isStageCompleted && stage.included && (
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                stage.isLite
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-green-100 text-green-800"
+                              }`}
+                            >
+                              {stage.isLite ? "Lite" : "Included"}
+                            </span>
+                          )}
+                          {!isStageCompleted && !stage.included && selectedProgram && (
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
+                              Not Included
+                            </span>
+                          )}
+                        </div>
+                        <h4
+                          className={`text-xl font-bold ${
+                            isStageCompleted ? "text-green-700" : ""
+                          }`}
                           style={{ fontFamily: "Epilogue, sans-serif" }}
                         >
-                          Stage {stage.number}
-                        </span>
-                        {stage.included && (
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              stage.isLite
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-green-100 text-green-800"
-                            }`}
-                          >
-                            {stage.isLite ? "Lite" : "Included"}
-                          </span>
-                        )}
-                        {!stage.included && selectedProgram && (
-                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
-                            Not Included
-                          </span>
-                        )}
+                          {stage.name}
+                        </h4>
                       </div>
-                      <h4
-                        className="text-xl font-bold"
-                        style={{ fontFamily: "Epilogue, sans-serif" }}
-                      >
-                        {stage.name}
-                      </h4>
+                      <span className={`text-2xl transition-transform ${isStageExpanded ? "" : "rotate-90"}`}>
+                        ▼
+                      </span>
                     </div>
                   </div>
 
