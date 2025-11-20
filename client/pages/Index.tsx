@@ -695,15 +695,9 @@ export default function Index() {
                     Why should you fill this?
                   </p>
                   <h2
-                    className="text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight"
+                    className="text-2xl sm:text-5xl font-bold leading-tight md:text-6xl lg:text-[71px] lg:leading-tight w-full"
                     style={{
                       fontFamily: "Epilogue, sans-serif",
-                      lineHeight: "72px",
-                      "@media (max-width: 640px)": {
-                        fontSize: "32px",
-                        lineHeight: "34px",
-                        width: "100%",
-                      },
                     }}
                   >
                     ~1.2 million businesses launch every month.
