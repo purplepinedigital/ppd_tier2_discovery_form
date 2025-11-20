@@ -49,12 +49,25 @@ export default function ProjectFormTier1() {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
         setUser(data.session.user);
+
+        // Fetch engagement data to pre-fill project name
+        if (engagementId) {
+          const { data: engagementData } = await supabase
+            .from("engagements")
+            .select("project_name")
+            .eq("id", engagementId)
+            .single();
+
+          if (engagementData) {
+            setProjectName(engagementData.project_name);
+          }
+        }
       } else {
         navigate("/");
       }
     };
     getUser();
-  }, [navigate]);
+  }, [navigate, engagementId]);
 
   const industries = [
     "Professional Services",
@@ -937,7 +950,7 @@ export default function ProjectFormTier1() {
                       </div>
                       <div className="text-sm text-gray-600">
                         Build your foundation now (₹75K-₹1.5L), add Growth later
-                        (��2.5L-₹3L additional)
+                        (₹2.5L-₹3L additional)
                       </div>
                     </div>
                   </label>
