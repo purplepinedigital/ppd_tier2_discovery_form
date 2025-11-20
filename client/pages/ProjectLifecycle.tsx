@@ -379,7 +379,9 @@ export default function ProjectLifecycle() {
     if (!engagement || !currentUser) return;
 
     try {
-      const { error } = await supabase.from("stage_completion").insert({
+      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+
+      const { error } = await client.from("stage_completion").insert({
         engagement_id: engagement.id,
         stage_number: stageNumber,
       });
@@ -390,7 +392,7 @@ export default function ProjectLifecycle() {
       }
 
       // Refresh completions
-      const { data: completionData } = await supabase
+      const { data: completionData } = await client
         .from("stage_completion")
         .select("*")
         .eq("engagement_id", engagement.id)
