@@ -114,6 +114,8 @@ export default function AdminEngagementDetail() {
   const [engagement, setEngagement] = useState<Engagement | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
+  const [tier1Assessment, setTier1Assessment] = useState<Tier1Assessment | null>(null);
+  const [tier1Loading, setTier1Loading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
