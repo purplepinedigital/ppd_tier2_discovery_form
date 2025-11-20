@@ -216,14 +216,17 @@ export default function ProjectJourney() {
     }
   };
 
-  const handleDeleteProject = async (engagementId: string) => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this project? This action cannot be undone.",
-      )
-    ) {
-      return;
-    }
+  const handleDeleteProject = (engagementId: string, projectName: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      engagementId,
+      projectName,
+    });
+  };
+
+  const confirmDeleteProject = async () => {
+    const engagementId = deleteConfirm.engagementId;
+    if (!engagementId) return;
 
     try {
       const client = getClientSupabase();
@@ -251,14 +254,17 @@ export default function ProjectJourney() {
       if (error) {
         console.error("Supabase delete error:", error);
         alert(`Failed to delete project: ${error.message}`);
+        setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
         return;
       }
 
       // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
+      setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
     } catch (error) {
       console.error("Error deleting project:", error);
       alert("Failed to delete project. Please check the browser console for details.");
+      setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
     }
   };
 
