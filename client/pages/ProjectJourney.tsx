@@ -344,10 +344,10 @@ export default function ProjectJourney() {
                 </p>
                 <Button
                   onClick={() => navigate("/")}
-                  className="bg-[#37306B] hover:bg-[#2C2758] text-white"
+                  className="bg-green-600 hover:bg-green-700 text-white"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  Start Discovery Form
+                  Create New Project
                 </Button>
               </div>
             ) : (
