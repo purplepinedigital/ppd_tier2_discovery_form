@@ -332,10 +332,24 @@ export default function AdminEngagementDetail() {
       setShowNewDeliverableForm(null);
       await fetchEngagementData();
 
-      // TODO: Send email notification to client
-      console.log(
-        `Deliverable added to stage ${stageNumber} for engagement ${engagement.id}`,
-      );
+      // Send email notification to client
+      try {
+        await fetch("/api/deliverable-notification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            engagement_id: engagement.id,
+            deliverable_title: newDeliverable.title,
+            stage_name: STAGE_NAMES[stageNumber],
+            project_name: engagement.project_name,
+            user_email: engagement.user_email,
+            user_name: engagement.user_name,
+          }),
+        });
+      } catch (notificationError: any) {
+        console.error("Error sending notification:", notificationError);
+        // Don't block the deliverable addition if notification fails
+      }
     } catch (err: any) {
       setError(err.message || "Failed to add deliverable");
     } finally {
