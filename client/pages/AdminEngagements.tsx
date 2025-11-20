@@ -347,6 +347,17 @@ export default function AdminEngagements() {
                           </span>
                         )}
                       </td>
+                      <td className="px-6 py-4 text-sm">
+                        {engagement.tier1_completed ? (
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
+                            ✅ {engagement.recommended_package || "Completed"}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">
+                            ⏳ Pending
+                          </span>
+                        )}
+                      </td>
                       <td
                         className="px-6 py-4 text-sm"
                         style={{ fontFamily: "Literata, serif" }}
