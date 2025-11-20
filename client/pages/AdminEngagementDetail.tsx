@@ -2,6 +2,17 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 import Tier1AssessmentView from "@/components/Tier1AssessmentView";
 import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
 
@@ -111,6 +122,7 @@ const STAGE_NAMES: Record<number, string> = {
 export default function AdminEngagementDetail() {
   const navigate = useNavigate();
   const { engagementId } = useParams<{ engagementId: string }>();
+  const { toast } = useToast();
 
   const [engagement, setEngagement] = useState<Engagement | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
@@ -133,6 +145,19 @@ export default function AdminEngagementDetail() {
     title: "",
     description: "",
     url: "",
+  });
+
+  // Stage completion confirmation
+  const [stageCompletionDialog, setStageCompletionDialog] = useState<{
+    isOpen: boolean;
+    stageNumber: number | null;
+    clientSatisfied: boolean;
+    feedbackComplete: boolean;
+  }>({
+    isOpen: false,
+    stageNumber: null,
+    clientSatisfied: false,
+    feedbackComplete: false,
   });
 
   useEffect(() => {
