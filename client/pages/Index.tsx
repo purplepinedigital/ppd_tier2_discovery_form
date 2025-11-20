@@ -557,7 +557,21 @@ export default function Index() {
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP ${response.status}: ${errorText || response.statusText}`,
+        );
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse engagement response:", parseError);
+        throw new Error("Invalid response format from server");
+      }
+
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
 
@@ -581,8 +595,11 @@ export default function Index() {
             setActiveSectionIndex(0);
             setScreen("sectionWelcome");
           }
-        } catch (error) {
-          console.error("Error loading form progress:", error);
+        } catch (error: any) {
+          console.error("Error loading form progress:", {
+            message: error?.message,
+            name: error?.name,
+          });
           // Fall back to starting new form
           const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
           setResponses(createInitialResponses());
@@ -591,11 +608,14 @@ export default function Index() {
           setScreen("sectionWelcome");
         }
       } else {
-        alert(data.error || "Failed to create engagement");
+        throw new Error(data.error || "Failed to create engagement");
       }
-    } catch (error) {
-      console.error("Error creating engagement:", error);
-      alert("Failed to save project. Please try again.");
+    } catch (error: any) {
+      console.error("Error creating engagement:", {
+        message: error?.message,
+        name: error?.name,
+      });
+      alert(error?.message || "Failed to save project. Please try again.");
     }
   };
 
