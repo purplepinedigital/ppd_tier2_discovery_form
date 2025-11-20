@@ -314,10 +314,14 @@ export default function ProjectFormFill() {
 
             <QuestionView
               question={currentQuestion}
-              response={responses[currentQuestion.id] || ""}
-              onResponseChange={(value) =>
+              value={responses[currentQuestion.id] || ""}
+              onChange={(value) =>
                 handleResponseChange(currentQuestion.id, value)
               }
+              onNext={handleNext}
+              onPrevious={handlePrevious}
+              isFirst={currentQuestionIndex === 0}
+              isLast={currentQuestionIndex === totalQuestions - 1}
             />
 
             <div className="mt-8 flex gap-4">
