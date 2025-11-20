@@ -93,6 +93,7 @@ export default function AdminEngagementDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
+  const [programRationale, setProgramRationale] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isEditingProjectName, setIsEditingProjectName] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState("");
