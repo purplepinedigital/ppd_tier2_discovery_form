@@ -35,6 +35,9 @@ export default function ProjectJourney() {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [formProgressMap, setFormProgressMap] = useState<Record<string, number>>(
+    {},
+  );
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
