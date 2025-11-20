@@ -87,20 +87,33 @@ export async function loadFormProgress(
   userId: string,
   engagementId: string,
 ): Promise<FormProgress | null> {
-  const { data, error } = await supabase
-    .from("form_progress")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("engagement_id", engagementId)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("form_progress")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("engagement_id", engagementId)
+      .maybeSingle();
 
-  if (error) {
-    if (error.code === "PGRST116") {
-      return null;
+    if (error) {
+      console.error("Error loading form progress:", {
+        code: error.code,
+        message: error.message,
+      });
+      // Return null for "not found" errors, throw others
+      if (error.code === "PGRST116") {
+        return null;
+      }
+      throw error;
     }
-    console.error("Error loading form progress:", error);
-    throw error;
-  }
 
-  return data;
+    return data || null;
+  } catch (err: any) {
+    console.error("Exception loading form progress:", {
+      message: err.message,
+      code: err.code,
+    });
+    // Return null instead of throwing to prevent app crashes
+    return null;
+  }
 }
