@@ -726,6 +726,15 @@ export default function AdminEngagementDetail() {
           </div>
         </div>
 
+        {/* Tier 1 Assessment Section */}
+        <Tier1AssessmentView
+          assessment={tier1Assessment}
+          isLoading={tier1Loading}
+          onViewFullAssessment={(assessmentId) =>
+            navigate(`/admin/tier1/${assessmentId}`)
+          }
+        />
+
         {/* Stage 0: Program Selection & Decision */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
           <div className="pb-6 border-b mb-6">
