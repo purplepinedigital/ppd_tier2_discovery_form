@@ -119,11 +119,9 @@ export default function ProjectLifecycle() {
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
       try {
-        const client = getClientSupabase();
-
         const {
           data: { user },
-        } = await client.auth.getUser();
+        } = await supabase.auth.getUser();
         if (!user) {
           navigate("/");
           return;
