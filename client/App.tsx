@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminEngagements from "./pages/AdminEngagements";
+import AdminEngagementDetail from "./pages/AdminEngagementDetail";
 
 const queryClient = new QueryClient();
 
