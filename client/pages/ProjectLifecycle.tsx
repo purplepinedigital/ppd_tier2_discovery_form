@@ -635,6 +635,35 @@ export default function ProjectLifecycle() {
           </div>
         )}
 
+        {/* Tier 1 Required Banner */}
+        {engagement && !engagement.tier1_completed && (
+          <div className="mb-8 p-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h3
+                  className="text-lg font-bold text-blue-900 mb-2"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  ⚠️ Complete Tier 1 Assessment First
+                </h3>
+                <p
+                  className="text-blue-800 mb-4"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  To unlock the full potential of your project and proceed with the program roadmap, you need to complete your Tier 1 assessment. This will help us understand your business, goals, and recommend the best package for your needs.
+                </p>
+              </div>
+              <Button
+                onClick={() => navigate(`/project/${engagement.id}/tier1`)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 text-sm whitespace-nowrap flex-shrink-0"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                → Complete Tier 1 Now
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Project Info */}
         <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
