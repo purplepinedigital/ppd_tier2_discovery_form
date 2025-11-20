@@ -130,8 +130,16 @@ export default function ProjectFormFill() {
           setActiveSectionIndex(0);
         }
       } catch (err: any) {
-        console.error("Error loading form:", err);
-        setError("Failed to load form");
+        console.error("Error loading form:", {
+          message: err.message,
+          code: err.code,
+          details: err.details,
+          hint: err.hint,
+          full: err,
+        });
+        setError(
+          `Failed to load form: ${err.message || "Unknown error"}`,
+        );
       } finally {
         setIsLoading(false);
       }
