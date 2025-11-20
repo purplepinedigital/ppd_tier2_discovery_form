@@ -289,6 +289,7 @@ export default function ProjectJourney() {
                 </Button>
               </div>
             ) : (
+              <>
               <table className="w-full">
                 <thead className="bg-gray-100 border-b">
                   <tr>
@@ -395,6 +396,16 @@ export default function ProjectJourney() {
                   ))}
                 </tbody>
               </table>
+              <div className="p-6 border-t">
+                <Button
+                  onClick={() => navigate("/")}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  + Create New Project
+                </Button>
+              </div>
+              </>
             )}
           </div>
         )}
