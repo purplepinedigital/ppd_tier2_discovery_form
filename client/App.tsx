@@ -39,7 +39,7 @@ const App = () => (
             element={<AdminTier1Detail />}
           />
           <Route path="/project/journey" element={<ProjectJourney />} />
-          <Route path="/project/tier1" element={<ProjectFormTier1 />} />
+          <Route path="/project/:engagementId/tier1" element={<ProjectFormTier1 />} />
           <Route
             path="/project/lifecycle/:engagementId"
             element={<ProjectLifecycle />}
