@@ -459,14 +459,32 @@ export default function Index() {
             }),
           });
 
-          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(
+              `HTTP ${response.status}: Failed to create engagement`,
+            );
+          }
+
+          let data;
+          try {
+            data = await response.json();
+          } catch (parseError) {
+            console.error("Failed to parse response:", parseError);
+            throw new Error("Invalid response from server");
+          }
+
           if (data.success && data.engagement_id) {
             setEngagementId(data.engagement_id);
             setScreen("complete");
             return;
+          } else {
+            throw new Error(data.error || "Failed to create engagement");
           }
-        } catch (error) {
-          console.error("Error auto-creating engagement:", error);
+        } catch (error: any) {
+          console.error("Error auto-creating engagement:", {
+            message: error.message,
+            name: error.name,
+          });
           // Fall back to project name screen
           setScreen("projectName");
           return;
