@@ -124,6 +124,18 @@ export default function ProjectLifecycle() {
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
       try {
+        const impersonation = getImpersonationSession();
+
+        // If impersonating, use the impersonated user ID
+        if (impersonation) {
+          setCurrentUser(impersonation.adminUserId);
+          if (engagementId) {
+            await fetchEngagementData(impersonation.impersonatedUserId);
+          }
+          return;
+        }
+
+        // Otherwise, get the current logged-in user
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -353,7 +365,7 @@ export default function ProjectLifecycle() {
       );
 
       toast({
-        title: "🎉 Milestone Reached!",
+        title: "���� Milestone Reached!",
         description: `You've completed ${STAGE_NAMES[stageNumber]}!`,
       });
     } catch (err: any) {
