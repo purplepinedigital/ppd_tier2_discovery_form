@@ -93,6 +93,52 @@ export default function ProjectJourney() {
     }
   };
 
+  const getFormProgress = async (userId: string) => {
+    try {
+      const client = getClientSupabase();
+      const { data } = await client
+        .from("form_progress")
+        .select("responses")
+        .eq("user_id", userId)
+        .single();
+
+      if (data && data.responses) {
+        return Object.keys(data.responses).length;
+      }
+      return 0;
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const handleDeleteProject = async (engagementId: string) => {
+    if (
+      !confirm(
+        "Are you sure you want to delete this project? This action cannot be undone.",
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const client = getClientSupabase();
+
+      // Delete all related data
+      await client.from("stage_completion").delete().eq("engagement_id", engagementId);
+      await client.from("deliverables").delete().eq("engagement_id", engagementId);
+      await client.from("engagements").delete().eq("id", engagementId);
+
+      setEngagements(engagements.filter((e) => e.id !== engagementId));
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      alert("Failed to delete project");
+    }
+  };
+
+  const handleEditProject = (engagementId: string) => {
+    navigate(`/project/lifecycle/${engagementId}`);
+  };
+
   const handleLogout = async () => {
     const client = getClientSupabase();
     await client.auth.signOut();
