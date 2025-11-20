@@ -432,7 +432,9 @@ export default function ProjectLifecycle() {
     }
 
     try {
-      const { error } = await supabase.from("client_feedback").insert({
+      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+
+      const { error } = await client.from("client_feedback").insert({
         deliverable_id: deliverableId,
         engagement_id: engagement.id,
         feedback_text: feedbackText,
@@ -442,7 +444,7 @@ export default function ProjectLifecycle() {
       if (error) throw error;
 
       // Refresh feedback
-      const { data: feedbackData } = await supabase
+      const { data: feedbackData } = await client
         .from("client_feedback")
         .select("*")
         .eq("deliverable_id", deliverableId);
@@ -474,7 +476,9 @@ export default function ProjectLifecycle() {
     if (!engagement || !newPackage) return;
 
     try {
-      const { error } = await supabase
+      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+
+      const { error } = await client
         .from("engagements")
         .update({ recommended_package: newPackage })
         .eq("id", engagement.id);
