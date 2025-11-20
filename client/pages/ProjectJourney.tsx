@@ -174,6 +174,12 @@ export default function ProjectJourney() {
     navigate("/");
   };
 
+  const handleStopImpersonation = () => {
+    clearImpersonationSession();
+    // Redirect back to admin dashboard
+    window.location.href = "/admin/dashboard";
+  };
+
   const programColors: Record<string, string> = {
     foundation: "bg-green-100 text-green-800",
     growth: "bg-blue-100 text-blue-800",
