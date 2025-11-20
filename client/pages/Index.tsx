@@ -14,6 +14,7 @@ import {
 } from "@/data/discovery-form";
 import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
 import { sendToKlaviyo } from "@/lib/klaviyo";
+import { getImpersonatedUserId } from "@/lib/admin-impersonate";
 import type { User } from "@supabase/supabase-js";
 
 const heroList = [
