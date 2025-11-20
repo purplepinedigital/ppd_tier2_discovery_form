@@ -111,6 +111,23 @@ export default function Index() {
   const startForm = async () => {
     const { data } = await supabase.auth.getSession();
     if (data.session) {
+      // Check if user has existing engagements
+      try {
+        const { data: engagements } = await supabase
+          .from("engagements")
+          .select("id")
+          .eq("user_id", data.session.user.id);
+
+        if (engagements && engagements.length > 0) {
+          // User has projects - redirect to ProjectJourney
+          window.location.href = "/project/journey";
+          return;
+        }
+      } catch (error) {
+        console.error("Error checking engagements:", error);
+      }
+
+      // User is logged in but has no projects
       const progress = await loadFormProgress(data.session.user.id);
       if (progress) {
         setResponses(progress.responses);
@@ -118,11 +135,8 @@ export default function Index() {
         setActiveSectionIndex(progress.active_section_index);
         setScreen("question");
       } else {
-        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-        setResponses(createInitialResponses());
-        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-        setActiveSectionIndex(0);
-        setScreen("sectionWelcome");
+        // No projects and no form in progress - show project name screen
+        setScreen("projectName");
       }
     } else {
       setScreen("signup");
