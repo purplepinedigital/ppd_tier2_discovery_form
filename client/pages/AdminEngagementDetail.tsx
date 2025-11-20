@@ -623,39 +623,294 @@ export default function AdminEngagementDetail() {
           </div>
         </div>
 
-        {/* Program Selection */}
+        {/* Stage 0: Program Selection & Decision */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h3
-            className="text-2xl font-bold mb-4"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
-          >
-            Set Program / Package
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {["foundation", "growth", "performance"].map((program) => (
-              <button
-                key={program}
-                onClick={() => handleProgramChange(program)}
-                disabled={isSaving}
-                className={`p-4 rounded-lg border-2 font-bold transition-all ${
-                  selectedProgram === program
-                    ? "border-[#37306B] bg-[#37306B] text-white"
-                    : "border-gray-300 bg-white text-[#37306B] hover:border-[#37306B]"
-                } disabled:opacity-50`}
+          <div className="pb-6 border-b mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <span
+                className="text-2xl font-bold text-[#37306B]"
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
-                {program.charAt(0).toUpperCase() + program.slice(1)}
-              </button>
-            ))}
-          </div>
-          {selectedProgram && (
+                Stage 0
+              </span>
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                Program Selection & Decision
+              </span>
+            </div>
+            <h4
+              className="text-xl font-bold"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              Deep Discovery & Package Decision
+            </h4>
             <p
-              className="mt-4 text-green-600 text-sm"
+              className="text-gray-600 text-sm mt-2"
               style={{ fontFamily: "Literata, serif" }}
             >
-              ✓ Program set to {selectedProgram}
+              {STAGE_DESCRIPTIONS[0]}
             </p>
+          </div>
+
+          {/* Program Selection Buttons */}
+          <div className="mb-6">
+            <h5
+              className="font-bold text-gray-700 mb-3"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Select Program Package
+            </h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {["foundation", "growth", "performance"].map((program) => (
+                <button
+                  key={program}
+                  onClick={() => handleProgramChange(program)}
+                  disabled={isSaving || !programRationale.trim()}
+                  className={`p-4 rounded-lg border-2 font-bold transition-all ${
+                    selectedProgram === program
+                      ? "border-[#37306B] bg-[#37306B] text-white"
+                      : "border-gray-300 bg-white text-[#37306B] hover:border-[#37306B]"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  {program.charAt(0).toUpperCase() + program.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Decision Rationale Notes */}
+          <div className="mb-6">
+            <h5
+              className="font-bold text-gray-700 mb-2"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Why This Program? (Decision Rationale)
+            </h5>
+            <p
+              className="text-sm text-gray-600 mb-3"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Provide notes explaining why this program package was chosen and how you arrived at this decision.
+            </p>
+            <textarea
+              value={programRationale}
+              onChange={(e) => setProgramRationale(e.target.value)}
+              placeholder="Explain the decision rationale, discussion points, and why this program is the right fit for the client..."
+              className="w-full px-3 py-2 border border-gray-300 rounded min-h-[120px] focus:outline-none focus:border-[#37306B]"
+              style={{ fontFamily: "Literata, serif" }}
+            />
+            <p
+              className={`text-xs mt-2 ${
+                programRationale.trim() ? "text-green-600" : "text-gray-400"
+              }`}
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              {programRationale.trim()
+                ? "✓ Rationale notes provided"
+                : "Required before selecting program"}
+            </p>
+          </div>
+
+          {/* Program Status */}
+          {selectedProgram && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded">
+              <p
+                className="text-green-700 text-sm font-bold"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                ✓ Program set to {selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)}
+              </p>
+            </div>
           )}
+
+          {/* Reset Program Button */}
+          {selectedProgram && deliverables.length === 0 && (
+            <div className="mb-6">
+              <button
+                onClick={handleResetProgram}
+                disabled={isSaving}
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm font-bold disabled:opacity-50"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Reset Program to None
+              </button>
+              <p
+                className="text-xs text-gray-500 mt-2"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Only available when no deliverables exist
+              </p>
+            </div>
+          )}
+
+          {/* Stage 0 Deliverables */}
+          <div className="mt-6 pt-6 border-t">
+            <h5
+              className="font-bold text-gray-700 mb-3"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Decision Documentation (Deliverables)
+            </h5>
+
+            {deliverables.filter((d) => d.stage_number === 0).length > 0 ? (
+              <div className="space-y-3 mb-4">
+                {deliverables
+                  .filter((d) => d.stage_number === 0)
+                  .map((deliverable) => (
+                    <div
+                      key={deliverable.id}
+                      className="bg-gray-50 p-4 rounded border border-gray-200 flex items-start justify-between"
+                    >
+                      <div className="flex-1">
+                        <p
+                          className="font-bold text-gray-800"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
+                        >
+                          {deliverable.title}
+                        </p>
+                        {deliverable.description && (
+                          <p
+                            className="text-sm text-gray-600 mt-1"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            {deliverable.description}
+                          </p>
+                        )}
+                        {deliverable.url && (
+                          <a
+                            href={deliverable.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm text-[#37306B] hover:underline mt-2 break-all"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            {deliverable.url}
+                          </a>
+                        )}
+                        {deliverable.original_filename && (
+                          <p
+                            className="text-xs text-gray-500 mt-1"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            File: {deliverable.original_filename}
+                          </p>
+                        )}
+                        <span
+                          className={`inline-block text-xs font-bold mt-2 px-2 py-1 rounded ${
+                            deliverable.visible_to_client
+                              ? "bg-green-100 text-green-800"
+                              : "bg-gray-200 text-gray-800"
+                          }`}
+                        >
+                          {deliverable.visible_to_client
+                            ? "Visible"
+                            : "Hidden"}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() =>
+                          handleDeleteDeliverable(deliverable.id)
+                        }
+                        disabled={isSaving}
+                        className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p
+                className="text-gray-400 italic text-sm mb-4"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                No decision documentation added yet
+              </p>
+            )}
+
+            {/* Add Stage 0 Deliverable */}
+            {showNewDeliverableForm === 0 ? (
+              <div className="bg-gray-50 p-4 rounded border-2 border-[#37306B]">
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Document title"
+                    value={newDeliverable.title}
+                    onChange={(e) =>
+                      setNewDeliverable({
+                        ...newDeliverable,
+                        title: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                    style={{ fontFamily: "Literata, serif" }}
+                  />
+                  <textarea
+                    placeholder="Description (optional)"
+                    value={newDeliverable.description}
+                    onChange={(e) =>
+                      setNewDeliverable({
+                        ...newDeliverable,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded min-h-[80px] focus:outline-none focus:border-[#37306B]"
+                    style={{ fontFamily: "Literata, serif" }}
+                  />
+                  <input
+                    type="url"
+                    placeholder="URL or file link"
+                    value={newDeliverable.url}
+                    onChange={(e) =>
+                      setNewDeliverable({
+                        ...newDeliverable,
+                        url: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                    style={{ fontFamily: "Literata, serif" }}
+                  />
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() =>
+                      handleAddDeliverable(0)
+                    }
+                    disabled={isSaving}
+                    className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Add Document
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowNewDeliverableForm(null);
+                      setNewDeliverable({
+                        title: "",
+                        description: "",
+                        url: "",
+                      });
+                    }}
+                    disabled={isSaving}
+                    className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowNewDeliverableForm(0)}
+                disabled={isSaving}
+                className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                + Add Decision Document
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Stages and Deliverables */}
