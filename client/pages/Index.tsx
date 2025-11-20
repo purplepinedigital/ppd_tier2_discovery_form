@@ -402,20 +402,14 @@ export default function Index() {
           setUserName(signupData[0].name);
         }
 
-        const progress = await loadFormProgress(data.user.id);
-        if (progress) {
-          setResponses(progress.responses);
-          setCurrentQuestionIndex(progress.current_question_index);
-          setActiveSectionIndex(progress.active_section_index);
-          setScreen("question");
-        } else {
-          const firstIndex = getFirstQuestionIndexForSection(
-            formSections[0].id,
-          );
-          setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-          setActiveSectionIndex(0);
-          setScreen("sectionWelcome");
-        }
+        // New signup - start fresh form
+        setResponses(createInitialResponses());
+        const firstIndex = getFirstQuestionIndexForSection(
+          formSections[0].id,
+        );
+        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+        setActiveSectionIndex(0);
+        setScreen("sectionWelcome");
       }
     } catch (error: any) {
       setAuthError(error.message);
