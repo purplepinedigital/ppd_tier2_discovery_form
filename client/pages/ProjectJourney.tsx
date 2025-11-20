@@ -274,7 +274,23 @@ export default function ProjectJourney() {
         return;
       }
 
-      console.log("Project deleted successfully");
+      // Verify the engagement was actually deleted
+      const { data: verifyData, error: verifyError } = await client
+        .from("engagements")
+        .select("id")
+        .eq("id", engagementId)
+        .maybeSingle();
+
+      console.log("Verification - engagement still exists?:", verifyData, "error:", verifyError);
+
+      if (verifyData) {
+        console.error("CRITICAL: Engagement still exists after deletion attempt!");
+        alert("Delete operation completed but verification failed. The project may not have been fully deleted. Please try again or contact support.");
+        setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+        return;
+      }
+
+      console.log("Project deleted successfully and verified");
       // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
       setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
