@@ -1179,7 +1179,8 @@ export default function AdminEngagementDetail() {
             )}
 
             {/* Mark Stage 0 Complete Button */}
-            {deliverables.filter((d) => d.stage_number === 0).length > 0 && (
+            {!completedStages.includes(0) &&
+              deliverables.filter((d) => d.stage_number === 0).length > 0 && (
               <button
                 onClick={() => handleMarkStageComplete(0)}
                 disabled={isSaving}
