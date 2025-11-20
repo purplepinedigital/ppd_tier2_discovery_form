@@ -46,6 +46,9 @@ export default function ProjectJourney() {
   const [formProgressMap, setFormProgressMap] = useState<
     Record<string, number>
   >({});
+  const [impersonationSession, setImpersonationSession] = useState(
+    getImpersonationSession(),
+  );
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
