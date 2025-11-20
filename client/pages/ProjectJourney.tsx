@@ -76,6 +76,11 @@ export default function ProjectJourney() {
         // Determine which user's data to fetch
         const userToFetch = impersonation ? impersonation.impersonatedUserId : user?.id;
 
+        if (!userToFetch) {
+          navigate("/");
+          return;
+        }
+
         await fetchEngagements(userToFetch);
 
         // Fetch unread notifications count
