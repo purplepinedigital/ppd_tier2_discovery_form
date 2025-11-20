@@ -352,7 +352,7 @@ export default function ProjectJourney() {
               </div>
             ) : (
               <>
-                <table className="w-full">
+                <table className="w-full table-fixed">
                   <thead className="bg-gray-100 border-b">
                     <tr>
                       <th
