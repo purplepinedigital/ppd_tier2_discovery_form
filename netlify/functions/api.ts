@@ -405,6 +405,65 @@ async function handleKlaviyoUnsubscribe(body: any) {
   }
 }
 
+async function handleEngagementCreate(body: any) {
+  const { project_name, user_id, form_responses } = body;
+
+  if (!project_name || !user_id) {
+    return {
+      status: 400,
+      body: JSON.stringify({ error: "project_name and user_id are required" }),
+    };
+  }
+
+  const supabaseUrl = process.env.VITE_SUPABASE_URL;
+  const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return {
+      status: 500,
+      body: JSON.stringify({ error: "Supabase configuration missing" }),
+    };
+  }
+
+  try {
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+    const { data, error } = await supabaseAdmin
+      .from("engagements")
+      .insert({
+        user_id,
+        project_name,
+      })
+      .select("id")
+      .single();
+
+    if (error) {
+      console.error("Supabase error creating engagement:", error);
+      return {
+        status: 500,
+        body: JSON.stringify({ error: error.message }),
+      };
+    }
+
+    return {
+      status: 200,
+      body: JSON.stringify({
+        success: true,
+        engagement_id: data.id,
+      }),
+    };
+  } catch (error: any) {
+    console.error("Error creating engagement:", error);
+    return {
+      status: 500,
+      body: JSON.stringify({
+        error: "Failed to create engagement",
+        message: error.message,
+      }),
+    };
+  }
+}
+
 const handler: Handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === "OPTIONS") {
