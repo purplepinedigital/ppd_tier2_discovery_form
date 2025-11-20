@@ -226,71 +226,37 @@ export default function ProjectJourney() {
 
   const confirmDeleteProject = async () => {
     const engagementId = deleteConfirm.engagementId;
-    if (!engagementId) return;
+    if (!engagementId || !currentUser) return;
 
     try {
-      const client = getClientSupabase();
+      console.log("Calling server API to delete project:", engagementId);
 
-      // Delete all related data in correct order (respecting foreign keys)
-      console.log("Starting project deletion for:", engagementId);
+      const response = await fetch(`/api/engagements/${engagementId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: currentUser,
+        }),
+      });
 
-      const fp = await client
-        .from("form_progress")
-        .delete()
-        .eq("engagement_id", engagementId);
-      console.log("form_progress delete result:", fp);
+      const data = await response.json();
+      console.log("Delete response:", { status: response.status, data });
 
-      const sc = await client
-        .from("stage_completion")
-        .delete()
-        .eq("engagement_id", engagementId);
-      console.log("stage_completion delete result:", sc);
-
-      const d = await client
-        .from("deliverables")
-        .delete()
-        .eq("engagement_id", engagementId);
-      console.log("deliverables delete result:", d);
-
-      // Finally delete the engagement
-      const { data: engData, error } = await client
-        .from("engagements")
-        .delete()
-        .eq("id", engagementId)
-        .select();
-
-      console.log("engagement delete - data:", engData, "error:", error);
-
-      if (error) {
-        console.error("Supabase delete error - full details:", {
-          message: error.message,
-          code: error.code,
-          status: error.status,
-          hint: error.hint,
-          details: error.details,
-        });
-        alert(`Failed to delete project: ${error.message || "Unknown error - check console"}`);
+      if (!response.ok) {
+        console.error("Delete failed:", data);
+        alert(`Failed to delete project: ${data.error || "Unknown error"}`);
         setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
         return;
       }
 
-      // Verify the engagement was actually deleted
-      const { data: verifyData, error: verifyError } = await client
-        .from("engagements")
-        .select("id")
-        .eq("id", engagementId)
-        .maybeSingle();
-
-      console.log("Verification - engagement still exists?:", verifyData, "error:", verifyError);
-
-      if (verifyData) {
-        console.error("CRITICAL: Engagement still exists after deletion attempt!");
-        alert("Delete operation completed but verification failed. The project may not have been fully deleted. Please try again or contact support.");
+      if (!data.success) {
+        console.error("Delete returned non-success:", data);
+        alert(`Failed to delete project: ${data.error || "Unknown error"}`);
         setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
         return;
       }
 
-      console.log("Project deleted successfully and verified");
+      console.log("Project deleted successfully");
       // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
       setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
