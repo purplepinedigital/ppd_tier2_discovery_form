@@ -55,20 +55,26 @@ export default function ProjectJourney() {
       try {
         const client = getClientSupabase();
 
+        // Check if impersonating a user first
+        const impersonation = getImpersonationSession();
+
         // Get current user
         const {
           data: { user },
         } = await client.auth.getUser();
-        if (!user) {
+
+        // Allow if user is logged in OR if impersonating
+        if (!user && !impersonation) {
           navigate("/");
           return;
         }
 
-        setCurrentUser(user.id);
+        if (user) {
+          setCurrentUser(user.id);
+        }
 
-        // Check if impersonating a user
-        const impersonation = getImpersonationSession();
-        const userToFetch = impersonation ? impersonation.impersonatedUserId : user.id;
+        // Determine which user's data to fetch
+        const userToFetch = impersonation ? impersonation.impersonatedUserId : user?.id;
 
         await fetchEngagements(userToFetch);
 
