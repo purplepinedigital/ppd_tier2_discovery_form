@@ -198,10 +198,11 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    if (user && screen === "question") {
+    if (user && screen === "question" && engagementId) {
       const timer = setTimeout(() => {
         saveFormProgress(
           user.id,
+          engagementId,
           responses,
           currentQuestionIndex,
           activeSectionIndex,
@@ -209,7 +210,7 @@ export default function Index() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [user, responses, currentQuestionIndex, activeSectionIndex, screen]);
+  }, [user, engagementId, responses, currentQuestionIndex, activeSectionIndex, screen]);
 
   const handleSignup = async (
     email: string,
