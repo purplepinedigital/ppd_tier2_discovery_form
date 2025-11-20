@@ -65,7 +65,12 @@ export default function ProjectJourney() {
         }
 
         setCurrentUser(user.id);
-        await fetchEngagements(user.id);
+
+        // Check if impersonating a user
+        const impersonation = getImpersonationSession();
+        const userToFetch = impersonation ? impersonation.impersonatedUserId : user.id;
+
+        await fetchEngagements(userToFetch);
 
         // Fetch unread notifications count
         const { data: notificationData } = await client
