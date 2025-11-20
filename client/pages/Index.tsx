@@ -221,19 +221,24 @@ export default function Index() {
 
           // Load form progress for this engagement
           const progress = await loadFormProgress(user.id, engagementParam);
-          if (progress) {
-            setResponses(progress.responses);
+          if (progress && progress.responses) {
+            // Convert Record format to array format if needed
+            const responsesArray = Array.isArray(progress.responses)
+              ? progress.responses
+              : Object.values(progress.responses);
+            setResponses(responsesArray);
             setCurrentQuestionIndex(progress.current_question_index);
             setActiveSectionIndex(progress.active_section_index);
             setScreen("question");
           } else {
-            // No progress yet - show project name confirmation and start
-            setScreen("sectionWelcome");
+            // No progress yet - start from beginning
+            setResponses(createInitialResponses());
             const firstIndex = getFirstQuestionIndexForSection(
               formSections[0].id,
             );
             setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
             setActiveSectionIndex(0);
+            setScreen("sectionWelcome");
           }
         } catch (err) {
           console.error("Error loading engagement form:", err);
