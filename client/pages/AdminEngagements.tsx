@@ -38,6 +38,9 @@ interface Engagement {
   updated_at: string;
   user_email?: string;
   user_name?: string;
+  tier1_completed?: boolean;
+  tier1_assessment_id?: string;
+  recommended_package?: string;
 }
 
 export default function AdminEngagements() {
