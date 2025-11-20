@@ -561,13 +561,17 @@ export default function Index() {
       try {
         data = await response.json();
       } catch (parseError) {
-        console.error("Failed to parse engagement response:", {
-          status: response.status,
-          statusText: response.statusText,
-          parseErrorMessage:
-            parseError instanceof Error ? parseError.message : String(parseError),
-        });
-        throw new Error("Invalid response format from server");
+        const parseErrorMessage =
+          parseError instanceof Error ? parseError.message : String(parseError);
+        console.error(
+          "Failed to parse engagement response. Status:",
+          response.status,
+          "Error:",
+          parseErrorMessage,
+        );
+        throw new Error(
+          `Server returned invalid response (HTTP ${response.status}): ${parseErrorMessage}`,
+        );
       }
 
       if (!response.ok) {
