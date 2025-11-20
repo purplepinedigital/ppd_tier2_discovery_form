@@ -523,7 +523,17 @@ export default function ProjectLifecycle() {
             Your Lifecycle Roadmap
           </h3>
 
-          {stages.map((stage) => (
+          {stages.map((stage) => {
+            const stage0Completed = completions.some(
+              (c) => c.stage_number === 0,
+            );
+            const shouldShowStage = stage.number === 0 || stage0Completed;
+
+            if (!shouldShowStage) {
+              return null;
+            }
+
+            return (
             <div
               key={stage.number}
               className="bg-white rounded-lg shadow overflow-hidden"
@@ -788,7 +798,8 @@ export default function ProjectLifecycle() {
                 </div>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Completion Message */}
