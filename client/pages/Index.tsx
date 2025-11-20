@@ -611,11 +611,20 @@ export default function Index() {
         throw new Error(data.error || "Failed to create engagement");
       }
     } catch (error: any) {
+      const errorMessage =
+        error?.message ||
+        (typeof error === "string" ? error : "Unknown error");
       console.error("Error creating engagement:", {
-        message: error?.message,
+        message: errorMessage,
         name: error?.name,
+        status: error?.status,
+        statusText: error?.statusText,
+        toString: error?.toString?.(),
+        full: error,
       });
-      alert(error?.message || "Failed to save project. Please try again.");
+      alert(
+        `Failed to create project: ${errorMessage}. Please try again.`,
+      );
     }
   };
 
