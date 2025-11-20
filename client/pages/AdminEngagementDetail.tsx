@@ -618,15 +618,6 @@ export default function AdminEngagementDetail() {
           </div>
         )}
 
-        {/* Tier 1 Assessment Section */}
-        <Tier1AssessmentView
-          assessment={tier1Assessment}
-          isLoading={tier1Loading}
-          onViewFullAssessment={(assessmentId) =>
-            navigate(`/admin/tier1/${assessmentId}`)
-          }
-        />
-
         {/* Engagement Info */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
