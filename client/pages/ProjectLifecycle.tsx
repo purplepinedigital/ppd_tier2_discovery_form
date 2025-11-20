@@ -413,9 +413,10 @@ export default function ProjectLifecycle() {
       });
     } catch (err: any) {
       console.error("Error marking stage complete:", err);
+      const errorMsg = err?.message || err?.details || JSON.stringify(err);
       toast({
         title: "Error",
-        description: "Failed to update stage completion",
+        description: errorMsg || "Failed to update stage completion",
         variant: "destructive",
       });
     }
