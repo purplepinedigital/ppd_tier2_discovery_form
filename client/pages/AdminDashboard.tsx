@@ -229,12 +229,28 @@ export default function AdminDashboard() {
     setIsDeleting(true);
     try {
       const client = getAdminSupabase();
-      const { error } = await client
+
+      // First, get the user_id from the form_progress entry
+      const formProgressToDelete = responses.find((r) => r.id === id);
+      if (!formProgressToDelete) {
+        throw new Error("Form response not found");
+      }
+
+      // Delete the form_progress entry
+      const { error: deleteFormError } = await client
         .from("form_progress")
         .delete()
         .eq("id", id);
 
-      if (error) throw error;
+      if (deleteFormError) throw deleteFormError;
+
+      // Delete all engagements for this user
+      const { error: deleteEngagementError } = await client
+        .from("engagements")
+        .delete()
+        .eq("user_id", formProgressToDelete.user_id);
+
+      if (deleteEngagementError) throw deleteEngagementError;
 
       setResponses(responses.filter((r) => r.id !== id));
       setDeleteConfirm(null);
