@@ -501,7 +501,8 @@ const handler: Handler = async (event) => {
 
   // Klaviyo unsubscribe route
   if (
-    path.includes("/api/klaviyo/unsubscribe") &&
+    (path.includes("/api/klaviyo/unsubscribe") ||
+      path.includes("/klaviyo/unsubscribe")) &&
     event.httpMethod === "POST"
   ) {
     try {
