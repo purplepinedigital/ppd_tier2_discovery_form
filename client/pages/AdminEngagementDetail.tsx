@@ -252,6 +252,16 @@ export default function AdminEngagementDetail() {
         }));
         setStages(allStages);
       }
+
+      // Fetch completed stages
+      const { data: completionData, error: completionError } = await client
+        .from("stage_completion")
+        .select("stage_number")
+        .eq("engagement_id", engagementId)
+        .order("stage_number", { ascending: true });
+
+      if (completionError) throw completionError;
+      setCompletedStages(completionData?.map((c) => c.stage_number) || []);
     } catch (err: any) {
       setError(err.message || "Failed to fetch engagement data");
       console.error("Fetch error:", err);
