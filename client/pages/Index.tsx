@@ -127,17 +127,8 @@ export default function Index() {
         console.error("Error checking engagements:", error);
       }
 
-      // User is logged in but has no projects
-      const progress = await loadFormProgress(data.session.user.id);
-      if (progress) {
-        setResponses(progress.responses);
-        setCurrentQuestionIndex(progress.current_question_index);
-        setActiveSectionIndex(progress.active_section_index);
-        setScreen("question");
-      } else {
-        // No projects and no form in progress - show project name screen
-        setScreen("projectName");
-      }
+      // User is logged in but has no projects - show project name screen
+      setScreen("projectName");
     } else {
       setScreen("signup");
     }
