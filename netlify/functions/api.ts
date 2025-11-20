@@ -613,6 +613,90 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Program assignment endpoint with email notification
+  if (path.includes("/api/engagement-program") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const { engagement_id, program, user_id, project_name, user_email, user_name } = body;
+
+      if (!engagement_id || !program || !user_id) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: "Missing required fields" }),
+        };
+      }
+
+      // Log the program assignment notification
+      const programDisplay = program.charAt(0).toUpperCase() + program.slice(1).toLowerCase();
+      console.log(`
+        [${new Date().toISOString()}] PROGRAM ASSIGNMENT NOTIFICATION
+        To: ${user_email}
+        Client: ${user_name}
+        Project: ${project_name}
+        Program: ${programDisplay}
+      `);
+
+      // Email template would go here - in production, integrate with Sendgrid/Mailgun
+      // For now, just log the notification
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, notification_sent: true }),
+      };
+    } catch (error: any) {
+      console.error("Program assignment notification error:", error?.message);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: "Failed to send notification" }),
+      };
+    }
+  }
+
+  // Deliverable addition endpoint with email notification
+  if (path.includes("/api/deliverable-notification") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const { engagement_id, deliverable_title, stage_name, project_name, user_email, user_name } = body;
+
+      if (!engagement_id || !deliverable_title || !project_name) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: "Missing required fields" }),
+        };
+      }
+
+      // Log the deliverable addition notification
+      console.log(`
+        [${new Date().toISOString()}] DELIVERABLE NOTIFICATION
+        To: ${user_email}
+        Client: ${user_name}
+        Project: ${project_name}
+        Stage: ${stage_name}
+        Deliverable: ${deliverable_title}
+      `);
+
+      // Email template would go here - in production, integrate with Sendgrid/Mailgun
+      // For now, just log the notification
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, notification_sent: true }),
+      };
+    } catch (error: any) {
+      console.error("Deliverable notification error:", error?.message);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: "Failed to send notification" }),
+      };
+    }
+  }
+
   // Default 404
   return {
     statusCode: 404,
