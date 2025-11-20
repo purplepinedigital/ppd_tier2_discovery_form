@@ -84,6 +84,8 @@ export default function Index() {
   >(null);
   const [projectName, setProjectName] = useState("");
   const [engagementId, setEngagementId] = useState<string | null>(null);
+  const [isEditingProjectName, setIsEditingProjectName] = useState(false);
+  const [editedProjectName, setEditedProjectName] = useState("");
 
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
