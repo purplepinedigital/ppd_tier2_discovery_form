@@ -163,6 +163,7 @@ export default function AdminEngagementDetail() {
   // Track completed stages and expanded stages
   const [completedStages, setCompletedStages] = useState<number[]>([]);
   const [expandedStages, setExpandedStages] = useState<number[]>([]);
+  const [expandedStage0, setExpandedStage0] = useState(true);
 
   useEffect(() => {
     if (!isAdminAuthenticated()) {
