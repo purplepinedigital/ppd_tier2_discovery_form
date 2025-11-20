@@ -686,13 +686,7 @@ export default function Index() {
                 className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 sm:p-7.5"
               >
                 <div
-                  className="space-y-6"
-                  style={{
-                    "@media (max-width: 640px)": {
-                      display: "flex",
-                      flexDirection: "column",
-                    },
-                  }}
+                  className="space-y-6 flex flex-col sm:block"
                 >
                   <p
                     className="text-base font-normal"
