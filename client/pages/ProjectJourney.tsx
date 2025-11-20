@@ -7,7 +7,6 @@ import {
   clearImpersonationSession,
   isImpersonating,
 } from "@/lib/admin-impersonate";
-import { createClient } from "@supabase/supabase-js";
 
 let clientSupabase: any = null;
 
