@@ -140,7 +140,7 @@ export default function ProjectJourney() {
       const progressMap: Record<string, number> = {};
       if (engagementsData) {
         for (const engagement of engagementsData) {
-          const progress = await getFormProgress(engagement.id);
+          const progress = await getFormProgress(engagement.id, client);
           progressMap[engagement.id] = progress;
         }
       }
