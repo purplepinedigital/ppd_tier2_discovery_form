@@ -294,6 +294,12 @@ export default function AdminEngagements() {
                       className="px-6 py-3 text-left text-sm font-bold"
                       style={{ fontFamily: "Literata, serif" }}
                     >
+                      Tier 1 Status
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
                       Created
                     </th>
                     <th
