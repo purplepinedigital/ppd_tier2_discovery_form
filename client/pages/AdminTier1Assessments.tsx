@@ -53,15 +53,15 @@ export default function AdminTier1Assessments() {
       if (error) {
         console.error("Error fetching assessments:", error);
       } else if (assessmentsData) {
-        // Fetch user emails separately
+        // Fetch user emails from signups table
         const userIds = [...new Set(assessmentsData.map((a: any) => a.user_id))];
-        const { data: usersData } = await supabase
-          .from("auth.users")
-          .select("id, email")
-          .in("id", userIds);
+        const { data: signupsData } = await supabase
+          .from("signups")
+          .select("user_id, email")
+          .in("user_id", userIds);
 
         const userEmailMap = new Map(
-          (usersData || []).map((u: any) => [u.id, u.email])
+          (signupsData || []).map((s: any) => [s.user_id, s.email])
         );
 
         const formatted = assessmentsData.map((a: any) => ({
