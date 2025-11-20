@@ -211,10 +211,24 @@ export default function Index() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Handle engagement parameter from URL (when continuing a form from My Projects)
+  // Handle URL parameters (engagement continuation or new project)
   useEffect(() => {
-    const handleEngagementParam = async () => {
+    const handleURLParams = async () => {
       const engagementParam = searchParams.get("engagement");
+      const newProjectParam = searchParams.get("newProject");
+
+      // Handle new project creation
+      if (newProjectParam === "true" && user && screen === "hero") {
+        setResponses(createInitialResponses());
+        setCurrentQuestionIndex(0);
+        setActiveSectionIndex(0);
+        setProjectName("");
+        setEngagementId(null);
+        setScreen("projectName");
+        return;
+      }
+
+      // Handle engagement continuation
       if (engagementParam && user && screen === "hero") {
         try {
           setEngagementId(engagementParam);
@@ -248,7 +262,7 @@ export default function Index() {
     };
 
     if (user) {
-      handleEngagementParam();
+      handleURLParams();
     }
   }, [user, searchParams, screen]);
 
