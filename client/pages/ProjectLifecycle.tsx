@@ -4,21 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-let clientSupabase: any = null;
-
-const getClientSupabase = () => {
-  if (!clientSupabase) {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !anonKey) {
-      throw new Error("Supabase configuration is missing");
-    }
-
-    clientSupabase = createClient(supabaseUrl, anonKey);
-  }
-  return clientSupabase;
-};
+import { supabase } from "@/lib/supabase";
 
 interface Engagement {
   id: string;
