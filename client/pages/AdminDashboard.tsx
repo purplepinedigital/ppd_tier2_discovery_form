@@ -35,10 +35,12 @@ const getAdminSupabase = () => {
 interface FormResponse {
   id: string;
   user_id: string;
+  engagement_id: string | null;
   responses: string[];
   created_at: string;
   updated_at: string;
   user_name?: string;
+  project_name?: string;
 }
 
 interface SignupData {
