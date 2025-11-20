@@ -1299,6 +1299,13 @@ export default function Index() {
                   </Button>
                 )}
                 <Button
+                  onClick={startNewProject}
+                  className="bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE] px-8 py-3"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Start New Project
+                </Button>
+                <Button
                   onClick={() => {
                     const firstIndex = getFirstQuestionIndexForSection(
                       formSections[0].id,
