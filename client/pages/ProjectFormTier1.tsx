@@ -3,6 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import {
+  getImpersonationSession,
+  clearImpersonationSession,
+  isImpersonating,
+} from "@/lib/admin-impersonate";
+import {
   calculatePackageRecommendation,
   type RecommendationInput,
   type RecommendationOutput,
