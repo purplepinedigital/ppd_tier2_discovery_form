@@ -279,7 +279,14 @@ export default function Index() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [user, engagementId, responses, currentQuestionIndex, activeSectionIndex, screen]);
+  }, [
+    user,
+    engagementId,
+    responses,
+    currentQuestionIndex,
+    activeSectionIndex,
+    screen,
+  ]);
 
   const handleSignup = async (
     email: string,
@@ -434,9 +441,7 @@ export default function Index() {
 
         // No projects yet - start fresh form
         setResponses(createInitialResponses());
-        const firstIndex = getFirstQuestionIndexForSection(
-          formSections[0].id,
-        );
+        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
         setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
         setActiveSectionIndex(0);
         setScreen("sectionWelcome");
@@ -600,7 +605,11 @@ export default function Index() {
       }
 
       if (!response.ok) {
-        const errorMsg = data?.error || data?.message || response.statusText || "Unknown error";
+        const errorMsg =
+          data?.error ||
+          data?.message ||
+          response.statusText ||
+          "Unknown error";
         console.error("API error response:", {
           status: response.status,
           statusText: response.statusText,
@@ -620,7 +629,8 @@ export default function Index() {
         setActiveSectionIndex(0);
         setScreen("sectionWelcome");
       } else {
-        const errorMsg = data?.error || data?.message || "Failed to create engagement";
+        const errorMsg =
+          data?.error || data?.message || "Failed to create engagement";
         console.error("Engagement creation failed:", {
           success: data?.success,
           error: errorMsg,
@@ -629,16 +639,13 @@ export default function Index() {
       }
     } catch (error: any) {
       const errorMessage =
-        error?.message ||
-        (typeof error === "string" ? error : "Unknown error");
+        error?.message || (typeof error === "string" ? error : "Unknown error");
       console.error("Error creating engagement:", errorMessage);
       console.debug("Error details:", {
         message: errorMessage,
         name: error?.name,
       });
-      alert(
-        `Failed to create project: ${errorMessage}. Please try again.`,
-      );
+      alert(`Failed to create project: ${errorMessage}. Please try again.`);
     }
   };
 
@@ -886,8 +893,8 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "define your audience" �� but describe your last real
-                        customer.
+                        Not "define your audience" �� but describe your last
+                        real customer.
                       </p>
                     </div>
                     <div className="rounded-[7px] bg-[#FFC741] p-4 md:p-5">

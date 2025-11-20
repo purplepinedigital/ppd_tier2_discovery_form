@@ -130,7 +130,9 @@ export default function ProjectFormFill() {
           setActiveSectionIndex(progress.active_section_index);
         } else {
           // New form - start from beginning
-          const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+          const firstIndex = getFirstQuestionIndexForSection(
+            formSections[0].id,
+          );
           setResponses(createInitialResponses());
           setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
           setActiveSectionIndex(0);
@@ -143,9 +145,7 @@ export default function ProjectFormFill() {
           hint: err.hint,
           full: err,
         });
-        setError(
-          `Failed to load form: ${err.message || "Unknown error"}`,
-        );
+        setError(`Failed to load form: ${err.message || "Unknown error"}`);
       } finally {
         setIsLoading(false);
       }

@@ -35,9 +35,9 @@ export default function ProjectJourney() {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
-  const [formProgressMap, setFormProgressMap] = useState<Record<string, number>>(
-    {},
-  );
+  const [formProgressMap, setFormProgressMap] = useState<
+    Record<string, number>
+  >({});
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
@@ -140,8 +140,14 @@ export default function ProjectJourney() {
       const client = getClientSupabase();
 
       // Delete all related data
-      await client.from("stage_completion").delete().eq("engagement_id", engagementId);
-      await client.from("deliverables").delete().eq("engagement_id", engagementId);
+      await client
+        .from("stage_completion")
+        .delete()
+        .eq("engagement_id", engagementId);
+      await client
+        .from("deliverables")
+        .delete()
+        .eq("engagement_id", engagementId);
       await client.from("engagements").delete().eq("id", engagementId);
 
       setEngagements(engagements.filter((e) => e.id !== engagementId));
@@ -286,121 +292,122 @@ export default function ProjectJourney() {
               </div>
             ) : (
               <>
-              <table className="w-full">
-                <thead className="bg-gray-100 border-b">
-                  <tr>
-                    <th
-                      className="px-6 py-3 text-left text-sm font-bold"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Project Name
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-sm font-bold"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Program
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-sm font-bold"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Created
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-sm font-bold"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Form Progress
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-sm font-bold"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {engagements.map((engagement) => (
-                    <tr
-                      key={engagement.id}
-                      className="border-b hover:bg-gray-50"
-                    >
-                      <td
-                        className="px-6 py-4 text-sm font-medium"
+                <table className="w-full">
+                  <thead className="bg-gray-100 border-b">
+                    <tr>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        {engagement.project_name}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        {engagement.program ? (
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
-                              programColors[engagement.program] ||
-                              "bg-gray-100 text-gray-800"
-                            }`}
-                          >
-                            {engagement.program}
-                          </span>
-                        ) : (
-                          <span className="text-gray-400 italic text-xs">
-                            Not set
-                          </span>
-                        )}
-                      </td>
-                      <td
-                        className="px-6 py-4 text-sm"
+                        Project Name
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        {new Date(engagement.created_at).toLocaleDateString()}
-                      </td>
-                      <td
-                        className="px-6 py-4 text-sm"
+                        Program
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        <span className="text-gray-600">
-                          {formProgressMap[engagement.id] || 0}/30 questions
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm space-x-2">
-                        <Button
-                          onClick={() => {
-                            const progress = formProgressMap[engagement.id] || 0;
-                            if (progress >= 30) {
-                              // Form complete - show lifecycle/project details
-                              navigate(`/project/lifecycle/${engagement.id}`);
-                            } else {
-                              // Form incomplete - continue filling form using Index.tsx
-                              window.location.href = `/?engagement=${engagement.id}`;
-                            }
-                          }}
-                          className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          View/Edit
-                        </Button>
-                        <Button
-                          onClick={() => handleDeleteProject(engagement.id)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          Delete
-                        </Button>
-                      </td>
+                        Created
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Form Progress
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Actions
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="p-6 border-t">
-                <Button
-                  onClick={() => navigate("/?newProject=true")}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                  style={{ fontFamily: "Literata, serif" }}
-                >
-                  + Create New Project
-                </Button>
-              </div>
+                  </thead>
+                  <tbody>
+                    {engagements.map((engagement) => (
+                      <tr
+                        key={engagement.id}
+                        className="border-b hover:bg-gray-50"
+                      >
+                        <td
+                          className="px-6 py-4 text-sm font-medium"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {engagement.project_name}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {engagement.program ? (
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
+                                programColors[engagement.program] ||
+                                "bg-gray-100 text-gray-800"
+                              }`}
+                            >
+                              {engagement.program}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 italic text-xs">
+                              Not set
+                            </span>
+                          )}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {new Date(engagement.created_at).toLocaleDateString()}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          <span className="text-gray-600">
+                            {formProgressMap[engagement.id] || 0}/30 questions
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm space-x-2">
+                          <Button
+                            onClick={() => {
+                              const progress =
+                                formProgressMap[engagement.id] || 0;
+                              if (progress >= 30) {
+                                // Form complete - show lifecycle/project details
+                                navigate(`/project/lifecycle/${engagement.id}`);
+                              } else {
+                                // Form incomplete - continue filling form using Index.tsx
+                                window.location.href = `/?engagement=${engagement.id}`;
+                              }
+                            }}
+                            className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            View/Edit
+                          </Button>
+                          <Button
+                            onClick={() => handleDeleteProject(engagement.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            Delete
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="p-6 border-t">
+                  <Button
+                    onClick={() => navigate("/?newProject=true")}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    + Create New Project
+                  </Button>
+                </div>
               </>
             )}
           </div>

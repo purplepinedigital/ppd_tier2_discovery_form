@@ -478,7 +478,11 @@ const handler: Handler = async (event) => {
   const path = event.path || "";
 
   // Klaviyo contact route
-  if ((path.includes("/api/klaviyo/contact") || path.includes("/klaviyo/contact")) && event.httpMethod === "POST") {
+  if (
+    (path.includes("/api/klaviyo/contact") ||
+      path.includes("/klaviyo/contact")) &&
+    event.httpMethod === "POST"
+  ) {
     try {
       const body = JSON.parse(event.body || "{}");
       const result = await handleKlaviyoContact(body);
@@ -526,7 +530,10 @@ const handler: Handler = async (event) => {
   }
 
   // Engagement creation route
-  if ((path.includes("/api/engagements") || path.includes("/engagements")) && event.httpMethod === "POST") {
+  if (
+    (path.includes("/api/engagements") || path.includes("/engagements")) &&
+    event.httpMethod === "POST"
+  ) {
     try {
       const body = JSON.parse(event.body || "{}");
       console.log("Creating engagement with body:", {
@@ -541,7 +548,10 @@ const handler: Handler = async (event) => {
       return {
         statusCode: result.status,
         headers,
-        body: typeof result.body === "string" ? result.body : JSON.stringify(result.body),
+        body:
+          typeof result.body === "string"
+            ? result.body
+            : JSON.stringify(result.body),
       };
     } catch (error: any) {
       console.error("Engagement creation error:", error.message);
