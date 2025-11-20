@@ -273,8 +273,9 @@ export default function Index() {
   useEffect(() => {
     if (user && screen === "question" && engagementId) {
       const timer = setTimeout(() => {
+        const userIdForProgress = getImpersonatedUserId() || user.id;
         saveFormProgress(
-          user.id,
+          userIdForProgress,
           engagementId,
           responses,
           currentQuestionIndex,
