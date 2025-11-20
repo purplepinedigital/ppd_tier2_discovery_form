@@ -289,8 +289,30 @@ export default function ProjectFormTier1() {
 
   if (screen === "form") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#FFFAEE] to-[#F5E6D3] p-6">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-[#FFFAEE] to-[#F5E6D3]">
+        {/* Impersonation Banner */}
+        {isImpersonating() && (
+          <div className="bg-yellow-100 border-b-2 border-yellow-400 p-4">
+            <div className="max-w-2xl mx-auto flex items-center justify-between">
+              <div className="text-yellow-800 font-semibold">
+                👤 You are viewing as: <span className="font-bold">{getImpersonationSession()?.impersonatedEmail}</span>
+              </div>
+              <Button
+                onClick={() => {
+                  clearImpersonationSession();
+                  window.location.href = "/admin/dashboard";
+                }}
+                className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Stop Impersonating
+              </Button>
+            </div>
+          </div>
+        )}
+
+        <div className="p-6">
+          <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="text-sm font-medium text-[#37306B] mb-2">
@@ -766,6 +788,7 @@ export default function ProjectFormTier1() {
             </div>
           </div>
         </div>
+        </div>
       </div>
     );
   }
@@ -848,7 +871,7 @@ export default function ProjectFormTier1() {
               <div className="bg-gray-50 rounded p-4">
                 {recommendation.recommendedPackage === "FOUNDATION" && (
                   <ul className="space-y-2 text-gray-700">
-                    <li>✅ Complete brand identity (Brand 1.0)</li>
+                    <li>��� Complete brand identity (Brand 1.0)</li>
                     <li>✅ Professional website (10-50 pages based on scope)</li>
                     <li>✅ Social media presence setup</li>
                     <li>✅ Google Analytics + Search Console</li>
