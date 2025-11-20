@@ -486,12 +486,34 @@ export default function ProjectLifecycle() {
           >
             {error || "Project not found"}
           </p>
-          <Button
-            onClick={() => navigate("/project/journey")}
-            className="bg-[#37306B] hover:bg-[#2C2758] text-white"
-          >
-            Back to Projects
-          </Button>
+          <div className="flex gap-4 justify-center">
+            {isImpersonating() ? (
+              <>
+                <Button
+                  onClick={() => navigate("/project/journey")}
+                  className="bg-[#37306B] hover:bg-[#2C2758] text-white"
+                >
+                  Back to Projects
+                </Button>
+                <Button
+                  onClick={() => {
+                    clearImpersonationSession();
+                    window.location.href = "/admin/dashboard";
+                  }}
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                >
+                  Stop Impersonating
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => navigate("/project/journey")}
+                className="bg-[#37306B] hover:bg-[#2C2758] text-white"
+              >
+                Back to Projects
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );
