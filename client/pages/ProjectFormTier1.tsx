@@ -18,6 +18,7 @@ type Tier1Screen =
 
 export default function ProjectFormTier1() {
   const navigate = useNavigate();
+  const { engagementId } = useParams();
   const [user, setUser] = useState<User | null>(null);
   const [screen, setScreen] = useState<Tier1Screen>("form");
 
