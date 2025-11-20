@@ -373,7 +373,7 @@ export default function AdminEngagementDetail() {
     try {
       const client = getAdminSupabase();
 
-      const { error: insertError } = await client
+      const { data: deliverableData, error: insertError } = await client
         .from("deliverables")
         .insert({
           engagement_id: engagement.id,
@@ -382,9 +382,30 @@ export default function AdminEngagementDetail() {
           description: newDeliverable.description || null,
           url: newDeliverable.url,
           visible_to_client: true,
-        });
+        })
+        .select("id")
+        .single();
 
       if (insertError) throw insertError;
+
+      // Create client notification
+      if (deliverableData) {
+        const { error: notifError } = await client
+          .from("client_notifications")
+          .insert({
+            engagement_id: engagement.id,
+            user_id: engagement.user_id,
+            type: "deliverable_added",
+            title: `New Deliverable in ${STAGE_NAMES[stageNumber]}`,
+            message: `${newDeliverable.title} has been added to your project`,
+            related_stage_number: stageNumber,
+            related_deliverable_id: deliverableData.id,
+          });
+
+        if (notifError) {
+          console.error("Error creating notification:", notifError);
+        }
+      }
 
       // Reset form and fetch updated data
       setNewDeliverable({ title: "", description: "", url: "" });
