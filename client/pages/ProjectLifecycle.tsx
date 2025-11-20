@@ -123,7 +123,8 @@ export default function ProjectLifecycle() {
   const { toast } = useToast();
 
   const [engagement, setEngagement] = useState<Engagement | null>(null);
-  const [tier1Assessment, setTier1Assessment] = useState<Tier1Assessment | null>(null);
+  const [tier1Assessment, setTier1Assessment] =
+    useState<Tier1Assessment | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
   const [completions, setCompletions] = useState<StageCompletion[]>([]);
@@ -182,11 +183,17 @@ export default function ProjectLifecycle() {
     setError(null);
     try {
       // Use admin client if impersonating to bypass RLS policies
-      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
 
       // Fetch engagement
       try {
-        console.log("Fetching engagement:", { engagementId, userId, isImpersonating: isImpersonating() });
+        console.log("Fetching engagement:", {
+          engagementId,
+          userId,
+          isImpersonating: isImpersonating(),
+        });
         const { data: engagementData, error: engagementError } = await client
           .from("engagements")
           .select("*")
@@ -194,7 +201,10 @@ export default function ProjectLifecycle() {
           .eq("user_id", userId)
           .maybeSingle();
 
-        console.log("Engagement fetch result:", { data: engagementData, error: engagementError });
+        console.log("Engagement fetch result:", {
+          data: engagementData,
+          error: engagementError,
+        });
 
         if (engagementError) {
           console.error("Engagement fetch error:", engagementError);
@@ -207,7 +217,10 @@ export default function ProjectLifecycle() {
         }
 
         if (!engagementData) {
-          console.warn("No engagement data found for:", { engagementId, userId });
+          console.warn("No engagement data found for:", {
+            engagementId,
+            userId,
+          });
           setError(`Engagement ${engagementId} not found for user ${userId}`);
           return;
         }
@@ -263,13 +276,18 @@ export default function ProjectLifecycle() {
                     .select("*")
                     .in("deliverable_id", deliverableIds);
 
-                  const feedbackByDeliverable: Record<string, ClientFeedback[]> = {};
+                  const feedbackByDeliverable: Record<
+                    string,
+                    ClientFeedback[]
+                  > = {};
                   if (feedbackData) {
                     feedbackData.forEach((feedback) => {
                       if (!feedbackByDeliverable[feedback.deliverable_id]) {
                         feedbackByDeliverable[feedback.deliverable_id] = [];
                       }
-                      feedbackByDeliverable[feedback.deliverable_id].push(feedback);
+                      feedbackByDeliverable[feedback.deliverable_id].push(
+                        feedback,
+                      );
                     });
                   }
                   setFeedbackMap(feedbackByDeliverable);
@@ -286,14 +304,19 @@ export default function ProjectLifecycle() {
                   client,
                 );
               } else {
-                const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
-                  number: i,
-                  name: STAGE_NAMES[i],
-                  description: STAGE_DESCRIPTIONS[i],
-                  included: true,
-                  isLite: false,
-                  completed: (completionData || []).some((c) => c.stage_number === i),
-                }));
+                const allStages: Stage[] = Array.from(
+                  { length: 8 },
+                  (_, i) => ({
+                    number: i,
+                    name: STAGE_NAMES[i],
+                    description: STAGE_DESCRIPTIONS[i],
+                    included: true,
+                    isLite: false,
+                    completed: (completionData || []).some(
+                      (c) => c.stage_number === i,
+                    ),
+                  }),
+                );
                 setStages(allStages);
               }
             } catch (completionError) {
@@ -305,7 +328,10 @@ export default function ProjectLifecycle() {
         }
       } catch (engagementFetchError) {
         console.error("Error in engagement fetch:", engagementFetchError);
-        setError((engagementFetchError as any)?.message || "Failed to fetch engagement");
+        setError(
+          (engagementFetchError as any)?.message ||
+            "Failed to fetch engagement",
+        );
       }
     } catch (err: any) {
       setError(err.message || "Failed to fetch engagement data");
@@ -379,7 +405,9 @@ export default function ProjectLifecycle() {
     if (!engagement || !currentUser) return;
 
     try {
-      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
 
       const { error } = await client.from("stage_completion").insert({
         engagement_id: engagement.id,
@@ -478,7 +506,9 @@ export default function ProjectLifecycle() {
     }
 
     try {
-      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
 
       const { error } = await client.from("client_feedback").insert({
         deliverable_id: deliverableId,
@@ -522,7 +552,9 @@ export default function ProjectLifecycle() {
     if (!engagement || !newPackage) return;
 
     try {
-      const client = isImpersonating() ? (getAdminSupabase() || supabase) : supabase;
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
 
       const { error } = await client
         .from("engagements")
@@ -612,7 +644,10 @@ export default function ProjectLifecycle() {
         <div className="bg-yellow-100 border-b-2 border-yellow-400 p-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="text-yellow-800 font-semibold">
-              👤 You are viewing as: <span className="font-bold">{getImpersonationSession()?.impersonatedEmail}</span>
+              👤 You are viewing as:{" "}
+              <span className="font-bold">
+                {getImpersonationSession()?.impersonatedEmail}
+              </span>
             </div>
             <Button
               onClick={() => {
@@ -696,7 +731,10 @@ export default function ProjectLifecycle() {
                   className="text-blue-800 mb-4"
                   style={{ fontFamily: "Literata, serif" }}
                 >
-                  To unlock the full potential of your project and proceed with the program roadmap, you need to complete your Tier 1 assessment. This will help us understand your business, goals, and recommend the best package for your needs.
+                  To unlock the full potential of your project and proceed with
+                  the program roadmap, you need to complete your Tier 1
+                  assessment. This will help us understand your business, goals,
+                  and recommend the best package for your needs.
                 </p>
               </div>
               <Button
@@ -990,7 +1028,9 @@ export default function ProjectLifecycle() {
                                 <Button
                                   onClick={() => {
                                     setEditingPackage(false);
-                                    setNewPackage(engagement.recommended_package);
+                                    setNewPackage(
+                                      engagement.recommended_package,
+                                    );
                                   }}
                                   variant="outline"
                                   className="flex-1"
@@ -1066,7 +1106,9 @@ export default function ProjectLifecycle() {
                                     {deliverable.url && (
                                       <a
                                         href={
-                                          deliverable.url.startsWith("http://") ||
+                                          deliverable.url.startsWith(
+                                            "http://",
+                                          ) ||
                                           deliverable.url.startsWith("https://")
                                             ? deliverable.url
                                             : `https://${deliverable.url}`
@@ -1194,15 +1236,19 @@ export default function ProjectLifecycle() {
                     {/* Stage Status Buttons */}
                     <div className="space-y-2">
                       {/* Admin Only: Mark Complete Button */}
-                      {!stage.completed && stage.included && isImpersonating() && (
-                        <Button
-                          onClick={() => handleMarkStageComplete(stage.number)}
-                          className="bg-green-600 hover:bg-green-700 text-white w-full"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          ✓ Mark This Stage Complete
-                        </Button>
-                      )}
+                      {!stage.completed &&
+                        stage.included &&
+                        isImpersonating() && (
+                          <Button
+                            onClick={() =>
+                              handleMarkStageComplete(stage.number)
+                            }
+                            className="bg-green-600 hover:bg-green-700 text-white w-full"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            ✓ Mark This Stage Complete
+                          </Button>
+                        )}
 
                       {/* Client Only: Mark Incomplete Button */}
                       {stage.completed && !isImpersonating() && (
@@ -1222,7 +1268,8 @@ export default function ProjectLifecycle() {
                         stage.included &&
                         !isImpersonating() && (
                           <p className="text-sm text-gray-600 italic">
-                            This stage will be marked complete by your Purple Pine Digital team lead after discussing with you.
+                            This stage will be marked complete by your Purple
+                            Pine Digital team lead after discussing with you.
                           </p>
                         )}
                     </div>

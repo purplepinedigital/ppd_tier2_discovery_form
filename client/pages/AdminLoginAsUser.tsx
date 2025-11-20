@@ -154,7 +154,9 @@ export default function AdminLoginAsUser() {
         {filteredUsers.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-600">
-              {searchQuery ? "No users found matching your search" : "No users found"}
+              {searchQuery
+                ? "No users found matching your search"
+                : "No users found"}
             </p>
           </div>
         ) : (

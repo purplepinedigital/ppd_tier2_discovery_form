@@ -127,7 +127,10 @@ export default function ProjectFormFill() {
         const userIdForProgress = getImpersonatedUserId() || currentUser.id;
 
         // Load form progress
-        const progress = await loadFormProgress(userIdForProgress, engagementId);
+        const progress = await loadFormProgress(
+          userIdForProgress,
+          engagementId,
+        );
         if (progress) {
           setResponses(progress.responses);
           setCurrentQuestionIndex(progress.current_question_index);

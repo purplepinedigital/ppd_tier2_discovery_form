@@ -124,7 +124,7 @@ export default function ProjectFormTier1() {
 
   const toggleNeed = (need: string) => {
     setNeeds((prev) =>
-      prev.includes(need) ? prev.filter((n) => n !== need) : [...prev, need]
+      prev.includes(need) ? prev.filter((n) => n !== need) : [...prev, need],
     );
   };
 
@@ -275,7 +275,9 @@ export default function ProjectFormTier1() {
     if (validationErrors.length === 0) return null;
     return (
       <div className="mb-6 rounded-lg bg-red-50 p-4 border border-red-200">
-        <p className="font-semibold text-red-800 mb-2">Please fix these issues:</p>
+        <p className="font-semibold text-red-800 mb-2">
+          Please fix these issues:
+        </p>
         <ul className="list-disc list-inside space-y-1">
           {validationErrors.map((error, idx) => (
             <li key={idx} className="text-red-700 text-sm">
@@ -295,7 +297,10 @@ export default function ProjectFormTier1() {
           <div className="bg-yellow-100 border-b-2 border-yellow-400 p-4">
             <div className="max-w-2xl mx-auto flex items-center justify-between">
               <div className="text-yellow-800 font-semibold">
-                👤 You are viewing as: <span className="font-bold">{getImpersonationSession()?.impersonatedEmail}</span>
+                👤 You are viewing as:{" "}
+                <span className="font-bold">
+                  {getImpersonationSession()?.impersonatedEmail}
+                </span>
               </div>
               <Button
                 onClick={() => {
@@ -313,481 +318,500 @@ export default function ProjectFormTier1() {
 
         <div className="p-6">
           <div className="max-w-2xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="text-sm font-medium text-[#37306B] mb-2">
-              Step 1 of 3: Project Setup
-            </div>
-            <h1 className="text-4xl font-bold text-[#37306B] mb-2">
-              Let's Get Started!
-            </h1>
-            <p className="text-lg text-gray-600">
-              Tell us about your project so we can recommend the right approach
-              and timeline for you.
-            </p>
-          </div>
-
-          {/* Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            {renderValidationErrors()}
-
-            {/* Section 1: Project Basics */}
+            {/* Header */}
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-[#37306B] mb-6">
-                Project Basics
-              </h2>
-
-              {/* Project Name */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Project Name
-                </label>
-                <p className="text-sm text-gray-500 mb-3">
-                  This is your project name from the dashboard.
-                </p>
-                <input
-                  type="text"
-                  value={projectName}
-                  readOnly
-                  placeholder="Project name"
-                  className="w-full rounded border border-gray-300 px-4 py-2 bg-gray-50 text-gray-600 cursor-not-allowed"
-                />
+              <div className="text-sm font-medium text-[#37306B] mb-2">
+                Step 1 of 3: Project Setup
               </div>
+              <h1 className="text-4xl font-bold text-[#37306B] mb-2">
+                Let's Get Started!
+              </h1>
+              <p className="text-lg text-gray-600">
+                Tell us about your project so we can recommend the right
+                approach and timeline for you.
+              </p>
+            </div>
 
-              {/* Business Name */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  What's your business or company name?
-                </label>
-                <p className="text-sm text-gray-500 mb-3">
-                  If you're a solopreneur or freelancer, just use your
-                  professional name.
-                </p>
-                <input
-                  type="text"
-                  value={businessName}
-                  onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="Your business name"
-                  className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
-                />
-              </div>
+            {/* Form */}
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              {renderValidationErrors()}
 
-              {/* Industry */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  What industry or business type are you in?
-                </label>
-                <p className="text-sm text-gray-500 mb-3">
-                  This helps us understand your competitive landscape and audience.
-                </p>
-                <select
-                  value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
-                  className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
-                >
-                  <option value="">Select an industry</option>
-                  {industries.map((ind) => (
-                    <option key={ind} value={ind}>
-                      {ind}
-                    </option>
-                  ))}
-                </select>
-                {industry === "Other" && (
+              {/* Section 1: Project Basics */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-[#37306B] mb-6">
+                  Project Basics
+                </h2>
+
+                {/* Project Name */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Project Name
+                  </label>
+                  <p className="text-sm text-gray-500 mb-3">
+                    This is your project name from the dashboard.
+                  </p>
                   <input
                     type="text"
-                    value={otherIndustry}
-                    onChange={(e) => setOtherIndustry(e.target.value)}
-                    placeholder="Please specify your industry"
-                    className="w-full mt-3 rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                    value={projectName}
+                    readOnly
+                    placeholder="Project name"
+                    className="w-full rounded border border-gray-300 px-4 py-2 bg-gray-50 text-gray-600 cursor-not-allowed"
                   />
-                )}
-              </div>
+                </div>
 
-              {/* Phone */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Best phone number to reach you
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+91 XXXXX XXXXX"
-                  className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
-                />
-              </div>
-            </div>
+                {/* Business Name */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    What's your business or company name?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-3">
+                    If you're a solopreneur or freelancer, just use your
+                    professional name.
+                  </p>
+                  <input
+                    type="text"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    placeholder="Your business name"
+                    className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                  />
+                </div>
 
-            {/* Section 2: Assessment Questions */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-[#37306B] mb-6">
-                Current State & Needs Assessment
-              </h2>
+                {/* Industry */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    What industry or business type are you in?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-3">
+                    This helps us understand your competitive landscape and
+                    audience.
+                  </p>
+                  <select
+                    value={industry}
+                    onChange={(e) => setIndustry(e.target.value)}
+                    className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                  >
+                    <option value="">Select an industry</option>
+                    {industries.map((ind) => (
+                      <option key={ind} value={ind}>
+                        {ind}
+                      </option>
+                    ))}
+                  </select>
+                  {industry === "Other" && (
+                    <input
+                      type="text"
+                      value={otherIndustry}
+                      onChange={(e) => setOtherIndustry(e.target.value)}
+                      placeholder="Please specify your industry"
+                      className="w-full mt-3 rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                    />
+                  )}
+                </div>
 
-              {/* Q1: Current Digital Presence */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  What best describes where you are right now with your digital
-                  presence?
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  Be honest - we work with businesses at every stage.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      value: "scratch",
-                      label: "🌱 Starting from scratch",
-                      desc: "No logo, no website, building everything new",
-                    },
-                    {
-                      value: "basics",
-                      label: "🔧 Have basics, need upgrade",
-                      desc: "Basic logo exists but need professional brand + website",
-                    },
-                    {
-                      value: "refresh",
-                      label: "🏗 Need complete refresh",
-                      desc: "Have brand and website but want to rebuild from ground up",
-                    },
-                    {
-                      value: "marketing_only",
-                      label: "✅ Solid foundation, need marketing",
-                      desc: "Happy with brand/website, just need marketing help",
-                    },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="currentState"
-                        value={option.value}
-                        checked={currentState === option.value}
-                        onChange={(e) => setCurrentState(e.target.value)}
-                        className="mt-1 mr-4"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-800">
-                          {option.label}
-                        </div>
-                        <div className="text-sm text-gray-600">{option.desc}</div>
-                      </div>
-                    </label>
-                  ))}
+                {/* Phone */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Best phone number to reach you
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 XXXXX XXXXX"
+                    className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                  />
                 </div>
               </div>
 
-              {/* Q2: What You Need */}
+              {/* Section 2: Assessment Questions */}
               <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  What do you need help with? (Select all that apply)
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  Check everything that's relevant - we'll factor it all in.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    { value: "brand", label: "🎨 Brand identity" },
-                    { value: "website", label: "🌐 Professional website" },
-                    { value: "social", label: "📱 Social media presence" },
-                    { value: "marketing", label: "📈 Marketing campaigns" },
-                    { value: "optimization", label: "🎯 Ongoing optimization" },
-                    { value: "collateral", label: "💼 Business collateral" },
-                    { value: "ecommerce", label: "🛒 E-commerce functionality" },
-                    { value: "booking", label: "📅 Booking/appointment system" },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={needs.includes(option.value)}
-                        onChange={() => toggleNeed(option.value)}
-                        className="mr-3"
-                      />
-                      <span className="text-gray-800">{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+                <h2 className="text-2xl font-bold text-[#37306B] mb-6">
+                  Current State & Needs Assessment
+                </h2>
 
-              {/* Q3: Website Scope */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  How extensive does your website need to be?
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  Think about all the pages and sections you need: Home, About,
-                  Services, Portfolio, Blog, Resources, etc.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      value: "compact",
-                      label: "📄 Compact (5-15 pages)",
-                      desc: "Just the essentials",
-                    },
-                    {
-                      value: "standard",
-                      label: "📚 Standard (15-30 pages)",
-                      desc: "Good depth across key sections",
-                    },
-                    {
-                      value: "comprehensive",
-                      label: "🏢 Comprehensive (30-50 pages)",
-                      desc: "Full content library",
-                    },
-                    {
-                      value: "extensive",
-                      label: "🏭 Extensive (50+ pages)",
-                      desc: "Major resource hub or large catalog",
-                    },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="websiteScope"
-                        value={option.value}
-                        checked={websiteScope === option.value}
-                        onChange={(e) => setWebsiteScope(e.target.value)}
-                        className="mt-1 mr-4"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-800">
-                          {option.label}
-                        </div>
-                        <div className="text-sm text-gray-600">{option.desc}</div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Q4: Marketing Timing - CRITICAL */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  When do you want to start bringing in customers through
-                  marketing?
-                </label>
-                <p className="text-sm text-red-600 font-medium mb-4">
-                  ⚠️ This is the most important question - it determines which
-                  package is right for you.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      value: "foundation_first",
-                      label: "🏗 Foundation first, marketing later",
-                      desc: "Build brand + website properly first, then add marketing when ready",
-                      package: "FOUNDATION",
-                    },
-                    {
-                      value: "together",
-                      label: "🚀 Build and market together",
-                      desc:
-                        "Launch everything within 3-4 months with marketing running",
-                      package: "GROWTH",
-                    },
-                    {
-                      value: "ongoing",
-                      label: "⚡ Need ongoing growth partnership",
-                      desc: "Long-term partner managing everything month-after-month",
-                      package: "PERFORMANCE",
-                    },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="marketingTiming"
-                        value={option.value}
-                        checked={marketingTiming === option.value}
-                        onChange={(e) => setMarketingTiming(e.target.value)}
-                        className="mt-1 mr-4"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
+                {/* Q1: Current Digital Presence */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    What best describes where you are right now with your
+                    digital presence?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Be honest - we work with businesses at every stage.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        value: "scratch",
+                        label: "🌱 Starting from scratch",
+                        desc: "No logo, no website, building everything new",
+                      },
+                      {
+                        value: "basics",
+                        label: "🔧 Have basics, need upgrade",
+                        desc: "Basic logo exists but need professional brand + website",
+                      },
+                      {
+                        value: "refresh",
+                        label: "🏗 Need complete refresh",
+                        desc: "Have brand and website but want to rebuild from ground up",
+                      },
+                      {
+                        value: "marketing_only",
+                        label: "✅ Solid foundation, need marketing",
+                        desc: "Happy with brand/website, just need marketing help",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="currentState"
+                          value={option.value}
+                          checked={currentState === option.value}
+                          onChange={(e) => setCurrentState(e.target.value)}
+                          className="mt-1 mr-4"
+                        />
+                        <div>
                           <div className="font-medium text-gray-800">
                             {option.label}
                           </div>
-                          <span className="text-xs font-semibold bg-[#37306B] text-white px-2 py-1 rounded">
-                            {option.package}
-                          </span>
+                          <div className="text-sm text-gray-600">
+                            {option.desc}
+                          </div>
                         </div>
-                        <div className="text-sm text-gray-600">
-                          {option.desc}
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Q5: Investment Range */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  What's your investment range for this project?
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  This helps us recommend a package that fits your budget. Our
-                  packages are designed for different investment levels.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      value: "foundation_budget",
-                      label: "💚 ₹50,000 - ₹1,50,000",
-                      desc: "Foundation Package range",
-                    },
-                    {
-                      value: "growth_budget",
-                      label: "💙 ₹2,00,000 - ₹4,00,000",
-                      desc: "Growth Package range",
-                    },
-                    {
-                      value: "performance_budget",
-                      label: "💜 ₹5,00,000+",
-                      desc: "Performance Package range",
-                    },
-                    {
-                      value: "unsure",
-                      label: "🤔 Not sure yet",
-                      desc: "Help me understand what I need first",
-                    },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="budgetRange"
-                        value={option.value}
-                        checked={budgetRange === option.value}
-                        onChange={(e) => setBudgetRange(e.target.value)}
-                        className="mt-1 mr-4"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-800">
-                          {option.label}
-                        </div>
-                        <div className="text-sm text-gray-600">{option.desc}</div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Q6: Timeline Expectation */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  What's your ideal timeline?
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  We maintain high quality standards, so we'll be honest if a
-                  timeline isn't realistic.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      value: "asap",
-                      label: "⚡ As soon as possible (6-8 weeks)",
-                    },
-                    {
-                      value: "normal",
-                      label: "🎯 Normal pace (3-4 months)",
-                    },
-                    {
-                      value: "patient",
-                      label: "🌟 Take the time needed (6-12 months)",
-                    },
-                    {
-                      value: "specific_date",
-                      label: "📅 Specific deadline (I'll specify below)",
-                    },
-                  ].map((option) => (
-                    <label
-                      key={option.value}
-                      className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="timelineExpectation"
-                        value={option.value}
-                        checked={timelineExpectation === option.value}
-                        onChange={(e) => setTimelineExpectation(e.target.value)}
-                        className="mr-4"
-                      />
-                      <span className="text-gray-800">{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-
-                {timelineExpectation === "specific_date" && (
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      What's your target launch date?
-                    </label>
-                    <input
-                      type="date"
-                      value={targetDate}
-                      onChange={(e) => setTargetDate(e.target.value)}
-                      className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
-                    />
+                      </label>
+                    ))}
                   </div>
-                )}
+                </div>
+
+                {/* Q2: What You Need */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    What do you need help with? (Select all that apply)
+                  </label>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Check everything that's relevant - we'll factor it all in.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      { value: "brand", label: "🎨 Brand identity" },
+                      { value: "website", label: "🌐 Professional website" },
+                      { value: "social", label: "📱 Social media presence" },
+                      { value: "marketing", label: "📈 Marketing campaigns" },
+                      {
+                        value: "optimization",
+                        label: "🎯 Ongoing optimization",
+                      },
+                      { value: "collateral", label: "💼 Business collateral" },
+                      {
+                        value: "ecommerce",
+                        label: "🛒 E-commerce functionality",
+                      },
+                      {
+                        value: "booking",
+                        label: "📅 Booking/appointment system",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={needs.includes(option.value)}
+                          onChange={() => toggleNeed(option.value)}
+                          className="mr-3"
+                        />
+                        <span className="text-gray-800">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q3: Website Scope */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    How extensive does your website need to be?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Think about all the pages and sections you need: Home,
+                    About, Services, Portfolio, Blog, Resources, etc.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        value: "compact",
+                        label: "📄 Compact (5-15 pages)",
+                        desc: "Just the essentials",
+                      },
+                      {
+                        value: "standard",
+                        label: "📚 Standard (15-30 pages)",
+                        desc: "Good depth across key sections",
+                      },
+                      {
+                        value: "comprehensive",
+                        label: "🏢 Comprehensive (30-50 pages)",
+                        desc: "Full content library",
+                      },
+                      {
+                        value: "extensive",
+                        label: "🏭 Extensive (50+ pages)",
+                        desc: "Major resource hub or large catalog",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="websiteScope"
+                          value={option.value}
+                          checked={websiteScope === option.value}
+                          onChange={(e) => setWebsiteScope(e.target.value)}
+                          className="mt-1 mr-4"
+                        />
+                        <div>
+                          <div className="font-medium text-gray-800">
+                            {option.label}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {option.desc}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q4: Marketing Timing - CRITICAL */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    When do you want to start bringing in customers through
+                    marketing?
+                  </label>
+                  <p className="text-sm text-red-600 font-medium mb-4">
+                    ⚠️ This is the most important question - it determines which
+                    package is right for you.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        value: "foundation_first",
+                        label: "🏗 Foundation first, marketing later",
+                        desc: "Build brand + website properly first, then add marketing when ready",
+                        package: "FOUNDATION",
+                      },
+                      {
+                        value: "together",
+                        label: "🚀 Build and market together",
+                        desc: "Launch everything within 3-4 months with marketing running",
+                        package: "GROWTH",
+                      },
+                      {
+                        value: "ongoing",
+                        label: "⚡ Need ongoing growth partnership",
+                        desc: "Long-term partner managing everything month-after-month",
+                        package: "PERFORMANCE",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="marketingTiming"
+                          value={option.value}
+                          checked={marketingTiming === option.value}
+                          onChange={(e) => setMarketingTiming(e.target.value)}
+                          className="mt-1 mr-4"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <div className="font-medium text-gray-800">
+                              {option.label}
+                            </div>
+                            <span className="text-xs font-semibold bg-[#37306B] text-white px-2 py-1 rounded">
+                              {option.package}
+                            </span>
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {option.desc}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q5: Investment Range */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    What's your investment range for this project?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-4">
+                    This helps us recommend a package that fits your budget. Our
+                    packages are designed for different investment levels.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        value: "foundation_budget",
+                        label: "💚 ₹50,000 - ₹1,50,000",
+                        desc: "Foundation Package range",
+                      },
+                      {
+                        value: "growth_budget",
+                        label: "💙 ₹2,00,000 - ₹4,00,000",
+                        desc: "Growth Package range",
+                      },
+                      {
+                        value: "performance_budget",
+                        label: "💜 ₹5,00,000+",
+                        desc: "Performance Package range",
+                      },
+                      {
+                        value: "unsure",
+                        label: "🤔 Not sure yet",
+                        desc: "Help me understand what I need first",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-start p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="budgetRange"
+                          value={option.value}
+                          checked={budgetRange === option.value}
+                          onChange={(e) => setBudgetRange(e.target.value)}
+                          className="mt-1 mr-4"
+                        />
+                        <div>
+                          <div className="font-medium text-gray-800">
+                            {option.label}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {option.desc}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q6: Timeline Expectation */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    What's your ideal timeline?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-4">
+                    We maintain high quality standards, so we'll be honest if a
+                    timeline isn't realistic.
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        value: "asap",
+                        label: "⚡ As soon as possible (6-8 weeks)",
+                      },
+                      {
+                        value: "normal",
+                        label: "🎯 Normal pace (3-4 months)",
+                      },
+                      {
+                        value: "patient",
+                        label: "🌟 Take the time needed (6-12 months)",
+                      },
+                      {
+                        value: "specific_date",
+                        label: "📅 Specific deadline (I'll specify below)",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="timelineExpectation"
+                          value={option.value}
+                          checked={timelineExpectation === option.value}
+                          onChange={(e) =>
+                            setTimelineExpectation(e.target.value)
+                          }
+                          className="mr-4"
+                        />
+                        <span className="text-gray-800">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+
+                  {timelineExpectation === "specific_date" && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        What's your target launch date?
+                      </label>
+                      <input
+                        type="date"
+                        value={targetDate}
+                        onChange={(e) => setTargetDate(e.target.value)}
+                        className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Q7: Primary Goal */}
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    In one sentence - what's the #1 goal you want to achieve
+                    with this project?
+                  </label>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Examples: "Get 50+ qualified leads per month", "Look more
+                    professional than competitors", "Launch online store"
+                  </p>
+                  <textarea
+                    value={primaryGoal}
+                    onChange={(e) =>
+                      setPrimaryGoal(e.target.value.slice(0, 200))
+                    }
+                    placeholder="Tell us what success looks like..."
+                    maxLength={200}
+                    rows={3}
+                    className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    {primaryGoal.length}/200 characters (optional)
+                  </p>
+                </div>
               </div>
 
-              {/* Q7: Primary Goal */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  In one sentence - what's the #1 goal you want to achieve with
-                  this project?
-                </label>
-                <p className="text-sm text-gray-500 mb-3">
-                  Examples: "Get 50+ qualified leads per month", "Look more
-                  professional than competitors", "Launch online store"
-                </p>
-                <textarea
-                  value={primaryGoal}
-                  onChange={(e) => setPrimaryGoal(e.target.value.slice(0, 200))}
-                  placeholder="Tell us what success looks like..."
-                  maxLength={200}
-                  rows={3}
-                  className="w-full rounded border border-gray-300 px-4 py-2 focus:border-[#37306B] focus:outline-none"
-                />
-                <p className="text-xs text-gray-400 mt-1">
-                  {primaryGoal.length}/200 characters (optional)
-                </p>
+              {/* Submit Button */}
+              <div className="flex gap-4">
+                <Button
+                  onClick={() => navigate("/")}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  className="flex-1 bg-[#37306B] hover:bg-[#2C2758] text-white"
+                >
+                  See My Recommendation
+                </Button>
               </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="flex gap-4">
-              <Button
-                onClick={() => navigate("/")}
-                variant="outline"
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                className="flex-1 bg-[#37306B] hover:bg-[#2C2758] text-white"
-              >
-                See My Recommendation
-              </Button>
             </div>
           </div>
-        </div>
         </div>
       </div>
     );
@@ -872,7 +896,9 @@ export default function ProjectFormTier1() {
                 {recommendation.recommendedPackage === "FOUNDATION" && (
                   <ul className="space-y-2 text-gray-700">
                     <li>��� Complete brand identity (Brand 1.0)</li>
-                    <li>✅ Professional website (10-50 pages based on scope)</li>
+                    <li>
+                      ✅ Professional website (10-50 pages based on scope)
+                    </li>
                     <li>✅ Social media presence setup</li>
                     <li>✅ Google Analytics + Search Console</li>
                     <li>✅ SEO foundation</li>
@@ -908,7 +934,9 @@ export default function ProjectFormTier1() {
             {/* Timeline */}
             <div className="mb-8">
               <div className="bg-green-50 rounded p-4">
-                <p className="text-sm text-gray-600 mb-1">Estimated Timeline:</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  Estimated Timeline:
+                </p>
                 <p className="font-semibold text-gray-800">
                   {recommendation.recommendedPackage === "FOUNDATION" &&
                     "6-8 weeks"}
@@ -993,9 +1021,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="reduce_scope"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1013,9 +1039,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="adjust_budget"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1037,9 +1061,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="reduce_scope"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1056,9 +1078,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="adjust_budget"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1080,9 +1100,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="reduce_timeline_scope"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1099,9 +1117,7 @@ export default function ProjectFormTier1() {
                       type="radio"
                       name="mismatchResolution"
                       value="extend_timeline"
-                      onChange={(e) =>
-                        handleMismatchResolution(e.target.value)
-                      }
+                      onChange={(e) => handleMismatchResolution(e.target.value)}
                       className="mt-1 mr-4"
                     />
                     <div>
@@ -1161,8 +1177,8 @@ export default function ProjectFormTier1() {
             Assessment Complete!
           </h1>
           <p className="text-gray-600 mb-6">
-            Your Tier 1 assessment has been saved. Redirecting to your
-            discovery form...
+            Your Tier 1 assessment has been saved. Redirecting to your discovery
+            form...
           </p>
           <div className="animate-spin inline-block w-8 h-8 border-4 border-[#37306B] border-t-transparent rounded-full"></div>
         </div>

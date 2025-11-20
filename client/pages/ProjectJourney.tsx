@@ -93,7 +93,9 @@ export default function ProjectJourney() {
         }
 
         // Determine which user's data to fetch
-        const userToFetch = impersonation ? impersonation.impersonatedUserId : user?.id;
+        const userToFetch = impersonation
+          ? impersonation.impersonatedUserId
+          : user?.id;
 
         if (!userToFetch) {
           navigate("/");
@@ -142,7 +144,9 @@ export default function ProjectJourney() {
     setError(null);
     try {
       // If impersonating, use admin client to bypass RLS; otherwise use regular client
-      const client = isImpersonating() ? getAdminClient() || getClientSupabase() : getClientSupabase();
+      const client = isImpersonating()
+        ? getAdminClient() || getClientSupabase()
+        : getClientSupabase();
 
       const { data: engagementsData, error: engagementsError } = await client
         .from("engagements")
@@ -206,7 +210,10 @@ export default function ProjectJourney() {
       }
 
       // If no answered questions but current_question_index is 29, they're at the end (completed)
-      if (formProgress.current_question_index === 29 && engagement?.tier1_completed) {
+      if (
+        formProgress.current_question_index === 29 &&
+        engagement?.tier1_completed
+      ) {
         return 30;
       }
 
@@ -245,25 +252,43 @@ export default function ProjectJourney() {
       if (!response.ok) {
         console.error("Delete failed:", data);
         alert(`Failed to delete project: ${data.error || "Unknown error"}`);
-        setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+        setDeleteConfirm({
+          isOpen: false,
+          engagementId: null,
+          projectName: null,
+        });
         return;
       }
 
       if (!data.success) {
         console.error("Delete returned non-success:", data);
         alert(`Failed to delete project: ${data.error || "Unknown error"}`);
-        setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+        setDeleteConfirm({
+          isOpen: false,
+          engagementId: null,
+          projectName: null,
+        });
         return;
       }
 
       console.log("Project deleted successfully");
       // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
-      setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+      setDeleteConfirm({
+        isOpen: false,
+        engagementId: null,
+        projectName: null,
+      });
     } catch (error) {
       console.error("Error deleting project:", error);
-      alert(`Failed to delete project: ${error instanceof Error ? error.message : "Unknown error"}`);
-      setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
+      alert(
+        `Failed to delete project: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+      setDeleteConfirm({
+        isOpen: false,
+        engagementId: null,
+        projectName: null,
+      });
     }
   };
 
@@ -292,7 +317,10 @@ export default function ProjectJourney() {
         <div className="bg-yellow-100 border-b-2 border-yellow-400 p-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="text-yellow-800 font-semibold">
-              👤 You are viewing as: <span className="font-bold">{impersonationSession.impersonatedEmail}</span>
+              👤 You are viewing as:{" "}
+              <span className="font-bold">
+                {impersonationSession.impersonatedEmail}
+              </span>
             </div>
             <Button
               onClick={handleStopImpersonation}
@@ -529,7 +557,8 @@ export default function ProjectJourney() {
                         </td>
                         <td className="px-6 py-4 text-sm space-x-2">
                           {(() => {
-                            const progress = formProgressMap[engagement.id] || 0;
+                            const progress =
+                              formProgressMap[engagement.id] || 0;
                             const tier1Done = engagement.tier1_completed;
 
                             // Priority 1: If Tier 2 is in progress, continue it
@@ -593,7 +622,12 @@ export default function ProjectJourney() {
                             );
                           })()}
                           <Button
-                            onClick={() => handleDeleteProject(engagement.id, engagement.project_name)}
+                            onClick={() =>
+                              handleDeleteProject(
+                                engagement.id,
+                                engagement.project_name,
+                              )
+                            }
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
                             style={{ fontFamily: "Literata, serif" }}
                           >
@@ -611,16 +645,24 @@ export default function ProjectJourney() {
       </main>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteConfirm.isOpen} onOpenChange={(open) => {
-        if (!open) {
-          setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
-        }
-      }}>
+      <AlertDialog
+        open={deleteConfirm.isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteConfirm({
+              isOpen: false,
+              engagementId: null,
+              projectName: null,
+            });
+          }
+        }}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Project?</AlertDialogTitle>
             <AlertDialogDescription>
-              You're about to permanently delete "{deleteConfirm.projectName}". This action cannot be undone.
+              You're about to permanently delete "{deleteConfirm.projectName}".
+              This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="space-y-4 py-4">

@@ -46,7 +46,7 @@ export default function AdminTier1Assessments() {
           recommendation_confidence,
           has_mismatch,
           created_at
-        `
+        `,
         )
         .order("created_at", { ascending: false });
 
@@ -54,14 +54,16 @@ export default function AdminTier1Assessments() {
         console.error("Error fetching assessments:", error);
       } else if (assessmentsData) {
         // Fetch user emails from signups table
-        const userIds = [...new Set(assessmentsData.map((a: any) => a.user_id))];
+        const userIds = [
+          ...new Set(assessmentsData.map((a: any) => a.user_id)),
+        ];
         const { data: signupsData } = await supabase
           .from("signups")
           .select("user_id, email")
           .in("user_id", userIds);
 
         const userEmailMap = new Map(
-          (signupsData || []).map((s: any) => [s.user_id, s.email])
+          (signupsData || []).map((s: any) => [s.user_id, s.email]),
         );
 
         const formatted = assessmentsData.map((a: any) => ({
@@ -231,14 +233,14 @@ export default function AdminTier1Assessments() {
                         {assessment.recommended_package}
                       </span>
                     </td>
-                    <td className={`px-6 py-4 text-sm font-medium ${getConfidenceColor(assessment.recommendation_confidence)}`}>
+                    <td
+                      className={`px-6 py-4 text-sm font-medium ${getConfidenceColor(assessment.recommendation_confidence)}`}
+                    >
                       {assessment.recommendation_confidence}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       {assessment.has_mismatch ? (
-                        <span className="text-red-600 font-medium">
-                          ⚠️ Yes
-                        </span>
+                        <span className="text-red-600 font-medium">⚠️ Yes</span>
                       ) : (
                         <span className="text-green-600">✓ No</span>
                       )}

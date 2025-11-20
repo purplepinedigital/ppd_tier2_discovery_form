@@ -127,7 +127,10 @@ export function createServer() {
       }
 
       if (engagement.user_id !== user_id) {
-        console.warn("Unauthorized delete attempt for engagement:", engagementId);
+        console.warn(
+          "Unauthorized delete attempt for engagement:",
+          engagementId,
+        );
         return res.status(403).json({
           error: "Unauthorized - engagement does not belong to this user",
         });

@@ -127,7 +127,8 @@ export default function AdminEngagementDetail() {
   const [engagement, setEngagement] = useState<Engagement | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
-  const [tier1Assessment, setTier1Assessment] = useState<Tier1Assessment | null>(null);
+  const [tier1Assessment, setTier1Assessment] =
+    useState<Tier1Assessment | null>(null);
   const [tier1Loading, setTier1Loading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -593,7 +594,10 @@ export default function AdminEngagementDetail() {
     console.log("Confirm clicked:", { engagementId, stageNum, engagement });
 
     // Validate checkboxes first
-    if (!stageCompletionDialog.clientSatisfied || !stageCompletionDialog.feedbackComplete) {
+    if (
+      !stageCompletionDialog.clientSatisfied ||
+      !stageCompletionDialog.feedbackComplete
+    ) {
       toast({
         title: "Missing Confirmation",
         description: "Please confirm both checkboxes before marking complete.",
@@ -605,7 +609,8 @@ export default function AdminEngagementDetail() {
     if (!engagementId || stageNum === null || stageNum === undefined) {
       toast({
         title: "Error",
-        description: "Invalid engagement or stage. Please refresh and try again.",
+        description:
+          "Invalid engagement or stage. Please refresh and try again.",
         variant: "destructive",
       });
       return;
@@ -857,14 +862,20 @@ export default function AdminEngagementDetail() {
         />
 
         {/* Stage 0: Program Selection & Decision */}
-        <div className={`rounded-lg shadow p-6 mb-8 ${
-          completedStages.includes(0) ? "bg-green-50" : "bg-white"
-        }`}>
-          <div className={`pb-6 border-b mb-6 ${completedStages.includes(0) ? "border-green-400" : ""}`}>
+        <div
+          className={`rounded-lg shadow p-6 mb-8 ${
+            completedStages.includes(0) ? "bg-green-50" : "bg-white"
+          }`}
+        >
+          <div
+            className={`pb-6 border-b mb-6 ${completedStages.includes(0) ? "border-green-400" : ""}`}
+          >
             <div className="flex items-center gap-3 mb-4">
               <span
                 className={`text-2xl font-bold ${
-                  completedStages.includes(0) ? "text-green-700" : "text-[#37306B]"
+                  completedStages.includes(0)
+                    ? "text-green-700"
+                    : "text-[#37306B]"
                 }`}
                 style={{ fontFamily: "Epilogue, sans-serif" }}
               >
@@ -912,7 +923,9 @@ export default function AdminEngagementDetail() {
                 className="text-xs text-blue-600 mb-3"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                💡 Tip: Based on Tier 1 assessment, {tier1Assessment.recommended_package} is recommended. You can override if needed.
+                💡 Tip: Based on Tier 1 assessment,{" "}
+                {tier1Assessment.recommended_package} is recommended. You can
+                override if needed.
               </p>
             )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1200,15 +1213,15 @@ export default function AdminEngagementDetail() {
             {/* Mark Stage 0 Complete Button */}
             {!completedStages.includes(0) &&
               deliverables.filter((d) => d.stage_number === 0).length > 0 && (
-              <button
-                onClick={() => handleMarkStageComplete(0)}
-                disabled={isSaving}
-                className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
-                style={{ fontFamily: "Literata, serif" }}
-              >
-                ✓ Mark This Stage Complete
-              </button>
-            )}
+                <button
+                  onClick={() => handleMarkStageComplete(0)}
+                  disabled={isSaving}
+                  className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  ✓ Mark This Stage Complete
+                </button>
+              )}
           </div>
         </div>
 
@@ -1241,256 +1254,280 @@ export default function AdminEngagementDetail() {
                   setExpandedStages((prev) =>
                     prev.includes(stage.number)
                       ? prev.filter((s) => s !== stage.number)
-                      : [...prev, stage.number]
+                      : [...prev, stage.number],
                   );
                 };
                 return (
-                <div
-                  key={stage.number}
-                  className={`rounded-lg shadow ${
-                    isStageCompleted ? "bg-green-50" : "bg-white"
-                  }`}
-                >
-                  {/* Stage Header - Clickable for expand/collapse */}
                   <div
-                    onClick={toggleExpand}
-                    className={`p-6 cursor-pointer transition-all ${
-                      isStageCompleted ? "bg-green-50 border-b-2 border-green-400" : "border-b"
+                    key={stage.number}
+                    className={`rounded-lg shadow ${
+                      isStageCompleted ? "bg-green-50" : "bg-white"
                     }`}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span
-                            className={`text-2xl font-bold ${
-                              isStageCompleted ? "text-green-700" : "text-[#37306B]"
+                    {/* Stage Header - Clickable for expand/collapse */}
+                    <div
+                      onClick={toggleExpand}
+                      className={`p-6 cursor-pointer transition-all ${
+                        isStageCompleted
+                          ? "bg-green-50 border-b-2 border-green-400"
+                          : "border-b"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <span
+                              className={`text-2xl font-bold ${
+                                isStageCompleted
+                                  ? "text-green-700"
+                                  : "text-[#37306B]"
+                              }`}
+                              style={{ fontFamily: "Epilogue, sans-serif" }}
+                            >
+                              Stage {stage.number}
+                            </span>
+                            {isStageCompleted && (
+                              <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-200 text-green-800">
+                                ✓ Completed
+                              </span>
+                            )}
+                            {!isStageCompleted && stage.included && (
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                  stage.isLite
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
+                                }`}
+                              >
+                                {stage.isLite ? "Lite" : "Included"}
+                              </span>
+                            )}
+                            {!isStageCompleted &&
+                              !stage.included &&
+                              selectedProgram && (
+                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
+                                  Not Included
+                                </span>
+                              )}
+                          </div>
+                          <h4
+                            className={`text-xl font-bold ${
+                              isStageCompleted ? "text-green-700" : ""
                             }`}
                             style={{ fontFamily: "Epilogue, sans-serif" }}
                           >
-                            Stage {stage.number}
-                          </span>
-                          {isStageCompleted && (
-                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-200 text-green-800">
-                              ✓ Completed
-                            </span>
-                          )}
-                          {!isStageCompleted && stage.included && (
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                stage.isLite
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-green-100 text-green-800"
-                              }`}
-                            >
-                              {stage.isLite ? "Lite" : "Included"}
-                            </span>
-                          )}
-                          {!isStageCompleted && !stage.included && selectedProgram && (
-                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
-                              Not Included
-                            </span>
-                          )}
+                            {stage.name}
+                          </h4>
                         </div>
-                        <h4
-                          className={`text-xl font-bold ${
-                            isStageCompleted ? "text-green-700" : ""
-                          }`}
-                          style={{ fontFamily: "Epilogue, sans-serif" }}
+                        <span
+                          className={`text-2xl transition-transform ${isStageExpanded ? "" : "rotate-90"}`}
                         >
-                          {stage.name}
-                        </h4>
+                          ▼
+                        </span>
                       </div>
-                      <span className={`text-2xl transition-transform ${isStageExpanded ? "" : "rotate-90"}`}>
-                        ▼
-                      </span>
                     </div>
-                  </div>
 
-                  {/* Deliverables List - Only show if expanded or not completed */}
-                  {(isStageExpanded || !isStageCompleted) && (
-                  <div className="p-6 mb-6">
-                    <h5
-                      className="font-bold text-gray-700 mb-3"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Deliverables
-                    </h5>
+                    {/* Deliverables List - Only show if expanded or not completed */}
+                    {(isStageExpanded || !isStageCompleted) && (
+                      <div className="p-6 mb-6">
+                        <h5
+                          className="font-bold text-gray-700 mb-3"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Deliverables
+                        </h5>
 
-                    {deliverables.filter((d) => d.stage_number === stage.number)
-                      .length > 0 ? (
-                      <div className="space-y-3 mb-4">
-                        {deliverables
-                          .filter((d) => d.stage_number === stage.number)
-                          .map((deliverable) => (
-                            <div
-                              key={deliverable.id}
-                              className="bg-gray-50 p-4 rounded border border-gray-200 flex items-start justify-between"
-                            >
-                              <div className="flex-1">
-                                <p
-                                  className="font-bold text-gray-800"
-                                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                        {deliverables.filter(
+                          (d) => d.stage_number === stage.number,
+                        ).length > 0 ? (
+                          <div className="space-y-3 mb-4">
+                            {deliverables
+                              .filter((d) => d.stage_number === stage.number)
+                              .map((deliverable) => (
+                                <div
+                                  key={deliverable.id}
+                                  className="bg-gray-50 p-4 rounded border border-gray-200 flex items-start justify-between"
                                 >
-                                  {deliverable.title}
-                                </p>
-                                {deliverable.description && (
-                                  <p
-                                    className="text-sm text-gray-600 mt-1"
+                                  <div className="flex-1">
+                                    <p
+                                      className="font-bold text-gray-800"
+                                      style={{
+                                        fontFamily: "Epilogue, sans-serif",
+                                      }}
+                                    >
+                                      {deliverable.title}
+                                    </p>
+                                    {deliverable.description && (
+                                      <p
+                                        className="text-sm text-gray-600 mt-1"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        {deliverable.description}
+                                      </p>
+                                    )}
+                                    {deliverable.url && (
+                                      <a
+                                        href={deliverable.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-sm text-[#37306B] hover:underline mt-2 break-all"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        {deliverable.url}
+                                      </a>
+                                    )}
+                                    {deliverable.original_filename && (
+                                      <p
+                                        className="text-xs text-gray-500 mt-1"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        File: {deliverable.original_filename}
+                                      </p>
+                                    )}
+                                    <span
+                                      className={`inline-block text-xs font-bold mt-2 px-2 py-1 rounded ${
+                                        deliverable.visible_to_client
+                                          ? "bg-green-100 text-green-800"
+                                          : "bg-gray-200 text-gray-800"
+                                      }`}
+                                    >
+                                      {deliverable.visible_to_client
+                                        ? "Visible"
+                                        : "Hidden"}
+                                    </span>
+                                  </div>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteDeliverable(deliverable.id)
+                                    }
+                                    disabled={isSaving}
+                                    className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
                                     style={{ fontFamily: "Literata, serif" }}
                                   >
-                                    {deliverable.description}
-                                  </p>
-                                )}
-                                {deliverable.url && (
-                                  <a
-                                    href={deliverable.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-sm text-[#37306B] hover:underline mt-2 break-all"
-                                    style={{ fontFamily: "Literata, serif" }}
-                                  >
-                                    {deliverable.url}
-                                  </a>
-                                )}
-                                {deliverable.original_filename && (
-                                  <p
-                                    className="text-xs text-gray-500 mt-1"
-                                    style={{ fontFamily: "Literata, serif" }}
-                                  >
-                                    File: {deliverable.original_filename}
-                                  </p>
-                                )}
-                                <span
-                                  className={`inline-block text-xs font-bold mt-2 px-2 py-1 rounded ${
-                                    deliverable.visible_to_client
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-gray-200 text-gray-800"
-                                  }`}
-                                >
-                                  {deliverable.visible_to_client
-                                    ? "Visible"
-                                    : "Hidden"}
-                                </span>
-                              </div>
+                                    Delete
+                                  </button>
+                                </div>
+                              ))}
+                          </div>
+                        ) : (
+                          <p
+                            className="text-gray-400 italic text-sm mb-4"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            No deliverables added yet
+                          </p>
+                        )}
+
+                        {/* Add Deliverable Form */}
+                        {showNewDeliverableForm === stage.number ? (
+                          <div className="bg-gray-50 p-4 rounded border-2 border-[#37306B]">
+                            <div className="space-y-3">
+                              <input
+                                type="text"
+                                placeholder="Deliverable title"
+                                value={newDeliverable.title}
+                                onChange={(e) =>
+                                  setNewDeliverable({
+                                    ...newDeliverable,
+                                    title: e.target.value,
+                                  })
+                                }
+                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                                style={{ fontFamily: "Literata, serif" }}
+                              />
+                              <textarea
+                                placeholder="Description (optional)"
+                                value={newDeliverable.description}
+                                onChange={(e) =>
+                                  setNewDeliverable({
+                                    ...newDeliverable,
+                                    description: e.target.value,
+                                  })
+                                }
+                                className="w-full px-3 py-2 border border-gray-300 rounded min-h-[80px] focus:outline-none focus:border-[#37306B]"
+                                style={{ fontFamily: "Literata, serif" }}
+                              />
+                              <input
+                                type="url"
+                                placeholder="URL or file link"
+                                value={newDeliverable.url}
+                                onChange={(e) =>
+                                  setNewDeliverable({
+                                    ...newDeliverable,
+                                    url: e.target.value,
+                                  })
+                                }
+                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                                style={{ fontFamily: "Literata, serif" }}
+                              />
+                            </div>
+                            <div className="flex gap-2 mt-3">
                               <button
                                 onClick={() =>
-                                  handleDeleteDeliverable(deliverable.id)
+                                  handleAddDeliverable(stage.number)
                                 }
                                 disabled={isSaving}
-                                className="ml-4 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
+                                className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
                                 style={{ fontFamily: "Literata, serif" }}
                               >
-                                Delete
+                                Add Deliverable
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowNewDeliverableForm(null);
+                                  setNewDeliverable({
+                                    title: "",
+                                    description: "",
+                                    url: "",
+                                  });
+                                }}
+                                disabled={isSaving}
+                                className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
+                                style={{ fontFamily: "Literata, serif" }}
+                              >
+                                Cancel
                               </button>
                             </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <p
-                        className="text-gray-400 italic text-sm mb-4"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        No deliverables added yet
-                      </p>
-                    )}
-
-                    {/* Add Deliverable Form */}
-                    {showNewDeliverableForm === stage.number ? (
-                      <div className="bg-gray-50 p-4 rounded border-2 border-[#37306B]">
-                        <div className="space-y-3">
-                          <input
-                            type="text"
-                            placeholder="Deliverable title"
-                            value={newDeliverable.title}
-                            onChange={(e) =>
-                              setNewDeliverable({
-                                ...newDeliverable,
-                                title: e.target.value,
-                              })
-                            }
-                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
-                            style={{ fontFamily: "Literata, serif" }}
-                          />
-                          <textarea
-                            placeholder="Description (optional)"
-                            value={newDeliverable.description}
-                            onChange={(e) =>
-                              setNewDeliverable({
-                                ...newDeliverable,
-                                description: e.target.value,
-                              })
-                            }
-                            className="w-full px-3 py-2 border border-gray-300 rounded min-h-[80px] focus:outline-none focus:border-[#37306B]"
-                            style={{ fontFamily: "Literata, serif" }}
-                          />
-                          <input
-                            type="url"
-                            placeholder="URL or file link"
-                            value={newDeliverable.url}
-                            onChange={(e) =>
-                              setNewDeliverable({
-                                ...newDeliverable,
-                                url: e.target.value,
-                              })
-                            }
-                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
-                            style={{ fontFamily: "Literata, serif" }}
-                          />
-                        </div>
-                        <div className="flex gap-2 mt-3">
+                          </div>
+                        ) : (
                           <button
-                            onClick={() => handleAddDeliverable(stage.number)}
+                            onClick={() =>
+                              setShowNewDeliverableForm(stage.number)
+                            }
                             disabled={isSaving}
                             className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
                             style={{ fontFamily: "Literata, serif" }}
                           >
-                            Add Deliverable
+                            + Add Deliverable
                           </button>
-                          <button
-                            onClick={() => {
-                              setShowNewDeliverableForm(null);
-                              setNewDeliverable({
-                                title: "",
-                                description: "",
-                                url: "",
-                              });
-                            }}
-                            disabled={isSaving}
-                            className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setShowNewDeliverableForm(stage.number)}
-                        disabled={isSaving}
-                        className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded font-bold text-sm disabled:opacity-50"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        + Add Deliverable
-                      </button>
-                    )}
+                        )}
 
-                    {/* Mark Stage Complete Button */}
-                    {!isStageCompleted &&
-                      stage.included &&
-                      deliverables.filter((d) => d.stage_number === stage.number)
-                        .length > 0 && (
-                        <button
-                          onClick={() => handleMarkStageComplete(stage.number)}
-                          disabled={isSaving}
-                          className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          ✓ Mark This Stage Complete
-                        </button>
-                      )}
+                        {/* Mark Stage Complete Button */}
+                        {!isStageCompleted &&
+                          stage.included &&
+                          deliverables.filter(
+                            (d) => d.stage_number === stage.number,
+                          ).length > 0 && (
+                            <button
+                              onClick={() =>
+                                handleMarkStageComplete(stage.number)
+                              }
+                              disabled={isSaving}
+                              className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              ✓ Mark This Stage Complete
+                            </button>
+                          )}
+                      </div>
+                    )}
                   </div>
-                  )}
-                </div>
                 );
               })}
           </div>
@@ -1508,9 +1545,7 @@ export default function AdminEngagementDetail() {
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
                 Mark Stage Complete
               </AlertDialogTitle>
-              <AlertDialogDescription
-                style={{ fontFamily: "Literata, serif" }}
-              >
+              <AlertDialogDescription style={{ fontFamily: "Literata, serif" }}>
                 Before marking this stage as complete, please confirm:
               </AlertDialogDescription>
             </AlertDialogHeader>

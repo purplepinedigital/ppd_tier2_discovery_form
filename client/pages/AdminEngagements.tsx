@@ -78,7 +78,7 @@ export default function AdminEngagements() {
         .select("id, engagement_id, recommended_package");
 
       const tier1Map = new Map(
-        (tier1Data || []).map((t: any) => [t.engagement_id, t])
+        (tier1Data || []).map((t: any) => [t.engagement_id, t]),
       );
 
       if (engagementsData) {

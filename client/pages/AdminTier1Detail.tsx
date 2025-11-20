@@ -121,10 +121,7 @@ export default function AdminTier1Detail() {
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="text-center">
           <p className="text-gray-600">Assessment not found</p>
-          <Button
-            onClick={() => navigate("/admin/tier1")}
-            className="mt-4"
-          >
+          <Button onClick={() => navigate("/admin/tier1")} className="mt-4">
             Back to List
           </Button>
         </div>
@@ -220,7 +217,9 @@ export default function AdminTier1Detail() {
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-white rounded-lg p-4 border border-gray-200">
             <p className="text-sm text-gray-600 mb-1">Email</p>
-            <p className="font-semibold text-gray-900">{assessment.user_email}</p>
+            <p className="font-semibold text-gray-900">
+              {assessment.user_email}
+            </p>
           </div>
           <div className="bg-white rounded-lg p-4 border border-gray-200">
             <p className="text-sm text-gray-600 mb-1">Phone</p>
@@ -246,7 +245,9 @@ export default function AdminTier1Detail() {
 
           <div className="grid grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-gray-800 mb-4">Current State</h3>
+              <h3 className="font-semibold text-gray-800 mb-4">
+                Current State
+              </h3>
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-600">Digital Presence</p>
@@ -381,7 +382,9 @@ export default function AdminTier1Detail() {
 
             {assessment.reasoning && (
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-3">Algorithm Reasoning:</p>
+                <p className="text-sm text-gray-600 mb-3">
+                  Algorithm Reasoning:
+                </p>
                 <div className="space-y-2 text-sm text-gray-700">
                   {assessment.reasoning.primaryFactor && (
                     <p>
@@ -391,12 +394,14 @@ export default function AdminTier1Detail() {
                   )}
                   {assessment.reasoning.budgetFit && (
                     <p>
-                      <strong>Budget Fit:</strong> {assessment.reasoning.budgetFit}
+                      <strong>Budget Fit:</strong>{" "}
+                      {assessment.reasoning.budgetFit}
                     </p>
                   )}
                   {assessment.reasoning.scopeFit && (
                     <p>
-                      <strong>Scope Fit:</strong> {assessment.reasoning.scopeFit}
+                      <strong>Scope Fit:</strong>{" "}
+                      {assessment.reasoning.scopeFit}
                     </p>
                   )}
                   {assessment.reasoning.timelineFit && (

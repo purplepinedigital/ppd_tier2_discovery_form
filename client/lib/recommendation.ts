@@ -63,13 +63,22 @@ export function calculatePackageRecommendation(
   // STEP 2: VALIDATION - Budget Alignment (Q5)
   let budgetAligned = false;
 
-  if (primaryRecommendation === "FOUNDATION" && input.budgetRange === "foundation_budget") {
+  if (
+    primaryRecommendation === "FOUNDATION" &&
+    input.budgetRange === "foundation_budget"
+  ) {
     budgetAligned = true;
     reasoning.budgetFit = "Aligned with Foundation range (₹50K-₹1.5L)";
-  } else if (primaryRecommendation === "GROWTH" && input.budgetRange === "growth_budget") {
+  } else if (
+    primaryRecommendation === "GROWTH" &&
+    input.budgetRange === "growth_budget"
+  ) {
     budgetAligned = true;
     reasoning.budgetFit = "Aligned with Growth range (₹3L-₹3.5L)";
-  } else if (primaryRecommendation === "PERFORMANCE" && input.budgetRange === "performance_budget") {
+  } else if (
+    primaryRecommendation === "PERFORMANCE" &&
+    input.budgetRange === "performance_budget"
+  ) {
     budgetAligned = true;
     reasoning.budgetFit = "Aligned with Performance range (₹8L-₹12L/year)";
   } else if (input.budgetRange === "unsure") {
@@ -92,9 +101,13 @@ export function calculatePackageRecommendation(
     flags.push("scope_too_large_for_foundation");
     reasoning.scopeFit =
       "Extensive website (50+ pages) cannot fit in Foundation package";
-  } else if (input.websiteScope === "compact" && primaryRecommendation === "PERFORMANCE") {
+  } else if (
+    input.websiteScope === "compact" &&
+    primaryRecommendation === "PERFORMANCE"
+  ) {
     flags.push("oversized_package_warning");
-    reasoning.scopeFit = "Performance might be overkill for compact website scope";
+    reasoning.scopeFit =
+      "Performance might be overkill for compact website scope";
   } else {
     reasoning.scopeFit = `${input.websiteScope} website scope fits ${primaryRecommendation}`;
   }
