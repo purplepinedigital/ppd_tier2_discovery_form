@@ -349,6 +349,25 @@ export default function ProjectJourney() {
                           {engagement.project_name}
                         </td>
                         <td className="px-6 py-4 text-sm">
+                          {engagement.tier1_completed ? (
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
+                              ✓ Completed
+                            </span>
+                          ) : (
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">
+                              Pending
+                            </span>
+                          )}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          <span className="text-gray-600">
+                            {formProgressMap[engagement.id] || 0}/30 questions
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm">
                           {engagement.program ? (
                             <span
                               className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
@@ -370,32 +389,40 @@ export default function ProjectJourney() {
                         >
                           {new Date(engagement.created_at).toLocaleDateString()}
                         </td>
-                        <td
-                          className="px-6 py-4 text-sm"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          <span className="text-gray-600">
-                            {formProgressMap[engagement.id] || 0}/30 questions
-                          </span>
-                        </td>
                         <td className="px-6 py-4 text-sm space-x-2">
-                          <Button
-                            onClick={() => {
-                              const progress =
-                                formProgressMap[engagement.id] || 0;
-                              if (progress >= 30) {
-                                // Form complete - show lifecycle/project details
-                                navigate(`/project/lifecycle/${engagement.id}`);
-                              } else {
-                                // Form incomplete - continue filling form using Index.tsx
-                                window.location.href = `/?engagement=${engagement.id}`;
+                          {!engagement.tier1_completed ? (
+                            <Button
+                              onClick={() =>
+                                navigate(`/project/${engagement.id}/tier1`)
                               }
-                            }}
-                            className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            View/Edit
-                          </Button>
+                              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              Fill Tier 1
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                const progress =
+                                  formProgressMap[engagement.id] || 0;
+                                if (progress >= 30) {
+                                  // Form complete - show lifecycle/project details
+                                  navigate(
+                                    `/project/lifecycle/${engagement.id}`,
+                                  );
+                                } else {
+                                  // Form incomplete - start Tier 2
+                                  navigate(
+                                    `/project/lifecycle/${engagement.id}`,
+                                  );
+                                }
+                              }}
+                              className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              Start Tier 2
+                            </Button>
+                          )}
                           <Button
                             onClick={() => handleDeleteProject(engagement.id)}
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
