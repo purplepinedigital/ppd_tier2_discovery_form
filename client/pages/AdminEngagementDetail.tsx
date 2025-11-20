@@ -838,7 +838,9 @@ export default function AdminEngagementDetail() {
         />
 
         {/* Stage 0: Program Selection & Decision */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
+        <div className={`rounded-lg shadow p-6 mb-8 ${
+          completedStages.includes(0) ? "bg-green-50" : "bg-white"
+        }`}>
           <div className="pb-6 border-b mb-6">
             <div className="flex items-center gap-3 mb-4">
               <span
