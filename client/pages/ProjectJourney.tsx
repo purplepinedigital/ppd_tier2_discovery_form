@@ -342,15 +342,35 @@ export default function ProjectJourney() {
                       >
                         {new Date(engagement.created_at).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 text-sm">
+                      <td
+                        className="px-6 py-4 text-sm"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        <span className="text-gray-600">In Progress</span>
+                      </td>
+                      <td className="px-6 py-4 text-sm space-x-2">
                         <Button
                           onClick={() =>
                             navigate(`/project/lifecycle/${engagement.id}`)
                           }
-                          className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 text-sm"
+                          className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          View Lifecycle
+                          View
+                        </Button>
+                        <Button
+                          onClick={() => handleEditProject(engagement.id)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => handleDeleteProject(engagement.id)}
+                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Delete
                         </Button>
                       </td>
                     </tr>
