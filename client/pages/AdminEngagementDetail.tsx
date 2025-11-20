@@ -1217,7 +1217,9 @@ export default function AdminEngagementDetail() {
                 return (
                 <div
                   key={stage.number}
-                  className="bg-white rounded-lg shadow p-6"
+                  className={`rounded-lg shadow ${
+                    isStageCompleted ? "bg-green-50" : "bg-white"
+                  }`}
                 >
                   {/* Stage Header - Clickable for expand/collapse */}
                   <div
