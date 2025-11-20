@@ -219,7 +219,7 @@ export default function ProjectLifecycle() {
           // Fetch Tier 1 assessment if completed
           if (engagementData.tier1_assessment_id) {
             try {
-              const { data: tier1Data } = await supabase
+              const { data: tier1Data } = await client
                 .from("tier1_assessments")
                 .select("*")
                 .eq("id", engagementData.tier1_assessment_id)
@@ -235,7 +235,7 @@ export default function ProjectLifecycle() {
 
           // Fetch deliverables visible to client
           try {
-            const { data: deliverableData } = await supabase
+            const { data: deliverableData } = await client
               .from("deliverables")
               .select("*")
               .eq("engagement_id", engagementId)
@@ -246,7 +246,7 @@ export default function ProjectLifecycle() {
 
             // Fetch stage completions
             try {
-              const { data: completionData } = await supabase
+              const { data: completionData } = await client
                 .from("stage_completion")
                 .select("*")
                 .eq("engagement_id", engagementId)
@@ -258,7 +258,7 @@ export default function ProjectLifecycle() {
               if (deliverableData && deliverableData.length > 0) {
                 try {
                   const deliverableIds = deliverableData.map((d) => d.id);
-                  const { data: feedbackData } = await supabase
+                  const { data: feedbackData } = await client
                     .from("client_feedback")
                     .select("*")
                     .in("deliverable_id", deliverableIds);
