@@ -504,6 +504,7 @@ export default function Index() {
       const data = await response.json();
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
+        setEditedProjectName(projectName);
         setScreen("complete");
       } else {
         alert(data.error || "Failed to create engagement");
@@ -512,6 +513,52 @@ export default function Index() {
       console.error("Error creating engagement:", error);
       alert("Failed to save project. Please try again.");
     }
+  };
+
+  const updateEngagementProjectName = async (newName: string) => {
+    if (!newName.trim()) {
+      alert("Please enter a project name");
+      return;
+    }
+
+    if (!engagementId || !user) {
+      alert("Unable to update project name");
+      return;
+    }
+
+    try {
+      const client = supabase;
+      const { error } = await client
+        .from("engagements")
+        .update({ project_name: newName })
+        .eq("id", engagementId)
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      setEditedProjectName(newName);
+      setIsEditingProjectName(false);
+      alert("Project name updated successfully!");
+    } catch (error) {
+      console.error("Error updating project name:", error);
+      alert("Failed to update project name. Please try again.");
+    }
+  };
+
+  const startNewProject = async () => {
+    if (!user) {
+      alert("Please log in to continue");
+      return;
+    }
+
+    const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+    setResponses(createInitialResponses());
+    setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+    setActiveSectionIndex(0);
+    setProjectName("");
+    setEditedProjectName("");
+    setEngagementId(null);
+    setScreen("sectionWelcome");
   };
 
   const questionValue = responses[currentQuestionIndex] ?? "";
