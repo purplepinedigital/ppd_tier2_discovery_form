@@ -952,17 +952,17 @@ export default function AdminEngagementDetail() {
         </div>
 
         {/* Stages and Deliverables */}
-        {!selectedProgram && (
+        {!engagement?.program && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
             <p
               className="text-blue-800 font-bold"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Select a program package and provide decision rationale in Stage 0 above to view the remaining stages.
+              Confirm a program package with decision rationale in Stage 0 above to view the remaining stages.
             </p>
           </div>
         )}
-        {selectedProgram && (
+        {engagement?.program && (
           <div className="space-y-6">
             <h3
               className="text-2xl font-bold"
