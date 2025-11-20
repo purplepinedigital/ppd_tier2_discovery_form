@@ -162,7 +162,7 @@ export default function ProjectFormTier1() {
   };
 
   const handleContinueToTier2 = async () => {
-    if (!user || !recommendation) return;
+    if (!user || !recommendation || !engagementId) return;
 
     setLoading(true);
     try {
@@ -171,6 +171,7 @@ export default function ProjectFormTier1() {
         .from("tier1_assessments")
         .insert({
           user_id: user.id,
+          engagement_id: engagementId,
           project_name: projectName,
           business_name: businessName,
           industry: industry === "Other" ? otherIndustry : industry,
@@ -197,25 +198,21 @@ export default function ProjectFormTier1() {
 
       if (tier1Error) throw tier1Error;
 
-      // Create engagement
-      const { data: engagementData, error: engagementError } = await supabase
+      // Update engagement with tier1 data
+      const { error: updateError } = await supabase
         .from("engagements")
-        .insert({
-          user_id: user.id,
-          project_name: projectName,
-          program_rationale: null,
+        .update({
           tier1_completed: true,
           tier1_assessment_id: tier1Data.id,
           recommended_package: recommendation.recommendedPackage,
         })
-        .select("id")
-        .single();
+        .eq("id", engagementId);
 
-      if (engagementError) throw engagementError;
+      if (updateError) throw updateError;
 
       setScreen("complete");
       setTimeout(() => {
-        navigate(`/project/lifecycle/${engagementData.id}`);
+        navigate(`/project/lifecycle/${engagementId}`);
       }, 1500);
     } catch (error) {
       console.error("Error saving Tier 1 assessment:", error);
@@ -940,7 +937,7 @@ export default function ProjectFormTier1() {
                       </div>
                       <div className="text-sm text-gray-600">
                         Build your foundation now (₹75K-₹1.5L), add Growth later
-                        (₹2.5L-₹3L additional)
+                        (��2.5L-₹3L additional)
                       </div>
                     </div>
                   </label>
