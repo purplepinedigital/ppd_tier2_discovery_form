@@ -636,6 +636,9 @@ export default function AdminEngagementDetail() {
         feedbackComplete: false,
       });
 
+      // Collapse the stage automatically
+      setExpandedStages((prev) => prev.filter((s) => s !== stageNum));
+
       // Refresh data
       await fetchEngagementData();
     } catch (err: any) {
