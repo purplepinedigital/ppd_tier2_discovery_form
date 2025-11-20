@@ -232,38 +232,55 @@ export default function ProjectJourney() {
       const client = getClientSupabase();
 
       // Delete all related data in correct order (respecting foreign keys)
-      await client
+      console.log("Starting project deletion for:", engagementId);
+
+      const fp = await client
         .from("form_progress")
         .delete()
         .eq("engagement_id", engagementId);
-      await client
+      console.log("form_progress delete result:", fp);
+
+      const sc = await client
         .from("stage_completion")
         .delete()
         .eq("engagement_id", engagementId);
-      await client
+      console.log("stage_completion delete result:", sc);
+
+      const d = await client
         .from("deliverables")
         .delete()
         .eq("engagement_id", engagementId);
+      console.log("deliverables delete result:", d);
 
       // Finally delete the engagement
-      const { error } = await client
+      const { data: engData, error } = await client
         .from("engagements")
         .delete()
-        .eq("id", engagementId);
+        .eq("id", engagementId)
+        .select();
+
+      console.log("engagement delete - data:", engData, "error:", error);
 
       if (error) {
-        console.error("Supabase delete error:", error);
-        alert(`Failed to delete project: ${error.message}`);
+        console.error("Supabase delete error - full details:", {
+          message: error.message,
+          code: error.code,
+          status: error.status,
+          hint: error.hint,
+          details: error.details,
+        });
+        alert(`Failed to delete project: ${error.message || "Unknown error - check console"}`);
         setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
         return;
       }
 
+      console.log("Project deleted successfully");
       // Update UI only after successful deletion
       setEngagements(engagements.filter((e) => e.id !== engagementId));
       setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
     } catch (error) {
       console.error("Error deleting project:", error);
-      alert("Failed to delete project. Please check the browser console for details.");
+      alert(`Failed to delete project: ${error instanceof Error ? error.message : "Unknown error"}`);
       setDeleteConfirm({ isOpen: false, engagementId: null, projectName: null });
     }
   };
