@@ -146,6 +146,7 @@ export default function AdminEngagementDetail() {
         };
 
         setEngagement(enriched);
+        setEditedProjectName(enriched.project_name);
         setSelectedProgram(enriched.program);
       }
 
