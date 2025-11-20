@@ -66,14 +66,25 @@ export default function Tier1AssessmentView({
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-8 border-l-4 border-green-500">
       <div className="mb-6 pb-6 border-b">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">✅</span>
-          <h2
-            className="text-2xl font-bold text-[#37306B]"
-            style={{ fontFamily: "Epilogue, sans-serif" }}
-          >
-            Tier 1 Assessment
-          </h2>
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">✅</span>
+            <h2
+              className="text-2xl font-bold text-[#37306B]"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              Tier 1 Assessment
+            </h2>
+          </div>
+          {onViewFullAssessment && (
+            <button
+              onClick={() => onViewFullAssessment(assessment.id)}
+              className="text-sm text-[#37306B] hover:text-[#2C2758] font-semibold underline"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              View Full Assessment →
+            </button>
+          )}
         </div>
         <p
           className="text-sm text-gray-600"
