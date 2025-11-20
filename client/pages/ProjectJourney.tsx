@@ -50,6 +50,15 @@ export default function ProjectJourney() {
 
         setCurrentUser(user.id);
         await fetchEngagements(user.id);
+
+        // Fetch unread notifications count
+        const { data: notificationData } = await client
+          .from("client_notifications")
+          .select("id", { count: "exact" })
+          .eq("user_id", user.id)
+          .eq("is_read", false);
+
+        setUnreadNotifications(notificationData?.length || 0);
       } catch (err) {
         console.error("Auth check error:", err);
         navigate("/");
