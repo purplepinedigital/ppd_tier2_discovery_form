@@ -508,11 +508,33 @@ export default function Index() {
       const data = await response.json();
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
-        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-        setResponses(createInitialResponses());
-        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-        setActiveSectionIndex(0);
-        setScreen("sectionWelcome");
+
+        // Try to load existing form progress for this engagement
+        try {
+          const progress = await loadFormProgress(user.id, data.engagement_id);
+          if (progress) {
+            // Resume form in progress
+            setResponses(progress.responses);
+            setCurrentQuestionIndex(progress.current_question_index);
+            setActiveSectionIndex(progress.active_section_index);
+            setScreen("question");
+          } else {
+            // Start new form
+            const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+            setResponses(createInitialResponses());
+            setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+            setActiveSectionIndex(0);
+            setScreen("sectionWelcome");
+          }
+        } catch (error) {
+          console.error("Error loading form progress:", error);
+          // Fall back to starting new form
+          const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+          setResponses(createInitialResponses());
+          setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+          setActiveSectionIndex(0);
+          setScreen("sectionWelcome");
+        }
       } else {
         alert(data.error || "Failed to create engagement");
       }
@@ -793,7 +815,7 @@ export default function Index() {
                         className="text-base font-normal"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        Not "define your audience" — but describe your last real
+                        Not "define your audience" �� but describe your last real
                         customer.
                       </p>
                     </div>
