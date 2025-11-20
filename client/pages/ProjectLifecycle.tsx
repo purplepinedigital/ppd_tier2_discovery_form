@@ -184,6 +184,20 @@ export default function ProjectLifecycle() {
 
       if (engagementData) {
         setEngagement(engagementData);
+        setNewPackage(engagementData.recommended_package);
+
+        // Fetch Tier 1 assessment if completed
+        if (engagementData.tier1_assessment_id) {
+          const { data: tier1Data } = await client
+            .from("tier1_assessments")
+            .select("*")
+            .eq("id", engagementData.tier1_assessment_id)
+            .single();
+
+          if (tier1Data) {
+            setTier1Assessment(tier1Data);
+          }
+        }
 
         // Fetch deliverables visible to client
         const { data: deliverableData } = await client
