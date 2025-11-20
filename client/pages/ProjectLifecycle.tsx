@@ -422,6 +422,51 @@ export default function ProjectLifecycle() {
     }
   };
 
+  const handleMarkStageIncomplete = async (stageNumber: number) => {
+    if (!engagement || !currentUser || isImpersonating()) return;
+
+    try {
+      const client = supabase;
+
+      const { error } = await client
+        .from("stage_completion")
+        .delete()
+        .eq("engagement_id", engagement.id)
+        .eq("stage_number", stageNumber);
+
+      if (error) throw error;
+
+      // Refresh completions
+      const { data: completionData } = await client
+        .from("stage_completion")
+        .select("*")
+        .eq("engagement_id", engagement.id)
+        .order("stage_number", { ascending: true });
+
+      setCompletions(completionData || []);
+
+      // Update stages to reflect incompletion
+      setStages((prev) =>
+        prev.map((s) =>
+          s.number === stageNumber ? { ...s, completed: false } : s,
+        ),
+      );
+
+      toast({
+        title: "Stage marked incomplete",
+        description: `${STAGE_NAMES[stageNumber]} has been marked as incomplete. Your team lead will be notified.`,
+      });
+    } catch (err: any) {
+      console.error("Error marking stage incomplete:", err);
+      const errorMsg = err?.message || err?.details || JSON.stringify(err);
+      toast({
+        title: "Error",
+        description: errorMsg || "Failed to mark stage incomplete",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleAddFeedback = async (deliverableId: string) => {
     if (!engagement || !feedbackText.trim()) {
       toast({
