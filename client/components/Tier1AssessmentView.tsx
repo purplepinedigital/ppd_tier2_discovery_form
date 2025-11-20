@@ -25,6 +25,7 @@ interface Tier1Assessment {
 interface Tier1AssessmentViewProps {
   assessment: Tier1Assessment | null;
   isLoading: boolean;
+  onViewFullAssessment?: (assessmentId: string) => void;
 }
 
 export default function Tier1AssessmentView({
