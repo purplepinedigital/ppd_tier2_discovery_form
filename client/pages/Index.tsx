@@ -668,33 +668,6 @@ export default function Index() {
                         />
                       </svg>
                     </Button>
-                    {user && (
-                      <Button
-                        type="button"
-                        onClick={startNewProject}
-                        className="w-fit inline-flex items-center gap-2 rounded bg-green-600 px-10 py-4 text-base font-normal text-white hover:bg-green-700 overflow-hidden"
-                        style={{
-                          fontFamily: "Literata, serif",
-                          borderRadius: "3px",
-                          height: "auto",
-                          flexGrow: "0",
-                        }}
-                      >
-                        Start New Project
-                        <svg
-                          className="h-4 w-4"
-                          viewBox="0 0 15 6"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M14.6732 3.25492C14.814 3.11413 14.814 2.88587 14.6732 2.74508L12.3789 0.4508C12.2381 0.310012 12.0098 0.310012 11.8691 0.4508C11.7283 0.591589 11.7283 0.819852 11.8691 0.96064L13.9084 3L11.8691 5.03936C11.7283 5.18015 11.7283 5.40841 11.8691 5.5492C12.0098 5.68999 12.2381 5.68999 12.3789 5.5492L14.6732 3.25492ZM-0.00219727 3V3.36051H14.4183V3V2.63949H-0.00219727V3Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </Button>
-                    )}
                   </div>
                 </div>
                 <div className="w-full max-w-[548px]">
