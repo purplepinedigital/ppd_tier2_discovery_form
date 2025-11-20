@@ -840,21 +840,10 @@ export default function ProjectFormTier1() {
               </div>
             </div>
 
-            {/* Investment & Timeline */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-blue-50 rounded p-4">
-                <p className="text-sm text-gray-600 mb-1">Investment:</p>
-                <p className="font-semibold text-gray-800">
-                  {recommendation.recommendedPackage === "FOUNDATION" &&
-                    "₹75,000 - ₹1,50,000"}
-                  {recommendation.recommendedPackage === "GROWTH" &&
-                    "₹3,00,000 - ₹3,50,000"}
-                  {recommendation.recommendedPackage === "PERFORMANCE" &&
-                    "₹8,00,000 - ₹12,00,000/year"}
-                </p>
-              </div>
+            {/* Timeline */}
+            <div className="mb-8">
               <div className="bg-green-50 rounded p-4">
-                <p className="text-sm text-gray-600 mb-1">Timeline:</p>
+                <p className="text-sm text-gray-600 mb-1">Estimated Timeline:</p>
                 <p className="font-semibold text-gray-800">
                   {recommendation.recommendedPackage === "FOUNDATION" &&
                     "6-8 weeks"}
