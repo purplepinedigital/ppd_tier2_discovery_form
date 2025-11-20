@@ -591,8 +591,25 @@ export default function AdminEngagementDetail() {
       e.stopPropagation();
     }
 
-    if (!engagement || !stageCompletionDialog.stageNumber) {
-      console.error("Missing engagement or stage number");
+    console.log("Dialog state:", { engagement, stageNumber: stageCompletionDialog.stageNumber });
+
+    if (!engagement) {
+      console.error("Missing engagement");
+      toast({
+        title: "Error",
+        description: "Engagement data not loaded. Please refresh the page.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!stageCompletionDialog.stageNumber && stageCompletionDialog.stageNumber !== 0) {
+      console.error("Missing stage number");
+      toast({
+        title: "Error",
+        description: "Stage number not set. Please try again.",
+        variant: "destructive",
+      });
       return;
     }
 
