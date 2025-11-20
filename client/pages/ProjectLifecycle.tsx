@@ -687,21 +687,160 @@ export default function ProjectLifecycle() {
                 {expandedStage === stage.number && (
                   <div className="border-t p-4 md:p-6 space-y-6">
                     {/* Stage 0 Special Content */}
-                    {stage.number === 0 && engagement.program && (
-                      <div className="bg-blue-50 border border-blue-200 rounded p-4">
-                        <h5
-                          className="font-bold text-blue-900 mb-2"
-                          style={{ fontFamily: "Epilogue, sans-serif" }}
-                        >
-                          Program Selection Rationale
-                        </h5>
-                        <p
-                          className="text-blue-800 text-sm"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          {engagement.program_rationale ||
-                            "No rationale provided yet"}
-                        </p>
+                    {stage.number === 0 && (
+                      <div className="space-y-6">
+                        {/* Tier 1 Assessment Data */}
+                        {tier1Assessment && (
+                          <div className="bg-purple-50 border border-purple-200 rounded p-4">
+                            <h5
+                              className="font-bold text-purple-900 mb-4"
+                              style={{ fontFamily: "Epilogue, sans-serif" }}
+                            >
+                              Tier 1 Assessment Data
+                            </h5>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Business Name
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.business_name}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Industry
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.industry}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Current State
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.current_state}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Website Scope
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.website_scope}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Timeline
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.timeline_expectation}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-purple-700 font-semibold">
+                                  Budget Range
+                                </p>
+                                <p className="text-purple-900">
+                                  {tier1Assessment.budget_range}
+                                </p>
+                              </div>
+                              {tier1Assessment.primary_goal && (
+                                <div className="col-span-2">
+                                  <p className="text-purple-700 font-semibold">
+                                    Primary Goal
+                                  </p>
+                                  <p className="text-purple-900">
+                                    {tier1Assessment.primary_goal}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Recommended Package */}
+                        <div className="bg-blue-50 border border-blue-200 rounded p-4">
+                          <h5
+                            className="font-bold text-blue-900 mb-3"
+                            style={{ fontFamily: "Epilogue, sans-serif" }}
+                          >
+                            Recommended Package
+                          </h5>
+                          {!editingPackage ? (
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-blue-800 font-semibold text-lg">
+                                  {engagement.recommended_package || "Not set"}
+                                </p>
+                                {tier1Assessment && (
+                                  <p className="text-blue-700 text-xs mt-1">
+                                    Confidence:{" "}
+                                    {tier1Assessment.recommendation_confidence}
+                                  </p>
+                                )}
+                              </div>
+                              <Button
+                                onClick={() => setEditingPackage(true)}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-sm"
+                              >
+                                Update
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="space-y-3">
+                              <select
+                                value={newPackage || ""}
+                                onChange={(e) => setNewPackage(e.target.value)}
+                                className="w-full p-2 border border-blue-300 rounded bg-white"
+                              >
+                                <option value="">Select package...</option>
+                                <option value="FOUNDATION">Foundation</option>
+                                <option value="GROWTH">Growth</option>
+                                <option value="PERFORMANCE">Performance</option>
+                              </select>
+                              <div className="flex gap-2">
+                                <Button
+                                  onClick={handleUpdatePackage}
+                                  className="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 text-sm"
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  onClick={() => {
+                                    setEditingPackage(false);
+                                    setNewPackage(engagement.recommended_package);
+                                  }}
+                                  variant="outline"
+                                  className="flex-1"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Program Selection Rationale */}
+                        {engagement.program && (
+                          <div className="bg-cyan-50 border border-cyan-200 rounded p-4">
+                            <h5
+                              className="font-bold text-cyan-900 mb-2"
+                              style={{ fontFamily: "Epilogue, sans-serif" }}
+                            >
+                              Program Selection Rationale
+                            </h5>
+                            <p
+                              className="text-cyan-800 text-sm"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              {engagement.program_rationale ||
+                                "No rationale provided yet"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
 
