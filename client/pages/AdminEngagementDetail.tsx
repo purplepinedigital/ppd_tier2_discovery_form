@@ -180,6 +180,24 @@ export default function AdminEngagementDetail() {
         setProgramRationale(enriched.program_rationale || "");
       }
 
+      // Fetch Tier 1 assessment if exists
+      setTier1Loading(true);
+      try {
+        const { data: tier1Data } = await client
+          .from("tier1_assessments")
+          .select("*")
+          .eq("engagement_id", engagementId)
+          .maybeSingle();
+
+        if (tier1Data) {
+          setTier1Assessment(tier1Data);
+        }
+      } catch (tier1Error) {
+        console.error("Error fetching Tier 1 assessment:", tier1Error);
+      } finally {
+        setTier1Loading(false);
+      }
+
       // Fetch deliverables
       const { data: deliverableData, error: deliverableError } = await client
         .from("deliverables")
