@@ -606,19 +606,14 @@ export default function ProjectJourney() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Project?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You're about to permanently delete "{deleteConfirm.projectName}". This action cannot be undone.
+            </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm">
-                You're about to permanently delete this project:
-              </p>
-              <p className="font-semibold text-gray-900 mt-1">
-                "{deleteConfirm.projectName}"
-              </p>
-            </div>
+          <div className="space-y-4 py-4">
             <div>
               <p className="text-sm text-red-600 font-medium mb-2">
-                This action cannot be undone. All associated data will be permanently deleted, including:
+                All associated data will be permanently deleted, including:
               </p>
               <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
                 <li>Form responses and progress</li>
