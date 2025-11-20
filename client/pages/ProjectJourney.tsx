@@ -308,6 +308,18 @@ export default function ProjectJourney() {
                         className="px-6 py-3 text-left text-sm font-bold"
                         style={{ fontFamily: "Literata, serif" }}
                       >
+                        Tier 1 Status
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Tier 2 Progress
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
                         Program
                       </th>
                       <th
@@ -315,12 +327,6 @@ export default function ProjectJourney() {
                         style={{ fontFamily: "Literata, serif" }}
                       >
                         Created
-                      </th>
-                      <th
-                        className="px-6 py-3 text-left text-sm font-bold"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        Form Progress
                       </th>
                       <th
                         className="px-6 py-3 text-left text-sm font-bold"
