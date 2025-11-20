@@ -136,8 +136,8 @@ export default function Index() {
         console.error("Error checking engagements:", error);
       }
 
-      // User is logged in but has no projects - redirect to Tier 1 form
-      window.location.href = "/project/tier1";
+      // User is logged in but has no projects - start new project creation flow
+      window.location.href = "/?newProject=true";
     } else {
       setScreen("signup");
     }
