@@ -63,16 +63,16 @@ export default function AdminTier1Detail() {
       if (error) {
         console.error("Error fetching assessment:", error);
       } else if (assessmentData) {
-        // Fetch user email
-        const { data: userData } = await supabase
-          .from("auth.users")
+        // Fetch user email from signups table
+        const { data: signupData } = await supabase
+          .from("signups")
           .select("email")
-          .eq("id", assessmentData.user_id)
+          .eq("user_id", assessmentData.user_id)
           .single();
 
         const formatted: Tier1Assessment = {
           ...assessmentData,
-          user_email: userData?.email || "Unknown",
+          user_email: signupData?.email || "Unknown",
         };
         setAssessment(formatted);
         setInternalNotes(formatted.internal_notes || "");
