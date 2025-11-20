@@ -376,12 +376,39 @@ export default function Index() {
     setScreen("question");
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!currentQuestion) {
       return;
     }
 
     if (currentQuestionIndex === totalQuestions - 1) {
+      // Form is complete - auto-create engagement if user is logged in
+      if (user) {
+        try {
+          const response = await fetch("/api/engagements", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              project_name: `Project - ${new Date().toLocaleDateString()}`,
+              user_id: user.id,
+              form_responses: responses,
+            }),
+          });
+
+          const data = await response.json();
+          if (data.success && data.engagement_id) {
+            setEngagementId(data.engagement_id);
+            setScreen("complete");
+            return;
+          }
+        } catch (error) {
+          console.error("Error auto-creating engagement:", error);
+          // Fall back to project name screen
+          setScreen("projectName");
+          return;
+        }
+      }
+
       setScreen("projectName");
       return;
     }
