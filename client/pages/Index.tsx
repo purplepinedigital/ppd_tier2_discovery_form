@@ -446,8 +446,14 @@ export default function Index() {
     }
 
     if (currentQuestionIndex === totalQuestions - 1) {
-      // Form is complete - just go to project name screen for manual engagement creation
-      setScreen("projectName");
+      // Form is complete
+      if (engagementId) {
+        // Resuming existing engagement - go directly to thank you
+        setScreen("complete");
+      } else {
+        // New engagement - ask for project name
+        setScreen("projectName");
+      }
       return;
     }
 
