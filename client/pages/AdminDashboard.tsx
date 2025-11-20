@@ -433,19 +433,25 @@ export default function AdminDashboard() {
                           className="px-6 py-3 text-left text-sm font-bold"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Name
+                          Project Name
                         </th>
                         <th
                           className="px-6 py-3 text-left text-sm font-bold"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Created At
+                          User
                         </th>
                         <th
                           className="px-6 py-3 text-left text-sm font-bold"
                           style={{ fontFamily: "Literata, serif" }}
                         >
                           Questions Answered
+                        </th>
+                        <th
+                          className="px-6 py-3 text-left text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Created At
                         </th>
                         <th
                           className="px-6 py-3 text-left text-sm font-bold"
@@ -462,8 +468,14 @@ export default function AdminDashboard() {
                           className="border-b hover:bg-gray-50"
                         >
                           <td
-                            className="px-6 py-4 text-sm cursor-pointer hover:text-[#37306B]"
+                            className="px-6 py-4 text-sm cursor-pointer hover:text-[#37306B] font-medium"
                             onClick={() => setSelectedResponse(response)}
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            {response.project_name}
+                          </td>
+                          <td
+                            className="px-6 py-4 text-sm"
                             style={{ fontFamily: "Literata, serif" }}
                           >
                             {response.user_name}
@@ -472,14 +484,14 @@ export default function AdminDashboard() {
                             className="px-6 py-4 text-sm"
                             style={{ fontFamily: "Literata, serif" }}
                           >
-                            {new Date(response.created_at).toLocaleString()}
+                            {response.responses.filter((r) => r.trim()).length}{" "}
+                            / {response.responses.length}
                           </td>
                           <td
                             className="px-6 py-4 text-sm"
                             style={{ fontFamily: "Literata, serif" }}
                           >
-                            {response.responses.filter((r) => r.trim()).length}{" "}
-                            / {response.responses.length}
+                            {new Date(response.created_at).toLocaleString()}
                           </td>
                           <td className="px-6 py-4 text-sm flex gap-2">
                             <button
