@@ -638,7 +638,11 @@ export default function AdminEngagementDetail() {
       });
 
       // Collapse the stage automatically
-      setExpandedStages((prev) => prev.filter((s) => s !== stageNum));
+      if (stageNum === 0) {
+        setExpandedStage0(false);
+      } else {
+        setExpandedStages((prev) => prev.filter((s) => s !== stageNum));
+      }
 
       // Refresh data
       await fetchEngagementData();
