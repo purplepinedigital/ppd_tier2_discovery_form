@@ -411,10 +411,8 @@ export default function ProjectJourney() {
                                     `/project/lifecycle/${engagement.id}`,
                                   );
                                 } else {
-                                  // Form incomplete - start Tier 2
-                                  navigate(
-                                    `/project/lifecycle/${engagement.id}`,
-                                  );
+                                  // Form incomplete - go to Tier 2 form
+                                  window.location.href = `/?engagement=${engagement.id}`;
                                 }
                               }}
                               className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
