@@ -74,6 +74,9 @@ export async function saveFormProgress(
         console.error("Error updating form progress:", {
           code: updateError.code,
           message: updateError.message,
+          status: updateError.status,
+          hint: updateError.hint,
+          details: updateError.details,
         });
         throw updateError;
       }
