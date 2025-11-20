@@ -433,6 +433,7 @@ async function handleEngagementCreate(body: any) {
       .insert({
         user_id,
         project_name,
+        program_rationale: null,
       })
       .select("id")
       .single();
