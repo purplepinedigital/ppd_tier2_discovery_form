@@ -283,6 +283,7 @@ export default function ProjectLifecycle() {
                 await fetchStageCoverage(
                   engagementData.program,
                   completionData || [],
+                  client,
                 );
               } else {
                 const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
