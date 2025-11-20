@@ -559,6 +559,11 @@ export default function Index() {
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error("API error response:", {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+        });
         throw new Error(
           `HTTP ${response.status}: ${errorText || response.statusText}`,
         );
@@ -568,9 +573,17 @@ export default function Index() {
       try {
         data = await response.json();
       } catch (parseError) {
-        console.error("Failed to parse engagement response:", parseError);
+        console.error("Failed to parse engagement response:", {
+          message: parseError instanceof Error ? parseError.message : String(parseError),
+          parseError,
+        });
         throw new Error("Invalid response format from server");
       }
+
+      console.debug("Engagement created successfully:", {
+        success: data.success,
+        engagement_id: data.engagement_id,
+      });
 
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
