@@ -26,6 +26,9 @@ interface Engagement {
   program: string | null;
   created_at: string;
   updated_at: string;
+  tier1_completed: boolean;
+  tier1_assessment_id: string | null;
+  recommended_package: string | null;
 }
 
 export default function ProjectJourney() {
