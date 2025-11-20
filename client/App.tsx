@@ -36,6 +36,10 @@ const App = () => (
           />
           <Route path="/project/journey" element={<ProjectJourney />} />
           <Route
+            path="/project/form/:engagementId"
+            element={<ProjectFormFill />}
+          />
+          <Route
             path="/project/lifecycle/:engagementId"
             element={<ProjectLifecycle />}
           />
