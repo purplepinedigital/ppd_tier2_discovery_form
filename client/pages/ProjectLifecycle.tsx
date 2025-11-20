@@ -151,12 +151,12 @@ export default function ProjectLifecycle() {
 
       // Fetch engagement
       try {
-        const { data: engagementData, error: engagementError } = await client
+        const { data: engagementData, error: engagementError } = await supabase
           .from("engagements")
           .select("*")
           .eq("id", engagementId)
           .eq("user_id", userId)
-          .single();
+          .maybeSingle();
 
         if (engagementError) {
           if (engagementError.code === "PGRST116") {
