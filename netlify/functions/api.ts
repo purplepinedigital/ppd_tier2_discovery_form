@@ -656,6 +656,164 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Test user setup endpoint (for development/testing only)
+  if (path.includes("/api/test-setup") && event.httpMethod === "POST") {
+    try {
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !supabaseServiceKey) {
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify({ error: "Supabase configuration missing" }),
+        };
+      }
+
+      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+      const testEmail = "test@purplepine.digital";
+      const testPassword = "TestPassword123!";
+
+      // Create auth user
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email: testEmail,
+        password: testPassword,
+        email_confirm: true,
+      });
+
+      if (authError) {
+        console.error("Auth error:", authError);
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: authError.message || "Failed to create auth user" }),
+        };
+      }
+
+      const userId = authData.user.id;
+
+      // Create signup record
+      const { error: signupError } = await supabaseAdmin
+        .from("signups")
+        .upsert({
+          user_id: userId,
+          email: testEmail,
+          name: "Test User",
+          subscribed_at: new Date().toISOString(),
+        });
+
+      if (signupError) {
+        console.error("Signup error:", signupError);
+      }
+
+      // Create engagement record
+      const { data: engagementData, error: engagementError } = await supabaseAdmin
+        .from("engagements")
+        .insert({
+          user_id: userId,
+          project_name: "Test Project",
+          program: "growth",
+          program_rationale: "This is a test engagement to demonstrate the client lifecycle journey.",
+        })
+        .select("id")
+        .single();
+
+      if (engagementError) {
+        console.error("Engagement error:", engagementError);
+      }
+
+      const engagementId = engagementData?.id || null;
+
+      // Create stage coverage records for growth program
+      if (engagementId) {
+        const stageCoverage = [
+          { stage_number: 0, is_included: true, is_lite: false },
+          { stage_number: 1, is_included: true, is_lite: false },
+          { stage_number: 2, is_included: true, is_lite: false },
+          { stage_number: 3, is_included: true, is_lite: true },
+          { stage_number: 4, is_included: true, is_lite: false },
+          { stage_number: 5, is_included: true, is_lite: false },
+          { stage_number: 6, is_included: false, is_lite: false },
+          { stage_number: 7, is_included: false, is_lite: false },
+        ];
+
+        // Create sample deliverables for Stage 0
+        await supabaseAdmin.from("deliverables").insert({
+          engagement_id: engagementId,
+          stage_number: 0,
+          title: "Program Selection Document",
+          description: "Decision rationale for selecting the Growth program",
+          url: "https://example.com/growth-program.pdf",
+          visible_to_client: true,
+        });
+
+        // Create sample deliverables for Stage 1
+        await supabaseAdmin.from("deliverables").insert([
+          {
+            engagement_id: engagementId,
+            stage_number: 1,
+            title: "Brand Strategy Document",
+            description: "Define your unique value proposition",
+            url: "https://example.com/brand-strategy.pdf",
+            visible_to_client: true,
+          },
+          {
+            engagement_id: engagementId,
+            stage_number: 1,
+            title: "Market Analysis",
+            description: "Understanding your target market",
+            url: "https://example.com/market-analysis.pdf",
+            visible_to_client: true,
+          },
+        ]);
+
+        // Create sample deliverable for Stage 2
+        await supabaseAdmin.from("deliverables").insert({
+          engagement_id: engagementId,
+          stage_number: 2,
+          title: "Logo Design",
+          description: "Final logo design files",
+          url: "https://example.com/logo.zip",
+          visible_to_client: true,
+        });
+
+        // Create a completed stage record (Stage 0 as completed)
+        await supabaseAdmin.from("stage_completion").insert({
+          engagement_id: engagementId,
+          stage_number: 0,
+        });
+      }
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: "Test account created successfully",
+          credentials: {
+            email: testEmail,
+            password: testPassword,
+          },
+          engagement_id: engagementId,
+          access_urls: {
+            login: "/",
+            journey: "/project/journey",
+            lifecycle: `/project/lifecycle/${engagementId}`,
+            notifications: "/project/notifications",
+          },
+        }),
+      };
+    } catch (error: any) {
+      console.error("Test setup error:", error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: error.message || "Failed to setup test account" }),
+      };
+    }
+  }
+
   // Deliverable addition endpoint with email notification
   if (path.includes("/api/deliverable-notification") && event.httpMethod === "POST") {
     try {
