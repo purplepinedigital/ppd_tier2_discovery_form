@@ -177,14 +177,20 @@ export default function AdminDashboard() {
 
   const exportResponsesToCSV = () => {
     const headers = [
+      "Project Name",
+      "User Name",
       "User ID",
+      "Questions Answered",
       "Created At",
       "Updated At",
       ...formQuestions.map((q) => q.prompt),
     ];
 
     const rows = responses.map((response) => [
+      response.project_name || "No Project",
+      response.user_name,
       response.user_id,
+      `${response.responses.filter((r) => r.trim()).length}/${response.responses.length}`,
       new Date(response.created_at).toLocaleString(),
       new Date(response.updated_at).toLocaleString(),
       ...response.responses,
