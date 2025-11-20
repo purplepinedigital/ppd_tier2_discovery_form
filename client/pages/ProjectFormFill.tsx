@@ -161,8 +161,9 @@ export default function ProjectFormFill() {
   useEffect(() => {
     if (user && engagementId) {
       const timer = setTimeout(() => {
+        const userIdForProgress = getImpersonatedUserId() || user.id;
         saveFormProgress(
-          user.id,
+          userIdForProgress,
           engagementId,
           responses,
           currentQuestionIndex,
