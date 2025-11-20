@@ -1204,7 +1204,17 @@ export default function AdminEngagementDetail() {
             </h3>
             {stages
               .filter((s) => s.number > 0)
-              .map((stage) => (
+              .map((stage) => {
+                const isStageCompleted = completedStages.includes(stage.number);
+                const isStageExpanded = expandedStages.includes(stage.number);
+                const toggleExpand = () => {
+                  setExpandedStages((prev) =>
+                    prev.includes(stage.number)
+                      ? prev.filter((s) => s !== stage.number)
+                      : [...prev, stage.number]
+                  );
+                };
+                return (
                 <div
                   key={stage.number}
                   className="bg-white rounded-lg shadow p-6"
@@ -1245,8 +1255,9 @@ export default function AdminEngagementDetail() {
                     </div>
                   </div>
 
-                  {/* Deliverables List */}
-                  <div className="mb-6">
+                  {/* Deliverables List - Only show if expanded or not completed */}
+                  {(isStageExpanded || !isStageCompleted) && (
+                  <div className="p-6 mb-6">
                     <h5
                       className="font-bold text-gray-700 mb-3"
                       style={{ fontFamily: "Literata, serif" }}
@@ -1426,8 +1437,10 @@ export default function AdminEngagementDetail() {
                         </button>
                       )}
                   </div>
+                  )}
                 </div>
-              ))}
+                );
+              })}
           </div>
         )}
 
