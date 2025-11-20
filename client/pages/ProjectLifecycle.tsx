@@ -439,7 +439,7 @@ export default function ProjectLifecycle() {
           </div>
           <div className="flex gap-2 flex-wrap">
             <Button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/?newProject=true")}
               className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base"
               style={{ fontFamily: "Literata, serif" }}
             >
