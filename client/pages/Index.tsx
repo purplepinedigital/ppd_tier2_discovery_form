@@ -570,9 +570,12 @@ export default function Index() {
         // Try to load existing form progress for this engagement
         try {
           const progress = await loadFormProgress(user.id, data.engagement_id);
-          if (progress) {
-            // Resume form in progress
-            setResponses(progress.responses);
+          if (progress && progress.responses) {
+            // Resume form in progress - convert to array if needed
+            const responsesArray = Array.isArray(progress.responses)
+              ? progress.responses
+              : Object.values(progress.responses);
+            setResponses(responsesArray);
             setCurrentQuestionIndex(progress.current_question_index);
             setActiveSectionIndex(progress.active_section_index);
             setScreen("question");
