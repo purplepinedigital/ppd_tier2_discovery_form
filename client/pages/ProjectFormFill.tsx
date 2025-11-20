@@ -123,8 +123,11 @@ export default function ProjectFormFill() {
 
         setEngagement(engagementData);
 
+        // Use impersonated user ID if available, otherwise use current user ID
+        const userIdForProgress = getImpersonatedUserId() || currentUser.id;
+
         // Load form progress
-        const progress = await loadFormProgress(currentUser.id, engagementId);
+        const progress = await loadFormProgress(userIdForProgress, engagementId);
         if (progress) {
           setResponses(progress.responses);
           setCurrentQuestionIndex(progress.current_question_index);
