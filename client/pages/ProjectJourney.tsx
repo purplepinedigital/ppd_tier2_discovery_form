@@ -106,28 +106,42 @@ export default function ProjectJourney() {
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+      <header className="bg-white shadow sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 py-4 md:py-6 flex justify-between items-center">
+          <div className="flex items-center gap-2 md:gap-4">
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/243e9e26600924d4d43f0793db0944381e2ae2b0?width=330"
               alt="Purple Pine Digital"
-              className="h-10 w-auto md:h-12 lg:h-[50px]"
+              className="h-8 w-auto md:h-10 lg:h-[50px]"
             />
             <h1
-              className="text-3xl font-bold"
+              className="text-lg md:text-3xl font-bold"
               style={{ fontFamily: "Epilogue, sans-serif" }}
             >
               My Projects
             </h1>
           </div>
-          <Button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white"
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Logout
-          </Button>
+          <div className="flex items-center gap-2 md:gap-4">
+            <Button
+              onClick={() => navigate("/project/notifications")}
+              className="relative bg-[#37306B] hover:bg-[#2C2758] text-white text-sm md:text-base px-2 md:px-4"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              🔔
+              {unreadNotifications > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                  {unreadNotifications}
+                </span>
+              )}
+            </Button>
+            <Button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 text-white text-sm md:text-base"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
