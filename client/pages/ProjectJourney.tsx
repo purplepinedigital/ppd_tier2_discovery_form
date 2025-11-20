@@ -529,37 +529,66 @@ export default function ProjectJourney() {
                         </td>
                         <td className="px-6 py-4 text-sm space-x-2">
                           {!engagement.tier1_completed ? (
-                            formProgressMap[engagement.id] === 0 ? (
-                              <Button
-                                onClick={() =>
-                                  navigate(`/project/${engagement.id}/tier1`)
-                                }
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
-                                style={{ fontFamily: "Literata, serif" }}
-                              >
-                                Fill Tier 1
-                              </Button>
-                            ) : null
-                          ) : (
                             <Button
-                              onClick={() => {
+                              onClick={() =>
+                                navigate(`/project/${engagement.id}/tier1`)
+                              }
+                              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
+                              style={{ fontFamily: "Literata, serif" }}
+                            >
+                              {formProgressMap[engagement.id] === 0
+                                ? "Fill Tier 1"
+                                : "Complete Tier 1"}
+                            </Button>
+                          ) : (
+                            <>
+                              {(() => {
                                 const progress =
                                   formProgressMap[engagement.id] || 0;
                                 if (progress >= 30) {
                                   // Form complete - show lifecycle/project details
-                                  navigate(
-                                    `/project/lifecycle/${engagement.id}`,
+                                  return (
+                                    <Button
+                                      onClick={() =>
+                                        navigate(
+                                          `/project/lifecycle/${engagement.id}`,
+                                        )
+                                      }
+                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                      style={{ fontFamily: "Literata, serif" }}
+                                    >
+                                      View Project Details
+                                    </Button>
+                                  );
+                                } else if (progress > 0) {
+                                  // Tier 2 in progress - show view/edit button
+                                  return (
+                                    <Button
+                                      onClick={() => {
+                                        window.location.href = `/?engagement=${engagement.id}`;
+                                      }}
+                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                      style={{ fontFamily: "Literata, serif" }}
+                                    >
+                                      Continue Tier 2
+                                    </Button>
                                   );
                                 } else {
-                                  // Form incomplete - go to Tier 2 form
-                                  window.location.href = `/?engagement=${engagement.id}`;
+                                  // Not started yet
+                                  return (
+                                    <Button
+                                      onClick={() => {
+                                        window.location.href = `/?engagement=${engagement.id}`;
+                                      }}
+                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                      style={{ fontFamily: "Literata, serif" }}
+                                    >
+                                      Start Tier 2
+                                    </Button>
+                                  );
                                 }
-                              }}
-                              className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              Start Tier 2
-                            </Button>
+                              })()}
+                            </>
                           )}
                           <Button
                             onClick={() => handleDeleteProject(engagement.id, engagement.project_name)}
