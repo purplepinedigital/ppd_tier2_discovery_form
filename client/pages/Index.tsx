@@ -196,6 +196,42 @@ export default function Index() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Handle engagement parameter from URL (when continuing a form from My Projects)
+  useEffect(() => {
+    const handleEngagementParam = async () => {
+      const engagementParam = searchParams.get("engagement");
+      if (engagementParam && user && screen === "hero") {
+        try {
+          setEngagementId(engagementParam);
+
+          // Load form progress for this engagement
+          const progress = await loadFormProgress(user.id, engagementParam);
+          if (progress) {
+            setResponses(progress.responses);
+            setCurrentQuestionIndex(progress.current_question_index);
+            setActiveSectionIndex(progress.active_section_index);
+            setScreen("question");
+          } else {
+            // No progress yet - show project name confirmation and start
+            setScreen("sectionWelcome");
+            const firstIndex = getFirstQuestionIndexForSection(
+              formSections[0].id,
+            );
+            setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+            setActiveSectionIndex(0);
+          }
+        } catch (err) {
+          console.error("Error loading engagement form:", err);
+          setScreen("hero");
+        }
+      }
+    };
+
+    if (user) {
+      handleEngagementParam();
+    }
+  }, [user, searchParams, screen]);
+
   useEffect(() => {
     if (user && screen === "question" && engagementId) {
       const timer = setTimeout(() => {
