@@ -328,6 +328,13 @@ export default function AdminDashboard() {
             >
               View Engagements
             </button>
+            <button
+              onClick={() => navigate("/admin/login-as-user")}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Login as User
+            </button>
           </div>
           <Button
             onClick={handleLogout}
