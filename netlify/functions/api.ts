@@ -529,13 +529,22 @@ const handler: Handler = async (event) => {
   if ((path.includes("/api/engagements") || path.includes("/engagements")) && event.httpMethod === "POST") {
     try {
       const body = JSON.parse(event.body || "{}");
+      console.log("Creating engagement with body:", {
+        project_name: body.project_name,
+        user_id: body.user_id,
+      });
       const result = await handleEngagementCreate(body);
+      console.log("Engagement creation result:", {
+        status: result.status,
+        bodyType: typeof result.body,
+      });
       return {
         statusCode: result.status,
         headers,
-        body: result.body,
+        body: typeof result.body === "string" ? result.body : JSON.stringify(result.body),
       };
     } catch (error: any) {
+      console.error("Engagement creation error:", error.message);
       return {
         statusCode: 500,
         headers,
