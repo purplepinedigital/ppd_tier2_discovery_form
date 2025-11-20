@@ -86,6 +86,8 @@ export default function Index() {
   const [projectName, setProjectName] = useState("");
   const [engagementId, setEngagementId] = useState<string | null>(null);
 
+  const [searchParams] = useSearchParams();
+
   const currentQuestion = formQuestions[currentQuestionIndex];
   const activeSection = formSections[activeSectionIndex];
 
