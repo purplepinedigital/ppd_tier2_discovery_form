@@ -636,12 +636,8 @@ export default function Index() {
         console.debug("Engagement created successfully");
         setEngagementId(data.engagement_id);
 
-        // Start new form - no progress to load yet
-        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-        setResponses(createInitialResponses());
-        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-        setActiveSectionIndex(0);
-        setScreen("sectionWelcome");
+        // Redirect to Tier 1 form for this project
+        window.location.href = `/project/${data.engagement_id}/tier1`;
       } else {
         const errorMsg =
           data?.error || data?.message || "Failed to create engagement";
