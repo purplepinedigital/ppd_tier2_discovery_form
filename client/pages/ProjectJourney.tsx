@@ -383,8 +383,8 @@ export default function ProjectJourney() {
                               // Form complete - show lifecycle/project details
                               navigate(`/project/lifecycle/${engagement.id}`);
                             } else {
-                              // Form incomplete - continue filling form
-                              navigate(`/project/form/${engagement.id}`);
+                              // Form incomplete - continue filling form using Index.tsx
+                              window.location.href = `/?engagement=${engagement.id}`;
                             }
                           }}
                           className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
