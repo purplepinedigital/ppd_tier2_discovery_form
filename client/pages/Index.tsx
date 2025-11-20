@@ -108,10 +108,28 @@ export default function Index() {
     );
   }, [currentQuestion]);
 
-  const startIntro = () => {
-    // If user is already logged in, redirect to journey instead of starting form
+  const startIntro = async () => {
+    // If user is already logged in, check their project status
     if (user) {
-      window.location.href = "/project/journey";
+      try {
+        const { data: engagements } = await supabase
+          .from("engagements")
+          .select("id")
+          .eq("user_id", user.id);
+
+        if (engagements && engagements.length > 0) {
+          // User has projects - go to My Projects page
+          window.location.href = "/project/journey";
+        } else {
+          // User has no projects - start new project creation
+          setProjectName("");
+          setEngagementId(null);
+          setScreen("projectName");
+        }
+      } catch (error) {
+        console.error("Error checking engagements:", error);
+        window.location.href = "/project/journey";
+      }
       return;
     }
     setScreen("intro");
