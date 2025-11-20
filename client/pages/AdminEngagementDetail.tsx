@@ -762,7 +762,7 @@ export default function AdminEngagementDetail() {
           )}
 
           {/* Reset Program Button */}
-          {selectedProgram && deliverables.length === 0 && (
+          {engagement?.program && deliverables.length === 0 && (
             <div className="mb-6">
               <button
                 onClick={handleResetProgram}
