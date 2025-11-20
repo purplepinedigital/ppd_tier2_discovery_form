@@ -502,7 +502,6 @@ export default function Index() {
       const data = await response.json();
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
-        setEditedProjectName(projectName);
         setScreen("complete");
       } else {
         alert(data.error || "Failed to create engagement");
