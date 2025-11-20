@@ -528,68 +528,70 @@ export default function ProjectJourney() {
                           {new Date(engagement.created_at).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 text-sm space-x-2">
-                          {!engagement.tier1_completed ? (
-                            <Button
-                              onClick={() =>
-                                navigate(`/project/${engagement.id}/tier1`)
-                              }
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              {formProgressMap[engagement.id] === 0
-                                ? "Fill Tier 1"
-                                : "Complete Tier 1"}
-                            </Button>
-                          ) : (
-                            <>
-                              {(() => {
-                                const progress =
-                                  formProgressMap[engagement.id] || 0;
-                                if (progress >= 30) {
-                                  // Form complete - show lifecycle/project details
-                                  return (
-                                    <Button
-                                      onClick={() =>
-                                        navigate(
-                                          `/project/lifecycle/${engagement.id}`,
-                                        )
-                                      }
-                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                                      style={{ fontFamily: "Literata, serif" }}
-                                    >
-                                      View Project Details
-                                    </Button>
-                                  );
-                                } else if (progress > 0) {
-                                  // Tier 2 in progress - show view/edit button
-                                  return (
-                                    <Button
-                                      onClick={() => {
-                                        window.location.href = `/?engagement=${engagement.id}`;
-                                      }}
-                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                                      style={{ fontFamily: "Literata, serif" }}
-                                    >
-                                      Continue Tier 2
-                                    </Button>
-                                  );
-                                } else {
-                                  // Not started yet
-                                  return (
-                                    <Button
-                                      onClick={() => {
-                                        window.location.href = `/?engagement=${engagement.id}`;
-                                      }}
-                                      className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
-                                      style={{ fontFamily: "Literata, serif" }}
-                                    >
-                                      Start Tier 2
-                                    </Button>
-                                  );
-                                }
-                              })()}
-                            </>
-                          )}
+                          {(() => {
+                            const progress = formProgressMap[engagement.id] || 0;
+                            const tier1Done = engagement.tier1_completed;
+
+                            // Priority 1: If Tier 2 is in progress, continue it
+                            if (progress > 0 && progress < 30) {
+                              return (
+                                <Button
+                                  onClick={() => {
+                                    window.location.href = `/?engagement=${engagement.id}`;
+                                  }}
+                                  className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                  style={{ fontFamily: "Literata, serif" }}
+                                >
+                                  Continue Tier 2
+                                </Button>
+                              );
+                            }
+
+                            // Priority 2: If Tier 2 is complete, show project details
+                            if (progress >= 30) {
+                              return (
+                                <Button
+                                  onClick={() =>
+                                    navigate(
+                                      `/project/lifecycle/${engagement.id}`,
+                                    )
+                                  }
+                                  className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                  style={{ fontFamily: "Literata, serif" }}
+                                >
+                                  View Project Details
+                                </Button>
+                              );
+                            }
+
+                            // Priority 3: If Tier 1 not done, show Fill Tier 1
+                            if (!tier1Done) {
+                              return (
+                                <Button
+                                  onClick={() =>
+                                    navigate(`/project/${engagement.id}/tier1`)
+                                  }
+                                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm inline"
+                                  style={{ fontFamily: "Literata, serif" }}
+                                >
+                                  Fill Tier 1
+                                </Button>
+                              );
+                            }
+
+                            // Priority 4: If Tier 1 done but Tier 2 not started, show Start Tier 2
+                            return (
+                              <Button
+                                onClick={() => {
+                                  window.location.href = `/?engagement=${engagement.id}`;
+                                }}
+                                className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-2 text-sm inline"
+                                style={{ fontFamily: "Literata, serif" }}
+                              >
+                                Start Tier 2
+                              </Button>
+                            );
+                          })()}
                           <Button
                             onClick={() => handleDeleteProject(engagement.id, engagement.project_name)}
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm inline"
