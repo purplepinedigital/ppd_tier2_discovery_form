@@ -502,7 +502,11 @@ export default function Index() {
       const data = await response.json();
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
-        setScreen("complete");
+        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+        setResponses(createInitialResponses());
+        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+        setActiveSectionIndex(0);
+        setScreen("sectionWelcome");
       } else {
         alert(data.error || "Failed to create engagement");
       }
