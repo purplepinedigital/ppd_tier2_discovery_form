@@ -602,13 +602,10 @@ export default function Index() {
       const errorMessage =
         error?.message ||
         (typeof error === "string" ? error : "Unknown error");
-      console.error("Error creating engagement:", {
+      console.error("Error creating engagement:", errorMessage);
+      console.debug("Error details:", {
         message: errorMessage,
         name: error?.name,
-        status: error?.status,
-        statusText: error?.statusText,
-        toString: error?.toString?.(),
-        full: error,
       });
       alert(
         `Failed to create project: ${errorMessage}. Please try again.`,
