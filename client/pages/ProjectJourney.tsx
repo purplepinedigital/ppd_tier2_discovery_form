@@ -155,18 +155,42 @@ export default function ProjectJourney() {
   const getFormProgress = async (engagementId: string, clientParam?: any) => {
     try {
       const client = clientParam || getClientSupabase();
-      const { data } = await client
+      const { data: engagement } = await client
+        .from("engagements")
+        .select("tier1_completed")
+        .eq("id", engagementId)
+        .maybeSingle();
+
+      const { data: formProgress } = await client
         .from("form_progress")
-        .select("responses")
+        .select("responses, current_question_index")
         .eq("engagement_id", engagementId)
         .maybeSingle();
 
-      if (data && data.responses) {
-        const answeredQuestions = Object.keys(data.responses).filter(
-          (key) => data.responses[key] && data.responses[key].trim() !== "",
-        ).length;
-        return Math.min(answeredQuestions, 30); // Cap at 30 questions
+      if (!formProgress || !formProgress.responses) {
+        return 0;
       }
+
+      // Check if responses is an array (JSON) or object
+      const responsesArray = Array.isArray(formProgress.responses)
+        ? formProgress.responses
+        : Object.values(formProgress.responses);
+
+      // Count non-empty responses
+      const answeredQuestions = responsesArray.filter(
+        (response: any) => response && String(response).trim() !== "",
+      ).length;
+
+      // If we found answered questions, return the count
+      if (answeredQuestions > 0) {
+        return Math.min(answeredQuestions, 30);
+      }
+
+      // If no answered questions but current_question_index is 29, they're at the end (completed)
+      if (formProgress.current_question_index === 29 && engagement?.tier1_completed) {
+        return 30;
+      }
+
       return 0;
     } catch (error) {
       return 0;
