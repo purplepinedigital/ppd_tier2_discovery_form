@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLoginAsUser from "./pages/AdminLoginAsUser";
 import AdminEngagements from "./pages/AdminEngagements";
 import AdminEngagementDetail from "./pages/AdminEngagementDetail";
 import AdminTier1Assessments from "./pages/AdminTier1Assessments";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/login-as-user" element={<AdminLoginAsUser />} />
           <Route path="/admin/engagements" element={<AdminEngagements />} />
           <Route
             path="/admin/engagements/:engagementId"
