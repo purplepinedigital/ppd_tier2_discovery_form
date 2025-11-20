@@ -1082,6 +1082,42 @@ export default function Index() {
           </section>
         ) : null}
 
+        {screen === "projectName" ? (
+          <section className="flex w-full max-w-[1332px] flex-col items-center justify-center gap-8">
+            <div className="flex flex-col items-center justify-center gap-6">
+              <h2
+                className="text-center text-4xl font-bold"
+                style={{ fontFamily: "Epilogue, sans-serif" }}
+              >
+                What's your project name?
+              </h2>
+              <p
+                className="max-w-[560px] text-center text-base font-normal leading-normal"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Give your project a name so we can organize your discovery insights and track your journey through the program.
+              </p>
+            </div>
+            <div className="w-full max-w-md space-y-4">
+              <input
+                type="text"
+                placeholder="e.g., My Brand Redesign, E-commerce Launch"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                className="w-full rounded border border-gray-300 px-4 py-3 text-base focus:border-[#37306B] focus:outline-none"
+                onKeyPress={(e) => e.key === "Enter" && createEngagement()}
+              />
+              <button
+                onClick={createEngagement}
+                className="w-full bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE] px-8 py-3 rounded font-normal text-base"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Continue
+              </button>
+            </div>
+          </section>
+        ) : null}
+
         {screen === "complete" ? (
           <section className="flex w-full max-w-[1332px] flex-col items-center justify-center gap-5">
             <img
