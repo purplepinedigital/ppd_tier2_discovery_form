@@ -923,7 +923,7 @@ export default function AdminEngagementDetail() {
               Program Stages (Stages 1-7)
             </h3>
             {stages.filter(s => s.number > 0).map((stage) => (
-            <div key={stage.number} className="bg-white rounded-lg shadow p-6">
+              <div key={stage.number} className="bg-white rounded-lg shadow p-6">
               {/* Stage Header */}
               <div className="flex items-start justify-between mb-4 pb-4 border-b">
                 <div className="flex-1">
