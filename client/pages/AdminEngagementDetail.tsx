@@ -160,6 +160,10 @@ export default function AdminEngagementDetail() {
     feedbackComplete: false,
   });
 
+  // Track completed stages and expanded stages
+  const [completedStages, setCompletedStages] = useState<number[]>([]);
+  const [expandedStages, setExpandedStages] = useState<number[]>([]);
+
   useEffect(() => {
     if (!isAdminAuthenticated()) {
       navigate("/admin/login");
