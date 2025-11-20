@@ -323,26 +323,6 @@ export default function ProjectFormFill() {
               isFirst={currentQuestionIndex === 0}
               isLast={currentQuestionIndex === totalQuestions - 1}
             />
-
-            <div className="mt-8 flex gap-4">
-              <Button
-                onClick={handlePrevious}
-                disabled={currentQuestionIndex === 0}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 disabled:opacity-50"
-                style={{ fontFamily: "Literata, serif" }}
-              >
-                ← Previous
-              </Button>
-              <Button
-                onClick={handleNext}
-                className="flex-1 bg-[#37306B] hover:bg-[#2C2758] text-white"
-                style={{ fontFamily: "Literata, serif" }}
-              >
-                {currentQuestionIndex === totalQuestions - 1
-                  ? "Complete Form"
-                  : "Next →"}
-              </Button>
-            </div>
           </div>
         )}
       </main>
