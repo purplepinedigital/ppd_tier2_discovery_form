@@ -424,7 +424,7 @@ export default function ProjectJourney() {
                   You don't have any projects yet.
                 </p>
                 <Button
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/?newProject=true")}
                   className="bg-green-600 hover:bg-green-700 text-white"
                   style={{ fontFamily: "Literata, serif" }}
                 >
