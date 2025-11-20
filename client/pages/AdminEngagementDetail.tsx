@@ -585,42 +585,26 @@ export default function AdminEngagementDetail() {
     });
   };
 
-  const handleConfirmStageCompletion = async (e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  const handleConfirmStageCompletion = async () => {
+    const stageNum = stageCompletionDialog.stageNumber;
+    const engagementId = engagement?.id;
 
-    console.log("Dialog state:", { engagement, stageNumber: stageCompletionDialog.stageNumber });
+    console.log("Confirm clicked:", { engagementId, stageNum, engagement });
 
-    if (!engagement) {
-      console.error("Missing engagement");
-      toast({
-        title: "Error",
-        description: "Engagement data not loaded. Please refresh the page.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!stageCompletionDialog.stageNumber && stageCompletionDialog.stageNumber !== 0) {
-      console.error("Missing stage number");
-      toast({
-        title: "Error",
-        description: "Stage number not set. Please try again.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (
-      !stageCompletionDialog.clientSatisfied ||
-      !stageCompletionDialog.feedbackComplete
-    ) {
+    // Validate checkboxes first
+    if (!stageCompletionDialog.clientSatisfied || !stageCompletionDialog.feedbackComplete) {
       toast({
         title: "Missing Confirmation",
-        description:
-          "Please confirm both that the client is satisfied and all feedback is complete.",
+        description: "Please confirm both checkboxes before marking complete.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!engagementId || stageNum === null || stageNum === undefined) {
+      toast({
+        title: "Error",
+        description: "Invalid engagement or stage. Please refresh and try again.",
         variant: "destructive",
       });
       return;
@@ -628,27 +612,23 @@ export default function AdminEngagementDetail() {
 
     setIsSaving(true);
     try {
-      console.log("Inserting stage completion for stage:", stageCompletionDialog.stageNumber);
       const client = getAdminSupabase();
 
-      const { data, error } = await client.from("stage_completion").insert({
-        engagement_id: engagement.id,
-        stage_number: stageCompletionDialog.stageNumber,
-      }).select();
-
-      console.log("Insert result:", { data, error });
+      const { error } = await client.from("stage_completion").insert({
+        engagement_id: engagementId,
+        stage_number: stageNum,
+      });
 
       if (error && error.code !== "23505") {
-        console.error("Insert error:", error);
         throw error;
       }
 
-      const stageName = STAGE_NAMES[stageCompletionDialog.stageNumber];
       toast({
         title: "✓ Stage Completed",
-        description: `${stageName} has been marked as complete.`,
+        description: `${STAGE_NAMES[stageNum]} marked as complete!`,
       });
 
+      // Close dialog
       setStageCompletionDialog({
         isOpen: false,
         stageNumber: null,
@@ -656,15 +636,13 @@ export default function AdminEngagementDetail() {
         feedbackComplete: false,
       });
 
-      console.log("Refreshing engagement data...");
+      // Refresh data
       await fetchEngagementData();
-      console.log("Engagement data refreshed");
     } catch (err: any) {
-      console.error("Error in handleConfirmStageCompletion:", err);
-      const errorMsg = err?.message || err?.details || JSON.stringify(err);
+      console.error("Stage completion error:", err);
       toast({
         title: "Error",
-        description: errorMsg || "Failed to mark stage complete",
+        description: err?.message || "Failed to mark stage complete",
         variant: "destructive",
       });
     } finally {
