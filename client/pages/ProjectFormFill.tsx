@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { supabase, saveFormProgress, loadFormProgress } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { formQuestions, formSections } from "@/data/discovery-form";
-import QuestionView from "@/components/discovery/question-view";
+import { QuestionView } from "@/components/discovery/question-view";
 
 let clientSupabase: any = null;
 
