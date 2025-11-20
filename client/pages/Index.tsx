@@ -588,40 +588,19 @@ export default function Index() {
       if (data.success && data.engagement_id) {
         setEngagementId(data.engagement_id);
 
-        // Try to load existing form progress for this engagement
-        try {
-          const progress = await loadFormProgress(user.id, data.engagement_id);
-          if (progress && progress.responses) {
-            // Resume form in progress - convert to array if needed
-            const responsesArray = Array.isArray(progress.responses)
-              ? progress.responses
-              : Object.values(progress.responses);
-            setResponses(responsesArray);
-            setCurrentQuestionIndex(progress.current_question_index);
-            setActiveSectionIndex(progress.active_section_index);
-            setScreen("question");
-          } else {
-            // Start new form
-            const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-            setResponses(createInitialResponses());
-            setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-            setActiveSectionIndex(0);
-            setScreen("sectionWelcome");
-          }
-        } catch (error: any) {
-          console.error("Error loading form progress:", {
-            message: error?.message,
-            name: error?.name,
-          });
-          // Fall back to starting new form
-          const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
-          setResponses(createInitialResponses());
-          setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
-          setActiveSectionIndex(0);
-          setScreen("sectionWelcome");
-        }
+        // Start new form - no progress to load yet
+        const firstIndex = getFirstQuestionIndexForSection(formSections[0].id);
+        setResponses(createInitialResponses());
+        setCurrentQuestionIndex(firstIndex === -1 ? 0 : firstIndex);
+        setActiveSectionIndex(0);
+        setScreen("sectionWelcome");
       } else {
-        throw new Error(data.error || "Failed to create engagement");
+        const errorMsg = data.error || data.message || "Failed to create engagement";
+        console.error("Engagement creation failed:", {
+          data,
+          error: errorMsg,
+        });
+        throw new Error(errorMsg);
       }
     } catch (error: any) {
       const errorMessage =
