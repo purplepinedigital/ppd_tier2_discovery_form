@@ -683,13 +683,7 @@ export default function Index() {
           <section className="w-full max-w-[1332px]">
             <div className="grid gap-6 lg:grid-cols-2">
               <div
-                className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3]"
-                style={{
-                  "@media (max-width: 640px)": {
-                    padding: "30px 20px 30px 30px",
-                  },
-                  padding: "40px",
-                }}
+                className="flex h-full flex-col justify-between gap-10 rounded-[10px] bg-[#FFEDC3] p-10 sm:p-7.5"
               >
                 <div
                   className="space-y-6"
