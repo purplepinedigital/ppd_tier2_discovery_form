@@ -671,7 +671,7 @@ export default function AdminEngagementDetail() {
                 <button
                   key={program}
                   onClick={() => handleProgramChange(program)}
-                  disabled={isSaving || !programRationale.trim()}
+                  disabled={isSaving}
                   className={`p-4 rounded-lg border-2 font-bold transition-all ${
                     selectedProgram === program
                       ? "border-[#37306B] bg-[#37306B] text-white"
@@ -685,47 +685,78 @@ export default function AdminEngagementDetail() {
             </div>
           </div>
 
-          {/* Decision Rationale Notes */}
-          <div className="mb-6">
-            <h5
-              className="font-bold text-gray-700 mb-2"
-              style={{ fontFamily: "Literata, serif" }}
-            >
-              Why This Program? (Decision Rationale)
-            </h5>
-            <p
-              className="text-sm text-gray-600 mb-3"
-              style={{ fontFamily: "Literata, serif" }}
-            >
-              Provide notes explaining why this program package was chosen and how you arrived at this decision.
-            </p>
-            <textarea
-              value={programRationale}
-              onChange={(e) => setProgramRationale(e.target.value)}
-              placeholder="Explain the decision rationale, discussion points, and why this program is the right fit for the client..."
-              className="w-full px-3 py-2 border border-gray-300 rounded min-h-[120px] focus:outline-none focus:border-[#37306B]"
-              style={{ fontFamily: "Literata, serif" }}
-            />
-            <p
-              className={`text-xs mt-2 ${
-                programRationale.trim() ? "text-green-600" : "text-gray-400"
-              }`}
-              style={{ fontFamily: "Literata, serif" }}
-            >
-              {programRationale.trim()
-                ? "✓ Rationale notes provided"
-                : "Required before selecting program"}
-            </p>
-          </div>
-
-          {/* Program Status */}
+          {/* Decision Rationale Notes - Only visible after program selection */}
           {selectedProgram && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded">
-              <p
-                className="text-green-700 text-sm font-bold"
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
+              <h5
+                className="font-bold text-gray-700 mb-2"
                 style={{ fontFamily: "Literata, serif" }}
               >
-                ✓ Program set to {selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)}
+                Why This Program? (Decision Rationale - Required)
+              </h5>
+              <p
+                className="text-sm text-gray-600 mb-3"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Explain why you selected {selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)} and how you arrived at this decision.
+              </p>
+              <textarea
+                value={programRationale}
+                onChange={(e) => setProgramRationale(e.target.value)}
+                placeholder="Explain the decision rationale, discussion points, and why this program is the right fit for the client..."
+                className="w-full px-3 py-2 border border-gray-300 rounded min-h-[120px] focus:outline-none focus:border-[#37306B]"
+                style={{ fontFamily: "Literata, serif" }}
+              />
+              <p
+                className={`text-xs mt-2 ${
+                  programRationale.trim() ? "text-green-600" : "text-red-600"
+                }`}
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                {programRationale.trim()
+                  ? "✓ Rationale notes provided"
+                  : "⚠ Required before confirming program"}
+              </p>
+
+              {/* Confirm Program Button */}
+              <div className="flex gap-2 mt-4">
+                <button
+                  onClick={handleSaveProgramWithRationale}
+                  disabled={isSaving || !programRationale.trim()}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Confirm Program Selection
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedProgram(null);
+                    setProgramRationale("");
+                  }}
+                  disabled={isSaving}
+                  className="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded font-bold disabled:opacity-50"
+                  style={{ fontFamily: "Literata, serif" }}
+                >
+                  Change Program
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Program Status - Shows when confirmed */}
+          {engagement?.program && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded">
+              <p
+                className="text-green-700 text-sm font-bold mb-2"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                ✓ Program confirmed: {engagement.program.charAt(0).toUpperCase() + engagement.program.slice(1)}
+              </p>
+              <p
+                className="text-green-700 text-xs"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Rationale: {engagement.program_rationale}
               </p>
             </div>
           )}
