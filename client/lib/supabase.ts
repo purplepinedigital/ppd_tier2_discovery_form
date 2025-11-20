@@ -41,45 +41,68 @@ export async function saveFormProgress(
   currentQuestionIndex: number,
   activeSectionIndex: number,
 ): Promise<void> {
-  // First check if progress exists
-  const { data: existingProgress } = await supabase
-    .from("form_progress")
-    .select("id")
-    .eq("user_id", userId)
-    .eq("engagement_id", engagementId)
-    .single();
-
-  if (existingProgress) {
-    // Update existing record
-    const { error } = await supabase
+  try {
+    // First check if progress exists
+    const { data: existingProgress, error: checkError } = await supabase
       .from("form_progress")
-      .update({
-        responses,
-        current_question_index: currentQuestionIndex,
-        active_section_index: activeSectionIndex,
-        updated_at: new Date().toISOString(),
-      })
+      .select("id")
       .eq("user_id", userId)
-      .eq("engagement_id", engagementId);
+      .eq("engagement_id", engagementId)
+      .maybeSingle();
 
-    if (error) {
-      console.error("Error updating form progress:", error);
-      throw error;
+    if (checkError && checkError.code !== "PGRST116") {
+      console.error("Error checking form progress:", {
+        code: checkError.code,
+        message: checkError.message,
+      });
     }
-  } else {
-    // Insert new record
-    const { error } = await supabase.from("form_progress").insert({
-      user_id: userId,
-      engagement_id: engagementId,
-      responses,
-      current_question_index: currentQuestionIndex,
-      active_section_index: activeSectionIndex,
+
+    if (existingProgress) {
+      // Update existing record
+      const { error: updateError } = await supabase
+        .from("form_progress")
+        .update({
+          responses,
+          current_question_index: currentQuestionIndex,
+          active_section_index: activeSectionIndex,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", userId)
+        .eq("engagement_id", engagementId);
+
+      if (updateError) {
+        console.error("Error updating form progress:", {
+          code: updateError.code,
+          message: updateError.message,
+        });
+        throw updateError;
+      }
+    } else {
+      // Insert new record
+      const { error: insertError } = await supabase
+        .from("form_progress")
+        .insert({
+          user_id: userId,
+          engagement_id: engagementId,
+          responses,
+          current_question_index: currentQuestionIndex,
+          active_section_index: activeSectionIndex,
+        });
+
+      if (insertError) {
+        console.error("Error inserting form progress:", {
+          code: insertError.code,
+          message: insertError.message,
+        });
+        throw insertError;
+      }
+    }
+  } catch (err: any) {
+    console.error("Exception saving form progress:", {
+      message: err.message,
+      code: err.code,
     });
-
-    if (error) {
-      console.error("Error inserting form progress:", error);
-      throw error;
-    }
+    // Don't re-throw to prevent blocking the form
   }
 }
 
