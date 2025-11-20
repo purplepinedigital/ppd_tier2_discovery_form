@@ -230,8 +230,16 @@ export default function AdminEngagementDetail() {
   const handleProgramChange = async (program: string) => {
     if (!engagement) return;
 
+    // Just select the program - rationale is filled afterward
+    setSelectedProgram(program);
+    setError(null);
+  };
+
+  const handleSaveProgramWithRationale = async () => {
+    if (!engagement || !selectedProgram) return;
+
     if (!programRationale.trim()) {
-      setError("Please provide a rationale/decision notes before selecting a program");
+      setError("Please provide a rationale/decision notes explaining why this program was chosen");
       return;
     }
 
@@ -240,17 +248,16 @@ export default function AdminEngagementDetail() {
     try {
       const client = getAdminSupabase();
 
-      // Update engagement with new program and rationale
+      // Update engagement with selected program and rationale
       const { error: updateError } = await client
         .from("engagements")
-        .update({ program, program_rationale: programRationale })
+        .update({ program: selectedProgram, program_rationale: programRationale })
         .eq("id", engagement.id);
 
       if (updateError) throw updateError;
 
-      setSelectedProgram(program);
-      setEngagement({ ...engagement, program, program_rationale: programRationale });
-      await fetchStageCoverage(program);
+      setEngagement({ ...engagement, program: selectedProgram, program_rationale: programRationale });
+      await fetchStageCoverage(selectedProgram);
 
       // Send email notification to client
       try {
@@ -259,7 +266,7 @@ export default function AdminEngagementDetail() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             engagement_id: engagement.id,
-            program,
+            program: selectedProgram,
             user_id: engagement.user_id,
             project_name: engagement.project_name,
             user_email: engagement.user_email,
