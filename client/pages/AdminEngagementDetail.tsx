@@ -440,12 +440,52 @@ export default function AdminEngagementDetail() {
               >
                 Project Name
               </p>
-              <p
-                className="text-2xl font-bold"
-                style={{ fontFamily: "Epilogue, sans-serif" }}
-              >
-                {engagement.project_name}
-              </p>
+              {isEditingProjectName ? (
+                <div className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    value={editedProjectName}
+                    onChange={(e) => setEditedProjectName(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#37306B]"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  />
+                  <button
+                    onClick={handleSaveProjectName}
+                    disabled={isSaving}
+                    className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded text-sm font-bold disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditingProjectName(false);
+                      setEditedProjectName(engagement.project_name);
+                    }}
+                    disabled={isSaving}
+                    className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded text-sm font-bold disabled:opacity-50"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <p
+                    className="text-2xl font-bold"
+                    style={{ fontFamily: "Epilogue, sans-serif" }}
+                  >
+                    {engagement.project_name}
+                  </p>
+                  <button
+                    onClick={() => setIsEditingProjectName(true)}
+                    className="text-[#37306B] hover:underline text-sm font-bold"
+                    style={{ fontFamily: "Literata, serif" }}
+                  >
+                    Edit
+                  </button>
+                </div>
+              )}
             </div>
             <div>
               <p
