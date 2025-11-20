@@ -43,67 +43,90 @@ export async function saveFormProgress(
 ): Promise<void> {
   try {
     // First check if progress exists
-    const { data: existingProgress, error: checkError } = await supabase
-      .from("form_progress")
-      .select("id")
-      .eq("user_id", userId)
-      .eq("engagement_id", engagementId)
-      .maybeSingle();
+    let existingProgress;
+    try {
+      const result = await supabase
+        .from("form_progress")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("engagement_id", engagementId)
+        .maybeSingle();
 
-    if (checkError && checkError.code !== "PGRST116") {
-      console.error("Error checking form progress:", {
-        code: checkError.code,
-        message: checkError.message,
-        status: checkError.status,
-        hint: checkError.hint,
-        details: checkError.details,
+      if (result.error && result.error.code !== "PGRST116") {
+        console.error("Error checking form progress:", {
+          code: result.error.code,
+          message: result.error.message,
+          status: result.error.status,
+          hint: result.error.hint,
+          details: result.error.details,
+        });
+      }
+      existingProgress = result.data;
+    } catch (fetchErr: any) {
+      console.error("Network error checking form progress:", {
+        message: fetchErr?.message,
+        name: fetchErr?.name,
       });
+      // Don't re-throw to prevent blocking the form
+      return;
     }
 
     if (existingProgress) {
       // Update existing record
-      const { error: updateError } = await supabase
-        .from("form_progress")
-        .update({
-          responses,
-          current_question_index: currentQuestionIndex,
-          active_section_index: activeSectionIndex,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("user_id", userId)
-        .eq("engagement_id", engagementId);
+      try {
+        const result = await supabase
+          .from("form_progress")
+          .update({
+            responses,
+            current_question_index: currentQuestionIndex,
+            active_section_index: activeSectionIndex,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", userId)
+          .eq("engagement_id", engagementId);
 
-      if (updateError) {
-        console.error("Error updating form progress:", {
-          code: updateError.code,
-          message: updateError.message,
-          status: updateError.status,
-          hint: updateError.hint,
-          details: updateError.details,
+        if (result.error) {
+          console.error("Error updating form progress:", {
+            code: result.error.code,
+            message: result.error.message,
+            status: result.error.status,
+            hint: result.error.hint,
+            details: result.error.details,
+          });
+        }
+      } catch (fetchErr: any) {
+        console.error("Network error updating form progress:", {
+          message: fetchErr?.message,
+          name: fetchErr?.name,
         });
-        throw updateError;
       }
     } else {
       // Insert new record
-      const { error: insertError } = await supabase
-        .from("form_progress")
-        .insert({
-          user_id: userId,
-          engagement_id: engagementId,
-          responses,
-          current_question_index: currentQuestionIndex,
-          active_section_index: activeSectionIndex,
-        });
+      try {
+        const result = await supabase
+          .from("form_progress")
+          .insert({
+            user_id: userId,
+            engagement_id: engagementId,
+            responses,
+            current_question_index: currentQuestionIndex,
+            active_section_index: activeSectionIndex,
+          });
 
-      if (insertError) {
-        console.error("Error inserting form progress:", {
-          code: insertError.code,
-          message: insertError.message,
-          status: insertError.status,
-          hint: insertError.hint,
-          details: insertError.details,
+        if (result.error) {
+          console.error("Error inserting form progress:", {
+            code: result.error.code,
+            message: result.error.message,
+            status: result.error.status,
+            hint: result.error.hint,
+            details: result.error.details,
+          });
+        }
+      } catch (fetchErr: any) {
+        console.error("Network error inserting form progress:", {
+          message: fetchErr?.message,
+          name: fetchErr?.name,
         });
-        throw insertError;
       }
     }
   } catch (err: any) {
