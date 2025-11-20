@@ -59,6 +59,15 @@ export default function ProjectJourney() {
   const [impersonationSession, setImpersonationSession] = useState(
     getImpersonationSession(),
   );
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    engagementId: string | null;
+    projectName: string | null;
+  }>({
+    isOpen: false,
+    engagementId: null,
+    projectName: null,
+  });
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
