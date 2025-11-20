@@ -335,13 +335,6 @@ export default function AdminDashboard() {
               Admin Dashboard
             </h1>
             <button
-              onClick={() => navigate("/admin/tier1")}
-              className="px-4 py-2 bg-[#37306B] hover:bg-[#2C2758] text-white rounded font-bold text-sm"
-              style={{ fontFamily: "Literata, serif" }}
-            >
-              Tier 1 Assessments
-            </button>
-            <button
               onClick={() => navigate("/admin/engagements")}
               className="px-4 py-2 bg-[#37306B] hover:bg-[#2C2758] text-white rounded font-bold text-sm"
               style={{ fontFamily: "Literata, serif" }}
