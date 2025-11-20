@@ -98,10 +98,15 @@ export async function saveFormProgress(
       }
     }
   } catch (err: any) {
-    console.error("Exception saving form progress:", {
-      message: err.message,
-      code: err.code,
-    });
+    const errorDetails = {
+      message: err?.message || "Unknown error",
+      code: err?.code,
+      status: err?.status,
+      hint: err?.hint,
+      details: err?.details,
+    };
+    console.error("Exception saving form progress:", errorDetails);
+    console.debug("Full error:", err);
     // Don't re-throw to prevent blocking the form
   }
 }
