@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
+import Tier1AssessmentView from "@/components/Tier1AssessmentView";
 import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
 
 let adminSupabase: any = null;
