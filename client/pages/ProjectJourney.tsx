@@ -93,17 +93,20 @@ export default function ProjectJourney() {
     }
   };
 
-  const getFormProgress = async (userId: string) => {
+  const getFormProgress = async (engagementId: string) => {
     try {
       const client = getClientSupabase();
       const { data } = await client
         .from("form_progress")
         .select("responses")
-        .eq("user_id", userId)
+        .eq("engagement_id", engagementId)
         .single();
 
       if (data && data.responses) {
-        return Object.keys(data.responses).length;
+        const answeredQuestions = Object.keys(data.responses).filter(
+          (key) => data.responses[key] && data.responses[key].trim() !== "",
+        ).length;
+        return Math.min(answeredQuestions, 30); // Cap at 30 questions
       }
       return 0;
     } catch (error) {
