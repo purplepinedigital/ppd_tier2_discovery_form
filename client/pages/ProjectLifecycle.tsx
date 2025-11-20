@@ -534,270 +534,277 @@ export default function ProjectLifecycle() {
             }
 
             return (
-            <div
-              key={stage.number}
-              className="bg-white rounded-lg shadow overflow-hidden"
-            >
-              {/* Stage Header */}
               <div
-                className={`p-4 md:p-6 cursor-pointer border-l-4 transition-all ${
-                  expandedStage === stage.number
-                    ? "bg-gray-50"
-                    : "hover:bg-gray-50"
-                } ${
-                  stage.completed
-                    ? "border-green-600 bg-green-50"
-                    : "border-[#37306B]"
-                }`}
-                onClick={() =>
-                  setExpandedStage(
-                    expandedStage === stage.number ? null : stage.number,
-                  )
-                }
+                key={stage.number}
+                className="bg-white rounded-lg shadow overflow-hidden"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <span
-                        className="text-xl md:text-2xl font-bold text-[#37306B]"
-                        style={{ fontFamily: "Epilogue, sans-serif" }}
-                      >
-                        Stage {stage.number}
-                      </span>
-                      {stage.included && (
+                {/* Stage Header */}
+                <div
+                  className={`p-4 md:p-6 cursor-pointer border-l-4 transition-all ${
+                    expandedStage === stage.number
+                      ? "bg-gray-50"
+                      : "hover:bg-gray-50"
+                  } ${
+                    stage.completed
+                      ? "border-green-600 bg-green-50"
+                      : "border-[#37306B]"
+                  }`}
+                  onClick={() =>
+                    setExpandedStage(
+                      expandedStage === stage.number ? null : stage.number,
+                    )
+                  }
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            stage.isLite
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-green-100 text-green-800"
-                          }`}
+                          className="text-xl md:text-2xl font-bold text-[#37306B]"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
                         >
-                          {stage.isLite ? "Lite" : "Included"}
+                          Stage {stage.number}
                         </span>
-                      )}
-                      {!stage.included && engagement.program && (
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
-                          Not Included
-                        </span>
-                      )}
-                      {stage.completed && (
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-600 text-white">
-                          ✓ Completed
-                        </span>
-                      )}
-                    </div>
-                    <h4
-                      className="text-lg md:text-xl font-bold"
-                      style={{ fontFamily: "Epilogue, sans-serif" }}
-                    >
-                      {stage.name}
-                    </h4>
-                    <p
-                      className="text-gray-600 text-sm mt-2"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      {stage.description}
-                    </p>
-                  </div>
-                  <div className="ml-4 flex-shrink-0">
-                    <span className="text-2xl">
-                      {expandedStage === stage.number ? "−" : "+"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Expanded Content */}
-              {expandedStage === stage.number && (
-                <div className="border-t p-4 md:p-6 space-y-6">
-                  {/* Stage 0 Special Content */}
-                  {stage.number === 0 && engagement.program && (
-                    <div className="bg-blue-50 border border-blue-200 rounded p-4">
-                      <h5
-                        className="font-bold text-blue-900 mb-2"
+                        {stage.included && (
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-bold ${
+                              stage.isLite
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                            }`}
+                          >
+                            {stage.isLite ? "Lite" : "Included"}
+                          </span>
+                        )}
+                        {!stage.included && engagement.program && (
+                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
+                            Not Included
+                          </span>
+                        )}
+                        {stage.completed && (
+                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-600 text-white">
+                            ✓ Completed
+                          </span>
+                        )}
+                      </div>
+                      <h4
+                        className="text-lg md:text-xl font-bold"
                         style={{ fontFamily: "Epilogue, sans-serif" }}
                       >
-                        Program Selection Rationale
-                      </h5>
+                        {stage.name}
+                      </h4>
                       <p
-                        className="text-blue-800 text-sm"
+                        className="text-gray-600 text-sm mt-2"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        {engagement.program_rationale ||
-                          "No rationale provided yet"}
+                        {stage.description}
                       </p>
                     </div>
-                  )}
+                    <div className="ml-4 flex-shrink-0">
+                      <span className="text-2xl">
+                        {expandedStage === stage.number ? "−" : "+"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-                  {/* Deliverables */}
-                  <div>
-                    <h5
-                      className="font-bold text-gray-700 mb-3"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      Deliverables
-                    </h5>
+                {/* Expanded Content */}
+                {expandedStage === stage.number && (
+                  <div className="border-t p-4 md:p-6 space-y-6">
+                    {/* Stage 0 Special Content */}
+                    {stage.number === 0 && engagement.program && (
+                      <div className="bg-blue-50 border border-blue-200 rounded p-4">
+                        <h5
+                          className="font-bold text-blue-900 mb-2"
+                          style={{ fontFamily: "Epilogue, sans-serif" }}
+                        >
+                          Program Selection Rationale
+                        </h5>
+                        <p
+                          className="text-blue-800 text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {engagement.program_rationale ||
+                            "No rationale provided yet"}
+                        </p>
+                      </div>
+                    )}
 
-                    {deliverables.filter((d) => d.stage_number === stage.number)
-                      .length > 0 ? (
-                      <div className="space-y-3">
-                        {deliverables
-                          .filter((d) => d.stage_number === stage.number)
-                          .map((deliverable) => (
-                            <div
-                              key={deliverable.id}
-                              className="bg-gray-50 p-4 rounded border border-gray-200"
-                            >
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <p
-                                    className="font-bold text-gray-800"
-                                    style={{
-                                      fontFamily: "Epilogue, sans-serif",
-                                    }}
-                                  >
-                                    {deliverable.title}
-                                  </p>
-                                  {deliverable.description && (
+                    {/* Deliverables */}
+                    <div>
+                      <h5
+                        className="font-bold text-gray-700 mb-3"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
+                        Deliverables
+                      </h5>
+
+                      {deliverables.filter(
+                        (d) => d.stage_number === stage.number,
+                      ).length > 0 ? (
+                        <div className="space-y-3">
+                          {deliverables
+                            .filter((d) => d.stage_number === stage.number)
+                            .map((deliverable) => (
+                              <div
+                                key={deliverable.id}
+                                className="bg-gray-50 p-4 rounded border border-gray-200"
+                              >
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex-1">
                                     <p
-                                      className="text-sm text-gray-600 mt-1"
-                                      style={{ fontFamily: "Literata, serif" }}
+                                      className="font-bold text-gray-800"
+                                      style={{
+                                        fontFamily: "Epilogue, sans-serif",
+                                      }}
                                     >
-                                      {deliverable.description}
+                                      {deliverable.title}
                                     </p>
-                                  )}
-                                  {deliverable.url && (
-                                    <a
-                                      href={deliverable.url}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="text-sm text-[#37306B] hover:underline mt-2 break-all inline-block"
-                                      style={{ fontFamily: "Literata, serif" }}
-                                    >
-                                      📥 Download / View →
-                                    </a>
-                                  )}
-                                </div>
-                                <Button
-                                  onClick={() => {
-                                    setShowFeedback(
-                                      showFeedback === deliverable.id
-                                        ? null
-                                        : deliverable.id,
-                                    );
-                                  }}
-                                  className="bg-[#37306B] hover:bg-[#2C2758] text-white text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 flex-shrink-0"
-                                  style={{ fontFamily: "Literata, serif" }}
-                                >
-                                  💬 Feedback
-                                </Button>
-                              </div>
-
-                              {/* Existing Feedback */}
-                              {feedbackMap[deliverable.id] &&
-                                feedbackMap[deliverable.id].length > 0 && (
-                                  <div className="mt-4 pt-4 border-t space-y-2">
-                                    {feedbackMap[deliverable.id].map((fb) => (
-                                      <div
-                                        key={fb.id}
-                                        className="bg-white p-2 rounded text-xs"
+                                    {deliverable.description && (
+                                      <p
+                                        className="text-sm text-gray-600 mt-1"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
                                       >
-                                        {fb.rating && (
-                                          <p className="text-yellow-500 mb-1">
-                                            {"⭐".repeat(fb.rating)}
-                                          </p>
-                                        )}
-                                        <p
-                                          className="text-gray-700"
-                                          style={{
-                                            fontFamily: "Literata, serif",
-                                          }}
-                                        >
-                                          {fb.feedback_text}
-                                        </p>
-                                        <p
-                                          className="text-gray-400 text-xs mt-1"
-                                          style={{
-                                            fontFamily: "Literata, serif",
-                                          }}
-                                        >
-                                          {new Date(
-                                            fb.created_at,
-                                          ).toLocaleDateString()}
-                                        </p>
-                                      </div>
-                                    ))}
+                                        {deliverable.description}
+                                      </p>
+                                    )}
+                                    {deliverable.url && (
+                                      <a
+                                        href={deliverable.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-sm text-[#37306B] hover:underline mt-2 break-all inline-block"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        📥 Download / View →
+                                      </a>
+                                    )}
                                   </div>
-                                )}
-
-                              {/* Feedback Form */}
-                              {showFeedback === deliverable.id && (
-                                <div className="mt-4 pt-4 border-t space-y-2">
-                                  <textarea
-                                    placeholder="Share your feedback..."
-                                    value={feedbackText}
-                                    onChange={(e) =>
-                                      setFeedbackText(e.target.value)
-                                    }
-                                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#37306B]"
+                                  <Button
+                                    onClick={() => {
+                                      setShowFeedback(
+                                        showFeedback === deliverable.id
+                                          ? null
+                                          : deliverable.id,
+                                      );
+                                    }}
+                                    className="bg-[#37306B] hover:bg-[#2C2758] text-white text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 flex-shrink-0"
                                     style={{ fontFamily: "Literata, serif" }}
-                                  />
-                                  <div className="flex gap-2 flex-wrap items-center">
-                                    <div className="flex gap-1">
-                                      {[1, 2, 3, 4, 5].map((r) => (
-                                        <button
-                                          key={r}
-                                          onClick={() =>
-                                            setRating(rating === r ? null : r)
-                                          }
-                                          className={`text-lg ${
-                                            rating && rating >= r
-                                              ? "text-yellow-500"
-                                              : "text-gray-300"
-                                          }`}
+                                  >
+                                    💬 Feedback
+                                  </Button>
+                                </div>
+
+                                {/* Existing Feedback */}
+                                {feedbackMap[deliverable.id] &&
+                                  feedbackMap[deliverable.id].length > 0 && (
+                                    <div className="mt-4 pt-4 border-t space-y-2">
+                                      {feedbackMap[deliverable.id].map((fb) => (
+                                        <div
+                                          key={fb.id}
+                                          className="bg-white p-2 rounded text-xs"
                                         >
-                                          ⭐
-                                        </button>
+                                          {fb.rating && (
+                                            <p className="text-yellow-500 mb-1">
+                                              {"⭐".repeat(fb.rating)}
+                                            </p>
+                                          )}
+                                          <p
+                                            className="text-gray-700"
+                                            style={{
+                                              fontFamily: "Literata, serif",
+                                            }}
+                                          >
+                                            {fb.feedback_text}
+                                          </p>
+                                          <p
+                                            className="text-gray-400 text-xs mt-1"
+                                            style={{
+                                              fontFamily: "Literata, serif",
+                                            }}
+                                          >
+                                            {new Date(
+                                              fb.created_at,
+                                            ).toLocaleDateString()}
+                                          </p>
+                                        </div>
                                       ))}
                                     </div>
-                                    <Button
-                                      onClick={() =>
-                                        handleAddFeedback(deliverable.id)
+                                  )}
+
+                                {/* Feedback Form */}
+                                {showFeedback === deliverable.id && (
+                                  <div className="mt-4 pt-4 border-t space-y-2">
+                                    <textarea
+                                      placeholder="Share your feedback..."
+                                      value={feedbackText}
+                                      onChange={(e) =>
+                                        setFeedbackText(e.target.value)
                                       }
-                                      className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
+                                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#37306B]"
                                       style={{ fontFamily: "Literata, serif" }}
-                                    >
-                                      Submit
-                                    </Button>
+                                    />
+                                    <div className="flex gap-2 flex-wrap items-center">
+                                      <div className="flex gap-1">
+                                        {[1, 2, 3, 4, 5].map((r) => (
+                                          <button
+                                            key={r}
+                                            onClick={() =>
+                                              setRating(rating === r ? null : r)
+                                            }
+                                            className={`text-lg ${
+                                              rating && rating >= r
+                                                ? "text-yellow-500"
+                                                : "text-gray-300"
+                                            }`}
+                                          >
+                                            ⭐
+                                          </button>
+                                        ))}
+                                      </div>
+                                      <Button
+                                        onClick={() =>
+                                          handleAddFeedback(deliverable.id)
+                                        }
+                                        className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        Submit
+                                      </Button>
+                                    </div>
                                   </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <p
-                        className="text-gray-400 italic text-sm"
+                                )}
+                              </div>
+                            ))}
+                        </div>
+                      ) : (
+                        <p
+                          className="text-gray-400 italic text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          No deliverables yet. Check back soon!
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Mark Complete Button */}
+                    {!stage.completed && stage.included && (
+                      <Button
+                        onClick={() => handleMarkStageComplete(stage.number)}
+                        className="bg-green-600 hover:bg-green-700 text-white w-full"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        No deliverables yet. Check back soon!
-                      </p>
+                        ✓ Mark This Stage Complete
+                      </Button>
                     )}
                   </div>
-
-                  {/* Mark Complete Button */}
-                  {!stage.completed && stage.included && (
-                    <Button
-                      onClick={() => handleMarkStageComplete(stage.number)}
-                      className="bg-green-600 hover:bg-green-700 text-white w-full"
-                      style={{ fontFamily: "Literata, serif" }}
-                    >
-                      ✓ Mark This Stage Complete
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
+                )}
+              </div>
             );
           })}
         </div>

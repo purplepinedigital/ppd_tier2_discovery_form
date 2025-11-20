@@ -1236,7 +1236,9 @@ export default function Index() {
                       <button
                         onClick={() => {
                           setIsEditingProjectName(false);
-                          setEditedProjectName(editedProjectName || projectName);
+                          setEditedProjectName(
+                            editedProjectName || projectName,
+                          );
                         }}
                         className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded text-sm font-semibold"
                         style={{ fontFamily: "Literata, serif" }}
