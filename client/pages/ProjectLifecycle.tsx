@@ -567,19 +567,21 @@ export default function ProjectLifecycle() {
             </h2>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <Button
-              onClick={() => navigate("/?newProject=true")}
-              className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base"
-              style={{ fontFamily: "Literata, serif" }}
-            >
-              Start New Project
-            </Button>
+            {!isImpersonating() && (
+              <Button
+                onClick={() => navigate("/?newProject=true")}
+                className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Start New Project
+              </Button>
+            )}
             <Button
               onClick={handleLogout}
               className="bg-red-600 hover:bg-red-700 text-white text-sm md:text-base"
               style={{ fontFamily: "Literata, serif" }}
             >
-              Logout
+              {isImpersonating() ? "Back to Admin" : "Logout"}
             </Button>
           </div>
         </div>
