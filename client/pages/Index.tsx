@@ -416,7 +416,23 @@ export default function Index() {
           setUserName(signupData[0].name);
         }
 
-        // New signup - start fresh form
+        // Check if user has existing projects
+        try {
+          const { data: engagements } = await supabase
+            .from("engagements")
+            .select("id")
+            .eq("user_id", data.user.id);
+
+          if (engagements && engagements.length > 0) {
+            // User has projects - redirect to My Projects page
+            window.location.href = "/project/journey";
+            return;
+          }
+        } catch (error) {
+          console.error("Error checking engagements:", error);
+        }
+
+        // No projects yet - start fresh form
         setResponses(createInitialResponses());
         const firstIndex = getFirstQuestionIndexForSection(
           formSections[0].id,
