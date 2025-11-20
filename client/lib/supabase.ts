@@ -148,12 +148,24 @@ export async function loadFormProgress(
   engagementId: string,
 ): Promise<FormProgress | null> {
   try {
-    const { data, error } = await supabase
-      .from("form_progress")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("engagement_id", engagementId)
-      .maybeSingle();
+    let data, error;
+    try {
+      const result = await supabase
+        .from("form_progress")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("engagement_id", engagementId)
+        .maybeSingle();
+      data = result.data;
+      error = result.error;
+    } catch (fetchErr: any) {
+      console.error("Network error loading form progress:", {
+        message: fetchErr?.message,
+        name: fetchErr?.name,
+      });
+      // Return null instead of throwing to prevent app crashes
+      return null;
+    }
 
     if (error) {
       console.error("Error loading form progress:", {
@@ -163,11 +175,12 @@ export async function loadFormProgress(
         hint: error.hint,
         details: error.details,
       });
-      // Return null for "not found" errors, throw others
+      // Return null for "not found" errors, return null for others as well
       if (error.code === "PGRST116") {
         return null;
       }
-      throw error;
+      // For other errors, log but don't crash
+      return null;
     }
 
     return data || null;
