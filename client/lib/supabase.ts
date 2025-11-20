@@ -136,6 +136,9 @@ export async function loadFormProgress(
       console.error("Error loading form progress:", {
         code: error.code,
         message: error.message,
+        status: error.status,
+        hint: error.hint,
+        details: error.details,
       });
       // Return null for "not found" errors, throw others
       if (error.code === "PGRST116") {
