@@ -3,6 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import {
+  getImpersonationSession,
+  clearImpersonationSession,
+  isImpersonating,
+} from "@/lib/admin-impersonate";
 
 interface Engagement {
   id: string;
