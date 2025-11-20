@@ -1385,11 +1385,109 @@ export default function AdminEngagementDetail() {
                         + Add Deliverable
                       </button>
                     )}
+
+                    {/* Mark Stage Complete Button */}
+                    {stage.included &&
+                      deliverables.filter((d) => d.stage_number === stage.number)
+                        .length > 0 && (
+                        <button
+                          onClick={() => handleMarkStageComplete(stage.number)}
+                          disabled={isSaving}
+                          className="bg-green-600 hover:bg-green-700 text-white w-full px-4 py-2 rounded font-bold text-sm disabled:opacity-50 mt-4"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          ✓ Mark This Stage Complete
+                        </button>
+                      )}
                   </div>
                 </div>
               ))}
           </div>
         )}
+
+        {/* Stage Completion Confirmation Dialog */}
+        <AlertDialog
+          open={stageCompletionDialog.isOpen}
+          onOpenChange={(isOpen) =>
+            setStageCompletionDialog((prev) => ({ ...prev, isOpen }))
+          }
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
+                Mark Stage Complete
+              </AlertDialogTitle>
+              <AlertDialogDescription
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Before marking this stage as complete, please confirm:
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <div className="space-y-4 py-4">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={stageCompletionDialog.clientSatisfied}
+                  onChange={(e) =>
+                    setStageCompletionDialog((prev) => ({
+                      ...prev,
+                      clientSatisfied: e.target.checked,
+                    }))
+                  }
+                  className="w-4 h-4 rounded border-gray-300"
+                />
+                <span
+                  style={{ fontFamily: "Literata, serif" }}
+                  className="text-sm"
+                >
+                  Client has confirmed satisfaction with this stage deliverables
+                </span>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={stageCompletionDialog.feedbackComplete}
+                  onChange={(e) =>
+                    setStageCompletionDialog((prev) => ({
+                      ...prev,
+                      feedbackComplete: e.target.checked,
+                    }))
+                  }
+                  className="w-4 h-4 rounded border-gray-300"
+                />
+                <span
+                  style={{ fontFamily: "Literata, serif" }}
+                  className="text-sm"
+                >
+                  All client feedback has been addressed
+                </span>
+              </label>
+            </div>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                style={{ fontFamily: "Literata, serif" }}
+                disabled={isSaving}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmStageCompletion}
+                disabled={
+                  isSaving ||
+                  !stageCompletionDialog.clientSatisfied ||
+                  !stageCompletionDialog.feedbackComplete
+                }
+                className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-50"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                Mark Complete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </main>
     </div>
   );
