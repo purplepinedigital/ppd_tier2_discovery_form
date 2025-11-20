@@ -153,9 +153,9 @@ export default function ProjectJourney() {
     }
   };
 
-  const getFormProgress = async (engagementId: string) => {
+  const getFormProgress = async (engagementId: string, clientParam?: any) => {
     try {
-      const client = getClientSupabase();
+      const client = clientParam || getClientSupabase();
       const { data } = await client
         .from("form_progress")
         .select("responses")
