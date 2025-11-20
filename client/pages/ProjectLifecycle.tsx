@@ -166,95 +166,116 @@ export default function ProjectLifecycle() {
       const client = getClientSupabase();
 
       // Fetch engagement
-      const { data: engagementData, error: engagementError } = await client
-        .from("engagements")
-        .select("*")
-        .eq("id", engagementId)
-        .eq("user_id", userId)
-        .single();
+      try {
+        const { data: engagementData, error: engagementError } = await client
+          .from("engagements")
+          .select("*")
+          .eq("id", engagementId)
+          .eq("user_id", userId)
+          .single();
 
-      if (engagementError) {
-        if (engagementError.code === "PGRST116") {
-          setError("Engagement not found or you don't have access to it");
-        } else {
-          setError(engagementError.message);
-        }
-        return;
-      }
-
-      if (engagementData) {
-        setEngagement(engagementData);
-        setNewPackage(engagementData.recommended_package);
-
-        // Fetch Tier 1 assessment if completed
-        if (engagementData.tier1_assessment_id) {
-          const { data: tier1Data } = await client
-            .from("tier1_assessments")
-            .select("*")
-            .eq("id", engagementData.tier1_assessment_id)
-            .single();
-
-          if (tier1Data) {
-            setTier1Assessment(tier1Data);
+        if (engagementError) {
+          if (engagementError.code === "PGRST116") {
+            setError("Engagement not found or you don't have access to it");
+          } else {
+            setError(engagementError.message);
           }
+          return;
         }
 
-        // Fetch deliverables visible to client
-        const { data: deliverableData } = await client
-          .from("deliverables")
-          .select("*")
-          .eq("engagement_id", engagementId)
-          .eq("visible_to_client", true)
-          .order("stage_number", { ascending: true });
+        if (engagementData) {
+          setEngagement(engagementData);
+          setNewPackage(engagementData.recommended_package);
 
-        setDeliverables(deliverableData || []);
+          // Fetch Tier 1 assessment if completed
+          if (engagementData.tier1_assessment_id) {
+            try {
+              const { data: tier1Data } = await client
+                .from("tier1_assessments")
+                .select("*")
+                .eq("id", engagementData.tier1_assessment_id)
+                .maybeSingle();
 
-        // Fetch stage completions
-        const { data: completionData } = await client
-          .from("stage_completion")
-          .select("*")
-          .eq("engagement_id", engagementId)
-          .order("stage_number", { ascending: true });
-
-        setCompletions(completionData || []);
-
-        // Fetch feedback for all deliverables
-        if (deliverableData && deliverableData.length > 0) {
-          const deliverableIds = deliverableData.map((d) => d.id);
-          const { data: feedbackData } = await client
-            .from("client_feedback")
-            .select("*")
-            .in("deliverable_id", deliverableIds);
-
-          const feedbackByDeliverable: Record<string, ClientFeedback[]> = {};
-          if (feedbackData) {
-            feedbackData.forEach((feedback) => {
-              if (!feedbackByDeliverable[feedback.deliverable_id]) {
-                feedbackByDeliverable[feedback.deliverable_id] = [];
+              if (tier1Data) {
+                setTier1Assessment(tier1Data);
               }
-              feedbackByDeliverable[feedback.deliverable_id].push(feedback);
-            });
+            } catch (tier1Error) {
+              console.error("Error fetching Tier 1 assessment:", tier1Error);
+            }
           }
-          setFeedbackMap(feedbackByDeliverable);
-        }
 
-        // Fetch stage coverage if program is set
-        if (engagementData.program) {
-          await fetchStageCoverage(
-            engagementData.program,
-            completionData || [],
-          );
-        } else {
-          const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
-            number: i,
-            name: STAGE_NAMES[i],
-            description: STAGE_DESCRIPTIONS[i],
-            included: true,
-            isLite: false,
-            completed: (completionData || []).some((c) => c.stage_number === i),
-          }));
-          setStages(allStages);
+          // Fetch deliverables visible to client
+          try {
+            const { data: deliverableData } = await client
+              .from("deliverables")
+              .select("*")
+              .eq("engagement_id", engagementId)
+              .eq("visible_to_client", true)
+              .order("stage_number", { ascending: true });
+
+            setDeliverables(deliverableData || []);
+
+            // Fetch stage completions
+            try {
+              const { data: completionData } = await client
+                .from("stage_completion")
+                .select("*")
+                .eq("engagement_id", engagementId)
+                .order("stage_number", { ascending: true });
+
+              setCompletions(completionData || []);
+
+              // Fetch feedback for all deliverables
+              if (deliverableData && deliverableData.length > 0) {
+                try {
+                  const deliverableIds = deliverableData.map((d) => d.id);
+                  const { data: feedbackData } = await client
+                    .from("client_feedback")
+                    .select("*")
+                    .in("deliverable_id", deliverableIds);
+
+                  const feedbackByDeliverable: Record<string, ClientFeedback[]> = {};
+                  if (feedbackData) {
+                    feedbackData.forEach((feedback) => {
+                      if (!feedbackByDeliverable[feedback.deliverable_id]) {
+                        feedbackByDeliverable[feedback.deliverable_id] = [];
+                      }
+                      feedbackByDeliverable[feedback.deliverable_id].push(feedback);
+                    });
+                  }
+                  setFeedbackMap(feedbackByDeliverable);
+                } catch (feedbackError) {
+                  console.error("Error fetching feedback:", feedbackError);
+                }
+              }
+
+              // Fetch stage coverage if program is set
+              if (engagementData.program) {
+                await fetchStageCoverage(
+                  engagementData.program,
+                  completionData || [],
+                );
+              } else {
+                const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
+                  number: i,
+                  name: STAGE_NAMES[i],
+                  description: STAGE_DESCRIPTIONS[i],
+                  included: true,
+                  isLite: false,
+                  completed: (completionData || []).some((c) => c.stage_number === i),
+                }));
+                setStages(allStages);
+              }
+            } catch (completionError) {
+              console.error("Error fetching completions:", completionError);
+            }
+          } catch (deliverableError) {
+            console.error("Error fetching deliverables:", deliverableError);
+          }
         }
+      } catch (engagementFetchError) {
+        console.error("Error in engagement fetch:", engagementFetchError);
+        setError((engagementFetchError as any)?.message || "Failed to fetch engagement");
       }
     } catch (err: any) {
       setError(err.message || "Failed to fetch engagement data");
