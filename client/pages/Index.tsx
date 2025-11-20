@@ -482,8 +482,12 @@ export default function Index() {
           }
         } catch (error: any) {
           console.error("Error auto-creating engagement:", {
-            message: error.message,
-            name: error.name,
+            message: error?.message || "Unknown error",
+            name: error?.name || "Error",
+            status: error?.status,
+            statusText: error?.statusText,
+            toString: error?.toString(),
+            full: error,
           });
           // Fall back to project name screen
           setScreen("projectName");
