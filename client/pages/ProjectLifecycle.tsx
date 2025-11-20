@@ -1020,7 +1020,12 @@ export default function ProjectLifecycle() {
                                     )}
                                     {deliverable.url && (
                                       <a
-                                        href={deliverable.url}
+                                        href={
+                                          deliverable.url.startsWith("http://") ||
+                                          deliverable.url.startsWith("https://")
+                                            ? deliverable.url
+                                            : `https://${deliverable.url}`
+                                        }
                                         target="_blank"
                                         rel="noreferrer"
                                         className="text-sm text-[#37306B] hover:underline mt-2 break-all inline-block"
@@ -1141,16 +1146,46 @@ export default function ProjectLifecycle() {
                       )}
                     </div>
 
-                    {/* Mark Complete Button */}
-                    {!stage.completed && stage.included && (
-                      <Button
-                        onClick={() => handleMarkStageComplete(stage.number)}
-                        className="bg-green-600 hover:bg-green-700 text-white w-full"
-                        style={{ fontFamily: "Literata, serif" }}
-                      >
-                        ✓ Mark This Stage Complete
-                      </Button>
-                    )}
+                    {/* Stage Status Buttons */}
+                    <div className="space-y-2">
+                      {/* Admin Only: Mark Complete Button */}
+                      {!stage.completed && stage.included && isImpersonating() && (
+                        <Button
+                          onClick={() => handleMarkStageComplete(stage.number)}
+                          className="bg-green-600 hover:bg-green-700 text-white w-full"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          ✓ Mark This Stage Complete
+                        </Button>
+                      )}
+
+                      {/* Client Only: Mark Incomplete Button */}
+                      {stage.completed && !isImpersonating() && (
+                        <Button
+                          onClick={() => {
+                            // TODO: Implement mark incomplete functionality
+                            toast({
+                              title: "Feature Coming Soon",
+                              description:
+                                "Mark incomplete feature will be available soon",
+                            });
+                          }}
+                          className="bg-orange-600 hover:bg-orange-700 text-white w-full"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          ↺ Mark This Stage Incomplete
+                        </Button>
+                      )}
+
+                      {/* Admin Info */}
+                      {!stage.completed &&
+                        stage.included &&
+                        !isImpersonating() && (
+                          <p className="text-sm text-gray-600 italic">
+                            This stage will be marked complete by your Purple Pine Digital team lead after discussing with you.
+                          </p>
+                        )}
+                    </div>
                   </div>
                 )}
               </div>
