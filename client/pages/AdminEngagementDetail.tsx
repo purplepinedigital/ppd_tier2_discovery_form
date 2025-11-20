@@ -230,20 +230,26 @@ export default function AdminEngagementDetail() {
   const handleProgramChange = async (program: string) => {
     if (!engagement) return;
 
+    if (!programRationale.trim()) {
+      setError("Please provide a rationale/decision notes before selecting a program");
+      return;
+    }
+
     setIsSaving(true);
     setError(null);
     try {
       const client = getAdminSupabase();
 
-      // Update engagement with new program
+      // Update engagement with new program and rationale
       const { error: updateError } = await client
         .from("engagements")
-        .update({ program })
+        .update({ program, program_rationale: programRationale })
         .eq("id", engagement.id);
 
       if (updateError) throw updateError;
 
       setSelectedProgram(program);
+      setEngagement({ ...engagement, program, program_rationale: programRationale });
       await fetchStageCoverage(program);
 
       // Send email notification to client
@@ -266,6 +272,49 @@ export default function AdminEngagementDetail() {
       }
     } catch (err: any) {
       setError(err.message || "Failed to update program");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleResetProgram = async () => {
+    if (!engagement) return;
+
+    // Check if there are any deliverables
+    if (deliverables.length > 0) {
+      setError("Cannot reset program when deliverables exist. Please delete all deliverables first.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to reset the program selection?")) return;
+
+    setIsSaving(true);
+    setError(null);
+    try {
+      const client = getAdminSupabase();
+
+      const { error: updateError } = await client
+        .from("engagements")
+        .update({ program: null, program_rationale: null })
+        .eq("id", engagement.id);
+
+      if (updateError) throw updateError;
+
+      setSelectedProgram(null);
+      setProgramRationale("");
+      setEngagement({ ...engagement, program: null, program_rationale: null });
+
+      // Reset stages
+      const allStages: Stage[] = Array.from({ length: 8 }, (_, i) => ({
+        number: i,
+        name: STAGE_NAMES[i],
+        description: STAGE_DESCRIPTIONS[i],
+        included: true,
+        isLite: false,
+      }));
+      setStages(allStages);
+    } catch (err: any) {
+      setError(err.message || "Failed to reset program");
     } finally {
       setIsSaving(false);
     }
