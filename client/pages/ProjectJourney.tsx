@@ -362,7 +362,9 @@ export default function ProjectJourney() {
                         className="px-6 py-4 text-sm"
                         style={{ fontFamily: "Literata, serif" }}
                       >
-                        <span className="text-gray-600">In Progress</span>
+                        <span className="text-gray-600">
+                          {formProgressMap[engagement.id] || 0}/30 questions
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-sm space-x-2">
                         <Button
