@@ -140,6 +140,8 @@ export default function ProjectLifecycle() {
   const [expandedStage, setExpandedStage] = useState<number | null>(null);
   const [editingPackage, setEditingPackage] = useState(false);
   const [newPackage, setNewPackage] = useState<string | null>(null);
+  const [deleteConfirmDialog, setDeleteConfirmDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
@@ -894,7 +896,7 @@ export default function ProjectLifecycle() {
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       <span className="text-2xl">
-                        {expandedStage === stage.number ? "−" : "+"}
+                        {expandedStage === stage.number ? "���" : "+"}
                       </span>
                     </div>
                   </div>
