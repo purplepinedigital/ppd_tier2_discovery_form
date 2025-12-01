@@ -285,15 +285,15 @@ export default function AdminDashboard() {
         console.error("Klaviyo unsubscribe error:", errorData);
       }
 
-      // Delete from signups table only - do NOT cascade to form_progress or engagements
+      // Delete from signups table by email (unique field) - safer than user_id
       const { error } = await client
         .from("signups")
         .delete()
-        .eq("user_id", userId);
+        .eq("email", email);
 
       if (error) throw error;
 
-      setSignups(signups.filter((s) => s.user_id !== userId));
+      setSignups(signups.filter((s) => s.email !== email));
       setError(null);
       setDeleteConfirm(null);
     } catch (err: any) {
