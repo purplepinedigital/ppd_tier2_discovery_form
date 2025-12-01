@@ -209,8 +209,10 @@ export function createServer() {
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
+      console.log("[DELETE] Supabase URL present:", !!supabaseUrl, "Service key present:", !!supabaseServiceKey);
+
       if (!supabaseUrl || !supabaseServiceKey) {
-        console.error("Supabase configuration missing");
+        console.error("[DELETE] Supabase configuration missing");
         return res.status(500).json({
           error: "Supabase configuration missing",
         });
@@ -219,7 +221,7 @@ export function createServer() {
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
       // Verify engagement exists and belongs to user
-      console.log("Verifying engagement - ID:", engagementId, "User:", user_id);
+      console.log("[DELETE] Verifying engagement - ID:", engagementId, "User:", user_id);
 
       // First, verify the engagement exists
       const { data: engagement, error: fetchError } = await supabaseAdmin
