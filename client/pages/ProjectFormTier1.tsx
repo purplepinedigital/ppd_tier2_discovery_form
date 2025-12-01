@@ -96,8 +96,9 @@ export default function ProjectFormTier1() {
             .eq("id", engagementId)
             .single();
 
-          if (engagementData) {
+          if (engagementData && engagementData.project_name) {
             setProjectName(engagementData.project_name);
+            setIsProjectNamePreFilled(true);
           }
         }
       } else {
@@ -948,7 +949,7 @@ export default function ProjectFormTier1() {
                     <li>✅ PLUS: 12-month continuous optimization</li>
                     <li>✅ Monthly content (4-8 posts)</li>
                     <li>✅ Ongoing A/B testing + CRO</li>
-                    <li>✅ Advanced campaigns + retargeting</li>
+                    <li>�� Advanced campaigns + retargeting</li>
                     <li>✅ Email flows + retention programs</li>
                     <li>✅ Quarterly strategy reviews</li>
                     <li>✅ Dedicated account manager</li>
