@@ -360,7 +360,7 @@ export default function ProjectFormTier1() {
                   <p className="text-sm text-gray-500 mb-3">
                     {projectName.trim() === ""
                       ? "Enter your project name to get started."
-                      : "This is your project name from the admin. It cannot be changed."}
+                      : "This is your project name. Once set, it cannot be changed here. Contact support if you need to update it."}
                   </p>
                   <input
                     type="text"
