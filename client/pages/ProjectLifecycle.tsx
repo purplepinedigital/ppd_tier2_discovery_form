@@ -746,6 +746,14 @@ export default function ProjectLifecycle() {
               </Button>
             )}
             <Button
+              onClick={() => setDeleteConfirmDialog(true)}
+              disabled={isDeleting}
+              className="bg-orange-500 hover:bg-orange-600 text-white text-sm md:text-base"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Delete Project
+            </Button>
+            <Button
               onClick={handleLogout}
               className="bg-red-600 hover:bg-red-700 text-white text-sm md:text-base"
               style={{ fontFamily: "Literata, serif" }}
