@@ -33,19 +33,21 @@ export default function AdminTier1Assessments() {
 
       setUser(data.session.user);
 
-      // Fetch Tier 1 assessments
+      // Fetch Tier 1 assessments WITH engagement data to validate they still exist
       const { data: assessmentsData, error } = await supabase
         .from("tier1_assessments")
         .select(
           `
           id,
+          engagement_id,
           project_name,
           business_name,
           user_id,
           recommended_package,
           recommendation_confidence,
           has_mismatch,
-          created_at
+          created_at,
+          engagements(id)
         `,
         )
         .order("created_at", { ascending: false });
@@ -53,9 +55,14 @@ export default function AdminTier1Assessments() {
       if (error) {
         console.error("Error fetching assessments:", error);
       } else if (assessmentsData) {
+        // Filter out orphaned assessments (where engagement no longer exists)
+        const validAssessments = assessmentsData.filter(
+          (a: any) => a.engagements && a.engagements.id
+        );
+
         // Fetch user emails from signups table
         const userIds = [
-          ...new Set(assessmentsData.map((a: any) => a.user_id)),
+          ...new Set(validAssessments.map((a: any) => a.user_id)),
         ];
         const { data: signupsData } = await supabase
           .from("signups")
@@ -66,7 +73,7 @@ export default function AdminTier1Assessments() {
           (signupsData || []).map((s: any) => [s.user_id, s.email]),
         );
 
-        const formatted = assessmentsData.map((a: any) => ({
+        const formatted = validAssessments.map((a: any) => ({
           id: a.id,
           project_name: a.project_name,
           business_name: a.business_name,
@@ -77,6 +84,12 @@ export default function AdminTier1Assessments() {
           has_mismatch: a.has_mismatch,
           created_at: a.created_at,
         }));
+
+        if (validAssessments.length < assessmentsData.length) {
+          console.warn(
+            `Filtered out ${assessmentsData.length - validAssessments.length} orphaned tier1_assessments with no corresponding engagement`,
+          );
+        }
 
         setAssessments(formatted);
       }
