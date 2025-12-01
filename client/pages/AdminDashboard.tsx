@@ -304,6 +304,36 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCleanupOrphanedData = async () => {
+    if (!confirm("This will remove orphaned tier1_assessments and other records. Continue?")) {
+      return;
+    }
+
+    setIsCleaningUp(true);
+    try {
+      const response = await fetch("/api/admin/cleanup-orphaned-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to cleanup orphaned data");
+      }
+
+      const data = await response.json();
+      alert(
+        `Cleanup successful!\nDeleted tier1_assessments: ${data.deleted?.tier1_assessments || 0}\nDeleted other records: ${data.deleted?.other_records || 0}`
+      );
+
+      // Refresh data
+      await fetchData();
+    } catch (err: any) {
+      setError(err.message || "Failed to cleanup orphaned data");
+    } finally {
+      setIsCleaningUp(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
