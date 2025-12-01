@@ -101,10 +101,7 @@ export function createServer() {
             .maybeSingle();
 
           if (!eng) {
-            await supabaseAdmin
-              .from("form_progress")
-              .delete()
-              .eq("id", fp.id);
+            await supabaseAdmin.from("form_progress").delete().eq("id", fp.id);
             otherDeletedCount++;
           }
         }
@@ -200,7 +197,10 @@ export function createServer() {
       });
 
       if (!engagementId || !user_id) {
-        console.error("Missing required parameters:", { engagementId, user_id });
+        console.error("Missing required parameters:", {
+          engagementId,
+          user_id,
+        });
         return res.status(400).json({
           error: "engagementId and user_id are required",
         });
@@ -209,7 +209,12 @@ export function createServer() {
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
-      console.log("[DELETE] Supabase URL present:", !!supabaseUrl, "Service key present:", !!supabaseServiceKey);
+      console.log(
+        "[DELETE] Supabase URL present:",
+        !!supabaseUrl,
+        "Service key present:",
+        !!supabaseServiceKey,
+      );
 
       if (!supabaseUrl || !supabaseServiceKey) {
         console.error("[DELETE] Supabase configuration missing");
@@ -221,7 +226,12 @@ export function createServer() {
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
       // Verify engagement exists and belongs to user
-      console.log("[DELETE] Verifying engagement - ID:", engagementId, "User:", user_id);
+      console.log(
+        "[DELETE] Verifying engagement - ID:",
+        engagementId,
+        "User:",
+        user_id,
+      );
 
       // First, verify the engagement exists
       const { data: engagement, error: fetchError } = await supabaseAdmin
@@ -252,7 +262,7 @@ export function createServer() {
           "Unauthorized delete - engagement user_id mismatch. Engagement:",
           engagement.user_id,
           "Requested:",
-          user_id
+          user_id,
         );
         return res.status(403).json({
           error: "Unauthorized - engagement does not belong to this user",
@@ -278,7 +288,7 @@ export function createServer() {
       } else {
         console.log(
           "client_notifications deleted:",
-          deleteClientNotifications.count || 0
+          deleteClientNotifications.count || 0,
         );
       }
 
@@ -294,7 +304,10 @@ export function createServer() {
           deleteClientFeedback.error,
         );
       } else {
-        console.log("client_feedback deleted:", deleteClientFeedback.count || 0);
+        console.log(
+          "client_feedback deleted:",
+          deleteClientFeedback.count || 0,
+        );
       }
 
       console.log("Deleting tier1_assessments...");
@@ -311,7 +324,7 @@ export function createServer() {
       } else {
         console.log(
           "tier1_assessments deleted:",
-          deleteTier1Assessments.count || 0
+          deleteTier1Assessments.count || 0,
         );
       }
 
@@ -342,7 +355,10 @@ export function createServer() {
           deleteStageCompletion.error,
         );
       } else {
-        console.log("stage_completion deleted:", deleteStageCompletion.count || 0);
+        console.log(
+          "stage_completion deleted:",
+          deleteStageCompletion.count || 0,
+        );
       }
 
       console.log("Deleting deliverables...");

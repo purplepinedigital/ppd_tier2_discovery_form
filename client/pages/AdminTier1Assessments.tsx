@@ -57,7 +57,7 @@ export default function AdminTier1Assessments() {
       } else if (assessmentsData) {
         // Filter out orphaned assessments (where engagement no longer exists)
         const validAssessments = assessmentsData.filter(
-          (a: any) => a.engagements && a.engagements.id
+          (a: any) => a.engagements && a.engagements.id,
         );
 
         // Fetch user emails from signups table

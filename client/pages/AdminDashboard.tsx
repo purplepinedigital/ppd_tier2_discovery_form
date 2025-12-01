@@ -305,7 +305,11 @@ export default function AdminDashboard() {
   };
 
   const handleCleanupOrphanedData = async () => {
-    if (!confirm("This will remove orphaned tier1_assessments and other records. Continue?")) {
+    if (
+      !confirm(
+        "This will remove orphaned tier1_assessments and other records. Continue?",
+      )
+    ) {
       return;
     }
 
@@ -322,7 +326,7 @@ export default function AdminDashboard() {
 
       const data = await response.json();
       alert(
-        `Cleanup successful!\nDeleted tier1_assessments: ${data.deleted?.tier1_assessments || 0}\nDeleted other records: ${data.deleted?.other_records || 0}`
+        `Cleanup successful!\nDeleted tier1_assessments: ${data.deleted?.tier1_assessments || 0}\nDeleted other records: ${data.deleted?.other_records || 0}`,
       );
 
       // Refresh data
