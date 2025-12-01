@@ -184,7 +184,13 @@ export function createServer() {
       const { engagementId } = req.params;
       const { user_id } = req.body;
 
+      console.log("DELETE engagement request received:", {
+        engagementId,
+        user_id,
+      });
+
       if (!engagementId || !user_id) {
+        console.error("Missing required parameters:", { engagementId, user_id });
         return res.status(400).json({
           error: "engagementId and user_id are required",
         });
@@ -202,10 +208,11 @@ export function createServer() {
 
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-      // First verify the engagement belongs to the user
+      // First verify the engagement exists
+      console.log("Fetching engagement with ID:", engagementId);
       const { data: engagement, error: fetchError } = await supabaseAdmin
         .from("engagements")
-        .select("user_id")
+        .select("id, user_id")
         .eq("id", engagementId)
         .maybeSingle();
 
@@ -213,12 +220,40 @@ export function createServer() {
         console.error("Error fetching engagement:", fetchError);
         return res.status(500).json({
           error: "Failed to fetch engagement",
+          details: fetchError.message,
         });
       }
 
       if (!engagement) {
+        console.error(
+          "Engagement not found with ID:",
+          engagementId,
+          "Attempting to fetch all engagements to debug..."
+        );
+
+        // Debug: Try to fetch without filter
+        const { data: allEngagements, error: debugError } =
+          await supabaseAdmin.from("engagements").select("id, user_id").limit(5);
+
+        console.error("Debug - All engagements count:", allEngagements?.length);
+        if (allEngagements?.length) {
+          console.error(
+            "Sample engagement ID:",
+            allEngagements[0].id,
+            "Type:",
+            typeof allEngagements[0].id
+          );
+          console.error(
+            "Looking for ID:",
+            engagementId,
+            "Type:",
+            typeof engagementId
+          );
+        }
+
         return res.status(404).json({
           error: "Engagement not found",
+          engagementId,
         });
       }
 
@@ -226,6 +261,10 @@ export function createServer() {
         console.warn(
           "Unauthorized delete attempt for engagement:",
           engagementId,
+          "Expected user_id:",
+          engagement.user_id,
+          "Got:",
+          user_id
         );
         return res.status(403).json({
           error: "Unauthorized - engagement does not belong to this user",
