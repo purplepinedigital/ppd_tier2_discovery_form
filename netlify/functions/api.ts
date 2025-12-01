@@ -716,6 +716,46 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Engagement deletion route
+  if (
+    (path.includes("/api/engagements") || path.includes("/engagements")) &&
+    event.httpMethod === "DELETE"
+  ) {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const { user_id } = body;
+
+      // Extract engagementId from path
+      const pathParts = path.split("/");
+      const engagementId = pathParts[pathParts.length - 1];
+
+      console.log("Deleting engagement:", {
+        engagementId,
+        user_id,
+      });
+
+      const result = await handleEngagementDelete(engagementId, user_id);
+      return {
+        statusCode: result.status,
+        headers,
+        body:
+          typeof result.body === "string"
+            ? result.body
+            : JSON.stringify(result.body),
+      };
+    } catch (error: any) {
+      console.error("Engagement deletion error:", error.message);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          error: "Failed to delete engagement",
+          message: error.message,
+        }),
+      };
+    }
+  }
+
   // Save signup route
   if (path.includes("/api/save-signup") && event.httpMethod === "POST") {
     try {
