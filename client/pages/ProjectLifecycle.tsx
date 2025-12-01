@@ -1363,19 +1363,28 @@ export default function ProjectLifecycle() {
         )}
 
         {/* Delete Engagement Confirmation Dialog */}
-        <AlertDialog open={deleteConfirmDialog} onOpenChange={setDeleteConfirmDialog}>
+        <AlertDialog
+          open={deleteConfirmDialog}
+          onOpenChange={setDeleteConfirmDialog}
+        >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
                 Delete Project
               </AlertDialogTitle>
             </AlertDialogHeader>
-            <div style={{ fontFamily: "Literata, serif" }} className="space-y-4">
+            <div
+              style={{ fontFamily: "Literata, serif" }}
+              className="space-y-4"
+            >
               <p>
-                Are you sure you want to delete the project "{engagement?.project_name}"?
+                Are you sure you want to delete the project "
+                {engagement?.project_name}"?
               </p>
               <div>
-                <p className="font-bold mb-2">This action is permanent and will delete:</p>
+                <p className="font-bold mb-2">
+                  This action is permanent and will delete:
+                </p>
                 <ul className="list-disc list-inside space-y-1 text-sm">
                   <li>The project record</li>
                   <li>All form responses and progress</li>

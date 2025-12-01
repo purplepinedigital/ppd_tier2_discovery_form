@@ -147,7 +147,10 @@ export function createServer() {
         .eq("engagement_id", engagementId);
 
       if (deleteClientNotifications.error) {
-        console.error("Error deleting client_notifications:", deleteClientNotifications.error);
+        console.error(
+          "Error deleting client_notifications:",
+          deleteClientNotifications.error,
+        );
       }
 
       const deleteClientFeedback = await supabaseAdmin
@@ -156,7 +159,10 @@ export function createServer() {
         .eq("engagement_id", engagementId);
 
       if (deleteClientFeedback.error) {
-        console.error("Error deleting client_feedback:", deleteClientFeedback.error);
+        console.error(
+          "Error deleting client_feedback:",
+          deleteClientFeedback.error,
+        );
       }
 
       const deleteTier1Assessments = await supabaseAdmin
@@ -165,7 +171,10 @@ export function createServer() {
         .eq("engagement_id", engagementId);
 
       if (deleteTier1Assessments.error) {
-        console.error("Error deleting tier1_assessments:", deleteTier1Assessments.error);
+        console.error(
+          "Error deleting tier1_assessments:",
+          deleteTier1Assessments.error,
+        );
       }
 
       const deleteFormProgress = await supabaseAdmin
@@ -174,7 +183,10 @@ export function createServer() {
         .eq("engagement_id", engagementId);
 
       if (deleteFormProgress.error) {
-        console.error("Error deleting form_progress:", deleteFormProgress.error);
+        console.error(
+          "Error deleting form_progress:",
+          deleteFormProgress.error,
+        );
       }
 
       const deleteStageCompletion = await supabaseAdmin
@@ -183,7 +195,10 @@ export function createServer() {
         .eq("engagement_id", engagementId);
 
       if (deleteStageCompletion.error) {
-        console.error("Error deleting stage_completion:", deleteStageCompletion.error);
+        console.error(
+          "Error deleting stage_completion:",
+          deleteStageCompletion.error,
+        );
       }
 
       const deleteDeliverables = await supabaseAdmin
@@ -210,7 +225,10 @@ export function createServer() {
         });
       }
 
-      console.log("Engagement and all related data deleted successfully:", engagementId);
+      console.log(
+        "Engagement and all related data deleted successfully:",
+        engagementId,
+      );
 
       return res.status(200).json({
         success: true,

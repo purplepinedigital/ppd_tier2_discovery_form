@@ -1664,19 +1664,28 @@ export default function AdminEngagementDetail() {
         </AlertDialog>
 
         {/* Delete Engagement Confirmation Dialog */}
-        <AlertDialog open={deleteConfirmDialog} onOpenChange={setDeleteConfirmDialog}>
+        <AlertDialog
+          open={deleteConfirmDialog}
+          onOpenChange={setDeleteConfirmDialog}
+        >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
                 Delete Engagement
               </AlertDialogTitle>
             </AlertDialogHeader>
-            <div style={{ fontFamily: "Literata, serif" }} className="space-y-4">
+            <div
+              style={{ fontFamily: "Literata, serif" }}
+              className="space-y-4"
+            >
               <p>
-                Are you absolutely sure you want to delete the engagement "{engagement?.project_name}"?
+                Are you absolutely sure you want to delete the engagement "
+                {engagement?.project_name}"?
               </p>
               <div>
-                <p className="font-bold mb-2">This action is permanent and will delete:</p>
+                <p className="font-bold mb-2">
+                  This action is permanent and will delete:
+                </p>
                 <ul className="list-disc list-inside space-y-1 text-sm">
                   <li>The engagement record</li>
                   <li>All form responses and progress</li>
