@@ -276,6 +276,7 @@ export function createServer() {
       console.log("Starting engagement deletion for:", engagementId);
 
       // Delete all dependent data - these rows reference engagement_id
+      console.log("Deleting client_notifications...");
       const deleteClientNotifications = await supabaseAdmin
         .from("client_notifications")
         .delete()
@@ -286,8 +287,14 @@ export function createServer() {
           "Error deleting client_notifications:",
           deleteClientNotifications.error,
         );
+      } else {
+        console.log(
+          "client_notifications deleted:",
+          deleteClientNotifications.count || 0
+        );
       }
 
+      console.log("Deleting client_feedback...");
       const deleteClientFeedback = await supabaseAdmin
         .from("client_feedback")
         .delete()
@@ -298,8 +305,11 @@ export function createServer() {
           "Error deleting client_feedback:",
           deleteClientFeedback.error,
         );
+      } else {
+        console.log("client_feedback deleted:", deleteClientFeedback.count || 0);
       }
 
+      console.log("Deleting tier1_assessments...");
       const deleteTier1Assessments = await supabaseAdmin
         .from("tier1_assessments")
         .delete()
@@ -310,8 +320,14 @@ export function createServer() {
           "Error deleting tier1_assessments:",
           deleteTier1Assessments.error,
         );
+      } else {
+        console.log(
+          "tier1_assessments deleted:",
+          deleteTier1Assessments.count || 0
+        );
       }
 
+      console.log("Deleting form_progress...");
       const deleteFormProgress = await supabaseAdmin
         .from("form_progress")
         .delete()
@@ -322,8 +338,11 @@ export function createServer() {
           "Error deleting form_progress:",
           deleteFormProgress.error,
         );
+      } else {
+        console.log("form_progress deleted:", deleteFormProgress.count || 0);
       }
 
+      console.log("Deleting stage_completion...");
       const deleteStageCompletion = await supabaseAdmin
         .from("stage_completion")
         .delete()
@@ -334,8 +353,11 @@ export function createServer() {
           "Error deleting stage_completion:",
           deleteStageCompletion.error,
         );
+      } else {
+        console.log("stage_completion deleted:", deleteStageCompletion.count || 0);
       }
 
+      console.log("Deleting deliverables...");
       const deleteDeliverables = await supabaseAdmin
         .from("deliverables")
         .delete()
@@ -343,9 +365,12 @@ export function createServer() {
 
       if (deleteDeliverables.error) {
         console.error("Error deleting deliverables:", deleteDeliverables.error);
+      } else {
+        console.log("deliverables deleted:", deleteDeliverables.count || 0);
       }
 
       // Finally delete the engagement itself (parent table)
+      console.log("Deleting engagement record...");
       const { error: deleteError } = await supabaseAdmin
         .from("engagements")
         .delete()
