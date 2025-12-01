@@ -75,8 +75,9 @@ export default function ProjectFormTier1() {
             .eq("id", engagementId)
             .single();
 
-          if (engagementData) {
+          if (engagementData && engagementData.project_name) {
             setProjectName(engagementData.project_name);
+            setIsProjectNamePreFilled(true);
           }
         }
         return;
