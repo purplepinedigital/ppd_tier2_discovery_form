@@ -348,7 +348,9 @@ export default function ProjectFormTier1() {
                     Project Name
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
-                    This is your project name from the dashboard.
+                    {projectName.trim() === ""
+                      ? "Enter your project name to get started."
+                      : "This is your project name from the admin. It cannot be changed."}
                   </p>
                   <input
                     type="text"
