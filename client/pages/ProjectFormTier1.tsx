@@ -356,8 +356,15 @@ export default function ProjectFormTier1() {
                     type="text"
                     value={projectName}
                     readOnly={projectName.trim() !== ""}
-                    onChange={(e) => projectName.trim() === "" && setProjectName(e.target.value)}
-                    placeholder={projectName.trim() === "" ? "Enter your project name" : "Project name"}
+                    onChange={(e) =>
+                      projectName.trim() === "" &&
+                      setProjectName(e.target.value)
+                    }
+                    placeholder={
+                      projectName.trim() === ""
+                        ? "Enter your project name"
+                        : "Project name"
+                    }
                     className={`w-full rounded border border-gray-300 px-4 py-2 ${
                       projectName.trim() === ""
                         ? "bg-white text-gray-900 cursor-text"
