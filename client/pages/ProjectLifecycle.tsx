@@ -1369,12 +1369,14 @@ export default function ProjectLifecycle() {
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
                 Delete Project
               </AlertDialogTitle>
-              <AlertDialogDescription style={{ fontFamily: "Literata, serif" }}>
+            </AlertDialogHeader>
+            <div style={{ fontFamily: "Literata, serif" }} className="space-y-4">
+              <p>
                 Are you sure you want to delete the project "{engagement?.project_name}"?
-                <br />
-                <br />
-                <strong>This action is permanent and will delete:</strong>
-                <ul className="list-disc list-inside mt-2 ml-2">
+              </p>
+              <div>
+                <p className="font-bold mb-2">This action is permanent and will delete:</p>
+                <ul className="list-disc list-inside space-y-1 text-sm">
                   <li>The project record</li>
                   <li>All form responses and progress</li>
                   <li>All tier 1 assessments</li>
@@ -1382,10 +1384,9 @@ export default function ProjectLifecycle() {
                   <li>All stage completion records</li>
                   <li>All feedback and notifications</li>
                 </ul>
-                <br />
-                This cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
+              </div>
+              <p className="text-red-600 font-bold">This cannot be undone.</p>
+            </div>
             <AlertDialogFooter>
               <AlertDialogCancel
                 style={{ fontFamily: "Literata, serif" }}
