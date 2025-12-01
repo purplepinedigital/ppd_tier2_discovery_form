@@ -137,6 +137,8 @@ export default function AdminEngagementDetail() {
   const [isSaving, setIsSaving] = useState(false);
   const [isEditingProjectName, setIsEditingProjectName] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState("");
+  const [deleteConfirmDialog, setDeleteConfirmDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // New deliverable form
   const [showNewDeliverableForm, setShowNewDeliverableForm] = useState<
