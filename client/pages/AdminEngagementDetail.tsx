@@ -764,13 +764,23 @@ export default function AdminEngagementDetail() {
               {engagement.project_name}
             </h2>
           </div>
-          <Button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white"
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Logout
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => setDeleteConfirmDialog(true)}
+              disabled={isDeleting}
+              className="bg-red-500 hover:bg-red-600 text-white"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Delete Engagement
+            </Button>
+            <Button
+              onClick={handleLogout}
+              className="bg-gray-600 hover:bg-gray-700 text-white"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
