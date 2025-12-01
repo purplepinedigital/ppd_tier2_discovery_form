@@ -250,13 +250,7 @@ export default function AdminDashboard() {
     try {
       const client = getAdminSupabase();
 
-      // First, get the user_id from the form_progress entry
-      const formProgressToDelete = responses.find((r) => r.id === id);
-      if (!formProgressToDelete) {
-        throw new Error("Form response not found");
-      }
-
-      // Delete the form_progress entry
+      // Only delete the form_progress entry - do NOT cascade to engagements
       const { error: deleteFormError } = await client
         .from("form_progress")
         .delete()
@@ -264,15 +258,8 @@ export default function AdminDashboard() {
 
       if (deleteFormError) throw deleteFormError;
 
-      // Delete all engagements for this user
-      const { error: deleteEngagementError } = await client
-        .from("engagements")
-        .delete()
-        .eq("user_id", formProgressToDelete.user_id);
-
-      if (deleteEngagementError) throw deleteEngagementError;
-
       setResponses(responses.filter((r) => r.id !== id));
+      setError(null);
       setDeleteConfirm(null);
     } catch (err: any) {
       setError(err.message || "Failed to delete form response");
@@ -296,10 +283,9 @@ export default function AdminDashboard() {
       if (!klaviyoDeleteResponse.ok) {
         const errorData = await klaviyoDeleteResponse.json();
         console.error("Klaviyo unsubscribe error:", errorData);
-        // Continue with deletion even if Klaviyo fails
       }
 
-      // Delete from signups table
+      // Delete from signups table only - do NOT cascade to form_progress or engagements
       const { error } = await client
         .from("signups")
         .delete()
@@ -307,13 +293,8 @@ export default function AdminDashboard() {
 
       if (error) throw error;
 
-      // Also delete form progress if it exists
-      await client.from("form_progress").delete().eq("user_id", userId);
-
-      // Also delete engagements if they exist
-      await client.from("engagements").delete().eq("user_id", userId);
-
       setSignups(signups.filter((s) => s.user_id !== userId));
+      setError(null);
       setDeleteConfirm(null);
     } catch (err: any) {
       setError(err.message || "Failed to delete signup");
@@ -837,8 +818,8 @@ export default function AdminDashboard() {
                   style={{ fontFamily: "Literata, serif" }}
                 >
                   {deleteConfirm.type === "response"
-                    ? "Are you sure you want to delete this form response? This action cannot be undone."
-                    : `Are you sure you want to delete this signup (${deleteConfirm.email})? This will also remove the email from Klaviyo and delete any associated form responses. This action cannot be undone.`}
+                    ? "Are you sure you want to delete this form response? This will only delete the response record, not any associated engagements or projects. This action cannot be undone."
+                    : `Are you sure you want to delete this signup (${deleteConfirm.email})? This will remove the email from Klaviyo and delete the signup record, but will NOT delete any form responses or engagements. This action cannot be undone.`}
                 </p>
                 <div className="flex justify-end gap-4">
                   <button
