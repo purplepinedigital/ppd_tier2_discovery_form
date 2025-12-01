@@ -465,6 +465,156 @@ async function handleEngagementCreate(body: any) {
   }
 }
 
+async function handleEngagementDelete(engagementId: string, user_id: string) {
+  if (!engagementId || !user_id) {
+    return {
+      status: 400,
+      body: JSON.stringify({ error: "engagementId and user_id are required" }),
+    };
+  }
+
+  const supabaseUrl = process.env.VITE_SUPABASE_URL;
+  const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return {
+      status: 500,
+      body: JSON.stringify({ error: "Supabase configuration missing" }),
+    };
+  }
+
+  try {
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+    // First verify the engagement exists and belongs to the user
+    const { data: engagement, error: fetchError } = await supabaseAdmin
+      .from("engagements")
+      .select("id, user_id")
+      .eq("id", engagementId)
+      .maybeSingle();
+
+    if (fetchError) {
+      console.error("Error fetching engagement:", fetchError);
+      return {
+        status: 500,
+        body: JSON.stringify({
+          error: "Failed to fetch engagement",
+          details: fetchError.message,
+        }),
+      };
+    }
+
+    if (!engagement) {
+      console.error("Engagement not found - ID:", engagementId);
+      return {
+        status: 404,
+        body: JSON.stringify({
+          error: "Engagement not found",
+          engagementId,
+        }),
+      };
+    }
+
+    // Verify ownership
+    if (engagement.user_id !== user_id) {
+      console.warn(
+        "Unauthorized delete - engagement user_id mismatch. Engagement:",
+        engagement.user_id,
+        "Requested:",
+        user_id,
+      );
+      return {
+        status: 403,
+        body: JSON.stringify({
+          error: "Unauthorized - engagement does not belong to this user",
+        }),
+      };
+    }
+
+    // Delete all related data in correct order (respecting foreign keys)
+    console.log("Starting engagement deletion for:", engagementId);
+
+    // Delete all dependent data - these rows reference engagement_id
+    console.log("Deleting client_notifications...");
+    await supabaseAdmin
+      .from("client_notifications")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    console.log("Deleting client_feedback...");
+    await supabaseAdmin
+      .from("client_feedback")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    console.log("Deleting tier1_assessments...");
+    await supabaseAdmin
+      .from("tier1_assessments")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    console.log("Deleting form_progress...");
+    await supabaseAdmin
+      .from("form_progress")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    console.log("Deleting stage_completion...");
+    await supabaseAdmin
+      .from("stage_completion")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    console.log("Deleting deliverables...");
+    await supabaseAdmin
+      .from("deliverables")
+      .delete()
+      .eq("engagement_id", engagementId);
+
+    // Finally delete the engagement itself
+    console.log("Deleting engagement record...");
+    const { error: deleteError } = await supabaseAdmin
+      .from("engagements")
+      .delete()
+      .eq("id", engagementId)
+      .eq("user_id", user_id);
+
+    if (deleteError) {
+      console.error("Error deleting engagement:", deleteError);
+      return {
+        status: 500,
+        body: JSON.stringify({
+          error: "Failed to delete engagement",
+          message: deleteError.message,
+        }),
+      };
+    }
+
+    console.log(
+      "Engagement and all related data deleted successfully:",
+      engagementId,
+    );
+
+    return {
+      status: 200,
+      body: JSON.stringify({
+        success: true,
+        message: "Engagement and all related data deleted successfully",
+        engagement_id: engagementId,
+      }),
+    };
+  } catch (error: any) {
+    console.error("Error in delete engagement handler:", error);
+    return {
+      status: 500,
+      body: JSON.stringify({
+        error: "Failed to delete engagement",
+        message: error.message,
+      }),
+    };
+  }
+}
+
 const handler: Handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === "OPTIONS") {
