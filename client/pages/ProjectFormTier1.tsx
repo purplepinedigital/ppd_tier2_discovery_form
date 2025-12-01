@@ -29,6 +29,7 @@ export default function ProjectFormTier1() {
 
   // Form state
   const [projectName, setProjectName] = useState("");
+  const [isProjectNamePreFilled, setIsProjectNamePreFilled] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [industry, setIndustry] = useState("");
   const [otherIndustry, setOtherIndustry] = useState("");
