@@ -1662,6 +1662,49 @@ export default function AdminEngagementDetail() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Delete Engagement Confirmation Dialog */}
+        <AlertDialog open={deleteConfirmDialog} onOpenChange={setDeleteConfirmDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
+                Delete Engagement
+              </AlertDialogTitle>
+              <AlertDialogDescription style={{ fontFamily: "Literata, serif" }}>
+                Are you absolutely sure you want to delete the engagement "{engagement?.project_name}"?
+                <br />
+                <br />
+                <strong>This action is permanent and will delete:</strong>
+                <ul className="list-disc list-inside mt-2 ml-2">
+                  <li>The engagement record</li>
+                  <li>All form responses and progress</li>
+                  <li>All tier 1 assessments</li>
+                  <li>All deliverables</li>
+                  <li>All stage completion records</li>
+                  <li>All client feedback and notifications</li>
+                </ul>
+                <br />
+                This cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                style={{ fontFamily: "Literata, serif" }}
+                disabled={isDeleting}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <button
+                onClick={handleDeleteEngagement}
+                disabled={isDeleting}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold disabled:opacity-50"
+                style={{ fontFamily: "Literata, serif" }}
+              >
+                {isDeleting ? "Deleting..." : "Delete Engagement"}
+              </button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </main>
     </div>
   );
