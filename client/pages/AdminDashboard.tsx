@@ -360,6 +360,14 @@ export default function AdminDashboard() {
             >
               Login as User
             </button>
+            <button
+              onClick={handleCleanupOrphanedData}
+              disabled={isCleaningUp}
+              className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded font-bold text-sm disabled:opacity-50"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              {isCleaningUp ? "Cleaning..." : "Cleanup Orphaned Data"}
+            </button>
           </div>
           <Button
             onClick={handleLogout}
