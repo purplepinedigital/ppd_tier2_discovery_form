@@ -215,13 +215,23 @@ export default function ProjectFormTier1() {
 
     setLoading(true);
     try {
-      // Save Tier 1 assessment
+      // Fetch engagement to ensure we use the correct project_name
+      const { data: engagementData } = await supabase
+        .from("engagements")
+        .select("project_name")
+        .eq("id", engagementId)
+        .single();
+
+      // Use engagement project_name as single source of truth
+      const finalProjectName = engagementData?.project_name || projectName;
+
+      // Save Tier 1 assessment with project_name from engagement
       const { data: tier1Data, error: tier1Error } = await supabase
         .from("tier1_assessments")
         .insert({
           user_id: user.id,
           engagement_id: engagementId,
-          project_name: projectName,
+          project_name: finalProjectName,
           business_name: businessName,
           industry: industry === "Other" ? otherIndustry : industry,
           phone,
