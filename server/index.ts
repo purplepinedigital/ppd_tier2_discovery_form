@@ -218,53 +218,39 @@ export function createServer() {
 
       const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-      // Verify engagement exists and belongs to user using direct SQL
-      console.log("Verifying engagement with ID:", engagementId, "for user:", user_id);
+      // Verify engagement exists and belongs to user
+      console.log("Verifying engagement - ID:", engagementId, "User:", user_id);
 
-      // Use a simpler approach - just try to delete with both conditions
-      // This is safer and avoids any issues with query results
-      // First, verify the engagement exists at all
+      // First, verify the engagement exists
       const { data: engagement, error: fetchError } = await supabaseAdmin
         .from("engagements")
         .select("id, user_id")
         .eq("id", engagementId)
-        .single() // Use single() instead of maybeSingle() to ensure we get the right behavior
-        .catch((err) => {
-          console.error("Error fetching engagement:", err);
-          return { data: null, error: err };
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error("Error fetching engagement:", fetchError);
+        return res.status(500).json({
+          error: "Failed to fetch engagement",
+          details: fetchError.message,
         });
+      }
 
-      if (fetchError || !engagement) {
-        console.error(
-          "Engagement verification failed - ID:",
-          engagementId,
-          "Error:",
-          fetchError?.message
-        );
-
-        // Additional debug attempt
-        console.log("Attempting alternative fetch method...");
-        const { data: altEngagement } = await supabaseAdmin
-          .from("engagements")
-          .select("id, user_id")
-          .eq("id", engagementId);
-
-        console.error(
-          "Alternative fetch results:",
-          altEngagement,
-          "Length:",
-          altEngagement?.length
-        );
-
+      if (!engagement) {
+        console.error("Engagement not found - ID:", engagementId);
         return res.status(404).json({
           error: "Engagement not found",
           engagementId,
         });
       }
 
+      // Verify ownership
       if (engagement.user_id !== user_id) {
         console.warn(
-          "Unauthorized delete attempt - engagement belongs to different user"
+          "Unauthorized delete - engagement user_id mismatch. Engagement:",
+          engagement.user_id,
+          "Requested:",
+          user_id
         );
         return res.status(403).json({
           error: "Unauthorized - engagement does not belong to this user",
