@@ -24,6 +24,102 @@ export function createServer() {
   // Klaviyo route
   app.post("/api/klaviyo/contact", handleKlaviyoContact);
 
+  // Cleanup orphaned tier1_assessments (where engagement doesn't exist)
+  app.post("/api/admin/cleanup-orphaned-data", async (req, res) => {
+    try {
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !supabaseServiceKey) {
+        console.error("Supabase configuration missing");
+        return res.status(500).json({
+          error: "Supabase configuration missing",
+        });
+      }
+
+      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+      // Find and delete orphaned tier1_assessments (no corresponding engagement)
+      const { data: orphanedTier1, error: fetchError } = await supabaseAdmin
+        .from("tier1_assessments")
+        .select("id, engagement_id");
+
+      if (fetchError) {
+        console.error("Error fetching tier1_assessments:", fetchError);
+        return res.status(500).json({
+          error: "Failed to fetch tier1_assessments",
+        });
+      }
+
+      let deletedCount = 0;
+
+      // Check each tier1_assessment to see if engagement exists
+      for (const assessment of orphanedTier1 || []) {
+        const { data: engagement } = await supabaseAdmin
+          .from("engagements")
+          .select("id")
+          .eq("id", assessment.engagement_id)
+          .maybeSingle();
+
+        // If engagement doesn't exist, delete the orphaned assessment
+        if (!engagement) {
+          const { error: deleteError } = await supabaseAdmin
+            .from("tier1_assessments")
+            .delete()
+            .eq("id", assessment.id);
+
+          if (!deleteError) {
+            deletedCount++;
+          }
+        }
+      }
+
+      // Also clean up other orphaned records
+      let otherDeletedCount = 0;
+
+      // Clean up orphaned form_progress
+      const { data: orphanedFormProgress } = await supabaseAdmin
+        .from("form_progress")
+        .select("id, engagement_id");
+
+      for (const fp of orphanedFormProgress || []) {
+        if (fp.engagement_id) {
+          const { data: eng } = await supabaseAdmin
+            .from("engagements")
+            .select("id")
+            .eq("id", fp.engagement_id)
+            .maybeSingle();
+
+          if (!eng) {
+            await supabaseAdmin
+              .from("form_progress")
+              .delete()
+              .eq("id", fp.id);
+            otherDeletedCount++;
+          }
+        }
+      }
+
+      console.log(
+        `Cleanup completed: ${deletedCount} orphaned tier1_assessments, ${otherDeletedCount} other orphaned records deleted`,
+      );
+
+      return res.status(200).json({
+        success: true,
+        deleted: {
+          tier1_assessments: deletedCount,
+          other_records: otherDeletedCount,
+        },
+      });
+    } catch (error: any) {
+      console.error("Error in cleanup route:", error);
+      return res.status(500).json({
+        error: "Failed to cleanup orphaned data",
+        message: error.message,
+      });
+    }
+  });
+
   // Engagement creation route
   app.post("/api/engagements", async (req, res) => {
     try {
