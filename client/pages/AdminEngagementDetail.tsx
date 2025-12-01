@@ -665,6 +665,42 @@ export default function AdminEngagementDetail() {
     }
   };
 
+  const handleDeleteEngagement = async () => {
+    if (!engagement) return;
+
+    setIsDeleting(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/engagements/${engagement.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: engagement.user_id }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete engagement");
+      }
+
+      toast({
+        title: "Engagement Deleted",
+        description: `"${engagement.project_name}" and all related data have been deleted successfully.`,
+      });
+
+      setDeleteConfirmDialog(false);
+      navigate("/admin/engagements");
+    } catch (err: any) {
+      setError(err.message || "Failed to delete engagement");
+      toast({
+        title: "Error",
+        description: err.message || "Failed to delete engagement",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handleLogout = () => {
     adminLogout();
     navigate("/admin/login");
