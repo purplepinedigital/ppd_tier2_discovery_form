@@ -370,8 +370,7 @@ export default function ProjectFormTier1() {
                     value={projectName}
                     readOnly={isProjectNamePreFilled}
                     onChange={(e) =>
-                      !isProjectNamePreFilled &&
-                      setProjectName(e.target.value)
+                      !isProjectNamePreFilled && setProjectName(e.target.value)
                     }
                     placeholder={
                       isProjectNamePreFilled
