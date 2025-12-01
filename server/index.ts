@@ -137,28 +137,70 @@ export function createServer() {
       }
 
       // Delete all related data in correct order (respecting foreign keys)
+      // CRITICAL: Delete child tables first, then parent table
       console.log("Starting engagement deletion for:", engagementId);
+
+      // Delete all dependent data - these rows reference engagement_id
+      const deleteClientNotifications = await supabaseAdmin
+        .from("client_notifications")
+        .delete()
+        .eq("engagement_id", engagementId);
+
+      if (deleteClientNotifications.error) {
+        console.error("Error deleting client_notifications:", deleteClientNotifications.error);
+      }
+
+      const deleteClientFeedback = await supabaseAdmin
+        .from("client_feedback")
+        .delete()
+        .eq("engagement_id", engagementId);
+
+      if (deleteClientFeedback.error) {
+        console.error("Error deleting client_feedback:", deleteClientFeedback.error);
+      }
+
+      const deleteTier1Assessments = await supabaseAdmin
+        .from("tier1_assessments")
+        .delete()
+        .eq("engagement_id", engagementId);
+
+      if (deleteTier1Assessments.error) {
+        console.error("Error deleting tier1_assessments:", deleteTier1Assessments.error);
+      }
 
       const deleteFormProgress = await supabaseAdmin
         .from("form_progress")
         .delete()
         .eq("engagement_id", engagementId);
 
+      if (deleteFormProgress.error) {
+        console.error("Error deleting form_progress:", deleteFormProgress.error);
+      }
+
       const deleteStageCompletion = await supabaseAdmin
         .from("stage_completion")
         .delete()
         .eq("engagement_id", engagementId);
+
+      if (deleteStageCompletion.error) {
+        console.error("Error deleting stage_completion:", deleteStageCompletion.error);
+      }
 
       const deleteDeliverables = await supabaseAdmin
         .from("deliverables")
         .delete()
         .eq("engagement_id", engagementId);
 
-      // Finally delete the engagement
+      if (deleteDeliverables.error) {
+        console.error("Error deleting deliverables:", deleteDeliverables.error);
+      }
+
+      // Finally delete the engagement itself (parent table)
       const { error: deleteError } = await supabaseAdmin
         .from("engagements")
         .delete()
-        .eq("id", engagementId);
+        .eq("id", engagementId)
+        .eq("user_id", user_id);
 
       if (deleteError) {
         console.error("Error deleting engagement:", deleteError);
@@ -168,11 +210,11 @@ export function createServer() {
         });
       }
 
-      console.log("Engagement deleted successfully:", engagementId);
+      console.log("Engagement and all related data deleted successfully:", engagementId);
 
       return res.status(200).json({
         success: true,
-        message: "Engagement deleted successfully",
+        message: "Engagement and all related data deleted successfully",
         engagement_id: engagementId,
       });
     } catch (error: any) {
