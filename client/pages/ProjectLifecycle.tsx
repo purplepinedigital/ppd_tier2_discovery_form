@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import {
@@ -896,7 +906,7 @@ export default function ProjectLifecycle() {
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       <span className="text-2xl">
-                        {expandedStage === stage.number ? "���" : "+"}
+                        {expandedStage === stage.number ? "−" : "+"}
                       </span>
                     </div>
                   </div>
