@@ -72,6 +72,7 @@ export default function AdminDashboard() {
     email?: string;
   } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isCleaningUp, setIsCleaningUp] = useState(false);
 
   useEffect(() => {
     // Check authentication
