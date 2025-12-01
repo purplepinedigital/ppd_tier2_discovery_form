@@ -361,27 +361,27 @@ export default function ProjectFormTier1() {
                     Project Name
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
-                    {projectName.trim() === ""
-                      ? "Enter your project name to get started."
-                      : "This is your project name. Once set, it cannot be changed here. Contact support if you need to update it."}
+                    {isProjectNamePreFilled
+                      ? "This is your project name. Once set by admin, it cannot be changed here. Contact support if you need to update it."
+                      : "Enter your project name to get started. This will be set and locked after submission."}
                   </p>
                   <input
                     type="text"
                     value={projectName}
-                    readOnly={projectName.trim() !== ""}
+                    readOnly={isProjectNamePreFilled}
                     onChange={(e) =>
-                      projectName.trim() === "" &&
+                      !isProjectNamePreFilled &&
                       setProjectName(e.target.value)
                     }
                     placeholder={
-                      projectName.trim() === ""
-                        ? "Enter your project name"
-                        : "Project name"
+                      isProjectNamePreFilled
+                        ? "Project name"
+                        : "Enter your project name"
                     }
                     className={`w-full rounded border border-gray-300 px-4 py-2 ${
-                      projectName.trim() === ""
-                        ? "bg-white text-gray-900 cursor-text"
-                        : "bg-gray-50 text-gray-600 cursor-not-allowed"
+                      isProjectNamePreFilled
+                        ? "bg-gray-50 text-gray-600 cursor-not-allowed"
+                        : "bg-white text-gray-900 cursor-text"
                     }`}
                   />
                 </div>
@@ -949,7 +949,7 @@ export default function ProjectFormTier1() {
                     <li>✅ PLUS: 12-month continuous optimization</li>
                     <li>✅ Monthly content (4-8 posts)</li>
                     <li>✅ Ongoing A/B testing + CRO</li>
-                    <li>�� Advanced campaigns + retargeting</li>
+                    <li>✅ Advanced campaigns + retargeting</li>
                     <li>✅ Email flows + retention programs</li>
                     <li>✅ Quarterly strategy reviews</li>
                     <li>✅ Dedicated account manager</li>
