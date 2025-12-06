@@ -269,31 +269,37 @@ export default function ProjectJourney() {
     try {
       const client = clientParam || getClientSupabase();
 
-      // Get unread notification count
-      const { data: unreadData } = await client
+      // Get all notifications in one query (both read and unread)
+      const { data: notifications, error } = await client
         .from("client_notifications")
-        .select("id", { count: "exact" })
+        .select("id, is_read, created_at")
         .eq("engagement_id", engagementId)
-        .eq("is_read", false);
+        .order("created_at", { ascending: false });
 
-      const unreadCount = unreadData?.length || 0;
+      if (error) {
+        console.warn("Error fetching notifications:", error);
+        return {
+          unreadCount: 0,
+          lastNotificationTime: null,
+        };
+      }
 
-      // Get the most recent notification timestamp
-      const { data: notifications } = await client
-        .from("client_notifications")
-        .select("created_at")
-        .eq("engagement_id", engagementId)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      if (!notifications || notifications.length === 0) {
+        return {
+          unreadCount: 0,
+          lastNotificationTime: null,
+        };
+      }
 
-      const lastNotificationTime = notifications?.created_at || null;
+      const unreadCount = notifications.filter((n) => !n.is_read).length;
+      const lastNotificationTime = notifications[0]?.created_at || null;
 
       return {
         unreadCount,
         lastNotificationTime,
       };
     } catch (error) {
+      console.warn("Exception in getEngagementNotifications:", error);
       return {
         unreadCount: 0,
         lastNotificationTime: null,
