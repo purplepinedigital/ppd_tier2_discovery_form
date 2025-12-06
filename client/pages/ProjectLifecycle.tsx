@@ -638,6 +638,72 @@ export default function ProjectLifecycle() {
     }
   };
 
+  const canEditTier1 = () => {
+    return !tier1Assessment?.recommendation_confidence;
+  };
+
+  const handleEditTier1Click = () => {
+    if (!canEditTier1()) {
+      toast({
+        title: "Cannot Edit",
+        description:
+          "Tier 1 responses are locked after your advisor has provided a recommendation.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setTier1EditData({ ...tier1Assessment } as Tier1Assessment);
+    setEditingTier1(true);
+  };
+
+  const handleSaveTier1 = async () => {
+    if (!tier1EditData || !engagement) return;
+
+    setIsSaving(true);
+    try {
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
+
+      const { error } = await client
+        .from("tier1_assessments")
+        .update({
+          project_name: tier1EditData.project_name,
+          business_name: tier1EditData.business_name,
+          industry: tier1EditData.industry,
+          phone: tier1EditData.phone,
+          current_state: tier1EditData.current_state,
+          needs_array: tier1EditData.needs_array,
+          website_scope: tier1EditData.website_scope,
+          marketing_timing: tier1EditData.marketing_timing,
+          budget_range: tier1EditData.budget_range,
+          timeline_expectation: tier1EditData.timeline_expectation,
+          target_date: tier1EditData.target_date,
+          primary_goal: tier1EditData.primary_goal,
+        })
+        .eq("id", tier1EditData.id);
+
+      if (error) throw error;
+
+      setTier1Assessment(tier1EditData);
+      setEditingTier1(false);
+
+      toast({
+        title: "✓ Tier 1 Updated",
+        description: "Your responses have been saved successfully",
+      });
+    } catch (err: any) {
+      console.error("Error saving Tier 1:", err);
+      toast({
+        title: "Error",
+        description: "Failed to save Tier 1 responses",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const getProgressPercentage = () => {
     const completedStages = completions.length;
     const totalStages = 8;
