@@ -685,7 +685,8 @@ export default function ProjectJourney() {
                                     .lastNotificationTime || "",
                                 );
                                 const now = new Date();
-                                const diffMs = now.getTime() - notifDate.getTime();
+                                const diffMs =
+                                  now.getTime() - notifDate.getTime();
                                 const diffHours = Math.floor(
                                   diffMs / (1000 * 60 * 60),
                                 );
@@ -749,7 +750,9 @@ export default function ProjectJourney() {
                                 return (
                                   <Button
                                     onClick={() =>
-                                      navigate(`/project/${engagement.id}/tier1`)
+                                      navigate(
+                                        `/project/${engagement.id}/tier1`,
+                                      )
                                     }
                                     className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-xs font-medium rounded"
                                     style={{ fontFamily: "Literata, serif" }}

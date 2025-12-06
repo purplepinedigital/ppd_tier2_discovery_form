@@ -94,19 +94,20 @@ export default function AdminDashboard() {
             (e: any) => e.user_id === signup.user_id,
           );
 
-          const tier1CompletedCount = userEngagements.filter(
-            (e: any) => tier1Set.has(e.id),
+          const tier1CompletedCount = userEngagements.filter((e: any) =>
+            tier1Set.has(e.id),
           ).length;
 
-          const lastActivity = userEngagements.length > 0
-            ? new Date(
-              Math.max(
-                ...userEngagements.map((e: any) =>
-                  new Date(e.updated_at).getTime(),
-                ),
-              ),
-            ).toISOString()
-            : undefined;
+          const lastActivity =
+            userEngagements.length > 0
+              ? new Date(
+                  Math.max(
+                    ...userEngagements.map((e: any) =>
+                      new Date(e.updated_at).getTime(),
+                    ),
+                  ),
+                ).toISOString()
+              : undefined;
 
           return {
             user_id: signup.user_id,
@@ -130,12 +131,10 @@ export default function AdminDashboard() {
     }
   };
 
-
   const handleLogout = () => {
     adminLogout();
     navigate("/admin/login");
   };
-
 
   const handleCleanupOrphanedData = async () => {
     if (
@@ -332,12 +331,19 @@ export default function AdminDashboard() {
                   {users
                     .filter(
                       (u) =>
-                        u.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-                        u.email.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                        u.name
+                          .toLowerCase()
+                          .includes(searchFilter.toLowerCase()) ||
+                        u.email
+                          .toLowerCase()
+                          .includes(searchFilter.toLowerCase()) ||
                         (u.phone && u.phone.includes(searchFilter)),
                     )
                     .map((user) => (
-                      <tr key={user.user_id} className="border-b hover:bg-gray-50">
+                      <tr
+                        key={user.user_id}
+                        className="border-b hover:bg-gray-50"
+                      >
                         <td
                           className="px-6 py-4 text-sm font-medium"
                           style={{ fontFamily: "Literata, serif" }}
@@ -390,7 +396,6 @@ export default function AdminDashboard() {
             )}
           </div>
         )}
-
       </main>
     </div>
   );

@@ -783,9 +783,7 @@ export default function ProjectLifecycle() {
 
     // Calculate progress for each stage
     for (let stageNum = 0; stageNum < totalStages; stageNum++) {
-      const isCompleted = completions.some(
-        (c) => c.stage_number === stageNum,
-      );
+      const isCompleted = completions.some((c) => c.stage_number === stageNum);
 
       if (isCompleted) {
         // Stage is 100% complete
@@ -1063,54 +1061,41 @@ export default function ProjectLifecycle() {
               </div>
               {!canEditTier1() && (
                 <p className="text-xs text-purple-700 mb-3">
-                  🔒 Viewing answers only - locked while any stage is in progress
+                  🔒 Viewing answers only - locked while any stage is in
+                  progress
                 </p>
               )}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Business Name
-                  </p>
+                  <p className="text-purple-700 font-semibold">Business Name</p>
                   <p className="text-purple-900">
                     {tier1Assessment.business_name}
                   </p>
                 </div>
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Industry
-                  </p>
-                  <p className="text-purple-900">
-                    {tier1Assessment.industry}
-                  </p>
+                  <p className="text-purple-700 font-semibold">Industry</p>
+                  <p className="text-purple-900">{tier1Assessment.industry}</p>
                 </div>
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Current State
-                  </p>
+                  <p className="text-purple-700 font-semibold">Current State</p>
                   <p className="text-purple-900">
                     {tier1Assessment.current_state}
                   </p>
                 </div>
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Website Scope
-                  </p>
+                  <p className="text-purple-700 font-semibold">Website Scope</p>
                   <p className="text-purple-900">
                     {tier1Assessment.website_scope}
                   </p>
                 </div>
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Timeline
-                  </p>
+                  <p className="text-purple-700 font-semibold">Timeline</p>
                   <p className="text-purple-900">
                     {tier1Assessment.timeline_expectation}
                   </p>
                 </div>
                 <div>
-                  <p className="text-purple-700 font-semibold">
-                    Budget Range
-                  </p>
+                  <p className="text-purple-700 font-semibold">Budget Range</p>
                   <p className="text-purple-900">
                     {tier1Assessment.budget_range}
                   </p>
@@ -1148,12 +1133,13 @@ export default function ProjectLifecycle() {
               </div>
               {!canEditTier2() && (
                 <p className="text-xs text-blue-700 mb-2">
-                  🔒 Viewing answers only - locked while any stage is in progress
+                  🔒 Viewing answers only - locked while any stage is in
+                  progress
                 </p>
               )}
               <p className="text-sm text-blue-700">
-                {tier2FormProgress.responses.filter((r) => r?.trim())
-                  .length || 0}{" "}
+                {tier2FormProgress.responses.filter((r) => r?.trim()).length ||
+                  0}{" "}
                 / 30 questions answered
               </p>
             </div>
@@ -1582,17 +1568,23 @@ export default function ProjectLifecycle() {
           <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <AlertDialogHeader>
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
-                {canEditTier1() ? "Edit Tier 1 Assessment" : "View Tier 1 Assessment"}
+                {canEditTier1()
+                  ? "Edit Tier 1 Assessment"
+                  : "View Tier 1 Assessment"}
               </AlertDialogTitle>
               {!canEditTier1() && (
                 <p className="text-sm text-gray-600 mt-2">
-                  🔒 Viewing answers only - editing is locked while any stage is in progress
+                  🔒 Viewing answers only - editing is locked while any stage is
+                  in progress
                 </p>
               )}
             </AlertDialogHeader>
 
             {tier1EditData && (
-              <div className="space-y-4" style={{ fontFamily: "Literata, serif" }}>
+              <div
+                className="space-y-4"
+                style={{ fontFamily: "Literata, serif" }}
+              >
                 <div>
                   <label className="block text-sm font-semibold mb-2">
                     Project Name
@@ -1856,13 +1848,17 @@ export default function ProjectLifecycle() {
               </AlertDialogTitle>
               {!canEditTier2() && (
                 <p className="text-sm text-gray-600 mt-2">
-                  🔒 Viewing answers only - editing is locked while any stage is in progress
+                  🔒 Viewing answers only - editing is locked while any stage is
+                  in progress
                 </p>
               )}
             </AlertDialogHeader>
 
             {tier2FormProgress && (
-              <div className="space-y-4" style={{ fontFamily: "Literata, serif" }}>
+              <div
+                className="space-y-4"
+                style={{ fontFamily: "Literata, serif" }}
+              >
                 <div
                   className={`p-3 rounded text-sm ${
                     canEditTier2()
