@@ -68,75 +68,62 @@ export default function AdminDashboard() {
     try {
       const client = getAdminSupabase();
 
-      // Fetch form responses with user names using admin client to bypass RLS
-      const { data: responsesData, error: responsesError } = await client
-        .from("form_progress")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (responsesError) throw responsesError;
-
-      // Enrich responses with user names and project names
-      if (responsesData) {
-        const enrichedResponses = await Promise.all(
-          responsesData.map(async (response) => {
-            try {
-              // Fetch user name
-              const { data: signupData, error: signupError } = await client
-                .from("signups")
-                .select("name")
-                .eq("user_id", response.user_id);
-
-              const userName =
-                signupData && signupData.length > 0
-                  ? signupData[0].name
-                  : "Unknown";
-
-              // Fetch project name if engagement_id exists
-              let projectName = "No Project";
-              if (response.engagement_id) {
-                try {
-                  const { data: engagementData, error: engagementError } =
-                    await client
-                      .from("engagements")
-                      .select("project_name")
-                      .eq("id", response.engagement_id)
-                      .maybeSingle();
-
-                  if (engagementData && engagementData.project_name) {
-                    projectName = engagementData.project_name;
-                  }
-                } catch (err) {
-                  console.error("Error fetching engagement:", err);
-                }
-              }
-
-              return {
-                ...response,
-                user_name: userName,
-                project_name: projectName,
-              };
-            } catch (err) {
-              console.error("Exception enriching response:", err);
-              return {
-                ...response,
-                user_name: "Unknown",
-                project_name: "No Project",
-              };
-            }
-          }),
-        );
-        setResponses(enrichedResponses);
-      }
-
-      // Fetch signups using admin client to bypass RLS
+      // Fetch all signups
       const { data: signupsData, error: signupsError } = await client
         .from("signups")
         .select("*")
         .order("created_at", { ascending: false });
 
       if (signupsError) throw signupsError;
-      setSignups(signupsData || []);
+
+      // Fetch all engagements with tier 1 assessment info
+      const { data: engagementsData } = await client
+        .from("engagements")
+        .select("*");
+
+      const { data: tier1Data } = await client
+        .from("tier1_assessments")
+        .select("id, engagement_id");
+
+      const tier1Set = new Set(
+        (tier1Data || []).map((t: any) => t.engagement_id),
+      );
+
+      // Enrich signups with engagement counts and activity
+      if (signupsData) {
+        const enrichedUsers = signupsData.map((signup) => {
+          const userEngagements = (engagementsData || []).filter(
+            (e: any) => e.user_id === signup.user_id,
+          );
+
+          const tier1CompletedCount = userEngagements.filter(
+            (e: any) => tier1Set.has(e.id),
+          ).length;
+
+          const lastActivity = userEngagements.length > 0
+            ? new Date(
+              Math.max(
+                ...userEngagements.map((e: any) =>
+                  new Date(e.updated_at).getTime(),
+                ),
+              ),
+            ).toISOString()
+            : undefined;
+
+          return {
+            user_id: signup.user_id,
+            email: signup.email,
+            name: signup.name,
+            phone: signup.phone,
+            subscribed_at: signup.subscribed_at,
+            engagement_count: userEngagements.length,
+            tier1_completed_count: tier1CompletedCount,
+            last_activity: lastActivity,
+          };
+        });
+
+        setUsers(enrichedUsers);
+      }
     } catch (err: any) {
       setError(err.message || "Failed to fetch data");
       console.error("Fetch error:", err);
