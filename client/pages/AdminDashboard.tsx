@@ -45,26 +45,10 @@ interface UserWithEngagements {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [responses, setResponses] = useState<FormResponse[]>([]);
-  const [signups, setSignups] = useState<SignupData[]>([]);
+  const [users, setUsers] = useState<UserWithEngagements[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"responses" | "signups">(
-    "responses",
-  );
-  const [selectedResponse, setSelectedResponse] = useState<FormResponse | null>(
-    null,
-  );
-  const [editingResponse, setEditingResponse] = useState<FormResponse | null>(
-    null,
-  );
-  const [editResponses, setEditResponses] = useState<string[]>([]);
-  const [deleteConfirm, setDeleteConfirm] = useState<{
-    type: "response" | "signup";
-    id: string;
-    email?: string;
-  } | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [searchFilter, setSearchFilter] = useState("");
   const [isCleaningUp, setIsCleaningUp] = useState(false);
 
   useEffect(() => {
