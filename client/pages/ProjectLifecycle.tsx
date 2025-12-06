@@ -1075,19 +1075,14 @@ export default function ProjectLifecycle() {
                 </h5>
                 <Button
                   onClick={handleEditTier1Click}
-                  disabled={!canEditTier1()}
-                  className={`px-3 py-1 text-sm ${
-                    canEditTier1()
-                      ? "bg-purple-600 hover:bg-purple-700 text-white"
-                      : "bg-gray-400 text-gray-600 cursor-not-allowed"
-                  }`}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-sm"
                 >
-                  Edit
+                  {canEditTier1() ? "Edit Responses" : "View Answers"}
                 </Button>
               </div>
               {!canEditTier1() && (
                 <p className="text-xs text-purple-700 mb-3">
-                  🔒 Locked while any stage is in progress
+                  🔒 Viewing answers only - locked while any stage is in progress
                 </p>
               )}
               <div className="grid grid-cols-2 gap-4 text-sm">
@@ -1165,19 +1160,14 @@ export default function ProjectLifecycle() {
                 </h5>
                 <Button
                   onClick={handleEditTier2Click}
-                  disabled={!canEditTier2()}
-                  className={`px-3 py-1 text-sm ${
-                    canEditTier2()
-                      ? "bg-blue-600 hover:bg-blue-700 text-white"
-                      : "bg-gray-400 text-gray-600 cursor-not-allowed"
-                  }`}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-sm"
                 >
-                  Edit Responses
+                  {canEditTier2() ? "Edit Responses" : "View Answers"}
                 </Button>
               </div>
               {!canEditTier2() && (
                 <p className="text-xs text-blue-700 mb-2">
-                  🔒 Locked while any stage is in progress
+                  🔒 Viewing answers only - locked while any stage is in progress
                 </p>
               )}
               <p className="text-sm text-blue-700">
