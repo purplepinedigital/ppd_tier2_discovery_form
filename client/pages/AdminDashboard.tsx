@@ -32,22 +32,15 @@ const getAdminSupabase = () => {
   return adminSupabase;
 };
 
-interface FormResponse {
-  id: string;
+interface UserWithEngagements {
   user_id: string;
-  engagement_id: string | null;
-  responses: string[];
-  created_at: string;
-  updated_at: string;
-  user_name?: string;
-  project_name?: string;
-}
-
-interface SignupData {
   email: string;
   name: string;
-  user_id: string;
+  phone?: string;
   subscribed_at: string;
+  engagement_count: number;
+  tier1_completed_count: number;
+  last_activity?: string;
 }
 
 export default function AdminDashboard() {
