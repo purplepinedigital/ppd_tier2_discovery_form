@@ -183,12 +183,25 @@ export default function ProjectJourney() {
           const progress = await getFormProgress(engagement.id, client);
           progressMap[engagement.id] = progress;
 
-          // Fetch notification data for this engagement
-          const notificationData = await getEngagementNotifications(
-            engagement.id,
-            client,
-          );
-          notifMap[engagement.id] = notificationData;
+          // Fetch notification data for this engagement (non-blocking, with fallback)
+          try {
+            const notificationData = await getEngagementNotifications(
+              engagement.id,
+              client,
+            );
+            notifMap[engagement.id] = notificationData;
+          } catch (notifError) {
+            console.warn(
+              "Failed to fetch notifications for engagement:",
+              engagement.id,
+              notifError,
+            );
+            // Fallback to empty notification state
+            notifMap[engagement.id] = {
+              unreadCount: 0,
+              lastNotificationTime: null,
+            };
+          }
         }
       }
       setFormProgressMap(progressMap);
