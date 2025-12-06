@@ -670,18 +670,15 @@ export default function ProjectJourney() {
                           style={{ fontFamily: "Literata, serif" }}
                         >
                           {notificationMap[engagement.id]?.unreadCount > 0 ? (
-                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 inline-block">
-                              🔔 {notificationMap[engagement.id].unreadCount}{" "}
-                              new update{
-                                notificationMap[engagement.id].unreadCount > 1
-                                  ? "s"
-                                  : ""
-                              }
-                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                              <span className="text-xs font-semibold text-green-700">
+                                {notificationMap[engagement.id].unreadCount} new
+                              </span>
+                            </div>
                           ) : notificationMap[engagement.id]
                               ?.lastNotificationTime ? (
-                            <span className="text-gray-500 text-xs">
-                              Updated{" "}
+                            <span className="text-gray-400 text-xs">
                               {(() => {
                                 const notifDate = new Date(
                                   notificationMap[engagement.id]
@@ -696,15 +693,16 @@ export default function ProjectJourney() {
                                   diffMs / (1000 * 60 * 60 * 24),
                                 );
 
-                                if (diffHours < 1) return "just now";
+                                if (diffHours < 1) return "Updated just now";
                                 if (diffHours < 24)
-                                  return `${diffHours}h ago`;
-                                if (diffDays < 7) return `${diffDays}d ago`;
-                                return notifDate.toLocaleDateString();
+                                  return `Updated ${diffHours}h ago`;
+                                if (diffDays < 7)
+                                  return `Updated ${diffDays}d ago`;
+                                return `Updated ${notifDate.toLocaleDateString()}`;
                               })()}
                             </span>
                           ) : (
-                            <span className="text-gray-400 text-xs">—</span>
+                            <span className="text-gray-300 text-xs">—</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-sm">
