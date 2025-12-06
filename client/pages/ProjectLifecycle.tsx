@@ -1869,16 +1869,29 @@ export default function ProjectLifecycle() {
           <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <AlertDialogHeader>
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
-                Edit Tier 2 Responses (30 Discovery Questions)
+                {canEditTier2()
+                  ? "Edit Tier 2 Responses (30 Discovery Questions)"
+                  : "View Tier 2 Responses (30 Discovery Questions)"}
               </AlertDialogTitle>
+              {!canEditTier2() && (
+                <p className="text-sm text-gray-600 mt-2">
+                  🔒 Viewing answers only - editing is locked while any stage is in progress
+                </p>
+              )}
             </AlertDialogHeader>
 
             {tier2FormProgress && (
               <div className="space-y-4" style={{ fontFamily: "Literata, serif" }}>
-                {/* Import formQuestions from @/data/discovery-form to display questions */}
-                {/* For now, showing a simple scrollable text area for each response */}
-                <div className="bg-blue-50 p-3 rounded text-sm text-blue-700">
-                  Editing {tier2FormProgress.responses?.length || 0} questions
+                <div
+                  className={`p-3 rounded text-sm ${
+                    canEditTier2()
+                      ? "bg-blue-50 text-blue-700"
+                      : "bg-gray-50 text-gray-600"
+                  }`}
+                >
+                  {canEditTier2()
+                    ? `Editing ${tier2FormProgress.responses?.length || 0} questions`
+                    : `Viewing ${tier2FormProgress.responses?.length || 0} questions`}
                 </div>
 
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
@@ -1890,14 +1903,24 @@ export default function ProjectLifecycle() {
                       <textarea
                         value={response || ""}
                         onChange={(e) => {
-                          const newResponses = [...tier2FormProgress.responses];
-                          newResponses[index] = e.target.value;
-                          setTier2FormProgress({
-                            ...tier2FormProgress,
-                            responses: newResponses,
-                          });
+                          canEditTier2() &&
+                            (() => {
+                              const newResponses = [
+                                ...tier2FormProgress.responses,
+                              ];
+                              newResponses[index] = e.target.value;
+                              setTier2FormProgress({
+                                ...tier2FormProgress,
+                                responses: newResponses,
+                              });
+                            })();
                         }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-600 text-sm"
+                        disabled={!canEditTier2()}
+                        className={`w-full px-3 py-2 border rounded focus:outline-none text-sm ${
+                          canEditTier2()
+                            ? "border-gray-300 focus:border-blue-600"
+                            : "border-gray-200 bg-gray-50 text-gray-600"
+                        }`}
                         rows={2}
                         placeholder={`Response to question ${index + 1}`}
                       />
@@ -1909,15 +1932,17 @@ export default function ProjectLifecycle() {
 
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isSaving}>
-                Cancel
+                {canEditTier2() ? "Cancel" : "Close"}
               </AlertDialogCancel>
-              <Button
-                onClick={handleSaveTier2}
-                className="bg-green-600 hover:bg-green-700 text-white"
-                disabled={isSaving}
-              >
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
+              {canEditTier2() && (
+                <Button
+                  onClick={handleSaveTier2}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </Button>
+              )}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
