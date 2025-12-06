@@ -725,6 +725,73 @@ export default function ProjectLifecycle() {
     }
   };
 
+  const stage0HasDeliverables = () => {
+    return deliverables.some((d) => d.stage_number === 0);
+  };
+
+  const canEditTier2 = () => {
+    return !stage0HasDeliverables();
+  };
+
+  const handleEditTier2Click = () => {
+    if (!canEditTier2()) {
+      toast({
+        title: "Cannot Edit",
+        description:
+          "Tier 2 responses are locked while Stage 0 (Discovery) is in progress.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!tier2FormProgress) {
+      toast({
+        title: "No Tier 2 Form",
+        description: "Tier 2 form has not been started yet.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setEditingTier2(true);
+  };
+
+  const handleSaveTier2 = async () => {
+    if (!tier2FormProgress || !engagement) return;
+
+    setIsSaving(true);
+    try {
+      const client = isImpersonating()
+        ? getAdminSupabase() || supabase
+        : supabase;
+
+      const { error } = await client
+        .from("form_progress")
+        .update({
+          responses: tier2FormProgress.responses,
+        })
+        .eq("engagement_id", engagement.id);
+
+      if (error) throw error;
+
+      setEditingTier2(false);
+
+      toast({
+        title: "✓ Tier 2 Updated",
+        description: "Your responses have been saved successfully",
+      });
+    } catch (err: any) {
+      console.error("Error saving Tier 2:", err);
+      toast({
+        title: "Error",
+        description: "Failed to save Tier 2 responses",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const getProgressPercentage = () => {
     const totalStages = 8;
     let stageProgress = 0;
