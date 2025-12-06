@@ -274,6 +274,21 @@ export default function ProjectLifecycle() {
             }
           }
 
+          // Fetch Tier 2 form progress
+          try {
+            const { data: tier2Data } = await client
+              .from("form_progress")
+              .select("*")
+              .eq("engagement_id", engagementId)
+              .maybeSingle();
+
+            if (tier2Data) {
+              setTier2FormProgress(tier2Data);
+            }
+          } catch (tier2Error) {
+            console.error("Error fetching Tier 2 form progress:", tier2Error);
+          }
+
           // Fetch deliverables visible to client
           try {
             const { data: deliverableData } = await client
