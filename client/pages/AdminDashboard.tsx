@@ -287,195 +287,117 @@ export default function AdminDashboard() {
         {/* Loading state */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p style={{ fontFamily: "Literata, serif" }}>Loading data...</p>
+            <p style={{ fontFamily: "Literata, serif" }}>Loading users...</p>
           </div>
         ) : (
-          <>
-            {/* Form Responses Tab */}
-            {activeTab === "responses" && (
-              <div className="bg-white rounded-lg shadow overflow-x-auto">
-                {responses.length === 0 ? (
-                  <p className="p-6" style={{ fontFamily: "Literata, serif" }}>
-                    No form responses yet.
-                  </p>
-                ) : (
-                  <table className="w-full">
-                    <thead className="bg-gray-100 border-b">
-                      <tr>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
+          <div className="bg-white rounded-lg shadow overflow-x-auto">
+            {users.length === 0 ? (
+              <p className="p-6" style={{ fontFamily: "Literata, serif" }}>
+                No users yet.
+              </p>
+            ) : (
+              <table className="w-full">
+                <thead className="bg-gray-100 border-b">
+                  <tr>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Name
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Email
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      # Engagements
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Tier 1 Completed
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Signup Date
+                    </th>
+                    <th
+                      className="px-6 py-3 text-left text-sm font-bold"
+                      style={{ fontFamily: "Literata, serif" }}
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users
+                    .filter(
+                      (u) =>
+                        u.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                        u.email.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                        (u.phone && u.phone.includes(searchFilter)),
+                    )
+                    .map((user) => (
+                      <tr key={user.user_id} className="border-b hover:bg-gray-50">
+                        <td
+                          className="px-6 py-4 text-sm font-medium"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Project Name
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
+                          {user.name}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          User
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
+                          {user.email}
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm text-center"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Questions Answered
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
+                          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold text-sm">
+                            {user.engagement_count}
+                          </span>
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm text-center"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Created At
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
+                          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-800 font-bold text-sm">
+                            {user.tier1_completed_count}
+                          </span>
+                        </td>
+                        <td
+                          className="px-6 py-4 text-sm"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          Actions
-                        </th>
+                          {new Date(user.subscribed_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <Button
+                            onClick={() =>
+                              navigate(`/admin/users/${user.user_id}`)
+                            }
+                            className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 text-sm"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            View Engagements
+                          </Button>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {responses.map((response) => (
-                        <tr
-                          key={response.id}
-                          className="border-b hover:bg-gray-50"
-                        >
-                          <td
-                            className="px-6 py-4 text-sm cursor-pointer hover:text-[#37306B] font-medium"
-                            onClick={() => setSelectedResponse(response)}
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {response.project_name}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {response.user_name}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {response.responses.filter((r) => r.trim()).length}{" "}
-                            / {response.responses.length}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {new Date(response.created_at).toLocaleString()}
-                          </td>
-                          <td className="px-6 py-4 text-sm flex gap-2">
-                            <button
-                              onClick={() => {
-                                setEditingResponse(response);
-                                setEditResponses([...response.responses]);
-                              }}
-                              className="bg-[#37306B] hover:bg-[#2C2758] text-white px-3 py-1 rounded text-xs font-bold"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() =>
-                                setDeleteConfirm({
-                                  type: "response",
-                                  id: response.id,
-                                })
-                              }
-                              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
+                    ))}
+                </tbody>
+              </table>
             )}
-
-            {/* Signups Tab */}
-            {activeTab === "signups" && (
-              <div className="bg-white rounded-lg shadow overflow-x-auto">
-                {signups.length === 0 ? (
-                  <p className="p-6" style={{ fontFamily: "Literata, serif" }}>
-                    No signups yet.
-                  </p>
-                ) : (
-                  <table className="w-full">
-                    <thead className="bg-gray-100 border-b">
-                      <tr>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          Email
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          Name
-                        </th>
-                        <th
-                          className="px-6 py-3 text-left text-sm font-bold"
-                          style={{ fontFamily: "Literata, serif" }}
-                        >
-                          Signed Up
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {signups.map((signup) => (
-                        <tr
-                          key={signup.user_id}
-                          className="border-b hover:bg-gray-50"
-                        >
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {signup.email}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {signup.name}
-                          </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{ fontFamily: "Literata, serif" }}
-                          >
-                            {new Date(signup.subscribed_at).toLocaleString()}
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            <button
-                              onClick={() =>
-                                setDeleteConfirm({
-                                  type: "signup",
-                                  id: signup.user_id,
-                                  email: signup.email,
-                                })
-                              }
-                              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-bold"
-                              style={{ fontFamily: "Literata, serif" }}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            )}
-          </>
+          </div>
         )}
 
         {/* Edit Modal */}
