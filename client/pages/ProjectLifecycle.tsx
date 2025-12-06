@@ -1620,12 +1620,18 @@ export default function ProjectLifecycle() {
                     type="text"
                     value={tier1EditData.project_name || ""}
                     onChange={(e) =>
+                      canEditTier1() &&
                       setTier1EditData({
                         ...tier1EditData,
                         project_name: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    disabled={!canEditTier1()}
+                    className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                      canEditTier1()
+                        ? "border-gray-300 focus:border-purple-600"
+                        : "border-gray-200 bg-gray-50 text-gray-600"
+                    }`}
                   />
                 </div>
 
@@ -1637,12 +1643,18 @@ export default function ProjectLifecycle() {
                     type="text"
                     value={tier1EditData.business_name || ""}
                     onChange={(e) =>
+                      canEditTier1() &&
                       setTier1EditData({
                         ...tier1EditData,
                         business_name: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    disabled={!canEditTier1()}
+                    className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                      canEditTier1()
+                        ? "border-gray-300 focus:border-purple-600"
+                        : "border-gray-200 bg-gray-50 text-gray-600"
+                    }`}
                   />
                 </div>
 
@@ -1655,12 +1667,18 @@ export default function ProjectLifecycle() {
                       type="text"
                       value={tier1EditData.industry || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           industry: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                   <div>
@@ -1671,12 +1689,18 @@ export default function ProjectLifecycle() {
                       type="tel"
                       value={tier1EditData.phone || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           phone: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                 </div>
@@ -1689,12 +1713,18 @@ export default function ProjectLifecycle() {
                     type="text"
                     value={tier1EditData.current_state || ""}
                     onChange={(e) =>
+                      canEditTier1() &&
                       setTier1EditData({
                         ...tier1EditData,
                         current_state: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    disabled={!canEditTier1()}
+                    className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                      canEditTier1()
+                        ? "border-gray-300 focus:border-purple-600"
+                        : "border-gray-200 bg-gray-50 text-gray-600"
+                    }`}
                   />
                 </div>
 
@@ -1707,12 +1737,18 @@ export default function ProjectLifecycle() {
                       type="text"
                       value={tier1EditData.website_scope || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           website_scope: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                   <div>
@@ -1723,12 +1759,18 @@ export default function ProjectLifecycle() {
                       type="text"
                       value={tier1EditData.timeline_expectation || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           timeline_expectation: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                 </div>
@@ -1742,12 +1784,18 @@ export default function ProjectLifecycle() {
                       type="text"
                       value={tier1EditData.budget_range || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           budget_range: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                   <div>
@@ -1758,12 +1806,18 @@ export default function ProjectLifecycle() {
                       type="text"
                       value={tier1EditData.marketing_timing || ""}
                       onChange={(e) =>
+                        canEditTier1() &&
                         setTier1EditData({
                           ...tier1EditData,
                           marketing_timing: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                      disabled={!canEditTier1()}
+                      className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                        canEditTier1()
+                          ? "border-gray-300 focus:border-purple-600"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }`}
                     />
                   </div>
                 </div>
@@ -1775,12 +1829,18 @@ export default function ProjectLifecycle() {
                   <textarea
                     value={tier1EditData.primary_goal || ""}
                     onChange={(e) =>
+                      canEditTier1() &&
                       setTier1EditData({
                         ...tier1EditData,
                         primary_goal: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    disabled={!canEditTier1()}
+                    className={`w-full px-3 py-2 border rounded focus:outline-none ${
+                      canEditTier1()
+                        ? "border-gray-300 focus:border-purple-600"
+                        : "border-gray-200 bg-gray-50 text-gray-600"
+                    }`}
                     rows={3}
                   />
                 </div>
