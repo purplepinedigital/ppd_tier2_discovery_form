@@ -563,6 +563,12 @@ export default function ProjectJourney() {
                         className="px-6 py-3 text-left text-sm font-bold"
                         style={{ fontFamily: "Literata, serif" }}
                       >
+                        Updates
+                      </th>
+                      <th
+                        className="px-6 py-3 text-left text-sm font-bold"
+                        style={{ fontFamily: "Literata, serif" }}
+                      >
                         Actions
                       </th>
                     </tr>
