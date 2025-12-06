@@ -57,6 +57,15 @@ export default function ProjectJourney() {
   const [formProgressMap, setFormProgressMap] = useState<
     Record<string, number>
   >({});
+  const [notificationMap, setNotificationMap] = useState<
+    Record<
+      string,
+      {
+        unreadCount: number;
+        lastNotificationTime: string | null;
+      }
+    >
+  >({});
   const [impersonationSession, setImpersonationSession] = useState(
     getImpersonationSession(),
   );
