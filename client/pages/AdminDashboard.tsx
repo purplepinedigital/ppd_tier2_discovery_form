@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabase";
 import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
-import { formQuestions, formSections } from "@/data/discovery-form";
 
 // Create an admin client that bypasses RLS using service role key
 let adminSupabase: any = null;
