@@ -530,9 +530,19 @@ export default function ProjectJourney() {
                           className="px-6 py-4 text-sm"
                           style={{ fontFamily: "Literata, serif" }}
                         >
-                          <span className="text-gray-600">
-                            {formProgressMap[engagement.id] || 0}/30 questions
-                          </span>
+                          <div className="space-y-2">
+                            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                              <div
+                                className="bg-blue-600 h-full transition-all"
+                                style={{
+                                  width: `${((formProgressMap[engagement.id] || 0) / 30) * 100}%`,
+                                }}
+                              ></div>
+                            </div>
+                            <span className="text-gray-600 text-xs">
+                              {formProgressMap[engagement.id] || 0}/30 questions
+                            </span>
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-sm">
                           {engagement.program ? (
