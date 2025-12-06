@@ -1041,12 +1041,22 @@ export default function ProjectLifecycle() {
                         {/* Tier 1 Assessment Data */}
                         {tier1Assessment && (
                           <div className="bg-purple-50 border border-purple-200 rounded p-4">
-                            <h5
-                              className="font-bold text-purple-900 mb-4"
-                              style={{ fontFamily: "Epilogue, sans-serif" }}
-                            >
-                              Tier 1 Assessment Data
-                            </h5>
+                            <div className="flex items-center justify-between mb-4">
+                              <h5
+                                className="font-bold text-purple-900"
+                                style={{ fontFamily: "Epilogue, sans-serif" }}
+                              >
+                                Tier 1 Assessment Data
+                              </h5>
+                              {canEditTier1() && (
+                                <Button
+                                  onClick={handleEditTier1Click}
+                                  className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-sm"
+                                >
+                                  Edit
+                                </Button>
+                              )}
+                            </div>
                             <div className="grid grid-cols-2 gap-4 text-sm">
                               <div>
                                 <p className="text-purple-700 font-semibold">
