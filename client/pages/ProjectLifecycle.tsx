@@ -1073,15 +1073,23 @@ export default function ProjectLifecycle() {
                 >
                   Tier 1 Assessment Data
                 </h5>
-                {canEditTier1() && (
-                  <Button
-                    onClick={handleEditTier1Click}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-sm"
-                  >
-                    Edit
-                  </Button>
-                )}
+                <Button
+                  onClick={handleEditTier1Click}
+                  disabled={!canEditTier1()}
+                  className={`px-3 py-1 text-sm ${
+                    canEditTier1()
+                      ? "bg-purple-600 hover:bg-purple-700 text-white"
+                      : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                  }`}
+                >
+                  Edit
+                </Button>
               </div>
+              {!canEditTier1() && (
+                <p className="text-xs text-purple-700 mb-3">
+                  🔒 Locked while any stage is in progress
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <p className="text-purple-700 font-semibold">
