@@ -161,6 +161,12 @@ export default function ProjectLifecycle() {
     id: string;
     responses: string[];
   } | null>(null);
+  const [tier2FormProgress, setTier2FormProgress] = useState<{
+    id?: string;
+    user_id: string;
+    engagement_id: string;
+    responses: string[];
+  } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
