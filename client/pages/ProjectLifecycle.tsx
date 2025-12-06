@@ -1601,8 +1601,13 @@ export default function ProjectLifecycle() {
           <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <AlertDialogHeader>
               <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
-                Edit Tier 1 Assessment
+                {canEditTier1() ? "Edit Tier 1 Assessment" : "View Tier 1 Assessment"}
               </AlertDialogTitle>
+              {!canEditTier1() && (
+                <p className="text-sm text-gray-600 mt-2">
+                  🔒 Viewing answers only - editing is locked while any stage is in progress
+                </p>
+              )}
             </AlertDialogHeader>
 
             {tier1EditData && (
