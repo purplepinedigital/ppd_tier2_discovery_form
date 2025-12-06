@@ -138,63 +138,6 @@ export default function AdminDashboard() {
     navigate("/admin/login");
   };
 
-  const handleDeleteResponse = async (id: string) => {
-    setIsDeleting(true);
-    try {
-      const client = getAdminSupabase();
-
-      // Only delete the form_progress entry - do NOT cascade to engagements
-      const { error: deleteFormError } = await client
-        .from("form_progress")
-        .delete()
-        .eq("id", id);
-
-      if (deleteFormError) throw deleteFormError;
-
-      setResponses(responses.filter((r) => r.id !== id));
-      setError(null);
-      setDeleteConfirm(null);
-    } catch (err: any) {
-      setError(err.message || "Failed to delete form response");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleDeleteSignup = async (userId: string, email: string) => {
-    setIsDeleting(true);
-    try {
-      const client = getAdminSupabase();
-
-      // Delete from Klaviyo first
-      const klaviyoDeleteResponse = await fetch("/api/klaviyo/unsubscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!klaviyoDeleteResponse.ok) {
-        const errorData = await klaviyoDeleteResponse.json();
-        console.error("Klaviyo unsubscribe error:", errorData);
-      }
-
-      // Delete from signups table by email (unique field) - safer than user_id
-      const { error } = await client
-        .from("signups")
-        .delete()
-        .eq("email", email);
-
-      if (error) throw error;
-
-      setSignups(signups.filter((s) => s.email !== email));
-      setError(null);
-      setDeleteConfirm(null);
-    } catch (err: any) {
-      setError(err.message || "Failed to delete signup");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   const handleCleanupOrphanedData = async () => {
     if (
