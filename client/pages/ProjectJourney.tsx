@@ -184,6 +184,9 @@ export default function ProjectJourney() {
           progressMap[engagement.id] = progress;
 
           // Fetch notification data for this engagement (non-blocking, with fallback)
+          // TEMPORARILY DISABLED: There may be RLS issues with client_notifications
+          // Uncomment this block once RLS policies are verified
+          /*
           try {
             const notificationData = await getEngagementNotifications(
               engagement.id,
@@ -202,6 +205,13 @@ export default function ProjectJourney() {
               lastNotificationTime: null,
             };
           }
+          */
+
+          // Use empty notification state for now
+          notifMap[engagement.id] = {
+            unreadCount: 0,
+            lastNotificationTime: null,
+          };
         }
       }
       setFormProgressMap(progressMap);
