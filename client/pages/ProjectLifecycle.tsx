@@ -152,6 +152,16 @@ export default function ProjectLifecycle() {
   const [newPackage, setNewPackage] = useState<string | null>(null);
   const [deleteConfirmDialog, setDeleteConfirmDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [editingTier1, setEditingTier1] = useState(false);
+  const [editingTier2, setEditingTier2] = useState(false);
+  const [tier1EditData, setTier1EditData] = useState<Tier1Assessment | null>(
+    null,
+  );
+  const [tier2EditData, setTier2EditData] = useState<{
+    id: string;
+    responses: string[];
+  } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
