@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminUserDetail from "./pages/AdminUserDetail";
 import AdminLoginAsUser from "./pages/AdminLoginAsUser";
 import AdminEngagements from "./pages/AdminEngagements";
 import AdminEngagementDetail from "./pages/AdminEngagementDetail";
