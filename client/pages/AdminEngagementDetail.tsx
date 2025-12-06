@@ -663,6 +663,26 @@ export default function AdminEngagementDetail() {
         throw error;
       }
 
+      // Create client notification for stage completion
+      try {
+        const { error: notifError } = await client
+          .from("client_notifications")
+          .insert({
+            engagement_id: engagementId,
+            user_id: engagement?.user_id,
+            type: "stage_completed",
+            title: `Stage Complete! 🎉`,
+            message: `${STAGE_NAMES[stageNum]} has been completed. Great progress!`,
+            related_stage_number: stageNum,
+          });
+
+        if (notifError) {
+          console.error("Error creating stage completion notification:", notifError);
+        }
+      } catch (notifError: any) {
+        console.error("Error creating stage completion notification:", notifError);
+      }
+
       toast({
         title: "✓ Stage Completed",
         description: `${STAGE_NAMES[stageNum]} marked as complete!`,
