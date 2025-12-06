@@ -98,6 +98,15 @@ interface Tier1Assessment {
   updated_at: string;
 }
 
+interface Tier2Form {
+  id: string;
+  user_id: string;
+  engagement_id: string;
+  responses: string[];
+  created_at: string;
+  updated_at: string;
+}
+
 const STAGE_DESCRIPTIONS: Record<number, string> = {
   0: "Deep Discovery & Package Decision - Initial discovery phase to determine program fit",
   1: "Identity & Positioning - Define who you are and where you fit in the market",
