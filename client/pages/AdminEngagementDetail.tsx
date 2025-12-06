@@ -247,6 +247,23 @@ export default function AdminEngagementDetail() {
         setTier1Loading(false);
       }
 
+      // Fetch Tier 2 forms if exists
+      setTier2Loading(true);
+      try {
+        const { data: tier2Data, error: tier2Error } = await client
+          .from("form_progress")
+          .select("*")
+          .eq("engagement_id", engagementId)
+          .order("created_at", { ascending: false });
+
+        if (tier2Error) throw tier2Error;
+        setTier2Forms(tier2Data || []);
+      } catch (tier2Error) {
+        console.error("Error fetching Tier 2 forms:", tier2Error);
+      } finally {
+        setTier2Loading(false);
+      }
+
       // Fetch deliverables
       const { data: deliverableData, error: deliverableError } = await client
         .from("deliverables")
