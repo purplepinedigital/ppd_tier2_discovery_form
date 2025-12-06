@@ -1448,6 +1448,207 @@ export default function ProjectLifecycle() {
           </div>
         )}
 
+        {/* Tier 1 Edit Modal */}
+        <AlertDialog open={editingTier1} onOpenChange={setEditingTier1}>
+          <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <AlertDialogHeader>
+              <AlertDialogTitle style={{ fontFamily: "Epilogue, sans-serif" }}>
+                Edit Tier 1 Assessment
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+
+            {tier1EditData && (
+              <div className="space-y-4" style={{ fontFamily: "Literata, serif" }}>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Project Name
+                  </label>
+                  <input
+                    type="text"
+                    value={tier1EditData.project_name || ""}
+                    onChange={(e) =>
+                      setTier1EditData({
+                        ...tier1EditData,
+                        project_name: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    value={tier1EditData.business_name || ""}
+                    onChange={(e) =>
+                      setTier1EditData({
+                        ...tier1EditData,
+                        business_name: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Industry
+                    </label>
+                    <input
+                      type="text"
+                      value={tier1EditData.industry || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          industry: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      value={tier1EditData.phone || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          phone: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Current Digital State
+                  </label>
+                  <input
+                    type="text"
+                    value={tier1EditData.current_state || ""}
+                    onChange={(e) =>
+                      setTier1EditData({
+                        ...tier1EditData,
+                        current_state: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Website Scope
+                    </label>
+                    <input
+                      type="text"
+                      value={tier1EditData.website_scope || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          website_scope: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Timeline Expectation
+                    </label>
+                    <input
+                      type="text"
+                      value={tier1EditData.timeline_expectation || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          timeline_expectation: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Budget Range
+                    </label>
+                    <input
+                      type="text"
+                      value={tier1EditData.budget_range || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          budget_range: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2">
+                      Marketing Timing
+                    </label>
+                    <input
+                      type="text"
+                      value={tier1EditData.marketing_timing || ""}
+                      onChange={(e) =>
+                        setTier1EditData({
+                          ...tier1EditData,
+                          marketing_timing: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Primary Goal
+                  </label>
+                  <textarea
+                    value={tier1EditData.primary_goal || ""}
+                    onChange={(e) =>
+                      setTier1EditData({
+                        ...tier1EditData,
+                        primary_goal: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-600"
+                    rows={3}
+                  />
+                </div>
+              </div>
+            )}
+
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isSaving}>
+                Cancel
+              </AlertDialogCancel>
+              <Button
+                onClick={handleSaveTier1}
+                className="bg-green-600 hover:bg-green-700 text-white"
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save Changes"}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         {/* Delete Engagement Confirmation Dialog */}
         <AlertDialog
           open={deleteConfirmDialog}
