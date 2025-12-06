@@ -1313,6 +1313,41 @@ export default function ProjectLifecycle() {
                             </p>
                           </div>
                         )}
+
+                        {/* Tier 2 Form Edit */}
+                        {tier2FormProgress && (
+                          <div className="bg-blue-50 border border-blue-200 rounded p-4">
+                            <div className="flex items-center justify-between">
+                              <h5
+                                className="font-bold text-blue-900"
+                                style={{ fontFamily: "Epilogue, sans-serif" }}
+                              >
+                                Tier 2 Discovery Form
+                              </h5>
+                              <Button
+                                onClick={handleEditTier2Click}
+                                disabled={!canEditTier2()}
+                                className={`px-3 py-1 text-sm ${
+                                  canEditTier2()
+                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                    : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                                }`}
+                              >
+                                Edit Responses
+                              </Button>
+                            </div>
+                            {!canEditTier2() && (
+                              <p className="text-xs text-blue-700 mt-2">
+                                🔒 Locked while Stage 0 is in progress
+                              </p>
+                            )}
+                            <p className="text-sm text-blue-700 mt-2">
+                              {tier2FormProgress.responses.filter((r) => r?.trim())
+                                .length || 0}{" "}
+                              / 30 questions answered
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
 
