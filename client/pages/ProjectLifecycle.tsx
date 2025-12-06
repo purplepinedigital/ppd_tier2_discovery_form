@@ -705,9 +705,32 @@ export default function ProjectLifecycle() {
   };
 
   const getProgressPercentage = () => {
-    const completedStages = completions.length;
     const totalStages = 8;
-    return Math.round((completedStages / totalStages) * 100);
+    let stageProgress = 0;
+
+    // Calculate progress for each stage
+    for (let stageNum = 0; stageNum < totalStages; stageNum++) {
+      const isCompleted = completions.some(
+        (c) => c.stage_number === stageNum,
+      );
+
+      if (isCompleted) {
+        // Stage is 100% complete
+        stageProgress += 1;
+      } else {
+        // Check if stage has deliverables (in progress)
+        const hasDeliverables = deliverables.some(
+          (d) => d.stage_number === stageNum,
+        );
+        if (hasDeliverables) {
+          // Stage is in progress (50% progress)
+          stageProgress += 0.5;
+        }
+        // Otherwise stage is 0% (no progress)
+      }
+    }
+
+    return Math.round((stageProgress / totalStages) * 100);
   };
 
   if (isLoading) {
