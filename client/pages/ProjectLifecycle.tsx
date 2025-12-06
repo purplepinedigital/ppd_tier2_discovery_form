@@ -1059,6 +1059,123 @@ export default function ProjectLifecycle() {
             Your Lifecycle Roadmap
           </h3>
 
+          {/* Tier 1 Assessment Data - Outside Stage Sections */}
+          {tier1Assessment && (
+            <div className="bg-purple-50 border border-purple-200 rounded p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h5
+                  className="font-bold text-purple-900"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  Tier 1 Assessment Data
+                </h5>
+                {canEditTier1() && (
+                  <Button
+                    onClick={handleEditTier1Click}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-sm"
+                  >
+                    Edit
+                  </Button>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Business Name
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.business_name}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Industry
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.industry}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Current State
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.current_state}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Website Scope
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.website_scope}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Timeline
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.timeline_expectation}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-purple-700 font-semibold">
+                    Budget Range
+                  </p>
+                  <p className="text-purple-900">
+                    {tier1Assessment.budget_range}
+                  </p>
+                </div>
+                {tier1Assessment.primary_goal && (
+                  <div className="col-span-2">
+                    <p className="text-purple-700 font-semibold">
+                      Primary Goal
+                    </p>
+                    <p className="text-purple-900">
+                      {tier1Assessment.primary_goal}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Tier 2 Form Edit - Outside Stage Sections */}
+          {tier2FormProgress && (
+            <div className="bg-blue-50 border border-blue-200 rounded p-4">
+              <div className="flex items-center justify-between">
+                <h5
+                  className="font-bold text-blue-900"
+                  style={{ fontFamily: "Epilogue, sans-serif" }}
+                >
+                  Tier 2 Discovery Form
+                </h5>
+                <Button
+                  onClick={handleEditTier2Click}
+                  disabled={!canEditTier2()}
+                  className={`px-3 py-1 text-sm ${
+                    canEditTier2()
+                      ? "bg-blue-600 hover:bg-blue-700 text-white"
+                      : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                  }`}
+                >
+                  Edit Responses
+                </Button>
+              </div>
+              {!canEditTier2() && (
+                <p className="text-xs text-blue-700 mt-2">
+                  🔒 Locked while Stage 0 is in progress
+                </p>
+              )}
+              <p className="text-sm text-blue-700 mt-2">
+                {tier2FormProgress.responses.filter((r) => r?.trim())
+                  .length || 0}{" "}
+                / 30 questions answered
+              </p>
+            </div>
+          )}
+
           {stages.map((stage) => {
             const stage0Completed = completions.some(
               (c) => c.stage_number === 0,
