@@ -672,15 +672,6 @@ export default function ProjectLifecycle() {
   };
 
   const handleEditTier1Click = () => {
-    if (!canEditTier1()) {
-      toast({
-        title: "Cannot Edit",
-        description:
-          "Tier 1 and Tier 2 responses are locked while any stage is in progress. Complete the current stage to unlock editing.",
-        variant: "destructive",
-      });
-      return;
-    }
     setTier1EditData({ ...tier1Assessment } as Tier1Assessment);
     setEditingTier1(true);
   };
