@@ -729,16 +729,6 @@ export default function ProjectLifecycle() {
   };
 
   const handleEditTier2Click = () => {
-    if (!canEditTier2()) {
-      toast({
-        title: "Cannot Edit",
-        description:
-          "Tier 1 and Tier 2 responses are locked while any stage is in progress. Complete the current stage to unlock editing.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     if (!tier2FormProgress) {
       toast({
         title: "No Tier 2 Form",
