@@ -738,6 +738,47 @@ export default function AdminEngagementDetail() {
     navigate("/admin/login");
   };
 
+  const downloadCSV = (content: string, filename: string) => {
+    const element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/csv;charset=utf-8," + encodeURIComponent(content),
+    );
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+  const exportTier2FormAsCSV = (form: Tier2Form) => {
+    if (!engagement) return;
+
+    const headers = [
+      "Section",
+      ...formQuestions.map((q) => `Q${q.overallNumber}. ${q.prompt}`),
+    ];
+
+    const rows = [
+      [
+        "Tier 2 Responses",
+        ...form.responses.map((r) => r || ""),
+      ],
+    ];
+
+    const csvContent = [
+      headers.map((h) => `"${h}"`).join(","),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
+      ),
+    ].join("\n");
+
+    const formDate = new Date(form.created_at).toISOString().split("T")[0];
+    const filename = `${engagement.project_name}_${engagement.user_name}_Tier2_${formDate}.csv`;
+
+    downloadCSV(csvContent, filename);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FFFAEE] flex items-center justify-center">
