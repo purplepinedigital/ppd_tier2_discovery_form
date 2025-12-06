@@ -636,6 +636,48 @@ export default function ProjectJourney() {
                         >
                           {new Date(engagement.created_at).toLocaleDateString()}
                         </td>
+                        <td
+                          className="px-6 py-4 text-sm"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {notificationMap[engagement.id]?.unreadCount > 0 ? (
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 inline-block">
+                              🔔 {notificationMap[engagement.id].unreadCount}{" "}
+                              new update{
+                                notificationMap[engagement.id].unreadCount > 1
+                                  ? "s"
+                                  : ""
+                              }
+                            </span>
+                          ) : notificationMap[engagement.id]
+                              ?.lastNotificationTime ? (
+                            <span className="text-gray-500 text-xs">
+                              Updated{" "}
+                              {(() => {
+                                const notifDate = new Date(
+                                  notificationMap[engagement.id]
+                                    .lastNotificationTime || "",
+                                );
+                                const now = new Date();
+                                const diffMs = now.getTime() - notifDate.getTime();
+                                const diffHours = Math.floor(
+                                  diffMs / (1000 * 60 * 60),
+                                );
+                                const diffDays = Math.floor(
+                                  diffMs / (1000 * 60 * 60 * 24),
+                                );
+
+                                if (diffHours < 1) return "just now";
+                                if (diffHours < 24)
+                                  return `${diffHours}h ago`;
+                                if (diffDays < 7) return `${diffDays}d ago`;
+                                return notifDate.toLocaleDateString();
+                              })()}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 text-sm">
                           <div className="flex items-center gap-2">
                             {(() => {
