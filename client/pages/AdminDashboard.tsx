@@ -226,47 +226,62 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tabs */}
-        <div className="mb-6 flex gap-4 border-b">
-          <button
-            onClick={() => setActiveTab("responses")}
-            className={`pb-3 font-bold transition-colors ${
-              activeTab === "responses"
-                ? "border-b-2 border-[#37306B] text-[#37306B]"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+        {/* User Search Filter */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Search by name, email, or phone..."
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#37306B]"
             style={{ fontFamily: "Literata, serif" }}
-          >
-            Form Responses ({responses.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("signups")}
-            className={`pb-3 font-bold transition-colors ${
-              activeTab === "signups"
-                ? "border-b-2 border-[#37306B] text-[#37306B]"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Signups ({signups.length})
-          </button>
+          />
         </div>
 
-        {/* Export button */}
-        <div className="mb-6">
-          <Button
-            onClick={handleExportCSV}
-            disabled={
-              isLoading ||
-              (activeTab === "responses"
-                ? responses.length === 0
-                : signups.length === 0)
-            }
-            className="bg-[#37306B] hover:bg-[#2C2758] text-[#FFFAEE]"
-            style={{ fontFamily: "Literata, serif" }}
-          >
-            Export to CSV
-          </Button>
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <p
+              className="text-gray-600 text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Total Users
+            </p>
+            <p
+              className="text-3xl font-bold text-[#37306B]"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              {users.length}
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow">
+            <p
+              className="text-gray-600 text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Total Engagements
+            </p>
+            <p
+              className="text-3xl font-bold text-blue-600"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              {users.reduce((sum, u) => sum + u.engagement_count, 0)}
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow">
+            <p
+              className="text-gray-600 text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              Tier 1 Completed
+            </p>
+            <p
+              className="text-3xl font-bold text-green-600"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              {users.reduce((sum, u) => sum + u.tier1_completed_count, 0)}
+            </p>
+          </div>
         </div>
 
         {/* Loading state */}
