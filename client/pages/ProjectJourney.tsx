@@ -170,13 +170,29 @@ export default function ProjectJourney() {
 
       // Fetch form progress for each engagement
       const progressMap: Record<string, number> = {};
+      const notifMap: Record<
+        string,
+        {
+          unreadCount: number;
+          lastNotificationTime: string | null;
+        }
+      > = {};
+
       if (engagementsData) {
         for (const engagement of engagementsData) {
           const progress = await getFormProgress(engagement.id, client);
           progressMap[engagement.id] = progress;
+
+          // Fetch notification data for this engagement
+          const notificationData = await getEngagementNotifications(
+            engagement.id,
+            client,
+          );
+          notifMap[engagement.id] = notificationData;
         }
       }
       setFormProgressMap(progressMap);
+      setNotificationMap(notifMap);
     } catch (err: any) {
       setError(err.message || "Failed to fetch engagements");
       console.error("Fetch error:", err);
