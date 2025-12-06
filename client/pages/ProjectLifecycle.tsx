@@ -659,8 +659,16 @@ export default function ProjectLifecycle() {
     }
   };
 
+  const isAnyStageInProgress = () => {
+    return stages.some(
+      (stage) =>
+        stage.included &&
+        !completions.some((c) => c.stage_number === stage.number),
+    );
+  };
+
   const canEditTier1 = () => {
-    return !tier1Assessment?.recommendation_confidence;
+    return !isAnyStageInProgress();
   };
 
   const handleEditTier1Click = () => {
@@ -668,7 +676,7 @@ export default function ProjectLifecycle() {
       toast({
         title: "Cannot Edit",
         description:
-          "Tier 1 responses are locked after your advisor has provided a recommendation.",
+          "Tier 1 and Tier 2 responses are locked while any stage is in progress. Complete the current stage to unlock editing.",
         variant: "destructive",
       });
       return;
