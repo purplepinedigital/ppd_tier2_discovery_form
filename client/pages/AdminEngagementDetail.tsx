@@ -677,10 +677,16 @@ export default function AdminEngagementDetail() {
           });
 
         if (notifError) {
-          console.error("Error creating stage completion notification:", notifError);
+          console.error(
+            "Error creating stage completion notification:",
+            notifError,
+          );
         }
       } catch (notifError: any) {
-        console.error("Error creating stage completion notification:", notifError);
+        console.error(
+          "Error creating stage completion notification:",
+          notifError,
+        );
       }
 
       toast({
@@ -779,12 +785,7 @@ export default function AdminEngagementDetail() {
       ...formQuestions.map((q) => `Q${q.overallNumber}. ${q.prompt}`),
     ];
 
-    const rows = [
-      [
-        "Tier 2 Responses",
-        ...form.responses.map((r) => r || ""),
-      ],
-    ];
+    const rows = [["Tier 2 Responses", ...form.responses.map((r) => r || "")]];
 
     const csvContent = [
       headers.map((h) => `"${h}"`).join(","),
@@ -1080,9 +1081,7 @@ export default function AdminEngagementDetail() {
                       <div className="flex gap-2">
                         <button
                           onClick={() =>
-                            setExpandedTier2FormId(
-                              isExpanded ? null : form.id,
-                            )
+                            setExpandedTier2FormId(isExpanded ? null : form.id)
                           }
                           className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded text-sm font-bold"
                           style={{ fontFamily: "Literata, serif" }}
@@ -1118,7 +1117,8 @@ export default function AdminEngagementDetail() {
 
                               <div className="space-y-4">
                                 {sectionQuestions.map((question) => {
-                                  const answerIndex = question.overallNumber - 1;
+                                  const answerIndex =
+                                    question.overallNumber - 1;
                                   const answer = form.responses[answerIndex];
 
                                   return (
