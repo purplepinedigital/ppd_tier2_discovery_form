@@ -1849,15 +1849,17 @@ export default function ProjectLifecycle() {
 
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isSaving}>
-                Cancel
+                {canEditTier1() ? "Cancel" : "Close"}
               </AlertDialogCancel>
-              <Button
-                onClick={handleSaveTier1}
-                className="bg-green-600 hover:bg-green-700 text-white"
-                disabled={isSaving}
-              >
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
+              {canEditTier1() && (
+                <Button
+                  onClick={handleSaveTier1}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </Button>
+              )}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
