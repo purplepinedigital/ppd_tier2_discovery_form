@@ -1156,7 +1156,7 @@ export default function ProjectLifecycle() {
           {/* Tier 2 Form Edit - Outside Stage Sections */}
           {tier2FormProgress && (
             <div className="bg-blue-50 border border-blue-200 rounded p-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-2">
                 <h5
                   className="font-bold text-blue-900"
                   style={{ fontFamily: "Epilogue, sans-serif" }}
@@ -1176,11 +1176,11 @@ export default function ProjectLifecycle() {
                 </Button>
               </div>
               {!canEditTier2() && (
-                <p className="text-xs text-blue-700 mt-2">
-                  🔒 Locked while Stage 0 is in progress
+                <p className="text-xs text-blue-700 mb-2">
+                  🔒 Locked while any stage is in progress
                 </p>
               )}
-              <p className="text-sm text-blue-700 mt-2">
+              <p className="text-sm text-blue-700">
                 {tier2FormProgress.responses.filter((r) => r?.trim())
                   .length || 0}{" "}
                 / 30 questions answered
