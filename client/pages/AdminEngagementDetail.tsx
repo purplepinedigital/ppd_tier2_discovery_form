@@ -140,6 +140,11 @@ export default function AdminEngagementDetail() {
   const [tier1Assessment, setTier1Assessment] =
     useState<Tier1Assessment | null>(null);
   const [tier1Loading, setTier1Loading] = useState(false);
+  const [tier2Forms, setTier2Forms] = useState<Tier2Form[]>([]);
+  const [tier2Loading, setTier2Loading] = useState(false);
+  const [expandedTier2FormId, setExpandedTier2FormId] = useState<string | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
