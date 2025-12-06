@@ -982,6 +982,169 @@ export default function AdminEngagementDetail() {
           }
         />
 
+        {/* Tier 2 Form Responses Section */}
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
+          <div className="pb-6 border-b mb-6">
+            <h3
+              className="text-2xl font-bold text-[#37306B]"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
+              Tier 2 Form Responses
+            </h3>
+            <p
+              className="text-gray-600 text-sm mt-2"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              60-Minute Business Discovery Form submissions
+            </p>
+          </div>
+
+          {tier2Loading ? (
+            <p style={{ fontFamily: "Literata, serif" }}>
+              Loading Tier 2 forms...
+            </p>
+          ) : tier2Forms.length === 0 ? (
+            <p
+              className="text-gray-400 italic"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              No Tier 2 forms submitted yet.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {tier2Forms.map((form) => {
+                const answeredCount = form.responses.filter(
+                  (r) => r && r.trim(),
+                ).length;
+                const totalQuestions = formQuestions.length;
+                const isComplete = answeredCount === totalQuestions;
+                const isExpanded = expandedTier2FormId === form.id;
+
+                return (
+                  <div
+                    key={form.id}
+                    className="bg-gray-50 p-4 rounded border border-gray-200"
+                  >
+                    {/* Form Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <p
+                            className="text-sm text-gray-600"
+                            style={{ fontFamily: "Literata, serif" }}
+                          >
+                            Submitted:{" "}
+                            {new Date(form.created_at).toLocaleDateString()}{" "}
+                            {new Date(form.created_at).toLocaleTimeString()}
+                          </p>
+                          <span
+                            className={`px-2 py-1 rounded text-xs font-bold ${
+                              isComplete
+                                ? "bg-green-100 text-green-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {isComplete ? "✓ Complete" : "⏳ In Progress"}
+                          </span>
+                        </div>
+                        <p
+                          className="text-sm text-gray-700"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Progress: {answeredCount}/{totalQuestions} questions
+                          answered
+                        </p>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            setExpandedTier2FormId(
+                              isExpanded ? null : form.id,
+                            )
+                          }
+                          className="bg-[#37306B] hover:bg-[#2C2758] text-white px-4 py-2 rounded text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          {isExpanded ? "Hide Details" : "View Full"}
+                        </button>
+                        <button
+                          onClick={() => exportTier2FormAsCSV(form)}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-bold"
+                          style={{ fontFamily: "Literata, serif" }}
+                        >
+                          Download CSV
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Expanded Detail View */}
+                    {isExpanded && (
+                      <div className="mt-4 pt-4 border-t">
+                        {formSections.map((section) => {
+                          const sectionQuestions = formQuestions.filter(
+                            (q) => q.sectionId === section.id,
+                          );
+
+                          return (
+                            <div key={section.id} className="mb-6">
+                              <h4
+                                className="text-lg font-bold text-[#37306B] mb-3"
+                                style={{ fontFamily: "Epilogue, sans-serif" }}
+                              >
+                                {section.title}
+                              </h4>
+
+                              <div className="space-y-4">
+                                {sectionQuestions.map((question) => {
+                                  const answerIndex = question.overallNumber - 1;
+                                  const answer = form.responses[answerIndex];
+
+                                  return (
+                                    <div
+                                      key={question.overallNumber}
+                                      className="bg-white p-3 rounded border border-gray-200"
+                                    >
+                                      <p
+                                        className="font-bold text-gray-800 mb-2"
+                                        style={{
+                                          fontFamily: "Epilogue, sans-serif",
+                                        }}
+                                      >
+                                        Q{question.overallNumber}.{" "}
+                                        {question.prompt}
+                                      </p>
+                                      <p
+                                        className="text-gray-700 whitespace-pre-wrap"
+                                        style={{
+                                          fontFamily: "Literata, serif",
+                                        }}
+                                      >
+                                        {answer && answer.trim() ? (
+                                          answer
+                                        ) : (
+                                          <span className="text-gray-400 italic">
+                                            No response provided
+                                          </span>
+                                        )}
+                                      </p>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* Stage 0: Program Selection & Decision */}
         <div
           className={`rounded-lg shadow p-6 mb-8 ${
