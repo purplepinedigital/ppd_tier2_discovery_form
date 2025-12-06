@@ -733,12 +733,8 @@ export default function ProjectLifecycle() {
     }
   };
 
-  const stage0HasDeliverables = () => {
-    return deliverables.some((d) => d.stage_number === 0);
-  };
-
   const canEditTier2 = () => {
-    return !stage0HasDeliverables();
+    return !isAnyStageInProgress();
   };
 
   const handleEditTier2Click = () => {
@@ -746,7 +742,7 @@ export default function ProjectLifecycle() {
       toast({
         title: "Cannot Edit",
         description:
-          "Tier 2 responses are locked while Stage 0 (Discovery) is in progress.",
+          "Tier 1 and Tier 2 responses are locked while any stage is in progress. Complete the current stage to unlock editing.",
         variant: "destructive",
       });
       return;
