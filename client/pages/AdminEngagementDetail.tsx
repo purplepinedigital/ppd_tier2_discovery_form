@@ -15,6 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import Tier1AssessmentView from "@/components/Tier1AssessmentView";
 import { adminLogout, isAdminAuthenticated } from "@/lib/admin-auth";
+import { formQuestions, formSections } from "@/data/discovery-form";
 
 let adminSupabase: any = null;
 
