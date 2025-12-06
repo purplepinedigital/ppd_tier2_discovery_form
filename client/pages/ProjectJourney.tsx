@@ -123,6 +123,28 @@ export default function ProjectJourney() {
             .eq("is_read", false);
 
           setUnreadNotifications(notificationData?.length || 0);
+
+          // Subscribe to real-time notification updates
+          const channel = client
+            .channel(`notifications:user_id=eq.${user.id}`)
+            .on(
+              "postgres_changes",
+              {
+                event: "*",
+                schema: "public",
+                table: "client_notifications",
+                filter: `user_id=eq.${user.id}`,
+              },
+              () => {
+                // When notifications change, refresh the engagements
+                fetchEngagements(user.id);
+              },
+            )
+            .subscribe();
+
+          return () => {
+            channel.unsubscribe();
+          };
         }
       } catch (err) {
         console.error("Auth check error:", err);
