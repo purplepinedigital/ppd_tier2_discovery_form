@@ -128,20 +128,45 @@ export async function createEngagement(data: EngagementData, userId: string) {
     }
     await client.from('crm_stage_progress').insert(stageRecords);
 
-    // Get contact email for invitation
+    // Check if this email already has a user account in auth
     if (contact?.email) {
-      // Generate invitation
-      const invitationResult = await generateInvitation(result.id, contact.email, userId);
+      try {
+        // Try to find existing user with this email
+        const { data: { users }, error: listError } = await client.auth.admin.listUsers();
+        const existingUser = users?.find(u => u.email === contact.email);
 
-      // Send invitation email
-      if (!invitationResult.error && invitationResult.data?.token) {
-        const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
-        await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+        if (existingUser) {
+          // User already exists - just link the engagement to their account
+          await client
+            .from('crm_engagements')
+            .update({ client_user_id: existingUser.id })
+            .eq('id', result.id);
+
+          // Log activity but don't send invitation
+          await logActivity('engagement_created', result.id, `Engagement "${data.title}" created for existing client`, userId);
+        } else {
+          // New client - generate invitation
+          const invitationResult = await generateInvitation(result.id, contact.email, userId);
+
+          // Send invitation email
+          if (!invitationResult.error && invitationResult.data?.token) {
+            const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
+            await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+          }
+
+          // Log activity
+          await logActivity('engagement_created', result.id, `Engagement "${data.title}" created - invitation sent`, userId);
+        }
+      } catch (err) {
+        // If auth check fails, fall back to sending invitation
+        const invitationResult = await generateInvitation(result.id, contact.email, userId);
+        if (!invitationResult.error && invitationResult.data?.token) {
+          const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
+          await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+        }
+        await logActivity('engagement_created', result.id, `Engagement "${data.title}" created`, userId);
       }
     }
-
-    // Log activity
-    await logActivity('engagement_created', result.id, `Engagement "${data.title}" created`, userId);
   }
 
   return { data: result, error };
