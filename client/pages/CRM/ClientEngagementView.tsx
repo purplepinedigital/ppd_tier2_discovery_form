@@ -263,22 +263,27 @@ export default function ClientEngagementView() {
 
       {/* Stage Progress */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Project Progress</h3>
-        <div className="flex gap-2 mb-4">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Project Progress</h3>
+        <div className="flex gap-2 mb-6">
           {[0, 1, 2, 3, 4, 5, 6, 7].map((stage) => (
             <div
               key={stage}
-              className={`flex-1 h-3 rounded transition-all ${
+              className={`flex-1 h-3 rounded transition-all cursor-pointer hover:opacity-80 ${
                 stage <= engagement.current_stage
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600'
                   : 'bg-gray-300'
               }`}
+              title={getStageLabel(stage)}
             />
           ))}
         </div>
-        <p className="text-sm text-gray-600">
-          Currently in Stage {engagement.current_stage} of 7
-        </p>
+        <div className="bg-blue-50 p-4 rounded-lg">
+          <p className="text-sm text-gray-600 mb-1">Current Stage</p>
+          <p className="text-lg font-bold text-blue-900">
+            Stage {engagement.current_stage}: {getStageLabel(engagement.current_stage)}
+          </p>
+          <p className="text-xs text-gray-500 mt-2">Progress: {Math.round((engagement.current_stage / 7) * 100)}%</p>
+        </div>
       </div>
 
       {/* Tier 1 Assessment */}
