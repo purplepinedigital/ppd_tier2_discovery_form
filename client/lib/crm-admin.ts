@@ -212,6 +212,15 @@ export async function getEngagements(filters?: EngagementFilters) {
   return query;
 }
 
+export async function getEngagementsByContactId(contactId: string) {
+  const client = getAdminSupabase();
+  return client
+    .from('crm_engagements')
+    .select('*')
+    .eq('contact_id', contactId)
+    .order('created_at', { ascending: false });
+}
+
 export async function updateEngagementStatus(id: string, status: string, userId: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
