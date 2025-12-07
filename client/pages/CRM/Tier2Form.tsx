@@ -75,14 +75,13 @@ export default function Tier2Form() {
     return <div className="text-center py-12">Unable to load engagement</div>;
   }
 
-  const questionsPerSection = 5;
-  const totalSections = Math.ceil(tier2Questions.length / questionsPerSection);
-  const startIndex = currentSection * questionsPerSection;
-  const endIndex = Math.min(startIndex + questionsPerSection, tier2Questions.length);
-  const currentQuestions = tier2Questions.slice(startIndex, endIndex);
+  const totalSections = formSections.length;
+  const currentFormSection = formSections[currentSection];
+  const startIndex = formSections.slice(0, currentSection).reduce((sum, section) => sum + section.questions.length, 0);
+  const currentQuestions = currentFormSection?.questions.map(q => ({ prompt: q.prompt, guidance: q.guidance })) || [];
 
   const progressPercentage = Math.round(
-    (responses.filter(r => r && r.trim()).length / 30) * 100
+    (responses.filter(r => r && r.trim()).length / tier2Questions.length) * 100
   );
 
   return (
