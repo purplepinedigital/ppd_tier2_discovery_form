@@ -160,6 +160,17 @@ export default function Tier1Form() {
 
       if (tier1Error) throw tier1Error;
 
+      // Update engagement status to tier1_submitted
+      const { error: updateError } = await supabase
+        .from('crm_engagements')
+        .update({
+          status: 'tier1_submitted',
+          tier1_submitted_at: new Date().toISOString(),
+        })
+        .eq('id', engagement.id);
+
+      if (updateError) throw updateError;
+
       // Navigate directly to Tier 2 form
       navigate(`/crm/tier2`);
     } catch (error: any) {
