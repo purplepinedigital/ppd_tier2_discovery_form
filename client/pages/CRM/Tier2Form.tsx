@@ -21,9 +21,27 @@ export default function Tier2Form() {
 
   useEffect(() => {
     const fetchEngagement = async () => {
-      const { data } = await getClientEngagement();
-      if (data) {
-        setEngagement(data);
+      try {
+        const { data: user } = await supabase.auth.getUser();
+        if (!user.user) {
+          setLoading(false);
+          return;
+        }
+
+        // Get the latest engagement for this user that's awaiting Tier 2
+        const { data } = await supabase
+          .from('crm_engagements')
+          .select('*')
+          .eq('client_user_id', user.user.id)
+          .in('status', ['tier1_submitted', 'awaiting_tier2'])
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (data && data.length > 0) {
+          setEngagement(data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching engagement:', error);
       }
       setLoading(false);
     };
