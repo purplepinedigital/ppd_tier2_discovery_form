@@ -34,7 +34,13 @@ export default function ClientEngagementView() {
           getClientActivity(id),
         ]);
 
-        if (engData.data) setEngagement(engData.data);
+        if (engData.data) {
+          setEngagement(engData.data);
+          // Initialize edit fields
+          setEditedTitle(engData.data.title || '');
+          setEditedProgram(engData.data.program || '');
+          setEditedBudget(engData.data.budget?.toString() || '');
+        }
         if (stageData.data) setStages(stageData.data);
         if (delivData.data) setDeliverables(delivData.data);
         if (actData.data) setActivities(actData.data);
