@@ -24,11 +24,13 @@ export default function ClientLayout() {
 
         const { data, error: fetchError } = await getClientEngagement();
         if (fetchError) {
-          setError(fetchError);
+          console.error('Error fetching engagement:', fetchError);
+          setError(`Failed to load engagement: ${fetchError}`);
         } else if (data) {
           setEngagement(data);
         } else {
-          setError('No project found. Please check that you have accepted the correct invitation link.');
+          console.error('No engagement data returned for user:', user.user?.id);
+          setError('No project found for your account. Please ensure you have accepted the invitation and contact support if the issue persists.');
         }
       } catch (err: any) {
         setError(err.message || 'An unexpected error occurred');
