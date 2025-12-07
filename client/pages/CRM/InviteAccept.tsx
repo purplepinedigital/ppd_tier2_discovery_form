@@ -27,15 +27,37 @@ export default function InviteAccept() {
       // Check if user is already logged in
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // User is already logged in, accept invitation and redirect
-        const result = await acceptInvitationAndCreateAccount(token, '', '', '');
-        if (result.error) {
-          setError(result.error);
-          setLoading(false);
-        } else {
-          // Wait a moment for the session to be established
+        // User is already logged in, just accept the invitation
+        const admin = supabase.admin;
+        try {
+          // Get the invitation
+          const { data: invitation } = await supabase
+            .from('crm_invitations')
+            .select('*')
+            .eq('token', token)
+            .eq('status', 'pending')
+            .single();
+
+          if (invitation) {
+            // Update invitation status
+            await supabase
+              .from('crm_invitations')
+              .update({ status: 'accepted', accepted_at: new Date().toISOString(), created_user_id: user.id })
+              .eq('id', invitation.id);
+
+            // Update engagement with client user ID
+            await supabase
+              .from('crm_engagements')
+              .update({ client_user_id: user.id })
+              .eq('id', invitation.engagement_id);
+          }
+
+          // Redirect to projects
           await new Promise(resolve => setTimeout(resolve, 500));
           navigate('/crm/engagements');
+        } catch (err: any) {
+          setError(err.message || 'Failed to accept invitation');
+          setLoading(false);
         }
         return;
       }
