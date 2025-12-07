@@ -190,7 +190,7 @@ export default function Tier1Form() {
       if (updateError) throw updateError;
 
       // Navigate directly to Tier 2 form
-      navigate(`/crm/tier2`);
+      navigate(`/crm/tier2/${engagement.id}`);
     } catch (error: any) {
       console.error('Error:', error);
       setValidationErrors([error?.message || 'An error occurred. Please try again.']);
