@@ -302,23 +302,39 @@ export async function verifyInvitation(token: string) {
   try {
     const { data, error } = await supabase
       .from('crm_invitations')
-      .select('crm_engagements(title, contact_id), email')
+      .select('engagement_id, email, expires_at')
       .eq('token', token)
       .eq('status', 'pending')
       .single();
 
-    if (error) {
+    if (error || !data) {
       return { error: 'Invalid invitation' };
     }
 
-    if (data?.crm_engagements) {
+    // Check if invitation has expired
+    if (data.expires_at && new Date(data.expires_at) < new Date()) {
+      return { error: 'Invitation has expired' };
+    }
+
+    // Fetch engagement details separately since RLS policies may restrict direct access
+    const { data: engagement, error: engagementError } = await supabase
+      .from('crm_engagements')
+      .select('title')
+      .eq('id', data.engagement_id)
+      .single();
+
+    if (engagementError || !engagement) {
+      // Invitation exists but engagement doesn't - still allow user to proceed with email
       return {
         email: data.email,
-        projectName: data.crm_engagements.title,
+        projectName: 'Your Project',
       };
     }
 
-    return { error: 'Invalid invitation data' };
+    return {
+      email: data.email,
+      projectName: engagement.title,
+    };
   } catch (error: any) {
     return { error: error.message };
   }
