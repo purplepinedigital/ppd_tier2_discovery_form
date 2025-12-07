@@ -155,6 +155,99 @@ export default function ClientEngagementView() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 pb-12 space-y-8">
+
+      {/* Editable Proposal Section (Stage 0) */}
+      {canEdit && (
+        <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-blue-900">📝 Proposal Details (Stage 0)</h3>
+            {!isEditing && (
+              <Button
+                onClick={() => setIsEditing(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+              >
+                <Edit2 size={18} />
+                Edit Details
+              </Button>
+            )}
+          </div>
+
+          {!isEditing ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-blue-700 font-semibold">Project Name</p>
+                <p className="text-lg text-blue-900 font-bold">{engagement.title}</p>
+              </div>
+              <div>
+                <p className="text-sm text-blue-700 font-semibold">Program</p>
+                <p className="text-lg text-blue-900">{engagement.program || 'Not specified'}</p>
+              </div>
+              <div>
+                <p className="text-sm text-blue-700 font-semibold">Budget</p>
+                <p className="text-lg text-blue-900">{engagement.budget ? `$${engagement.budget.toLocaleString()}` : 'Not specified'}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Project Name *</label>
+                <input
+                  type="text"
+                  value={editedTitle}
+                  onChange={(e) => setEditedTitle(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
+                  placeholder="Enter project name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Program</label>
+                <input
+                  type="text"
+                  value={editedProgram}
+                  onChange={(e) => setEditedProgram(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
+                  placeholder="Enter program name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Budget</label>
+                <input
+                  type="number"
+                  value={editedBudget}
+                  onChange={(e) => setEditedBudget(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
+                  placeholder="Enter budget amount"
+                  step="100"
+                  min="0"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <Button
+                  onClick={handleSaveChanges}
+                  disabled={saveLoading || !editedTitle.trim()}
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                >
+                  {saveLoading ? '💾 Saving...' : '💾 Save Changes'}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditedTitle(engagement.title);
+                    setEditedProgram(engagement.program || '');
+                    setEditedBudget(engagement.budget?.toString() || '');
+                  }}
+                  className="flex-1 bg-gray-400 hover:bg-gray-500 text-white flex items-center justify-center gap-2"
+                >
+                  <X size={18} />
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Stage Progress */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-xl font-bold text-gray-900 mb-4">Project Progress</h3>
