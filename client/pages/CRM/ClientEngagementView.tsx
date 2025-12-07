@@ -65,9 +65,9 @@ export default function ClientEngagementView() {
           return;
         }
 
-        if (stageData.data) setStages(stageData.data || []);
-        if (delivData.data) setDeliverables(delivData.data || []);
-        if (actData.data) setActivities(actData.data || []);
+        setStages(stageData.data || []);
+        setDeliverables(delivData.data || []);
+        setActivities(actData.data || []);
 
         try {
           // Fetch Tier 1 assessment if it exists (latest one)
