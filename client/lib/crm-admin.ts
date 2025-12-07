@@ -104,8 +104,13 @@ export interface EngagementData {
 
 export async function createEngagement(data: EngagementData, userId: string) {
   const client = getAdminSupabase();
+
+  // Get contact email before creating engagement
+  const { data: contact } = await getContact(data.contact_id);
+
   const { data: result, error } = await client.from('crm_engagements').insert({
     ...data,
+    client_email: contact?.email || null,
     status: 'awaiting_tier1',
     created_by: userId,
     current_stage: 0,
@@ -124,7 +129,6 @@ export async function createEngagement(data: EngagementData, userId: string) {
     await client.from('crm_stage_progress').insert(stageRecords);
 
     // Get contact email for invitation
-    const { data: contact } = await getContact(data.contact_id);
     if (contact?.email) {
       // Generate invitation
       const invitationResult = await generateInvitation(result.id, contact.email, userId);
