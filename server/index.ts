@@ -155,7 +155,109 @@ export function createServer() {
     }
   });
 
-  // Accept invitation and link user to engagement
+  // Create user account from invitation (server-side to avoid confirmation email)
+  app.post("/api/create-invitation-account", async (req, res) => {
+    try {
+      const { token, email, password, firstName, lastName } = req.body;
+
+      if (!token || !email || !password) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !supabaseServiceKey) {
+        console.error("Supabase configuration missing");
+        return res.status(500).json({
+          error: "Supabase configuration missing",
+        });
+      }
+
+      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+      // Get invitation details
+      const { data: invitation, error: inviteError } = await supabaseAdmin
+        .from("crm_invitations")
+        .select("*")
+        .eq("token", token)
+        .eq("status", "pending")
+        .single();
+
+      if (inviteError || !invitation) {
+        console.error("Invalid invitation:", inviteError);
+        return res.status(400).json({ error: "Invalid or expired invitation" });
+      }
+
+      // Check if invitation has expired
+      if (invitation.expires_at && new Date(invitation.expires_at) < new Date()) {
+        return res.status(400).json({ error: "Invitation has expired" });
+      }
+
+      // Create user account with admin API (bypasses email confirmation)
+      const { data: userData, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true, // Auto-confirm email to skip confirmation email
+        user_metadata: {
+          first_name: firstName || "",
+          last_name: lastName || "",
+        },
+      });
+
+      if (createUserError || !userData.user) {
+        console.error("Error creating user:", createUserError);
+        return res.status(500).json({ error: createUserError?.message || "Failed to create account" });
+      }
+
+      const userId = userData.user.id;
+
+      // Update invitation to accepted
+      const { error: updateInviteError } = await supabaseAdmin
+        .from("crm_invitations")
+        .update({
+          status: "accepted",
+          accepted_at: new Date().toISOString(),
+          created_user_id: userId,
+        })
+        .eq("id", invitation.id);
+
+      if (updateInviteError) {
+        console.error("Error updating invitation:", updateInviteError);
+        return res.status(500).json({ error: "Failed to update invitation status" });
+      }
+
+      // Update engagement with client user ID
+      const { error: engagementError } = await supabaseAdmin
+        .from("crm_engagements")
+        .update({
+          client_user_id: userId,
+          client_email: invitation.email,
+        })
+        .eq("id", invitation.engagement_id);
+
+      if (engagementError) {
+        console.error("Error updating engagement:", engagementError);
+        return res.status(500).json({ error: "Failed to link engagement to user" });
+      }
+
+      console.log(`User ${userId} created from invitation ${token} and linked to engagement ${invitation.engagement_id}`);
+
+      return res.status(200).json({
+        success: true,
+        userId,
+        engagementId: invitation.engagement_id,
+      });
+    } catch (error: any) {
+      console.error("Error in create-invitation-account route:", error);
+      return res.status(500).json({
+        error: "Failed to create account",
+        message: error.message,
+      });
+    }
+  });
+
+  // Accept invitation and link user to engagement (legacy, kept for compatibility)
   app.post("/api/accept-invitation", async (req, res) => {
     try {
       const { token, userId } = req.body;
