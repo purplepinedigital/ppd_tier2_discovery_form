@@ -97,7 +97,7 @@ export function createServer() {
           },
         ],
         from: {
-          email: "noreply@purplepine.digital",
+          email: "lovish.bishnoi@purplepine.digital",
           name: "Purple Pine Digital",
         },
         content: [
