@@ -68,13 +68,7 @@ export default function NewEngagementModal({ isOpen, onClose, onSuccess }: NewEn
         return;
       }
 
-      const adminEmail = getAdminEmail();
-      if (!adminEmail) {
-        setError('Unable to identify admin user');
-        setLoading(false);
-        return;
-      }
-
+      const adminId = getAdminId();
       const { error: createError } = await createEngagement(
         {
           contact_id: formData.contact_id,
@@ -84,7 +78,7 @@ export default function NewEngagementModal({ isOpen, onClose, onSuccess }: NewEn
           assigned_to: formData.assigned_to || undefined,
           assigned_to_email: formData.assigned_to_email || undefined,
         },
-        adminEmail
+        adminId
       );
 
       if (createError) {
