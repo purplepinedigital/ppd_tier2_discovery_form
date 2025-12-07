@@ -225,37 +225,49 @@ export default function ClientEngagementView() {
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
       <div className="bg-white shadow mb-8">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/crm')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Back to projects"
-            >
-              <ArrowLeft size={24} className="text-gray-600" />
-            </button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
-                {engagement.title}
-              </h1>
-              <p className="text-sm text-gray-600 mt-1">Engagement ID: {id}</p>
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate('/crm')}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Back to projects"
+              >
+                <ArrowLeft size={24} className="text-gray-600" />
+              </button>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
+                  {engagement.title}
+                </h1>
+                <p className="text-sm text-gray-600 mt-1">Engagement ID: {id}</p>
+              </div>
             </div>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium text-sm flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
           </div>
-          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-            engagement.status === 'awaiting_tier1' ? 'bg-yellow-100 text-yellow-800' :
-            engagement.status === 'tier1_submitted' ? 'bg-blue-100 text-blue-800' :
-            engagement.status === 'awaiting_tier2' ? 'bg-purple-100 text-purple-800' :
-            engagement.status === 'tier2_submitted' ? 'bg-indigo-100 text-indigo-800' :
-            engagement.status === 'in_stages' ? 'bg-green-100 text-green-800' :
-            'bg-emerald-100 text-emerald-800'
-          }`}>
-            {engagement.status === 'awaiting_tier1' ? '📋 Awaiting Tier 1' :
-             engagement.status === 'tier1_submitted' ? '✓ Tier 1 Complete' :
-             engagement.status === 'awaiting_tier2' ? '📋 Awaiting Tier 2' :
-             engagement.status === 'tier2_submitted' ? '✓ Forms Complete' :
-             engagement.status === 'in_stages' ? '🚀 In Progress' :
-             '✅ Completed'}
-          </span>
+
+          <div className="flex items-center justify-between">
+            <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+              engagement.status === 'awaiting_tier1' ? 'bg-yellow-100 text-yellow-800' :
+              engagement.status === 'tier1_submitted' ? 'bg-blue-100 text-blue-800' :
+              engagement.status === 'awaiting_tier2' ? 'bg-purple-100 text-purple-800' :
+              engagement.status === 'tier2_submitted' ? 'bg-indigo-100 text-indigo-800' :
+              engagement.status === 'in_stages' ? 'bg-green-100 text-green-800' :
+              'bg-emerald-100 text-emerald-800'
+            }`}>
+              {engagement.status === 'awaiting_tier1' ? '📋 Awaiting Tier 1' :
+               engagement.status === 'tier1_submitted' ? '✓ Tier 1 Complete' :
+               engagement.status === 'awaiting_tier2' ? '📋 Awaiting Tier 2' :
+               engagement.status === 'tier2_submitted' ? '✓ Forms Complete' :
+               engagement.status === 'in_stages' ? '🚀 In Progress' :
+               '✅ Completed'}
+            </span>
+          </div>
         </div>
       </div>
 
