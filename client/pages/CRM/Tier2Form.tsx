@@ -81,6 +81,14 @@ export default function Tier2Form() {
         throw new Error('Not authenticated');
       }
 
+      // Delete any existing tier2 submission for this engagement and user
+      await supabase
+        .from('tier2_temp')
+        .delete()
+        .eq('engagement_id', engagement.id)
+        .eq('user_id', user.user.id);
+
+      // Insert the new tier2 responses
       const { error: tier2Error } = await supabase
         .from('tier2_temp')
         .insert({
