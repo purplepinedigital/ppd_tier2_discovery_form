@@ -374,6 +374,13 @@ function Tier1AssessmentDisplay({ engagementId, engagementTitle }: { engagementI
           <p className="mt-1 text-gray-700 bg-gray-50 p-2 rounded">{assessment.reasoning}</p>
         </div>
       )}
+
+      <button
+        onClick={exportToCSV}
+        className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium"
+      >
+        📥 Export as CSV
+      </button>
     </div>
   );
 }
