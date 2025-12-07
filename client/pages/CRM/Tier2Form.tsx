@@ -141,7 +141,7 @@ export default function Tier2Form() {
                 return (
                   <div key={globalIdx} className="border-b border-gray-200 pb-6 last:border-0">
                     <label className="block text-sm font-semibold text-gray-900 mb-2">
-                      {globalIdx + 1}. {question}
+                      {globalIdx + 1}. {question.prompt || question}
                       {!responses[globalIdx]?.trim() && <span className="text-red-600"> *</span>}
                     </label>
                     <textarea
