@@ -302,8 +302,24 @@ export default function ClientEngagementView() {
 
       {/* Tier 1 Assessment */}
       {tier1Assessment && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">🎯 Tier 1 Assessment</h3>
+        <div className={`rounded-lg shadow p-6 ${stage0Completed ? 'bg-gray-50 border border-gray-300' : 'bg-white'}`}>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-gray-900">🎯 Tier 1 Assessment</h3>
+            {!stage0Completed && canEditResponses && (
+              <Button
+                onClick={() => navigate(`/crm/tier1/${id}`)}
+                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+              >
+                <Edit2 size={18} />
+                Edit Responses
+              </Button>
+            )}
+            {stage0Completed && (
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                📦 Stage 0 Delivered - Read Only
+              </span>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-gray-600">Business Name</p>
