@@ -12,22 +12,22 @@ export default function EngagementsManagement() {
   const [showNewEngagementModal, setShowNewEngagementModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
-  useEffect(() => {
-    const fetchEngagements = async () => {
-      setLoading(true);
-      try {
-        const query = await getEngagements(statusFilter ? { status: statusFilter } : undefined);
-        const { data } = await query;
-        setEngagements(data || []);
-      } catch (error) {
-        console.error('Error fetching engagements:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadEngagements = async () => {
+    setLoading(true);
+    try {
+      const query = await getEngagements(statusFilter ? { status: statusFilter } : undefined);
+      const { data } = await query;
+      setEngagements(data || []);
+    } catch (error) {
+      console.error('Error fetching engagements:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchEngagements();
-  }, [statusFilter]);
+  useEffect(() => {
+    loadEngagements();
+  }, [statusFilter, refetch]);
 
   return (
     <div className="space-y-6">
