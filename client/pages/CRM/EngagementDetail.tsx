@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { getEngagement, getStageProgress, getDeliverables, getInternalNotes, deleteEngagement } from '@/lib/crm-admin';
 import { Button } from '@/components/ui/button';
