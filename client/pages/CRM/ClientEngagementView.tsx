@@ -29,6 +29,22 @@ export default function ClientEngagementView() {
         if (stageData.data) setStages(stageData.data);
         if (delivData.data) setDeliverables(delivData.data);
         if (actData.data) setActivities(actData.data);
+
+        // Fetch Tier 1 assessment if it exists
+        const { data: tier1Data } = await supabase
+          .from('tier1_assessments')
+          .select('*')
+          .eq('engagement_id', id)
+          .single();
+        if (tier1Data) setTier1Assessment(tier1Data);
+
+        // Fetch Tier 2 responses if they exist
+        const { data: tier2Data } = await supabase
+          .from('tier2_form_progress')
+          .select('*')
+          .eq('engagement_id', id)
+          .single();
+        if (tier2Data) setTier2Responses(tier2Data);
       } catch (error) {
         console.error('Error fetching engagement data:', error);
       } finally {
