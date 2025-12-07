@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { acceptInvitationAndCreateAccount, verifyInvitation } from '@/lib/crm-client';
+import { supabase } from '@/lib/supabase';
 import { useEffect } from 'react';
 
 export default function InviteAccept() {
