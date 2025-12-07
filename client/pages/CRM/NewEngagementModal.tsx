@@ -158,14 +158,19 @@ export default function NewEngagementModal({ isOpen, onClose, onSuccess }: NewEn
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               Program
             </label>
-            <input
-              type="text"
+            <select
               name="program"
               value={formData.program}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
-              placeholder="Standard Program"
-            />
+            >
+              <option value="">Select a program...</option>
+              {PROGRAMS.map((program) => (
+                <option key={program} value={program}>
+                  {program}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
