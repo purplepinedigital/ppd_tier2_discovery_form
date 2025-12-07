@@ -1,4 +1,4 @@
-import { useNavigate, Outlet, useParams } from 'react-router-dom';
+import { useNavigate, Outlet, useParams, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { getClientEngagement } from '@/lib/crm-client';
@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 
 export default function ClientLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const [engagement, setEngagement] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +40,7 @@ export default function ClientLayout() {
       }
     };
     fetchEngagement();
-  }, []);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
