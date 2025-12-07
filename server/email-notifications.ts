@@ -118,6 +118,66 @@ export function generateDeliverableAddedEmail(
   `;
 }
 
+export function generateInvitationEmail(
+  clientName: string,
+  projectName: string,
+  inviteLink: string,
+): string {
+  return `
+    <html>
+      <body style="font-family: Arial, sans-serif; color: #333;">
+        <h2>You've Been Invited to Your Project</h2>
+        <p>Hi ${clientName},</p>
+        <p>
+          We're excited to have you join us! You've been invited to access and contribute to your project
+          "<strong>${projectName}</strong>".
+        </p>
+        <p>
+          Please click the button below to accept your invitation and get started:
+        </p>
+        <p>
+          <a href="${inviteLink}" style="
+            background-color: #37306B;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+          ">Accept Invitation</a>
+        </p>
+        <p>
+          Once you accept, you'll be able to fill out your Tier 1 and Tier 2 assessment forms
+          and track the progress of your project.
+        </p>
+        <p>
+          If you did not expect this invitation or have any questions, please feel free to reach out!
+        </p>
+        <p>Best regards,<br/>Purple Pine Digital Team</p>
+      </body>
+    </html>
+  `;
+}
+
+export async function sendInvitationEmail(
+  to: string,
+  clientName: string,
+  projectName: string,
+  inviteLink: string,
+): Promise<void> {
+  const notification: EmailNotification = {
+    to,
+    subject: `You're Invited to ${projectName}`,
+    type: "engagement_invitation",
+    data: {
+      clientName,
+      projectName,
+      inviteLink,
+    },
+  };
+
+  await sendEmailNotification(notification);
+}
+
 function logEmailNotification(notification: EmailNotification): void {
   const timestamp = new Date().toISOString();
   console.log(`
