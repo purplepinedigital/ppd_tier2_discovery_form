@@ -256,9 +256,38 @@ export default function EngagementDetail() {
 }
 
 // Helper component to display Tier 1 assessment details
-function Tier1AssessmentDisplay({ engagementId }: { engagementId: string }) {
+function Tier1AssessmentDisplay({ engagementId, engagementTitle }: { engagementId: string; engagementTitle?: string }) {
   const [assessment, setAssessment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const exportToCSV = () => {
+    if (!assessment) return;
+
+    const headers = ['Field', 'Value'];
+    const data = [
+      ['Project Name', assessment.project_name],
+      ['Business Name', assessment.business_name],
+      ['Industry', assessment.industry],
+      ['Current State', assessment.current_state],
+      ['Needs', (assessment.needs_array || []).join('; ')],
+      ['Website Scope', assessment.website_scope],
+      ['Marketing Timing', assessment.marketing_timing],
+      ['Budget Range', assessment.budget_range],
+      ['Timeline Expectation', assessment.timeline_expectation],
+      ['Primary Goal', assessment.primary_goal],
+      ['Recommended Package', assessment.recommended_package],
+      ['Confidence Level', assessment.recommendation_confidence],
+      ['Budget Aligned', assessment.budget_aligned ? 'Yes' : 'No'],
+    ];
+
+    const csv = [headers, ...data].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${engagementTitle}-tier1-assessment.csv`;
+    link.click();
+  };
 
   useEffect(() => {
     const fetchAssessment = async () => {
