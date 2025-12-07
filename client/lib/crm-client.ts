@@ -39,33 +39,6 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       return { error: authError?.message || 'Failed to create account' };
     }
 
-    // Update invitation to mark as accepted
-    const { error: updateError } = await supabase
-      .from('crm_invitations')
-      .update({
-        status: 'accepted',
-        accepted_at: new Date().toISOString(),
-        created_user_id: authData.user.id,
-      })
-      .eq('id', invitation.id);
-
-    if (updateError) {
-      return { error: updateError.message };
-    }
-
-    // Update engagement with client user ID and email
-    const { error: engagementError } = await supabase
-      .from('crm_engagements')
-      .update({
-        client_user_id: authData.user.id,
-        client_email: invitation.email,
-      })
-      .eq('id', invitation.engagement_id);
-
-    if (engagementError) {
-      return { error: engagementError.message };
-    }
-
     // Sign in the user immediately after account creation
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: invitation.email,
@@ -76,10 +49,33 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       return { error: signInError.message || 'Failed to sign in after account creation' };
     }
 
-    return {
-      user: authData.user,
-      engagementId: invitation.engagement_id,
-    };
+    // Call server endpoint to update invitation and engagement with service role
+    try {
+      const response = await fetch('/api/accept-invitation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token,
+          userId: authData.user.id,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.error || 'Failed to accept invitation' };
+      }
+
+      const result = await response.json();
+
+      return {
+        user: authData.user,
+        engagementId: result.engagementId,
+      };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to process invitation' };
+    }
   } catch (error: any) {
     return { error: error.message };
   }
