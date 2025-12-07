@@ -49,28 +49,15 @@ export default function Tier2Form() {
         throw new Error('Not authenticated');
       }
 
-      const { data: tier2Data, error: tier2Error } = await supabase
-        .from('tier2_form_progress')
+      const { error: tier2Error } = await supabase
+        .from('tier2_temp')
         .insert({
           user_id: user.user.id,
           engagement_id: engagement.id,
           responses,
-        })
-        .select('id')
-        .single();
+        });
 
       if (tier2Error) throw tier2Error;
-
-      const { error: updateError } = await supabase
-        .from('crm_engagements')
-        .update({
-          tier2_submitted_at: new Date().toISOString(),
-          status: 'tier2_submitted',
-          tier2_form_id: tier2Data.id,
-        })
-        .eq('id', engagement.id);
-
-      if (updateError) throw updateError;
 
       navigate('/crm/dashboard');
     } catch (err: any) {
