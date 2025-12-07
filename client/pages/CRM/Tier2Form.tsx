@@ -23,22 +23,21 @@ export default function Tier2Form() {
     const fetchEngagement = async () => {
       try {
         const { data: user } = await supabase.auth.getUser();
-        if (!user.user) {
+        if (!user.user || !engagementId) {
           setLoading(false);
           return;
         }
 
-        // Get the latest engagement for this user that's awaiting Tier 2
+        // Get the specific engagement by ID
         const { data } = await supabase
           .from('crm_engagements')
           .select('*')
+          .eq('id', engagementId)
           .eq('client_user_id', user.user.id)
-          .in('status', ['tier1_submitted', 'awaiting_tier2'])
-          .order('created_at', { ascending: false })
-          .limit(1);
+          .single();
 
-        if (data && data.length > 0) {
-          setEngagement(data[0]);
+        if (data) {
+          setEngagement(data);
         }
       } catch (error) {
         console.error('Error fetching engagement:', error);
@@ -46,7 +45,7 @@ export default function Tier2Form() {
       setLoading(false);
     };
     fetchEngagement();
-  }, []);
+  }, [engagementId]);
 
   const handleResponseChange = (index: number, value: string) => {
     const newResponses = [...responses];
