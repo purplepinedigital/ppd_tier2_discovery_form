@@ -32,7 +32,7 @@ export default function ClientEngagementView() {
 
         // Fetch Tier 1 assessment if it exists
         const { data: tier1Data } = await supabase
-          .from('tier1_assessments')
+          .from('tier1_temp')
           .select('*')
           .eq('engagement_id', id)
           .single();
@@ -40,7 +40,7 @@ export default function ClientEngagementView() {
 
         // Fetch Tier 2 responses if they exist
         const { data: tier2Data } = await supabase
-          .from('tier2_form_progress')
+          .from('tier2_temp')
           .select('*')
           .eq('engagement_id', id)
           .single();
