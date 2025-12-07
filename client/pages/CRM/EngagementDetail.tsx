@@ -252,3 +252,197 @@ export default function EngagementDetail() {
     </div>
   );
 }
+
+// Helper component to display Tier 1 assessment details
+function Tier1AssessmentDisplay({ engagementId }: { engagementId: string }) {
+  const [assessment, setAssessment] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAssessment = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('tier1_assessments')
+          .select('*')
+          .eq('engagement_id', engagementId)
+          .single();
+
+        if (!error && data) {
+          setAssessment(data);
+        }
+      } catch (err) {
+        console.error('Error fetching Tier 1 assessment:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAssessment();
+  }, [engagementId]);
+
+  if (loading) return <p className="text-gray-500">Loading assessment...</p>;
+  if (!assessment) return <p className="text-gray-500">No assessment data found</p>;
+
+  return (
+    <div className="space-y-4 text-sm">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <span className="text-gray-600">Business Name:</span>
+          <p className="font-semibold">{assessment.business_name}</p>
+        </div>
+        <div>
+          <span className="text-gray-600">Industry:</span>
+          <p className="font-semibold">{assessment.industry}</p>
+        </div>
+        <div>
+          <span className="text-gray-600">Current State:</span>
+          <p className="font-semibold">{assessment.current_state}</p>
+        </div>
+        <div>
+          <span className="text-gray-600">Website Scope:</span>
+          <p className="font-semibold">{assessment.website_scope}</p>
+        </div>
+        <div>
+          <span className="text-gray-600">Budget Range:</span>
+          <p className="font-semibold">{assessment.budget_range}</p>
+        </div>
+        <div>
+          <span className="text-gray-600">Timeline:</span>
+          <p className="font-semibold">{assessment.timeline_expectation}</p>
+        </div>
+      </div>
+
+      {assessment.needs_array && assessment.needs_array.length > 0 && (
+        <div>
+          <span className="text-gray-600">Needs:</span>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {assessment.needs_array.map((need: string) => (
+              <span key={need} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                {need}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <span className="text-gray-600">Primary Goal:</span>
+        <p className="mt-1 text-gray-700">{assessment.primary_goal}</p>
+      </div>
+
+      {assessment.recommendation_confidence && (
+        <div className="bg-blue-50 p-3 rounded">
+          <span className="text-gray-600">Recommendation Confidence:</span>
+          <p className="font-semibold text-blue-600">{assessment.recommendation_confidence}%</p>
+        </div>
+      )}
+
+      {assessment.reasoning && (
+        <div>
+          <span className="text-gray-600">Reasoning:</span>
+          <p className="mt-1 text-gray-700 bg-gray-50 p-2 rounded">{assessment.reasoning}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Helper component to display Tier 2 form responses
+function Tier2ResponsesDisplay({ engagementId }: { engagementId: string }) {
+  const [formData, setFormData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const tier2Questions = [
+    "Tell us about your company's history and background",
+    "What are your main business objectives?",
+    "Who are your target customers?",
+    "What problems do you solve for your customers?",
+    "Describe your competitive advantages",
+    "What is your current marketing strategy?",
+    "How do you currently acquire customers?",
+    "What is your customer retention rate?",
+    "What are your top services or products?",
+    "What makes your brand unique?",
+    "Describe your ideal customer",
+    "What are your main business challenges?",
+    "What is your business model?",
+    "How do you measure success?",
+    "What are your growth plans for the next year?",
+    "What is your current website strategy?",
+    "What are your main pain points with your current website?",
+    "What would an ideal website solution look like?",
+    "What features are most important to you?",
+    "How do you want customers to interact with your brand online?",
+    "What is your timeline for this project?",
+    "Who are the key decision makers on your team?",
+    "What is your budget for this project?",
+    "Have you worked with agencies before?",
+    "What did or didn't work in past projects?",
+    "What are your expectations for communication and reporting?",
+    "How frequently do you want to meet?",
+    "What success metrics matter most to you?",
+    "What are your long-term business goals?",
+    "Is there anything else you'd like us to know?",
+  ];
+
+  useEffect(() => {
+    const fetchResponses = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('tier2_form_progress')
+          .select('*')
+          .eq('engagement_id', engagementId)
+          .single();
+
+        if (!error && data) {
+          setFormData(data);
+        }
+      } catch (err) {
+        console.error('Error fetching Tier 2 responses:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResponses();
+  }, [engagementId]);
+
+  if (loading) return <p className="text-gray-500">Loading responses...</p>;
+  if (!formData) return <p className="text-gray-500">No responses found</p>;
+
+  const responses = formData.responses || [];
+  const answeredCount = responses.filter((r: string) => r && r.trim()).length;
+
+  return (
+    <div className="space-y-4">
+      <div className="mb-4 p-3 bg-blue-50 rounded">
+        <p className="text-sm text-blue-800">
+          <strong>{answeredCount} out of {tier2Questions.length}</strong> questions answered
+        </p>
+        <div className="w-full bg-blue-200 rounded-full h-2 mt-2 overflow-hidden">
+          <div
+            className="bg-blue-600 h-full transition-all"
+            style={{ width: `${(answeredCount / tier2Questions.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+        {tier2Questions.map((question, index) => (
+          <div key={index} className="border rounded-lg p-3 bg-gray-50">
+            <p className="font-semibold text-sm text-gray-900">
+              {index + 1}. {question}
+            </p>
+            {responses[index] ? (
+              <p className="text-sm text-gray-700 mt-2 whitespace-pre-wrap">
+                {responses[index]}
+              </p>
+            ) : (
+              <p className="text-sm text-gray-400 mt-2 italic">No response provided</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
