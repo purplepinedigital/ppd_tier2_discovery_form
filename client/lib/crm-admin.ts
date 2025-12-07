@@ -100,11 +100,47 @@ export async function createEngagement(data: EngagementData, userId: string) {
     }
     await client.from('crm_stage_progress').insert(stageRecords);
 
+    // Get contact email for invitation
+    const { data: contact } = await getContact(data.contact_id);
+    if (contact?.email) {
+      // Generate invitation
+      const invitationResult = await generateInvitation(result.id, contact.email, userId);
+
+      // Send invitation email
+      if (!invitationResult.error && invitationResult.data?.token) {
+        const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
+        await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+      }
+    }
+
     // Log activity
     await logActivity('engagement_created', result.id, `Engagement "${data.title}" created`, userId);
   }
 
   return { data: result, error };
+}
+
+async function sendInvitationEmailNotification(email: string, clientName: string, projectName: string, inviteLink: string) {
+  try {
+    const response = await fetch('/api/send-invitation-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        clientName,
+        projectName,
+        inviteLink,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to send invitation email:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error sending invitation email:', error);
+  }
 }
 
 export async function updateEngagement(id: string, data: Partial<EngagementData>) {
