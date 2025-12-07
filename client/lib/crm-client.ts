@@ -39,17 +39,7 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       return { error: authError?.message || 'Failed to create account' };
     }
 
-    // Sign in the user immediately after account creation
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: invitation.email,
-      password,
-    });
-
-    if (signInError) {
-      return { error: signInError.message || 'Failed to sign in after account creation' };
-    }
-
-    // Call server endpoint to update invitation and engagement with service role
+    // Call server endpoint to confirm email and link invitation to user
     try {
       const response = await fetch('/api/accept-invitation', {
         method: 'POST',
@@ -68,6 +58,18 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       }
 
       const result = await response.json();
+
+      // Now sign in the user - email should be confirmed by server
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: invitation.email,
+        password,
+      });
+
+      if (signInError) {
+        // If sign-in still fails, return the error
+        console.error('Sign-in error after account creation:', signInError);
+        return { error: signInError.message || 'Failed to sign in - please try logging in manually' };
+      }
 
       return {
         user: authData.user,
