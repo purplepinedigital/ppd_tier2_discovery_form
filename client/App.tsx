@@ -88,10 +88,11 @@ const App = () => (
           <Route path="/crm/invite/:token" element={<InviteAccept />} />
           <Route path="/crm" element={<ClientLayout />}>
             <Route path="dashboard" element={<ClientDashboard />} />
+            <Route path="engagements" element={<ClientEngagementsList />} />
             <Route path="tier1" element={<Tier1Form />} />
             <Route path="tier2" element={<Tier2Form />} />
-            <Route path="engagements/:id" element={<ClientEngagementView />} />
           </Route>
+          <Route path="/crm/client/:id" element={<ClientEngagementView />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
