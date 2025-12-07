@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { createEngagement, getContacts } from '@/lib/crm-admin';
 import { getAdminId, isAdminAuthenticated } from '@/lib/admin-auth';
+import { PROGRAMS } from '@/lib/crm-constants';
 
 interface NewEngagementModalProps {
   isOpen: boolean;
