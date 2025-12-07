@@ -176,7 +176,7 @@ export default function Tier1Form() {
       }
 
       // Navigate directly to Tier 2 form
-      navigate(`/crm/tier2-form/${engagement.id}`);
+      navigate(`/crm/tier2`);
     } catch (error) {
       console.error('Error:', error);
     } finally {
