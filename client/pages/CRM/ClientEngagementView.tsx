@@ -545,7 +545,7 @@ export default function ClientEngagementView() {
 }
 
 // Helper component to display Tier 2 responses for clients
-function Tier2ResponsesClientView({ responses }: { responses: (string | null)[] }) {
+function Tier2ResponsesClientView({ responses, canEdit = true }: { responses: (string | null)[]; canEdit?: boolean }) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const tier2Questions = [
