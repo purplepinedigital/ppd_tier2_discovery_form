@@ -107,7 +107,7 @@ export default function Tier2Form() {
             <div className="mb-8">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-semibold text-gray-700">Overall Progress</label>
-                <span className="text-sm text-gray-600">{responses.filter(r => r && r.trim()).length}/30 answered</span>
+                <span className="text-sm text-gray-600">{responses.filter(r => r && r.trim()).length}/{tier2Questions.length} answered</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div
