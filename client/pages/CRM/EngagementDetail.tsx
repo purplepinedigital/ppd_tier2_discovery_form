@@ -171,7 +171,7 @@ export default function EngagementDetail() {
 
           {activeTab === 'tier2' && (
             <div className="space-y-4">
-              {engagement.status === 'tier2_submitted' || engagement.status === 'in_stages' || engagement.status === 'completed' ? (
+              {(engagement.status === 'tier2_submitted' || engagement.status === 'in_stages' || engagement.status === 'completed') ? (
                 <>
                   <div>
                     <label className="font-semibold text-gray-700">Submitted At</label>
@@ -183,7 +183,7 @@ export default function EngagementDetail() {
                     <Tier2ResponsesDisplay engagementId={engagement.id} engagementTitle={engagement.title} />
                   </div>
 
-                  <div>
+                  <div className="border-t pt-4 mt-4">
                     <label className="font-semibold text-gray-700">Feedback</label>
                     <textarea
                       value={engagement.tier2_feedback || ''}
