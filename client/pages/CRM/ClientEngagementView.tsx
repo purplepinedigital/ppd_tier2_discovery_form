@@ -115,6 +115,19 @@ export default function ClientEngagementView() {
 
   const canEdit = engagement.current_stage === 0;
 
+  const stageLabels = [
+    'Proposal Submission',
+    'Strategy & Planning',
+    'Design',
+    'Development',
+    'Testing & QA',
+    'Launch Preparation',
+    'Go Live',
+    'Post-Launch Support',
+  ];
+
+  const getStageLabel = (stage: number) => stageLabels[stage] || `Stage ${stage}`;
+
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
       {/* Header */}
