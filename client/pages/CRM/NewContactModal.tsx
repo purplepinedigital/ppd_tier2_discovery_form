@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createContact } from '@/lib/crm-admin';
-import { supabase } from '@/lib/supabase';
+import { supabase, getAdminSupabase } from '@/lib/supabase';
 
 interface NewContactModalProps {
   isOpen: boolean;
