@@ -10,23 +10,24 @@ export default function ContactsManagement() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewContactModal, setShowNewContactModal] = useState(false);
+  const [refetch, setRefetch] = useState(false);
+
+  const loadContacts = async () => {
+    setLoading(true);
+    try {
+      const query = await getContacts(searchTerm ? { search: searchTerm } : undefined);
+      const { data } = await query;
+      setContacts(data || []);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchContacts = async () => {
-      setLoading(true);
-      try {
-        const query = await getContacts(searchTerm ? { search: searchTerm } : undefined);
-        const { data } = await query;
-        setContacts(data || []);
-      } catch (error) {
-        console.error('Error fetching contacts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchContacts();
-  }, [searchTerm]);
+    loadContacts();
+  }, [searchTerm, refetch]);
 
   return (
     <div className="space-y-6">
