@@ -131,9 +131,9 @@ export default function Tier1Form() {
 
       const result = calculatePackageRecommendation(recommendationInput);
 
-      // Save Tier 1 assessment
-      const { data: tier1Data, error: tier1Error } = await supabase
-        .from('tier1_assessments')
+      // Save Tier 1 assessment to temporary table
+      const { error: tier1Error } = await supabase
+        .from('tier1_temp')
         .insert({
           user_id: user.user.id,
           engagement_id: engagement.id,
@@ -156,26 +156,9 @@ export default function Tier1Form() {
           mismatch_resolved: true,
           reasoning: result.reasoning,
           internal_notes: result.internalNotes,
-        })
-        .select('id')
-        .single();
+        });
 
       if (tier1Error) throw tier1Error;
-
-      // Update engagement to point to tier1 assessment
-      if (tier1Data) {
-        const { error: updateError } = await supabase
-          .from('crm_engagements')
-          .update({
-            tier1_assessment_id: tier1Data.id,
-            recommended_package: result.recommendedPackage,
-            status: 'tier1_submitted',
-            tier1_submitted_at: new Date().toISOString(),
-          })
-          .eq('id', engagement.id);
-
-        if (updateError) throw updateError;
-      }
 
       // Navigate directly to Tier 2 form
       navigate(`/crm/tier2`);
