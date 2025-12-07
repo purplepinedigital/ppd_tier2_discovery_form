@@ -108,29 +108,81 @@ export default function Tier1Form() {
     return errors.length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    const recommendationInput: RecommendationInput = {
-      currentState,
-      needs,
-      websiteScope,
-      marketingTiming,
-      budgetRange,
-      timelineExpectation,
-      targetDate: targetDate || undefined,
-    };
+    if (!engagement) return;
 
-    const result = calculatePackageRecommendation(recommendationInput);
-    setRecommendation(result);
+    setSubmitting(true);
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) {
+        throw new Error('Not authenticated');
+      }
 
-    if (result.showMismatchScreen) {
-      setScreen('mismatch');
-    } else {
-      setScreen('recommendation');
+      // Calculate recommendation for data storage
+      const recommendationInput: RecommendationInput = {
+        currentState,
+        needs,
+        websiteScope,
+        marketingTiming,
+        budgetRange,
+        timelineExpectation,
+        targetDate: targetDate || undefined,
+      };
+
+      const result = calculatePackageRecommendation(recommendationInput);
+
+      // Save Tier 1 assessment
+      const { data: tier1Data, error: tier1Error } = await supabase
+        .from('tier1_assessments')
+        .insert({
+          user_id: user.user.id,
+          engagement_id: engagement.id,
+          project_name: projectName,
+          business_name: businessName,
+          industry: industry === 'Other' ? otherIndustry : industry,
+          current_state: currentState,
+          needs_array: needs,
+          website_scope: websiteScope,
+          marketing_timing: marketingTiming,
+          budget_range: budgetRange,
+          timeline_expectation: timelineExpectation,
+          target_date: targetDate || null,
+          primary_goal: primaryGoal,
+          recommended_package: result.recommendedPackage,
+          recommendation_confidence: result.confidenceLevel,
+          budget_aligned: result.budgetAligned,
+          has_mismatch: result.hasMismatch,
+          mismatch_type: result.mismatchType,
+          mismatch_resolved: true,
+          reasoning: result.reasoning,
+          internal_notes: result.internalNotes,
+        })
+        .select();
+
+      if (tier1Error) throw tier1Error;
+
+      // Update engagement to point to tier1 assessment
+      if (tier1Data && tier1Data[0]) {
+        await supabase
+          .from('engagements')
+          .update({
+            tier1_assessment_id: tier1Data[0].id,
+            recommended_package: result.recommendedPackage,
+          })
+          .eq('id', engagement.id);
+      }
+
+      // Navigate directly to Tier 2 form
+      navigate(`/crm/tier2-form/${engagement.id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
