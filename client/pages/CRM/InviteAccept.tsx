@@ -52,7 +52,8 @@ export default function InviteAccept() {
       setError(result.error);
       setSubmitting(false);
     } else {
-      // Success - redirect to client dashboard
+      // Success - wait a moment for the session to be established, then redirect
+      await new Promise(resolve => setTimeout(resolve, 500));
       navigate('/crm/dashboard');
     }
   };
