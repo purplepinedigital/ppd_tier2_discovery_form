@@ -35,7 +35,10 @@ export default function EngagementsManagement() {
         <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
           Engagements
         </h2>
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button
+          onClick={() => setShowNewEngagementModal(true)}
+          className="bg-purple-600 hover:bg-purple-700 text-white"
+        >
           + New Engagement
         </Button>
       </div>
