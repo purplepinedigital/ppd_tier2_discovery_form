@@ -216,3 +216,94 @@ export default function ClientEngagementView() {
     </div>
   );
 }
+
+// Helper component to display Tier 2 responses for clients
+function Tier2ResponsesClientView({ responses }: { responses: (string | null)[] }) {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const tier2Questions = [
+    "Tell us about your company's history and background",
+    "What are your main business objectives?",
+    "Who are your target customers?",
+    "What problems do you solve for your customers?",
+    "Describe your competitive advantages",
+    "What is your current marketing strategy?",
+    "How do you currently acquire customers?",
+    "What is your customer retention rate?",
+    "What are your top services or products?",
+    "What makes your brand unique?",
+    "Describe your ideal customer",
+    "What are your main business challenges?",
+    "What is your business model?",
+    "How do you measure success?",
+    "What are your growth plans for the next year?",
+    "What is your current website strategy?",
+    "What are your main pain points with your current website?",
+    "What would an ideal website solution look like?",
+    "What features are most important to you?",
+    "How do you want customers to interact with your brand online?",
+    "What is your timeline for this project?",
+    "Who are the key decision makers on your team?",
+    "What is your budget for this project?",
+    "Have you worked with agencies before?",
+    "What did or didn't work in past projects?",
+    "What are your expectations for communication and reporting?",
+    "How frequently do you want to meet?",
+    "What success metrics matter most to you?",
+    "What are your long-term business goals?",
+    "Is there anything else you'd like us to know?",
+  ];
+
+  const answeredCount = responses.filter(r => r && r.trim()).length;
+
+  return (
+    <div className="space-y-3">
+      <div className="p-3 bg-purple-50 rounded">
+        <p className="text-sm text-purple-800">
+          <strong>{answeredCount} out of {tier2Questions.length}</strong> questions answered
+        </p>
+        <div className="w-full bg-purple-200 rounded-full h-2 mt-2 overflow-hidden">
+          <div
+            className="bg-purple-600 h-full transition-all"
+            style={{ width: `${(answeredCount / tier2Questions.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+        {tier2Questions.map((question, index) => (
+          <div key={index}>
+            <button
+              onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+              className="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors flex items-start justify-between gap-2"
+            >
+              <div className="flex-1">
+                <p className="font-semibold text-sm text-gray-900">
+                  {index + 1}. {question}
+                </p>
+                {responses[index] ? (
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-1">
+                    {responses[index]}
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-400 mt-1 italic">No response</p>
+                )}
+              </div>
+              <div className="text-xl text-gray-400 flex-shrink-0">
+                {expandedIndex === index ? '▼' : '▶'}
+              </div>
+            </button>
+
+            {expandedIndex === index && responses[index] && (
+              <div className="mt-1 p-3 bg-white border-l-4 border-purple-600 rounded">
+                <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                  {responses[index]}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
