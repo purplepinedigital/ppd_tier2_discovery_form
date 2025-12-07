@@ -28,7 +28,6 @@ export default function InviteAccept() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         // User is already logged in, just accept the invitation
-        const admin = supabase.admin;
         try {
           // Get the invitation
           const { data: invitation } = await supabase
