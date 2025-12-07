@@ -16,6 +16,7 @@ export default function ClientEngagementView() {
   const [tier1Assessment, setTier1Assessment] = useState<any>(null);
   const [tier2Responses, setTier2Responses] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Editing state for stage 0
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +24,11 @@ export default function ClientEngagementView() {
   const [editedProgram, setEditedProgram] = useState('');
   const [editedBudget, setEditedBudget] = useState('');
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
