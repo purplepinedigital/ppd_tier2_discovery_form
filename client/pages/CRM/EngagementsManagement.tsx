@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { getEngagements } from '@/lib/crm-admin';
+import { getEngagements, deleteEngagement } from '@/lib/crm-admin';
+import { Trash2 } from 'lucide-react';
 import NewEngagementModal from './NewEngagementModal';
 
 export default function EngagementsManagement() {
@@ -11,6 +12,7 @@ export default function EngagementsManagement() {
   const [statusFilter, setStatusFilter] = useState('');
   const [showNewEngagementModal, setShowNewEngagementModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadEngagements = async () => {
     setLoading(true);
