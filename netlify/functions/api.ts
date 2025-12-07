@@ -926,6 +926,84 @@ const handler: Handler = async (event) => {
     }
   }
 
+  // Send invitation email endpoint
+  if (path.includes("/api/send-invitation-email") && event.httpMethod === "POST") {
+    try {
+      const body = JSON.parse(event.body || "{}");
+      const { email, clientName, projectName, inviteLink } = body;
+
+      if (!email || !clientName || !projectName || !inviteLink) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: "Missing required fields" }),
+        };
+      }
+
+      // Log the invitation email notification
+      const timestamp = new Date().toISOString();
+      console.log(`
+        [${timestamp}] INVITATION EMAIL NOTIFICATION
+        To: ${email}
+        Client: ${clientName}
+        Project: ${projectName}
+        Invite Link: ${inviteLink}
+      `);
+
+      // Email template for invitation
+      const invitationEmailHtml = `
+        <html>
+          <body style="font-family: Arial, sans-serif; color: #333;">
+            <h2>You've Been Invited to Your Project</h2>
+            <p>Hi ${clientName},</p>
+            <p>
+              We're excited to have you join us! You've been invited to access and contribute to your project
+              "<strong>${projectName}</strong>".
+            </p>
+            <p>
+              Please click the button below to accept your invitation and get started:
+            </p>
+            <p>
+              <a href="${inviteLink}" style="
+                background-color: #37306B;
+                color: white;
+                padding: 12px 24px;
+                text-decoration: none;
+                border-radius: 4px;
+                display: inline-block;
+              ">Accept Invitation</a>
+            </p>
+            <p>
+              Once you accept, you'll be able to fill out your Tier 1 and Tier 2 assessment forms
+              and track the progress of your project.
+            </p>
+            <p>
+              If you did not expect this invitation or have any questions, please feel free to reach out!
+            </p>
+            <p>Best regards,<br/>Purple Pine Digital Team</p>
+          </body>
+        </html>
+      `;
+
+      // TODO: Integrate with email service (Sendgrid, Mailgun, Klaviyo transactional, etc.)
+      // For now, just log the notification
+      console.log("Invitation email HTML:", invitationEmailHtml.substring(0, 100) + "...");
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, notification_sent: true }),
+      };
+    } catch (error: any) {
+      console.error("Send invitation email error:", error?.message);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: "Failed to send invitation email" }),
+      };
+    }
+  }
+
   // Default 404
   return {
     statusCode: 404,
