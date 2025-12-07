@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 let supabaseInstance: SupabaseClient | null = null;
+let adminSupabaseInstance: SupabaseClient | null = null;
 
 const getSupabaseInstance = (): SupabaseClient => {
   if (!supabaseInstance) {
@@ -16,6 +17,22 @@ const getSupabaseInstance = (): SupabaseClient => {
     supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
   }
   return supabaseInstance;
+};
+
+export const getAdminSupabase = (): SupabaseClient => {
+  if (!adminSupabaseInstance) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const serviceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      throw new Error(
+        "Supabase URL and service role key are required. Please check your environment variables.",
+      );
+    }
+
+    adminSupabaseInstance = createClient(supabaseUrl, serviceRoleKey);
+  }
+  return adminSupabaseInstance;
 };
 
 export const supabase = new Proxy({} as SupabaseClient, {
