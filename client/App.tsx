@@ -86,12 +86,10 @@ const App = () => (
 
           {/* ========== NEW CRM ROUTES - CLIENT ========== */}
           <Route path="/crm/invite/:token" element={<InviteAccept />} />
-          <Route path="/crm" element={<ClientLayout />}>
-            <Route path="dashboard" element={<ClientDashboard />} />
-            <Route path="engagements" element={<ClientEngagementsList />} />
-            <Route path="tier1" element={<Tier1Form />} />
-            <Route path="tier2" element={<Tier2Form />} />
-          </Route>
+          <Route path="/crm" element={<ClientDashboard />} />
+          <Route path="/crm/dashboard" element={<ClientDashboard />} />
+          <Route path="/crm/tier1/:engagementId" element={<Tier1Form />} />
+          <Route path="/crm/tier2/:engagementId" element={<Tier2Form />} />
           <Route path="/crm/client/:id" element={<ClientEngagementView />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
