@@ -23,6 +23,22 @@ export default function InviteAccept() {
         return;
       }
 
+      // Check if user is already logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // User is already logged in, accept invitation and redirect
+        const result = await acceptInvitationAndCreateAccount(token, '', '', '');
+        if (result.error) {
+          setError(result.error);
+          setLoading(false);
+        } else {
+          // Wait a moment for the session to be established
+          await new Promise(resolve => setTimeout(resolve, 500));
+          navigate('/crm/engagements');
+        }
+        return;
+      }
+
       const result = await verifyInvitation(token);
       if (result.error) {
         setError(result.error);
@@ -33,7 +49,7 @@ export default function InviteAccept() {
     };
 
     verify();
-  }, [token]);
+  }, [token, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
