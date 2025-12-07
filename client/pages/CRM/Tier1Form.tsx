@@ -9,7 +9,7 @@ import {
   type RecommendationOutput,
 } from '@/lib/recommendation';
 
-type Tier1Screen = 'form' | 'loading';
+type Tier1Screen = 'form' | 'loading' | 'complete';
 
 export default function Tier1Form() {
   const navigate = useNavigate();
@@ -157,7 +157,8 @@ export default function Tier1Form() {
           reasoning: result.reasoning,
           internal_notes: result.internalNotes,
         })
-        .select();
+        .select('id')
+        .single();
 
       if (tier1Error) throw tier1Error;
 
@@ -472,7 +473,7 @@ export default function Tier1Form() {
                   disabled={submitting}
                   className="flex-1 bg-purple-600 hover:bg-purple-700 text-white disabled:bg-gray-400"
                 >
-                  {submitting ? 'Processing...' : 'Continue to Discovery'}
+                  {submitting ? 'Submitting...' : 'Submit Responses'}
                 </Button>
               </div>
             </form>
