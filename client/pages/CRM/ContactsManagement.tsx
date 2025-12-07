@@ -102,14 +102,8 @@ export default function ContactsManagement() {
       <NewContactModal
         isOpen={showNewContactModal}
         onClose={() => setShowNewContactModal(false)}
-        onSuccess={() => {
-          fetchContacts();
-        }}
+        onSuccess={() => setRefetch(!refetch)}
       />
     </div>
   );
-}
-
-function fetchContacts() {
-  // This will be called from modal when contact is successfully created
 }
