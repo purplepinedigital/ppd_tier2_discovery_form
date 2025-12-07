@@ -36,14 +36,20 @@ export default function NewContactModal({ isOpen, onClose, onSuccess }: NewConta
     setError('');
 
     try {
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) {
-        setError('You must be logged in to create a contact');
+      if (!isAdminAuthenticated()) {
+        setError('You must be logged in as an admin to create a contact');
         setLoading(false);
         return;
       }
 
-      const { error: createError } = await createContact(formData, user.user.id);
+      const adminEmail = getAdminEmail();
+      if (!adminEmail) {
+        setError('Unable to identify admin user');
+        setLoading(false);
+        return;
+      }
+
+      const { error: createError } = await createContact(formData, adminEmail);
       if (createError) {
         setError(createError.message);
       } else {
