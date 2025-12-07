@@ -11,6 +11,7 @@ const tier2Questions = formSections.flatMap(section =>
 
 export default function Tier2Form() {
   const navigate = useNavigate();
+  const { engagementId } = useParams();
   const [engagement, setEngagement] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
