@@ -197,6 +197,3 @@ export default function ClientLayout() {
     </div>
   );
 }
-
-// Import Supabase for logout
-import { supabase } from '@/lib/supabase';
