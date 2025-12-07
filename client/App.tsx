@@ -28,10 +28,8 @@ import EngagementDetail from "./pages/CRM/EngagementDetail";
 import ActivityTimeline from "./pages/CRM/ActivityTimeline";
 
 // CRM Pages - Client
-import ClientLayout from "./pages/CRM/ClientLayout";
 import InviteAccept from "./pages/CRM/InviteAccept";
 import ClientDashboard from "./pages/CRM/ClientDashboard";
-import ClientEngagementsList from "./pages/CRM/ClientEngagementsList";
 import Tier1Form from "./pages/CRM/Tier1Form";
 import Tier2Form from "./pages/CRM/Tier2Form";
 import ClientEngagementView from "./pages/CRM/ClientEngagementView";
