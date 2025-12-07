@@ -20,7 +20,7 @@ export default function Tier2Form() {
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
-    const fetchEngagement = async () => {
+    const fetchData = async () => {
       try {
         const { data: user } = await supabase.auth.getUser();
         if (!user.user || !engagementId) {
@@ -29,22 +29,37 @@ export default function Tier2Form() {
         }
 
         // Get the specific engagement by ID
-        const { data } = await supabase
+        const { data: engagementData } = await supabase
           .from('crm_engagements')
           .select('*')
           .eq('id', engagementId)
           .eq('client_user_id', user.user.id)
           .single();
 
-        if (data) {
-          setEngagement(data);
+        if (engagementData) {
+          setEngagement(engagementData);
+        }
+
+        // Load existing tier2 responses if they exist
+        const { data: tier2List } = await supabase
+          .from('tier2_temp')
+          .select('*')
+          .eq('engagement_id', engagementId)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (tier2List && tier2List.length > 0) {
+          const tier2Data = tier2List[0];
+          if (tier2Data.responses && Array.isArray(tier2Data.responses)) {
+            setResponses(tier2Data.responses);
+          }
         }
       } catch (error) {
-        console.error('Error fetching engagement:', error);
+        console.error('Error fetching data:', error);
       }
       setLoading(false);
     };
-    fetchEngagement();
+    fetchData();
   }, [engagementId]);
 
   const handleResponseChange = (index: number, value: string) => {
