@@ -29,6 +29,29 @@ export async function updateContact(id: string, data: Partial<ContactData>) {
 
 export async function deleteContact(id: string) {
   const client = getAdminSupabase();
+
+  // Get all engagements for this contact
+  const { data: engagements } = await client
+    .from('crm_engagements')
+    .select('id')
+    .eq('contact_id', id);
+
+  // Delete all engagements (cascade delete)
+  if (engagements && engagements.length > 0) {
+    for (const engagement of engagements) {
+      // Delete related data for each engagement
+      await client.from('crm_stage_progress').delete().eq('engagement_id', engagement.id);
+      await client.from('crm_deliverables').delete().eq('engagement_id', engagement.id);
+      await client.from('crm_activity').delete().eq('engagement_id', engagement.id);
+      await client.from('crm_invitations').delete().eq('engagement_id', engagement.id);
+      await client.from('crm_internal_notes').delete().eq('engagement_id', engagement.id);
+
+      // Delete the engagement itself
+      await client.from('crm_engagements').delete().eq('id', engagement.id);
+    }
+  }
+
+  // Finally delete the contact
   return client.from('crm_contacts').delete().eq('id', id);
 }
 
