@@ -275,7 +275,7 @@ export default function ClientEngagementView() {
         </div>
       )}
 
-      {/* Stage Progress */}
+      {/* Stage Progress Summary */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Project Progress</h3>
         <div className="flex gap-2 mb-6">
