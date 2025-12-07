@@ -155,6 +155,84 @@ export function createServer() {
     }
   });
 
+  // Accept invitation and link user to engagement
+  app.post("/api/accept-invitation", async (req, res) => {
+    try {
+      const { token, userId } = req.body;
+
+      if (!token || !userId) {
+        return res.status(400).json({ error: "Missing required fields: token and userId" });
+      }
+
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !supabaseServiceKey) {
+        console.error("Supabase configuration missing");
+        return res.status(500).json({
+          error: "Supabase configuration missing",
+        });
+      }
+
+      const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+      // Get invitation details
+      const { data: invitation, error: inviteError } = await supabaseAdmin
+        .from("crm_invitations")
+        .select("*")
+        .eq("token", token)
+        .eq("status", "pending")
+        .single();
+
+      if (inviteError || !invitation) {
+        console.error("Invalid invitation:", inviteError);
+        return res.status(400).json({ error: "Invalid or expired invitation" });
+      }
+
+      // Update invitation to accepted
+      const { error: updateInviteError } = await supabaseAdmin
+        .from("crm_invitations")
+        .update({
+          status: "accepted",
+          accepted_at: new Date().toISOString(),
+          created_user_id: userId,
+        })
+        .eq("id", invitation.id);
+
+      if (updateInviteError) {
+        console.error("Error updating invitation:", updateInviteError);
+        return res.status(500).json({ error: "Failed to update invitation status" });
+      }
+
+      // Update engagement with client user ID
+      const { error: engagementError } = await supabaseAdmin
+        .from("crm_engagements")
+        .update({
+          client_user_id: userId,
+          client_email: invitation.email,
+        })
+        .eq("id", invitation.engagement_id);
+
+      if (engagementError) {
+        console.error("Error updating engagement:", engagementError);
+        return res.status(500).json({ error: "Failed to link engagement to user" });
+      }
+
+      console.log(`Invitation ${token} accepted and engagement ${invitation.engagement_id} linked to user ${userId}`);
+
+      return res.status(200).json({
+        success: true,
+        engagementId: invitation.engagement_id,
+      });
+    } catch (error: any) {
+      console.error("Error in accept-invitation route:", error);
+      return res.status(500).json({
+        error: "Failed to accept invitation",
+        message: error.message,
+      });
+    }
+  });
+
   // Cleanup orphaned tier1_assessments (where engagement doesn't exist)
   app.post("/api/admin/cleanup-orphaned-data", async (req, res) => {
     try {
