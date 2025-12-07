@@ -80,6 +80,12 @@ export default function EngagementsManagement() {
           <div className="text-center py-8 text-gray-500">No engagements found</div>
         )}
       </div>
+
+      <NewEngagementModal
+        isOpen={showNewEngagementModal}
+        onClose={() => setShowNewEngagementModal(false)}
+        onSuccess={() => setRefetch(!refetch)}
+      />
     </div>
   );
 }
