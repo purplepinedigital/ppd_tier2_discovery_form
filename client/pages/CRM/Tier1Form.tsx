@@ -708,9 +708,10 @@ export default function Tier1Form() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+                  disabled={submitting}
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white disabled:bg-gray-400"
                 >
-                  Get Recommendation
+                  {submitting ? 'Processing...' : 'Continue to Discovery'}
                 </Button>
               </div>
             </form>
