@@ -39,6 +39,24 @@ export default function EngagementDetail() {
     fetchData();
   }, [id]);
 
+  const handleDelete = async () => {
+    if (!id || !window.confirm('Are you sure you want to delete this engagement? This cannot be undone.')) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const { error } = await deleteEngagement(id);
+      if (error) {
+        alert('Error deleting engagement: ' + error.message);
+      } else {
+        navigate('/admin/crm/engagements');
+      }
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) return <div className="text-center py-8">Loading...</div>;
   if (!engagement) return <div className="text-center py-8">Engagement not found</div>;
 
