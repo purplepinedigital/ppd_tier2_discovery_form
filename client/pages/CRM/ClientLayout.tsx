@@ -108,7 +108,7 @@ export default function ClientLayout() {
 
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
-      {/* Header */}
+      {/* Header with Navigation */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between mb-4">
@@ -128,10 +128,56 @@ export default function ClientLayout() {
             </div>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium text-sm"
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium text-sm flex items-center gap-2"
             >
+              <LogOut size={16} />
               Logout
             </button>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="flex gap-4 mt-4 border-b border-gray-200 pb-0 flex-wrap">
+            <button
+              onClick={() => navigate('/crm/engagements')}
+              className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors"
+            >
+              <LayoutDashboard size={18} />
+              My Projects
+            </button>
+            <button
+              onClick={() => navigate('/crm/dashboard')}
+              className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors"
+            >
+              <FileText size={18} />
+              Project Overview
+            </button>
+            {(engagement.status === 'awaiting_tier1') && (
+              <button
+                onClick={() => navigate('/crm/tier1')}
+                className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-purple-600 border-b-2 border-purple-600 bg-purple-50 rounded-t"
+              >
+                <BookOpen size={18} />
+                Tier 1 Form
+              </button>
+            )}
+            {(engagement.status === 'tier1_submitted' || engagement.status === 'awaiting_tier2') && (
+              <button
+                onClick={() => navigate('/crm/tier2')}
+                className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-purple-600 border-b-2 border-purple-600 bg-purple-50 rounded-t"
+              >
+                <BookOpen size={18} />
+                Tier 2 Form
+              </button>
+            )}
+            {(engagement.status === 'tier2_submitted' || engagement.status === 'in_stages' || engagement.status === 'completed') && (
+              <button
+                onClick={() => navigate(`/crm/client/${engagement.id}`)}
+                className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors"
+              >
+                <CheckSquare size={18} />
+                Project Progress
+              </button>
+            )}
           </div>
 
           {/* Stage Progress Bar */}
