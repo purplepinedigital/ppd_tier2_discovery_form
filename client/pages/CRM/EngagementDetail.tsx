@@ -426,10 +426,12 @@ function Tier2ResponsesDisplay({ engagementId, engagementTitle }: { engagementId
           .from('tier2_temp')
           .select('*')
           .eq('engagement_id', engagementId)
-          .single();
+          .maybeSingle();
 
         if (!error && data) {
           setFormData(data);
+        } else if (error) {
+          console.error('Error fetching Tier 2 responses:', error);
         }
       } catch (err) {
         console.error('Error fetching Tier 2 responses:', err);
