@@ -32,8 +32,13 @@ export default function ClientEngagementView() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!id) return;
+      if (!id) {
+        setError('No project ID provided');
+        setLoading(false);
+        return;
+      }
       setLoading(true);
+      setError(null);
       try {
         const [engData, stageData, delivData, actData] = await Promise.all([
           getClientEngagementData(id),
@@ -42,36 +47,59 @@ export default function ClientEngagementView() {
           getClientActivity(id),
         ]);
 
+        if (engData.error) {
+          setError(engData.error);
+          setLoading(false);
+          return;
+        }
+
         if (engData.data) {
           setEngagement(engData.data);
           // Initialize edit fields
           setEditedTitle(engData.data.title || '');
           setEditedProgram(engData.data.program || '');
           setEditedBudget(engData.data.budget?.toString() || '');
+        } else {
+          setError('Project not found');
+          setLoading(false);
+          return;
         }
-        if (stageData.data) setStages(stageData.data);
-        if (delivData.data) setDeliverables(delivData.data);
-        if (actData.data) setActivities(actData.data);
 
-        // Fetch Tier 1 assessment if it exists (latest one)
-        const { data: tier1List } = await supabase
-          .from('tier1_temp')
-          .select('*')
-          .eq('engagement_id', id)
-          .order('created_at', { ascending: false })
-          .limit(1);
-        if (tier1List && tier1List.length > 0) setTier1Assessment(tier1List[0]);
+        if (stageData.data) setStages(stageData.data || []);
+        if (delivData.data) setDeliverables(delivData.data || []);
+        if (actData.data) setActivities(actData.data || []);
 
-        // Fetch Tier 2 responses if they exist (latest one)
-        const { data: tier2List } = await supabase
-          .from('tier2_temp')
-          .select('*')
-          .eq('engagement_id', id)
-          .order('created_at', { ascending: false })
-          .limit(1);
-        if (tier2List && tier2List.length > 0) setTier2Responses(tier2List[0]);
-      } catch (error) {
+        try {
+          // Fetch Tier 1 assessment if it exists (latest one)
+          const { data: tier1List, error: tier1Error } = await supabase
+            .from('tier1_temp')
+            .select('*')
+            .eq('engagement_id', id)
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+          if (!tier1Error && tier1List && tier1List.length > 0) {
+            setTier1Assessment(tier1List[0]);
+          }
+
+          // Fetch Tier 2 responses if they exist (latest one)
+          const { data: tier2List, error: tier2Error } = await supabase
+            .from('tier2_temp')
+            .select('*')
+            .eq('engagement_id', id)
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+          if (!tier2Error && tier2List && tier2List.length > 0) {
+            setTier2Responses(tier2List[0]);
+          }
+        } catch (error) {
+          console.warn('Warning loading tier assessments:', error);
+          // Don't fail the whole page if tier assessments fail to load
+        }
+      } catch (error: any) {
         console.error('Error fetching engagement data:', error);
+        setError(error.message || 'Failed to load project details');
       } finally {
         setLoading(false);
       }
