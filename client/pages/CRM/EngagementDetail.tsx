@@ -137,15 +137,14 @@ export default function EngagementDetail() {
             <div className="space-y-4">
               {engagement.status && ['tier1_submitted', 'awaiting_tier2', 'tier2_submitted', 'in_stages', 'completed'].includes(engagement.status) ? (
                 <>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="font-semibold text-gray-700">Submitted At</label>
-                      <p className="text-gray-600">{engagement.tier1_submitted_at ? new Date(engagement.tier1_submitted_at).toLocaleString() : 'Not submitted'}</p>
-                    </div>
-                    <div>
-                      <label className="font-semibold text-gray-700">Recommended Package</label>
-                      <p className="text-gray-600 font-bold text-purple-600">{engagement.recommended_package?.toUpperCase() || 'N/A'}</p>
-                    </div>
+                  <div>
+                    <label className="font-semibold text-gray-700">Submitted At</label>
+                    <p className="text-gray-600">{engagement.tier1_submitted_at ? new Date(engagement.tier1_submitted_at).toLocaleString() : 'Not submitted'}</p>
+                  </div>
+
+                  <div>
+                    <label className="font-semibold text-gray-700">Recommended Package</label>
+                    <p className="text-gray-600 font-bold text-purple-600">{engagement.recommended_package?.toUpperCase() || 'N/A'}</p>
                   </div>
 
                   <div className="border-t pt-4 mt-4">
@@ -153,7 +152,7 @@ export default function EngagementDetail() {
                     <Tier1AssessmentDisplay engagementId={engagement.id} engagementTitle={engagement.title} />
                   </div>
 
-                  <div>
+                  <div className="border-t pt-4 mt-4">
                     <label className="font-semibold text-gray-700">Feedback</label>
                     <textarea
                       value={engagement.tier1_feedback || ''}
