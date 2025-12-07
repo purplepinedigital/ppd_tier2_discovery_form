@@ -9,12 +9,7 @@ import {
   type RecommendationOutput,
 } from '@/lib/recommendation';
 
-type Tier1Screen =
-  | 'form'
-  | 'recommendation'
-  | 'mismatch'
-  | 'complete'
-  | 'loading';
+type Tier1Screen = 'form' | 'loading';
 
 export default function Tier1Form() {
   const navigate = useNavigate();
