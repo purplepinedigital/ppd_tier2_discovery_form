@@ -114,12 +114,10 @@ export default function ClientEngagementView() {
     return <div className="text-center py-12">Unable to load your project</div>;
   }
 
-  const canEdit = engagement.current_stage === 0;
-
   const stageLabels = [
-    'Proposal Submission',
-    'Strategy & Planning',
-    'Design',
+    'Deep Discovery & Package Decision',
+    'Identity & Positioning',
+    'Visual Identity & Branding',
     'Development',
     'Testing & QA',
     'Launch Preparation',
@@ -127,7 +125,22 @@ export default function ClientEngagementView() {
     'Post-Launch Support',
   ];
 
+  const stageDescriptions = [
+    'Initial discovery phase to determine program fit',
+    'Define who you are and where you fit in the market',
+    'Create your visual language and brand guidelines',
+    'Build and implement the solution',
+    'Thoroughly test all functionality and user experience',
+    'Get everything ready for launch',
+    'Launch to the world',
+    'Support after launch',
+  ];
+
   const getStageLabel = (stage: number) => stageLabels[stage] || `Stage ${stage}`;
+  const getStageDescription = (stage: number) => stageDescriptions[stage] || '';
+
+  const canEditResponses = !stages.some(s => s.stage_number === 0 && s.status === 'completed');
+  const stage0Completed = stages.some(s => s.stage_number === 0 && s.status === 'completed');
 
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
