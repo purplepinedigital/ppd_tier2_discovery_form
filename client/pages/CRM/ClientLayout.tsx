@@ -24,15 +24,39 @@ export default function ClientLayout() {
           return;
         }
 
-        const { data, error: fetchError } = await getClientEngagement();
-        if (fetchError) {
-          console.error('Error fetching engagement:', fetchError);
-          setError(`Failed to load engagement: ${fetchError}`);
-        } else if (data) {
-          setEngagement(data);
+        // If we have an engagement ID in params, use that
+        if (id) {
+          const { data, error: fetchError } = await supabase
+            .from('crm_engagements')
+            .select('*')
+            .eq('id', id)
+            .eq('client_user_id', user.user.id)
+            .single();
+
+          if (fetchError) {
+            console.error('Error fetching engagement:', fetchError);
+            setError(`Failed to load engagement: ${fetchError}`);
+          } else if (data) {
+            setEngagement(data);
+          }
         } else {
-          console.error('No engagement data returned for user:', user.user?.id);
-          setError('No project found for your account. Please ensure you have accepted the invitation and contact support if the issue persists.');
+          // No ID provided, try to get the first/primary engagement
+          const { data, error: fetchError } = await supabase
+            .from('crm_engagements')
+            .select('*')
+            .eq('client_user_id', user.user.id)
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+          if (fetchError) {
+            console.error('Error fetching engagement:', fetchError);
+            setError(`Failed to load engagement: ${fetchError}`);
+          } else if (data && data.length > 0) {
+            setEngagement(data[0]);
+          } else {
+            console.error('No engagement data returned for user:', user.user?.id);
+            setError('No project found for your account. Please ensure you have accepted the invitation and contact support if the issue persists.');
+          }
         }
       } catch (err: any) {
         setError(err.message || 'An unexpected error occurred');
@@ -41,7 +65,7 @@ export default function ClientLayout() {
       }
     };
     fetchEngagement();
-  }, [location.pathname]);
+  }, [location.pathname, id]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
