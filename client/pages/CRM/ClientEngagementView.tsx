@@ -218,6 +218,7 @@ export default function ClientEngagementView() {
   const getStageLabel = (stage: number) => stageLabels[stage] || `Stage ${stage}`;
   const getStageDescription = (stage: number) => stageDescriptions[stage] || '';
 
+  const canEdit = engagement.current_stage === 0;
   const canEditResponses = !stages.some(s => s.stage_number === 0 && s.status === 'completed');
   const stage0Completed = stages.some(s => s.stage_number === 0 && s.status === 'completed');
 
