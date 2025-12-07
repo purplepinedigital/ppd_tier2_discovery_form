@@ -172,6 +172,13 @@ export default function Tier1Form() {
 
       const result = calculatePackageRecommendation(recommendationInput);
 
+      // Delete any existing tier1 submission for this engagement and user
+      await supabase
+        .from('tier1_temp')
+        .delete()
+        .eq('engagement_id', engagement.id)
+        .eq('user_id', user.user.id);
+
       // Save Tier 1 assessment to temporary table
       const { error: tier1Error } = await supabase
         .from('tier1_temp')
