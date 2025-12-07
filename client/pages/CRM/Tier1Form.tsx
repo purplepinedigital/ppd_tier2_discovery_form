@@ -163,23 +163,26 @@ export default function Tier1Form() {
       if (tier1Error) throw tier1Error;
 
       // Update engagement to point to tier1 assessment
-      if (tier1Data && tier1Data[0]) {
-        await supabase
+      if (tier1Data) {
+        const { error: updateError } = await supabase
           .from('crm_engagements')
           .update({
-            tier1_assessment_id: tier1Data[0].id,
+            tier1_assessment_id: tier1Data.id,
             recommended_package: result.recommendedPackage,
             status: 'tier1_submitted',
             tier1_submitted_at: new Date().toISOString(),
           })
           .eq('id', engagement.id);
+
+        if (updateError) throw updateError;
       }
 
       // Navigate directly to Tier 2 form
       navigate(`/crm/tier2`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
-    } finally {
+      setValidationErrors([error?.message || 'An error occurred. Please try again.']);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setSubmitting(false);
     }
   };
