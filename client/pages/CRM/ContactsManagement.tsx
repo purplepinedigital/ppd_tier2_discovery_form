@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getContacts } from '@/lib/crm-admin';
+import NewContactModal from './NewContactModal';
 
 export default function ContactsManagement() {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showNewContactModal, setShowNewContactModal] = useState(false);
 
   useEffect(() => {
     const fetchContacts = async () => {
