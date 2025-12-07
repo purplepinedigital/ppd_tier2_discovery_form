@@ -27,6 +27,24 @@ export default function ContactsManagement() {
     }
   };
 
+  const handleDelete = async (contactId: string, contactName: string) => {
+    if (!window.confirm(`Are you sure you want to delete "${contactName}" and all related engagements? This cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingId(contactId);
+    try {
+      const { error } = await deleteContact(contactId);
+      if (error) {
+        alert('Error deleting contact: ' + error.message);
+      } else {
+        setContacts(contacts.filter(c => c.id !== contactId));
+      }
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   useEffect(() => {
     loadContacts();
   }, [searchTerm, refetch]);
