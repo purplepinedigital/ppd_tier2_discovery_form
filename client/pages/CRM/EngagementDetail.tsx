@@ -150,7 +150,7 @@ export default function EngagementDetail() {
 
                   <div className="border-t pt-4 mt-4">
                     <h4 className="font-semibold text-gray-900 mb-3">Assessment Details</h4>
-                    <Tier1AssessmentDisplay engagementId={engagement.id} />
+                    <Tier1AssessmentDisplay engagementId={engagement.id} engagementTitle={engagement.title} />
                   </div>
 
                   <div>
