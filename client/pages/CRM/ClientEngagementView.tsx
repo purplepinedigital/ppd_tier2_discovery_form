@@ -32,21 +32,23 @@ export default function ClientEngagementView() {
         if (delivData.data) setDeliverables(delivData.data);
         if (actData.data) setActivities(actData.data);
 
-        // Fetch Tier 1 assessment if it exists
-        const { data: tier1Data } = await supabase
+        // Fetch Tier 1 assessment if it exists (latest one)
+        const { data: tier1List } = await supabase
           .from('tier1_temp')
           .select('*')
           .eq('engagement_id', id)
-          .single();
-        if (tier1Data) setTier1Assessment(tier1Data);
+          .order('created_at', { ascending: false })
+          .limit(1);
+        if (tier1List && tier1List.length > 0) setTier1Assessment(tier1List[0]);
 
-        // Fetch Tier 2 responses if they exist
-        const { data: tier2Data } = await supabase
+        // Fetch Tier 2 responses if they exist (latest one)
+        const { data: tier2List } = await supabase
           .from('tier2_temp')
           .select('*')
           .eq('engagement_id', id)
-          .single();
-        if (tier2Data) setTier2Responses(tier2Data);
+          .order('created_at', { ascending: false })
+          .limit(1);
+        if (tier2List && tier2List.length > 0) setTier2Responses(tier2List[0]);
       } catch (error) {
         console.error('Error fetching engagement data:', error);
       } finally {
