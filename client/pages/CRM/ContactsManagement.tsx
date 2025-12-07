@@ -97,6 +97,18 @@ export default function ContactsManagement() {
           <div className="text-center py-8 text-gray-500">No contacts found</div>
         )}
       </div>
+
+      <NewContactModal
+        isOpen={showNewContactModal}
+        onClose={() => setShowNewContactModal(false)}
+        onSuccess={() => {
+          fetchContacts();
+        }}
+      />
     </div>
   );
+}
+
+function fetchContacts() {
+  // This will be called from modal when contact is successfully created
 }
