@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { getClientEngagement } from '@/lib/crm-client';
 import { supabase } from '@/lib/supabase';
 import { formSections } from '@/data/discovery-form';
 
