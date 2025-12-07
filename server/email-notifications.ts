@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 interface EmailNotification {
   to: string;
   subject: string;
-  type: "program_assigned" | "deliverable_added";
+  type: "program_assigned" | "deliverable_added" | "engagement_invitation";
   data: Record<string, any>;
 }
 
