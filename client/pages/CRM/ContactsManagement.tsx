@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { getContacts } from '@/lib/crm-admin';
+import { getContacts, deleteContact } from '@/lib/crm-admin';
+import { Trash2 } from 'lucide-react';
 import NewContactModal from './NewContactModal';
 
 export default function ContactsManagement() {
@@ -11,6 +12,7 @@ export default function ContactsManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewContactModal, setShowNewContactModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadContacts = async () => {
     setLoading(true);
