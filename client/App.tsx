@@ -86,6 +86,7 @@ const App = () => (
           <Route path="/crm/invite/:token" element={<InviteAccept />} />
           <Route path="/crm" element={<ClientDashboard />} />
           <Route path="/crm/dashboard" element={<ClientDashboard />} />
+          <Route path="/crm/engagements" element={<ClientDashboard />} />
           <Route path="/crm/tier1/:engagementId" element={<Tier1Form />} />
           <Route path="/crm/tier2/:engagementId" element={<Tier2Form />} />
           <Route path="/crm/client/:id" element={<ClientEngagementView />} />
