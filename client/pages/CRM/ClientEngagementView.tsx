@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { getClientEngagementData, getClientDeliverables, getClientActivity, getClientStageProgress } from '@/lib/crm-client';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { ArrowLeft, Edit2, X, Download, CheckCircle, Clock } from 'lucide-react';
+import { ArrowLeft, Edit2, X, Download, CheckCircle, Clock, LogOut } from 'lucide-react';
 
 export default function ClientEngagementView() {
   const { id } = useParams();
