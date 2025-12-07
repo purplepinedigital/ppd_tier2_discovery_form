@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { getClientEngagementData, getClientDeliverables, getClientActivity, getClientStageProgress } from '@/lib/crm-client';
-import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Edit2, X } from 'lucide-react';
 
 export default function ClientEngagementView() {
   const { id } = useParams();
