@@ -189,6 +189,17 @@ export function createServer() {
         return res.status(400).json({ error: "Invalid or expired invitation" });
       }
 
+      // Mark email as confirmed for the user (bypass email verification for invitations)
+      try {
+        await supabaseAdmin.auth.admin.updateUserById(userId, {
+          email_confirm: true,
+        });
+        console.log(`Email confirmed for user ${userId}`);
+      } catch (confirmError: any) {
+        console.warn(`Warning: Could not auto-confirm email:`, confirmError.message);
+        // Don't fail the entire process if confirmation fails
+      }
+
       // Update invitation to accepted
       const { error: updateInviteError } = await supabaseAdmin
         .from("crm_invitations")
