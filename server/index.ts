@@ -34,7 +34,7 @@ export function createServer() {
   // Klaviyo route
   app.post("/api/klaviyo/contact", handleKlaviyoContact);
 
-  // Send invitation email route via Klaviyo
+  // Send invitation email route via Sendgrid
   app.post("/api/send-invitation-email", async (req, res) => {
     try {
       const { email, clientName, projectName, inviteLink } = req.body;
@@ -43,11 +43,11 @@ export function createServer() {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
-      const KLAVIYO_API_KEY = process.env.VITE_KLAVIYO_API_KEY || process.env.KLAVIYO_API_KEY || "";
+      const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || "";
 
-      if (!KLAVIYO_API_KEY) {
-        console.warn("Klaviyo API key not configured");
-        return res.status(500).json({ error: "Klaviyo API key not configured" });
+      if (!SENDGRID_API_KEY) {
+        console.warn("Sendgrid API key not configured");
+        return res.status(500).json({ error: "Sendgrid API key not configured" });
       }
 
       // Extract client name from full name if present
@@ -88,73 +88,63 @@ export function createServer() {
         </html>
       `;
 
-      // Send via Klaviyo transactional email API
+      // Send via Sendgrid Mail Send API
       const payload = {
-        data: {
-          type: "email-message",
-          attributes: {
-            profile: {
-              data: {
-                type: "profile",
-                attributes: {
-                  email: email,
-                  first_name: clientFirstName,
-                },
-              },
-            },
-            template: {
-              data: {
-                type: "email-template",
-                attributes: {
-                  name: "Engagement Invitation",
-                },
-              },
-            },
+        personalizations: [
+          {
+            to: [{ email: email, name: clientName }],
             subject: `You're Invited to ${projectName}`,
-            body_html: invitationEmailHtml,
-            from_email: "noreply@purplepine.digital",
-            from_label: "Purple Pine Digital",
           },
+        ],
+        from: {
+          email: "noreply@purplepine.digital",
+          name: "Purple Pine Digital",
+        },
+        content: [
+          {
+            type: "text/html",
+            value: invitationEmailHtml,
+          },
+        ],
+        reply_to: {
+          email: "support@purplepine.digital",
         },
       };
 
-      console.log(`[${new Date().toISOString()}] Sending invitation email via Klaviyo to ${email}`);
+      console.log(`[${new Date().toISOString()}] Sending invitation email via Sendgrid to ${email} for project ${projectName}`);
 
-      const response = await fetch("https://a.klaviyo.com/api/email-messages/", {
+      const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
         method: "POST",
         headers: {
-          "Content-Type": "application/vnd.api+json",
-          "Accept": "application/vnd.api+json",
-          "Authorization": `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-          "revision": "2024-10-15",
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SENDGRID_API_KEY}`,
         },
         body: JSON.stringify(payload),
       });
 
-      let responseData;
-      try {
-        responseData = await response.json();
-      } catch (parseError: any) {
-        console.error("Failed to parse Klaviyo response:", parseError);
-        // Still return success - email queuing might have worked even if parse failed
-        return res.status(200).json({ success: true, notification_sent: true });
-      }
-
       if (!response.ok) {
-        console.error("Klaviyo API error:", {
+        let errorData: any = {};
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          // Response might not be JSON
+        }
+
+        console.error("Sendgrid API error:", {
           status: response.status,
           statusText: response.statusText,
-          data: responseData,
+          data: errorData,
         });
+
         // Log the error but still return success - don't block engagement creation
-        console.log("Invitation email queued but Klaviyo response had error - continuing");
-        return res.status(200).json({ success: true, notification_sent: true });
+        console.log("Invitation email queued but Sendgrid response had error - continuing");
+        return res.status(200).json({ success: true, notification_sent: true, warning: "Email send attempted" });
       }
 
-      console.log("Invitation email sent via Klaviyo successfully:", {
+      console.log("Invitation email sent via Sendgrid successfully:", {
         email,
         projectName,
-        messageId: responseData?.data?.id,
+        status: response.status,
       });
 
       return res.status(200).json({ success: true, notification_sent: true });
