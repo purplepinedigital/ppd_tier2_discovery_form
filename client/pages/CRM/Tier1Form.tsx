@@ -160,12 +160,13 @@ export default function Tier1Form() {
 
       if (tier1Error) throw tier1Error;
 
-      // Update engagement status to tier1_submitted
+      // Update engagement status and recommended package
       const { error: updateError } = await supabase
         .from('crm_engagements')
         .update({
           status: 'tier1_submitted',
           tier1_submitted_at: new Date().toISOString(),
+          recommended_package: result.recommendedPackage,
         })
         .eq('id', engagement.id);
 
