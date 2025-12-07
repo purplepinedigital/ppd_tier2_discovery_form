@@ -3,6 +3,8 @@ const ADMIN_AUTH_KEY = "admin_auth_token";
 
 const ADMIN_EMAIL = "lovish.bishnoi@purplepine.digital";
 const ADMIN_PASSWORD = "rGaneshaL123#";
+// Fixed UUID for admin user (deterministic based on email)
+const ADMIN_UUID = "550e8400-e29b-41d4-a716-446655440000";
 
 export function isAdminAuthenticated(): boolean {
   if (typeof window === "undefined") return false;
