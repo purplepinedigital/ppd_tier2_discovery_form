@@ -3,39 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getClientEngagement } from '@/lib/crm-client';
 import { supabase } from '@/lib/supabase';
+import { formSections } from '@/client/data/discovery-form';
 
-const tier2Questions = [
-  "Tell us about your company's history and background",
-  "What are your main business objectives?",
-  "Who are your target customers?",
-  "What problems do you solve for your customers?",
-  "Describe your competitive advantages",
-  "What is your current marketing strategy?",
-  "How do you currently acquire customers?",
-  "What is your customer retention rate?",
-  "What are your top services or products?",
-  "What makes your brand unique?",
-  "Describe your ideal customer",
-  "What are your main business challenges?",
-  "What is your business model?",
-  "How do you measure success?",
-  "What are your growth plans for the next year?",
-  "What is your current website strategy?",
-  "What are your main pain points with your current website?",
-  "What would an ideal website solution look like?",
-  "What features are most important to you?",
-  "How do you want customers to interact with your brand online?",
-  "What is your timeline for this project?",
-  "Who are the key decision makers on your team?",
-  "What is your budget for this project?",
-  "Have you worked with agencies before?",
-  "What did or didn't work in past projects?",
-  "What are your expectations for communication and reporting?",
-  "How frequently do you want to meet?",
-  "What success metrics matter most to you?",
-  "What are your long-term business goals?",
-  "Is there anything else you'd like us to know?",
-];
+// Extract questions from form sections
+const tier2Questions = formSections.flatMap(section =>
+  section.questions.map(q => q.prompt)
+);
 
 export default function Tier2Form() {
   const navigate = useNavigate();
