@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getEngagements } from '@/lib/crm-admin';
+import NewEngagementModal from './NewEngagementModal';
 
 export default function EngagementsManagement() {
   const navigate = useNavigate();
   const [engagements, setEngagements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
+  const [showNewEngagementModal, setShowNewEngagementModal] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   useEffect(() => {
     const fetchEngagements = async () => {
