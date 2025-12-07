@@ -23,56 +23,42 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       return { error: 'Invitation has expired' };
     }
 
-    // Create user account
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: invitation.email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-        },
-      },
-    });
-
-    if (authError || !authData.user) {
-      return { error: authError?.message || 'Failed to create account' };
-    }
-
-    // Call server endpoint to confirm email and link invitation to user
+    // Call server endpoint to create account (bypasses confirmation email)
     try {
-      const response = await fetch('/api/accept-invitation', {
+      const response = await fetch('/api/create-invitation-account', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           token,
-          userId: authData.user.id,
+          email: invitation.email,
+          password,
+          firstName,
+          lastName,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.error || 'Failed to accept invitation' };
+        return { error: errorData.error || 'Failed to create account' };
       }
 
       const result = await response.json();
 
-      // Now sign in the user - email should be confirmed by server
+      // Now sign in the user
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: invitation.email,
         password,
       });
 
       if (signInError) {
-        // If sign-in still fails, return the error
         console.error('Sign-in error after account creation:', signInError);
         return { error: signInError.message || 'Failed to sign in - please try logging in manually' };
       }
 
       return {
-        user: authData.user,
+        user: result,
         engagementId: result.engagementId,
       };
     } catch (error: any) {
