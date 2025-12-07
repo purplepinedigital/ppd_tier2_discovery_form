@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 
 export default function ClientEngagementView() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [engagement, setEngagement] = useState<any>(null);
   const [stages, setStages] = useState<any[]>([]);
   const [deliverables, setDeliverables] = useState<any[]>([]);
