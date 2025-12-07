@@ -65,10 +65,28 @@ export default function Tier1Form() {
 
   useEffect(() => {
     const fetchEngagement = async () => {
-      const { data } = await getClientEngagement();
-      if (data) {
-        setEngagement(data);
-        setProjectName(data.title || '');
+      try {
+        const { data: user } = await supabase.auth.getUser();
+        if (!user.user) {
+          setLoading(false);
+          return;
+        }
+
+        // Get the latest engagement for this user
+        const { data } = await supabase
+          .from('crm_engagements')
+          .select('*')
+          .eq('client_user_id', user.user.id)
+          .eq('status', 'awaiting_tier1')
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (data && data.length > 0) {
+          setEngagement(data[0]);
+          setProjectName(data[0].title || '');
+        }
+      } catch (error) {
+        console.error('Error fetching engagement:', error);
       }
       setLoading(false);
     };
