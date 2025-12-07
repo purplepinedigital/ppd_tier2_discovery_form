@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 import { getClientEngagementData, getClientDeliverables, getClientActivity, getClientStageProgress } from '@/lib/crm-client';
 
 export default function ClientEngagementView() {
