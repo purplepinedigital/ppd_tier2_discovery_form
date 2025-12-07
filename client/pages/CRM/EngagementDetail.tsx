@@ -11,6 +11,7 @@ export default function EngagementDetail() {
   const [deliverables, setDeliverables] = useState<any[]>([]);
   const [notes, setNotes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'tier1' | 'tier2' | 'stages' | 'deliverables' | 'notes'>('overview');
 
   useEffect(() => {
