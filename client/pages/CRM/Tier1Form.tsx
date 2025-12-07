@@ -64,7 +64,7 @@ export default function Tier1Form() {
   ];
 
   useEffect(() => {
-    const fetchEngagement = async () => {
+    const fetchData = async () => {
       try {
         const { data: user } = await supabase.auth.getUser();
         if (!user.user || !engagementId) {
@@ -73,23 +73,47 @@ export default function Tier1Form() {
         }
 
         // Get the specific engagement by ID
-        const { data } = await supabase
+        const { data: engagementData } = await supabase
           .from('crm_engagements')
           .select('*')
           .eq('id', engagementId)
           .eq('client_user_id', user.user.id)
           .single();
 
-        if (data) {
-          setEngagement(data);
-          setProjectName(data.title || '');
+        if (engagementData) {
+          setEngagement(engagementData);
+          setProjectName(engagementData.title || '');
+        }
+
+        // Load existing tier1 assessment if it exists
+        const { data: tier1List } = await supabase
+          .from('tier1_temp')
+          .select('*')
+          .eq('engagement_id', engagementId)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (tier1List && tier1List.length > 0) {
+          const tier1Data = tier1List[0];
+          setProjectName(tier1Data.project_name || engagementData?.title || '');
+          setBusinessName(tier1Data.business_name || '');
+          setIndustry(tier1Data.industry || '');
+          setOtherIndustry(tier1Data.other_industry || '');
+          setCurrentState(tier1Data.current_state || '');
+          setNeeds(tier1Data.needs_array || []);
+          setWebsiteScope(tier1Data.website_scope || '');
+          setMarketingTiming(tier1Data.marketing_timing || '');
+          setBudgetRange(tier1Data.budget_range || '');
+          setTimelineExpectation(tier1Data.timeline_expectation || '');
+          setTargetDate(tier1Data.target_date || '');
+          setPrimaryGoal(tier1Data.primary_goal || '');
         }
       } catch (error) {
-        console.error('Error fetching engagement:', error);
+        console.error('Error fetching data:', error);
       }
       setLoading(false);
     };
-    fetchEngagement();
+    fetchData();
   }, [engagementId]);
 
   const toggleNeed = (need: string) => {
