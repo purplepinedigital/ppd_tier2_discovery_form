@@ -183,6 +183,13 @@ export default function AdminDashboard() {
               Admin Dashboard
             </h1>
             <button
+              onClick={() => navigate("/admin/crm/dashboard")}
+              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-bold text-sm"
+              style={{ fontFamily: "Literata, serif" }}
+            >
+              🆕 Try New CRM
+            </button>
+            <button
               onClick={() => navigate("/admin/login-as-user")}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold text-sm"
               style={{ fontFamily: "Literata, serif" }}
