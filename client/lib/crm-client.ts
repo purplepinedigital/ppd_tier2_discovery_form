@@ -66,6 +66,16 @@ export async function acceptInvitationAndCreateAccount(token: string, password: 
       return { error: engagementError.message };
     }
 
+    // Sign in the user immediately after account creation
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: invitation.email,
+      password,
+    });
+
+    if (signInError) {
+      return { error: signInError.message || 'Failed to sign in after account creation' };
+    }
+
     return {
       user: authData.user,
       engagementId: invitation.engagement_id,
