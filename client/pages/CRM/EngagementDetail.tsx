@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getEngagement, getStageProgress, getDeliverables, getInternalNotes } from '@/lib/crm-admin';
+import { getEngagement, getStageProgress, getDeliverables, getInternalNotes, deleteEngagement } from '@/lib/crm-admin';
 import { Button } from '@/components/ui/button';
 
 export default function EngagementDetail() {
