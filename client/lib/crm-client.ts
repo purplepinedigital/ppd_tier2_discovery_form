@@ -92,6 +92,29 @@ export async function getClientEngagement() {
   }
 }
 
+export async function getClientEngagements() {
+  try {
+    const { data: user } = await supabase.auth.getUser();
+    if (!user.user) {
+      return { error: 'Not authenticated' };
+    }
+
+    const { data: engagements, error } = await supabase
+      .from('crm_engagements')
+      .select('*')
+      .eq('client_user_id', user.user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return { error: error.message };
+    }
+
+    return { data: engagements };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+}
+
 // ============================================================================
 // Client Form Submission Functions
 // ============================================================================
