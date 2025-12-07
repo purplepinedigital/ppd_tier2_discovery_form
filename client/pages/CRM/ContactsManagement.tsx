@@ -34,7 +34,10 @@ export default function ContactsManagement() {
         <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
           Contacts
         </h2>
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button
+          onClick={() => setShowNewContactModal(true)}
+          className="bg-purple-600 hover:bg-purple-700 text-white"
+        >
           + New Contact
         </Button>
       </div>
