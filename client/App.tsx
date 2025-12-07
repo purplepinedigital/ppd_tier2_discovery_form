@@ -72,6 +72,26 @@ const App = () => (
             path="/project/notifications"
             element={<ClientNotifications />}
           />
+
+          {/* ========== NEW CRM ROUTES - ADMIN ========== */}
+          <Route path="/admin/crm" element={<CRMLayout />}>
+            <Route path="dashboard" element={<CRMDashboard />} />
+            <Route path="contacts" element={<ContactsManagement />} />
+            <Route path="contacts/:id" element={<ContactDetail />} />
+            <Route path="engagements" element={<EngagementsManagement />} />
+            <Route path="engagements/:id" element={<EngagementDetail />} />
+            <Route path="activity" element={<ActivityTimeline />} />
+          </Route>
+
+          {/* ========== NEW CRM ROUTES - CLIENT ========== */}
+          <Route path="/crm/invite/:token" element={<InviteAccept />} />
+          <Route path="/crm" element={<ClientLayout />}>
+            <Route path="dashboard" element={<ClientDashboard />} />
+            <Route path="tier1" element={<Tier1Form />} />
+            <Route path="tier2" element={<Tier2Form />} />
+            <Route path="engagements/:id" element={<ClientEngagementView />} />
+          </Route>
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
