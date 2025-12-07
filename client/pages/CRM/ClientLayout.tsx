@@ -88,10 +88,15 @@ export default function ClientLayout() {
       <div className="min-h-screen flex items-center justify-center bg-[#FFFAEE]">
         <div className="text-center">
           <div className="text-4xl mb-4">❌</div>
-          <p className="text-gray-600 mb-4">Unable to load your project</p>
-          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700">
-            Logout
-          </Button>
+          <p className="text-gray-600 mb-4">{error || 'Unable to load your project'}</p>
+          <div className="flex gap-2 justify-center">
+            <Button onClick={() => navigate('/')} className="bg-blue-600 hover:bg-blue-700">
+              Home
+            </Button>
+            <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700">
+              Logout
+            </Button>
+          </div>
         </div>
       </div>
     );
