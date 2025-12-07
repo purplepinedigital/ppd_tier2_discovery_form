@@ -164,10 +164,12 @@ export default function Tier1Form() {
       // Update engagement to point to tier1 assessment
       if (tier1Data && tier1Data[0]) {
         await supabase
-          .from('engagements')
+          .from('crm_engagements')
           .update({
             tier1_assessment_id: tier1Data[0].id,
             recommended_package: result.recommendedPackage,
+            status: 'tier1_submitted',
+            tier1_submitted_at: new Date().toISOString(),
           })
           .eq('id', engagement.id);
       }
