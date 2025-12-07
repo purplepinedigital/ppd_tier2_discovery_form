@@ -368,28 +368,106 @@ export default function ClientEngagementView() {
         </div>
       )}
 
-      {/* Deliverables */}
-      {deliverables.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">📁 Deliverables</h3>
-          <div className="space-y-3">
-            {deliverables.map((del) => (
-              <div key={del.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <h4 className="font-semibold text-gray-900">{del.title}</h4>
-                {del.description && <p className="text-sm text-gray-600 mt-1">{del.description}</p>}
-                {del.file_url && (
-                  <a
-                    href={del.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-600 hover:text-purple-900 text-sm font-medium mt-2 inline-block"
-                  >
-                    Download →
-                  </a>
-                )}
-              </div>
-            ))}
+      {/* Project Stages with Deliverables */}
+      {stages.length > 0 && (
+        <div className="bg-white rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-xl font-bold text-gray-900">🎯 Project Stages</h3>
           </div>
+          <Accordion type="single" collapsible className="w-full">
+            {stages.map((stage) => {
+              const stageDeliverables = deliverables.filter(d => d.stage_number === stage.stage_number);
+              const isStageCompleted = stage.status === 'completed';
+              const isStageInProgress = stage.status === 'in_progress';
+              const isCurrentStage = stage.stage_number === engagement.current_stage;
+
+              return (
+                <AccordionItem
+                  key={stage.id}
+                  value={`stage-${stage.stage_number}`}
+                  className="border-0 border-b border-gray-200 last:border-0"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-start gap-4 w-full text-left">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg font-bold text-gray-900">
+                            Stage {stage.stage_number}
+                          </span>
+                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            Included
+                          </span>
+                          {isStageCompleted && (
+                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-500 text-white flex items-center gap-1">
+                              <CheckCircle size={12} />
+                              Completed
+                            </span>
+                          )}
+                          {isStageInProgress && !isStageCompleted && (
+                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 flex items-center gap-1">
+                              <Clock size={12} />
+                              In Progress
+                            </span>
+                          )}
+                        </div>
+                        <h4 className="font-semibold text-gray-900">{getStageLabel(stage.stage_number)}</h4>
+                        <p className="text-sm text-gray-600 mt-1">{getStageDescription(stage.stage_number)}</p>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="px-6 py-4 bg-gray-50">
+                    {/* Deliverables for this stage */}
+                    {stageDeliverables.length > 0 ? (
+                      <div className="mb-4">
+                        <h5 className="font-semibold text-gray-900 mb-3">Deliverables</h5>
+                        <div className="space-y-2">
+                          {stageDeliverables.map((del) => (
+                            <div
+                              key={del.id}
+                              className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="flex-1">
+                                  <h6 className="font-semibold text-gray-900">{del.title}</h6>
+                                  {del.description && (
+                                    <p className="text-sm text-gray-600 mt-1">{del.description}</p>
+                                  )}
+                                </div>
+                                {del.file_url && (
+                                  <a
+                                    href={del.file_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded text-sm font-medium transition-colors flex-shrink-0"
+                                  >
+                                    <Download size={16} />
+                                    Download
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-4">
+                        <p className="text-sm text-gray-600">No deliverables for this stage yet</p>
+                      </div>
+                    )}
+
+                    {/* Notes if available */}
+                    {stage.notes && (
+                      <div className="mt-4 p-3 bg-white border border-gray-200 rounded-lg">
+                        <p className="text-sm text-gray-700 font-semibold mb-1">Notes</p>
+                        <p className="text-sm text-gray-600">{stage.notes}</p>
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
         </div>
       )}
 
