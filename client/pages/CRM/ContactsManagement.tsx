@@ -102,12 +102,22 @@ export default function ContactsManagement() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => navigate(`/admin/crm/contacts/${contact.id}`)}
-                        className="text-purple-600 hover:text-purple-900 font-medium text-sm"
-                      >
-                        View
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => navigate(`/admin/crm/contacts/${contact.id}`)}
+                          className="text-purple-600 hover:text-purple-900 font-medium text-sm"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleDelete(contact.id, `${contact.first_name} ${contact.last_name}`)}
+                          disabled={deletingId === contact.id}
+                          className="text-red-600 hover:bg-red-50 rounded p-1 disabled:opacity-50"
+                          title="Delete contact"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
