@@ -1,4 +1,4 @@
-import { supabase, getAdminSupabase } from './supabase';
+import { supabase, getAdminSupabase } from "./supabase";
 
 // ============================================================================
 // Contact Management Functions
@@ -11,12 +11,12 @@ export interface ContactData {
   business_name?: string;
   industry?: string;
   phone?: string;
-  status?: 'prospect' | 'active' | 'inactive' | 'completed';
+  status?: "prospect" | "active" | "inactive" | "completed";
 }
 
 export async function createContact(data: ContactData, userId: string) {
   const client = getAdminSupabase();
-  return client.from('crm_contacts').insert({
+  return client.from("crm_contacts").insert({
     ...data,
     created_by: userId,
   });
@@ -24,7 +24,7 @@ export async function createContact(data: ContactData, userId: string) {
 
 export async function updateContact(id: string, data: Partial<ContactData>) {
   const client = getAdminSupabase();
-  return client.from('crm_contacts').update(data).eq('id', id);
+  return client.from("crm_contacts").update(data).eq("id", id);
 }
 
 export async function deleteContact(id: string) {
@@ -32,35 +32,50 @@ export async function deleteContact(id: string) {
 
   // Get all engagements for this contact
   const { data: engagements } = await client
-    .from('crm_engagements')
-    .select('id')
-    .eq('contact_id', id);
+    .from("crm_engagements")
+    .select("id")
+    .eq("contact_id", id);
 
   // Delete all engagements (cascade delete)
   if (engagements && engagements.length > 0) {
     for (const engagement of engagements) {
       // Delete related data for each engagement
-      await client.from('crm_stage_progress').delete().eq('engagement_id', engagement.id);
-      await client.from('crm_deliverables').delete().eq('engagement_id', engagement.id);
-      await client.from('crm_activity').delete().eq('engagement_id', engagement.id);
-      await client.from('crm_invitations').delete().eq('engagement_id', engagement.id);
-      await client.from('crm_internal_notes').delete().eq('engagement_id', engagement.id);
+      await client
+        .from("crm_stage_progress")
+        .delete()
+        .eq("engagement_id", engagement.id);
+      await client
+        .from("crm_deliverables")
+        .delete()
+        .eq("engagement_id", engagement.id);
+      await client
+        .from("crm_activity")
+        .delete()
+        .eq("engagement_id", engagement.id);
+      await client
+        .from("crm_invitations")
+        .delete()
+        .eq("engagement_id", engagement.id);
+      await client
+        .from("crm_internal_notes")
+        .delete()
+        .eq("engagement_id", engagement.id);
 
       // Delete the engagement itself
-      await client.from('crm_engagements').delete().eq('id', engagement.id);
+      await client.from("crm_engagements").delete().eq("id", engagement.id);
     }
   }
 
   // Finally delete the contact
-  return client.from('crm_contacts').delete().eq('id', id);
+  return client.from("crm_contacts").delete().eq("id", id);
 }
 
 export async function getContact(id: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_contacts')
-    .select('*')
-    .eq('id', id)
+    .from("crm_contacts")
+    .select("*")
+    .eq("id", id)
     .single();
   return { data, error };
 }
@@ -72,19 +87,19 @@ export interface ContactFilters {
 
 export async function getContacts(filters?: ContactFilters) {
   const client = getAdminSupabase();
-  let query = client.from('crm_contacts').select('*');
+  let query = client.from("crm_contacts").select("*");
 
   if (filters?.status) {
-    query = query.eq('status', filters.status);
+    query = query.eq("status", filters.status);
   }
 
   if (filters?.search) {
     query = query.or(
-      `email.ilike.%${filters.search}%,first_name.ilike.%${filters.search}%,last_name.ilike.%${filters.search}%,business_name.ilike.%${filters.search}%`
+      `email.ilike.%${filters.search}%,first_name.ilike.%${filters.search}%,last_name.ilike.%${filters.search}%,business_name.ilike.%${filters.search}%`,
     );
   }
 
-  query = query.order('created_at', { ascending: false });
+  query = query.order("created_at", { ascending: false });
   return query;
 }
 
@@ -108,13 +123,17 @@ export async function createEngagement(data: EngagementData, userId: string) {
   // Get contact email before creating engagement
   const { data: contact } = await getContact(data.contact_id);
 
-  const { data: result, error } = await client.from('crm_engagements').insert({
-    ...data,
-    client_email: contact?.email || null,
-    status: 'awaiting_tier1',
-    created_by: userId,
-    current_stage: 0,
-  }).select().single();
+  const { data: result, error } = await client
+    .from("crm_engagements")
+    .insert({
+      ...data,
+      client_email: contact?.email || null,
+      status: "awaiting_tier1",
+      created_by: userId,
+      current_stage: 0,
+    })
+    .select()
+    .single();
 
   if (!error && result) {
     // Create stage progress records for all 8 stages (0-7)
@@ -123,48 +142,84 @@ export async function createEngagement(data: EngagementData, userId: string) {
       stageRecords.push({
         engagement_id: result.id,
         stage_number: i,
-        status: 'pending',
+        status: "pending",
       });
     }
-    await client.from('crm_stage_progress').insert(stageRecords);
+    await client.from("crm_stage_progress").insert(stageRecords);
 
     // Check if this email already has a user account in auth
     if (contact?.email) {
       try {
         // Try to find existing user with this email
-        const { data: { users }, error: listError } = await client.auth.admin.listUsers();
-        const existingUser = users?.find(u => u.email === contact.email);
+        const {
+          data: { users },
+          error: listError,
+        } = await client.auth.admin.listUsers();
+        const existingUser = users?.find((u) => u.email === contact.email);
 
         if (existingUser) {
           // User already exists - just link the engagement to their account
           await client
-            .from('crm_engagements')
+            .from("crm_engagements")
             .update({ client_user_id: existingUser.id })
-            .eq('id', result.id);
+            .eq("id", result.id);
 
           // Log activity but don't send invitation
-          await logActivity('engagement_created', result.id, `Engagement "${data.title}" created for existing client`, userId);
+          await logActivity(
+            "engagement_created",
+            result.id,
+            `Engagement "${data.title}" created for existing client`,
+            userId,
+          );
         } else {
           // New client - generate invitation
-          const invitationResult = await generateInvitation(result.id, contact.email, userId);
+          const invitationResult = await generateInvitation(
+            result.id,
+            contact.email,
+            userId,
+          );
 
           // Send invitation email
           if (!invitationResult.error && invitationResult.data?.token) {
-            const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
-            await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+            const inviteLink = `${typeof window !== "undefined" ? window.location.origin : ""}/crm/invite/${invitationResult.data.token}`;
+            await sendInvitationEmailNotification(
+              contact.email,
+              contact.first_name || "Client",
+              data.title,
+              inviteLink,
+            );
           }
 
           // Log activity
-          await logActivity('engagement_created', result.id, `Engagement "${data.title}" created - invitation sent`, userId);
+          await logActivity(
+            "engagement_created",
+            result.id,
+            `Engagement "${data.title}" created - invitation sent`,
+            userId,
+          );
         }
       } catch (err) {
         // If auth check fails, fall back to sending invitation
-        const invitationResult = await generateInvitation(result.id, contact.email, userId);
+        const invitationResult = await generateInvitation(
+          result.id,
+          contact.email,
+          userId,
+        );
         if (!invitationResult.error && invitationResult.data?.token) {
-          const inviteLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/crm/invite/${invitationResult.data.token}`;
-          await sendInvitationEmailNotification(contact.email, contact.first_name || 'Client', data.title, inviteLink);
+          const inviteLink = `${typeof window !== "undefined" ? window.location.origin : ""}/crm/invite/${invitationResult.data.token}`;
+          await sendInvitationEmailNotification(
+            contact.email,
+            contact.first_name || "Client",
+            data.title,
+            inviteLink,
+          );
         }
-        await logActivity('engagement_created', result.id, `Engagement "${data.title}" created`, userId);
+        await logActivity(
+          "engagement_created",
+          result.id,
+          `Engagement "${data.title}" created`,
+          userId,
+        );
       }
     }
   }
@@ -172,12 +227,17 @@ export async function createEngagement(data: EngagementData, userId: string) {
   return { data: result, error };
 }
 
-async function sendInvitationEmailNotification(email: string, clientName: string, projectName: string, inviteLink: string) {
+async function sendInvitationEmailNotification(
+  email: string,
+  clientName: string,
+  projectName: string,
+  inviteLink: string,
+) {
   try {
-    const response = await fetch('/api/send-invitation-email', {
-      method: 'POST',
+    const response = await fetch("/api/send-invitation-email", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
@@ -188,29 +248,32 @@ async function sendInvitationEmailNotification(email: string, clientName: string
     });
 
     if (!response.ok) {
-      console.error('Failed to send invitation email:', response.statusText);
+      console.error("Failed to send invitation email:", response.statusText);
     }
   } catch (error) {
-    console.error('Error sending invitation email:', error);
+    console.error("Error sending invitation email:", error);
   }
 }
 
-export async function updateEngagement(id: string, data: Partial<EngagementData>) {
+export async function updateEngagement(
+  id: string,
+  data: Partial<EngagementData>,
+) {
   const client = getAdminSupabase();
-  return client.from('crm_engagements').update(data).eq('id', id);
+  return client.from("crm_engagements").update(data).eq("id", id);
 }
 
 export async function deleteEngagement(id: string) {
   const client = getAdminSupabase();
-  return client.from('crm_engagements').delete().eq('id', id);
+  return client.from("crm_engagements").delete().eq("id", id);
 }
 
 export async function getEngagement(id: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_engagements')
-    .select('*')
-    .eq('id', id)
+    .from("crm_engagements")
+    .select("*")
+    .eq("id", id)
     .single();
   return { data, error };
 }
@@ -223,64 +286,82 @@ export interface EngagementFilters {
 
 export async function getEngagements(filters?: EngagementFilters) {
   const client = getAdminSupabase();
-  let query = client.from('crm_engagements').select('*');
+  let query = client.from("crm_engagements").select("*");
 
   if (filters?.status) {
-    query = query.eq('status', filters.status);
+    query = query.eq("status", filters.status);
   }
 
   if (filters?.contact_id) {
-    query = query.eq('contact_id', filters.contact_id);
+    query = query.eq("contact_id", filters.contact_id);
   }
 
   if (filters?.search) {
-    query = query.or(`title.ilike.%${filters.search}%,client_email.ilike.%${filters.search}%`);
+    query = query.or(
+      `title.ilike.%${filters.search}%,client_email.ilike.%${filters.search}%`,
+    );
   }
 
-  query = query.order('created_at', { ascending: false });
+  query = query.order("created_at", { ascending: false });
   return query;
 }
 
 export async function getEngagementsByContactId(contactId: string) {
   const client = getAdminSupabase();
   return client
-    .from('crm_engagements')
-    .select('*')
-    .eq('contact_id', contactId)
-    .order('created_at', { ascending: false });
+    .from("crm_engagements")
+    .select("*")
+    .eq("contact_id", contactId)
+    .order("created_at", { ascending: false });
 }
 
-export async function updateEngagementStatus(id: string, status: string, userId: string) {
+export async function updateEngagementStatus(
+  id: string,
+  status: string,
+  userId: string,
+) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_engagements')
+    .from("crm_engagements")
     .update({ status })
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (!error && data) {
-    await logActivity('status_changed', id, `Status changed to ${status}`, userId);
-  }
-
-  return { data, error };
-}
-
-export async function updateEngagementStage(id: string, stageNumber: number, userId: string) {
-  const client = getAdminSupabase();
-  const { data, error } = await client
-    .from('crm_engagements')
-    .update({ current_stage: stageNumber, stage_started_at: new Date().toISOString() })
-    .eq('id', id)
+    .eq("id", id)
     .select()
     .single();
 
   if (!error && data) {
     await logActivity(
-      'stage_started',
+      "status_changed",
+      id,
+      `Status changed to ${status}`,
+      userId,
+    );
+  }
+
+  return { data, error };
+}
+
+export async function updateEngagementStage(
+  id: string,
+  stageNumber: number,
+  userId: string,
+) {
+  const client = getAdminSupabase();
+  const { data, error } = await client
+    .from("crm_engagements")
+    .update({
+      current_stage: stageNumber,
+      stage_started_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (!error && data) {
+    await logActivity(
+      "stage_started",
       id,
       `Stage ${stageNumber} started`,
-      userId
+      userId,
     );
   }
 
@@ -291,17 +372,27 @@ export async function updateEngagementStage(id: string, stageNumber: number, use
 // Tier 1 Feedback Functions
 // ============================================================================
 
-export async function submitTier1Feedback(engagementId: string, feedback: string, userId: string) {
+export async function submitTier1Feedback(
+  engagementId: string,
+  feedback: string,
+  userId: string,
+) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_engagements')
+    .from("crm_engagements")
     .update({ tier1_feedback: feedback })
-    .eq('id', engagementId)
+    .eq("id", engagementId)
     .select()
     .single();
 
   if (!error && data) {
-    await logActivity('tier1_feedback_added', engagementId, 'Tier 1 feedback added', userId, true);
+    await logActivity(
+      "tier1_feedback_added",
+      engagementId,
+      "Tier 1 feedback added",
+      userId,
+      true,
+    );
   }
 
   return { data, error };
@@ -311,17 +402,27 @@ export async function submitTier1Feedback(engagementId: string, feedback: string
 // Tier 2 Feedback Functions
 // ============================================================================
 
-export async function submitTier2Feedback(engagementId: string, feedback: string, userId: string) {
+export async function submitTier2Feedback(
+  engagementId: string,
+  feedback: string,
+  userId: string,
+) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_engagements')
+    .from("crm_engagements")
     .update({ tier2_feedback: feedback })
-    .eq('id', engagementId)
+    .eq("id", engagementId)
     .select()
     .single();
 
   if (!error && data) {
-    await logActivity('tier2_feedback_added', engagementId, 'Tier 2 feedback added', userId, true);
+    await logActivity(
+      "tier2_feedback_added",
+      engagementId,
+      "Tier 2 feedback added",
+      userId,
+      true,
+    );
   }
 
   return { data, error };
@@ -331,15 +432,18 @@ export async function submitTier2Feedback(engagementId: string, feedback: string
 // Stage Progress Functions
 // ============================================================================
 
-export async function getStageProgress(engagementId: string, stageNumber?: number) {
+export async function getStageProgress(
+  engagementId: string,
+  stageNumber?: number,
+) {
   const client = getAdminSupabase();
   let query = client
-    .from('crm_stage_progress')
-    .select('*')
-    .eq('engagement_id', engagementId);
+    .from("crm_stage_progress")
+    .select("*")
+    .eq("engagement_id", engagementId);
 
   if (stageNumber !== undefined) {
-    query = query.eq('stage_number', stageNumber);
+    query = query.eq("stage_number", stageNumber);
   }
 
   return query;
@@ -350,19 +454,19 @@ export async function updateStageProgress(
   stageNumber: number,
   status: string,
   notes: string,
-  userId: string
+  userId: string,
 ) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_stage_progress')
+    .from("crm_stage_progress")
     .update({
       status,
       notes,
-      ...(status === 'in_progress' && { started_at: new Date().toISOString() }),
-      ...(status === 'completed' && { completed_at: new Date().toISOString() }),
+      ...(status === "in_progress" && { started_at: new Date().toISOString() }),
+      ...(status === "completed" && { completed_at: new Date().toISOString() }),
     })
-    .eq('engagement_id', engagementId)
-    .eq('stage_number', stageNumber)
+    .eq("engagement_id", engagementId)
+    .eq("stage_number", stageNumber)
     .select()
     .single();
 
@@ -372,7 +476,7 @@ export async function updateStageProgress(
       engagementId,
       `Stage ${stageNumber} ${status}`,
       userId,
-      true
+      true,
     );
   }
 
@@ -382,9 +486,15 @@ export async function updateStageProgress(
 export async function completeStage(
   engagementId: string,
   stageNumber: number,
-  userId: string
+  userId: string,
 ) {
-  return updateStageProgress(engagementId, stageNumber, 'completed', '', userId);
+  return updateStageProgress(
+    engagementId,
+    stageNumber,
+    "completed",
+    "",
+    userId,
+  );
 }
 
 // ============================================================================
@@ -405,19 +515,23 @@ export interface DeliverableData {
 
 export async function uploadDeliverable(data: DeliverableData, userId: string) {
   const client = getAdminSupabase();
-  const { data: result, error } = await client.from('crm_deliverables').insert({
-    ...data,
-    visible_to_client: data.visible_to_client ?? true,
-    created_by: userId,
-  }).select().single();
+  const { data: result, error } = await client
+    .from("crm_deliverables")
+    .insert({
+      ...data,
+      visible_to_client: data.visible_to_client ?? true,
+      created_by: userId,
+    })
+    .select()
+    .single();
 
   if (!error && result) {
     await logActivity(
-      'deliverable_added',
+      "deliverable_added",
       data.engagement_id,
       `Deliverable "${data.title}" added to stage ${data.stage_number}`,
       userId,
-      true
+      true,
     );
 
     // Update deliverables count
@@ -425,9 +539,9 @@ export async function uploadDeliverable(data: DeliverableData, userId: string) {
     if (engagement) {
       const delivCount = await getDeliverablesCount(data.engagement_id);
       await client
-        .from('crm_engagements')
+        .from("crm_engagements")
         .update({ deliverables_count: delivCount })
-        .eq('id', data.engagement_id);
+        .eq("id", data.engagement_id);
     }
   }
 
@@ -437,45 +551,48 @@ export async function uploadDeliverable(data: DeliverableData, userId: string) {
 export async function deleteDeliverable(id: string, userId: string) {
   const client = getAdminSupabase();
   const { data: deliverable } = await client
-    .from('crm_deliverables')
-    .select('engagement_id')
-    .eq('id', id)
+    .from("crm_deliverables")
+    .select("engagement_id")
+    .eq("id", id)
     .single();
 
-  const { error } = await client.from('crm_deliverables').delete().eq('id', id);
+  const { error } = await client.from("crm_deliverables").delete().eq("id", id);
 
   if (!error && deliverable) {
     await logActivity(
-      'deliverable_removed',
+      "deliverable_removed",
       deliverable.engagement_id,
-      'Deliverable removed',
-      userId
+      "Deliverable removed",
+      userId,
     );
   }
 
   return { error };
 }
 
-export async function getDeliverables(engagementId: string, stageNumber?: number) {
+export async function getDeliverables(
+  engagementId: string,
+  stageNumber?: number,
+) {
   const client = getAdminSupabase();
   let query = client
-    .from('crm_deliverables')
-    .select('*')
-    .eq('engagement_id', engagementId);
+    .from("crm_deliverables")
+    .select("*")
+    .eq("engagement_id", engagementId);
 
   if (stageNumber !== undefined) {
-    query = query.eq('stage_number', stageNumber);
+    query = query.eq("stage_number", stageNumber);
   }
 
-  return query.order('created_at', { ascending: false });
+  return query.order("created_at", { ascending: false });
 }
 
 export async function getDeliverablesCount(engagementId: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_deliverables')
-    .select('*', { count: 'exact', head: true })
-    .eq('engagement_id', engagementId);
+    .from("crm_deliverables")
+    .select("*", { count: "exact", head: true })
+    .eq("engagement_id", engagementId);
 
   return error ? 0 : (data?.length ?? 0);
 }
@@ -484,10 +601,15 @@ export async function getDeliverablesCount(engagementId: string) {
 // Internal Notes Functions
 // ============================================================================
 
-export async function addInternalNote(engagementId: string, content: string, userId: string, userEmail: string) {
+export async function addInternalNote(
+  engagementId: string,
+  content: string,
+  userId: string,
+  userEmail: string,
+) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_internal_notes')
+    .from("crm_internal_notes")
     .insert({
       engagement_id: engagementId,
       content,
@@ -498,7 +620,13 @@ export async function addInternalNote(engagementId: string, content: string, use
     .single();
 
   if (!error && data) {
-    await logActivity('note_added', engagementId, 'Internal note added', userId, false);
+    await logActivity(
+      "note_added",
+      engagementId,
+      "Internal note added",
+      userId,
+      false,
+    );
   }
 
   return { data, error };
@@ -506,37 +634,41 @@ export async function addInternalNote(engagementId: string, content: string, use
 
 export async function updateInternalNote(id: string, content: string) {
   const client = getAdminSupabase();
-  return client.from('crm_internal_notes').update({ content }).eq('id', id);
+  return client.from("crm_internal_notes").update({ content }).eq("id", id);
 }
 
 export async function deleteInternalNote(id: string) {
   const client = getAdminSupabase();
-  return client.from('crm_internal_notes').delete().eq('id', id);
+  return client.from("crm_internal_notes").delete().eq("id", id);
 }
 
 export async function getInternalNotes(engagementId?: string) {
   const client = getAdminSupabase();
-  let query = client.from('crm_internal_notes').select('*');
+  let query = client.from("crm_internal_notes").select("*");
 
   if (engagementId) {
-    query = query.eq('engagement_id', engagementId);
+    query = query.eq("engagement_id", engagementId);
   }
 
-  return query.order('created_at', { ascending: false });
+  return query.order("created_at", { ascending: false });
 }
 
 // ============================================================================
 // Invitation Functions
 // ============================================================================
 
-export async function generateInvitation(engagementId: string, email: string, userId: string) {
+export async function generateInvitation(
+  engagementId: string,
+  email: string,
+  userId: string,
+) {
   const client = getAdminSupabase();
-  const token = crypto.randomUUID().replace(/-/g, '');
+  const token = crypto.randomUUID().replace(/-/g, "");
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + 30); // 30 day expiration
 
   const { data, error } = await client
-    .from('crm_invitations')
+    .from("crm_invitations")
     .insert({
       engagement_id: engagementId,
       email,
@@ -547,7 +679,12 @@ export async function generateInvitation(engagementId: string, email: string, us
     .single();
 
   if (!error && data) {
-    await logActivity('invitation_sent', engagementId, `Invitation sent to ${email}`, userId);
+    await logActivity(
+      "invitation_sent",
+      engagementId,
+      `Invitation sent to ${email}`,
+      userId,
+    );
   }
 
   return { data, error };
@@ -560,24 +697,29 @@ export async function getInvitationLink(token: string): Promise<string> {
 export async function getEngagementInvitation(engagementId: string) {
   const client = getAdminSupabase();
   return client
-    .from('crm_invitations')
-    .select('*')
-    .eq('engagement_id', engagementId)
-    .eq('status', 'pending')
+    .from("crm_invitations")
+    .select("*")
+    .eq("engagement_id", engagementId)
+    .eq("status", "pending")
     .single();
 }
 
 export async function revokeInvitation(id: string, userId: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_invitations')
-    .update({ status: 'revoked' })
-    .eq('id', id)
+    .from("crm_invitations")
+    .update({ status: "revoked" })
+    .eq("id", id)
     .select()
     .single();
 
   if (!error && data) {
-    await logActivity('invitation_revoked', data.engagement_id, 'Invitation revoked', userId);
+    await logActivity(
+      "invitation_revoked",
+      data.engagement_id,
+      "Invitation revoked",
+      userId,
+    );
   }
 
   return { data, error };
@@ -586,18 +728,31 @@ export async function revokeInvitation(id: string, userId: string) {
 export async function acceptInvitation(token: string, userId: string) {
   const client = getAdminSupabase();
   const { data, error } = await client
-    .from('crm_invitations')
-    .update({ status: 'accepted', accepted_at: new Date().toISOString(), created_user_id: userId })
-    .eq('token', token)
-    .eq('status', 'pending')
+    .from("crm_invitations")
+    .update({
+      status: "accepted",
+      accepted_at: new Date().toISOString(),
+      created_user_id: userId,
+    })
+    .eq("token", token)
+    .eq("status", "pending")
     .select()
     .single();
 
   if (!error && data) {
     // Update engagement with client user ID
-    await client.from('crm_engagements').update({ client_user_id: userId }).eq('id', data.engagement_id);
+    await client
+      .from("crm_engagements")
+      .update({ client_user_id: userId })
+      .eq("id", data.engagement_id);
 
-    await logActivity('client_account_created', data.engagement_id, 'Client account created from invitation', userId, true);
+    await logActivity(
+      "client_account_created",
+      data.engagement_id,
+      "Client account created from invitation",
+      userId,
+      true,
+    );
   }
 
   return { data, error };
@@ -622,10 +777,10 @@ export async function logActivity(
   description: string,
   userId: string,
   isClientVisible: boolean = false,
-  userEmail: string = ''
+  userEmail: string = "",
 ) {
   const client = getAdminSupabase();
-  return client.from('crm_activity').insert({
+  return client.from("crm_activity").insert({
     engagement_id: engagementId,
     activity_type: activityType,
     description,
@@ -637,17 +792,17 @@ export async function logActivity(
 
 export async function getActivity(engagementId?: string, filters?: any) {
   const client = getAdminSupabase();
-  let query = client.from('crm_activity').select('*');
+  let query = client.from("crm_activity").select("*");
 
   if (engagementId) {
-    query = query.eq('engagement_id', engagementId);
+    query = query.eq("engagement_id", engagementId);
   }
 
   if (filters?.activityType) {
-    query = query.eq('activity_type', filters.activityType);
+    query = query.eq("activity_type", filters.activityType);
   }
 
-  return query.order('created_at', { ascending: false });
+  return query.order("created_at", { ascending: false });
 }
 
 export async function getEngagementActivity(engagementId: string) {
@@ -661,17 +816,22 @@ export async function getEngagementActivity(engagementId: string) {
 export async function getDashboardStats() {
   const client = getAdminSupabase();
 
-  const [contactsResult, engagementsResult, tier1PendingResult, tier2PendingResult] = await Promise.all([
-    client.from('crm_contacts').select('*', { count: 'exact', head: true }),
-    client.from('crm_engagements').select('*', { count: 'exact', head: true }),
+  const [
+    contactsResult,
+    engagementsResult,
+    tier1PendingResult,
+    tier2PendingResult,
+  ] = await Promise.all([
+    client.from("crm_contacts").select("*", { count: "exact", head: true }),
+    client.from("crm_engagements").select("*", { count: "exact", head: true }),
     client
-      .from('crm_engagements')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'awaiting_tier1'),
+      .from("crm_engagements")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "awaiting_tier1"),
     client
-      .from('crm_engagements')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'awaiting_tier2'),
+      .from("crm_engagements")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "awaiting_tier2"),
   ]);
 
   return {
@@ -685,8 +845,8 @@ export async function getDashboardStats() {
 export async function getRecentActivity(limit: number = 10) {
   const client = getAdminSupabase();
   return client
-    .from('crm_activity')
-    .select('*')
-    .order('created_at', { ascending: false })
+    .from("crm_activity")
+    .select("*")
+    .order("created_at", { ascending: false })
     .limit(limit);
 }

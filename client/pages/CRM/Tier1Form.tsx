@@ -1,66 +1,67 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/lib/supabase';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
 import {
   calculatePackageRecommendation,
   type RecommendationInput,
   type RecommendationOutput,
-} from '@/lib/recommendation';
+} from "@/lib/recommendation";
 
-type Tier1Screen = 'form' | 'loading' | 'complete';
+type Tier1Screen = "form" | "loading" | "complete";
 
 export default function Tier1Form() {
   const navigate = useNavigate();
   const { engagementId } = useParams();
   const [engagement, setEngagement] = useState<any>(null);
-  const [screen, setScreen] = useState<Tier1Screen>('form');
+  const [screen, setScreen] = useState<Tier1Screen>("form");
 
   // Form state
-  const [projectName, setProjectName] = useState('');
-  const [businessName, setBusinessName] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [otherIndustry, setOtherIndustry] = useState('');
-  const [currentState, setCurrentState] = useState('');
+  const [projectName, setProjectName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [otherIndustry, setOtherIndustry] = useState("");
+  const [currentState, setCurrentState] = useState("");
   const [needs, setNeeds] = useState<string[]>([]);
-  const [websiteScope, setWebsiteScope] = useState('');
-  const [marketingTiming, setMarketingTiming] = useState('');
-  const [budgetRange, setBudgetRange] = useState('');
-  const [timelineExpectation, setTimelineExpectation] = useState('');
-  const [targetDate, setTargetDate] = useState('');
-  const [primaryGoal, setPrimaryGoal] = useState('');
+  const [websiteScope, setWebsiteScope] = useState("");
+  const [marketingTiming, setMarketingTiming] = useState("");
+  const [budgetRange, setBudgetRange] = useState("");
+  const [timelineExpectation, setTimelineExpectation] = useState("");
+  const [targetDate, setTargetDate] = useState("");
+  const [primaryGoal, setPrimaryGoal] = useState("");
 
-  const [recommendation, setRecommendation] = useState<RecommendationOutput | null>(null);
+  const [recommendation, setRecommendation] =
+    useState<RecommendationOutput | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const industries = [
-    'Professional Services',
-    'Healthcare & Wellness',
-    'Hospitality & Food Services',
-    'Real Estate & Property',
-    'Retail & E-commerce',
-    'Technology & SaaS',
-    'Education & Training',
-    'Creative & Design Services',
-    'Home Services & Trades',
-    'Fitness & Sports',
-    'Finance & Insurance',
-    'Manufacturing & Industrial',
-    'Non-Profit & NGO',
-    'Other',
+    "Professional Services",
+    "Healthcare & Wellness",
+    "Hospitality & Food Services",
+    "Real Estate & Property",
+    "Retail & E-commerce",
+    "Technology & SaaS",
+    "Education & Training",
+    "Creative & Design Services",
+    "Home Services & Trades",
+    "Fitness & Sports",
+    "Finance & Insurance",
+    "Manufacturing & Industrial",
+    "Non-Profit & NGO",
+    "Other",
   ];
 
   const needsOptions = [
-    'New Website',
-    'Website Redesign',
-    'E-commerce Functionality',
-    'Mobile Responsiveness',
-    'SEO Optimization',
-    'CMS Implementation',
-    'Brand Identity',
-    'Content Strategy',
+    "New Website",
+    "Website Redesign",
+    "E-commerce Functionality",
+    "Mobile Responsiveness",
+    "SEO Optimization",
+    "CMS Implementation",
+    "Brand Identity",
+    "Content Strategy",
   ];
 
   useEffect(() => {
@@ -74,42 +75,42 @@ export default function Tier1Form() {
 
         // Get the specific engagement by ID
         const { data: engagementData } = await supabase
-          .from('crm_engagements')
-          .select('*')
-          .eq('id', engagementId)
-          .eq('client_user_id', user.user.id)
+          .from("crm_engagements")
+          .select("*")
+          .eq("id", engagementId)
+          .eq("client_user_id", user.user.id)
           .single();
 
         if (engagementData) {
           setEngagement(engagementData);
-          setProjectName(engagementData.title || '');
+          setProjectName(engagementData.title || "");
         }
 
         // Load existing tier1 assessment if it exists
         const { data: tier1List } = await supabase
-          .from('tier1_temp')
-          .select('*')
-          .eq('engagement_id', engagementId)
-          .order('created_at', { ascending: false })
+          .from("tier1_temp")
+          .select("*")
+          .eq("engagement_id", engagementId)
+          .order("created_at", { ascending: false })
           .limit(1);
 
         if (tier1List && tier1List.length > 0) {
           const tier1Data = tier1List[0];
-          setProjectName(tier1Data.project_name || engagementData?.title || '');
-          setBusinessName(tier1Data.business_name || '');
-          setIndustry(tier1Data.industry || '');
-          setOtherIndustry(tier1Data.other_industry || '');
-          setCurrentState(tier1Data.current_state || '');
+          setProjectName(tier1Data.project_name || engagementData?.title || "");
+          setBusinessName(tier1Data.business_name || "");
+          setIndustry(tier1Data.industry || "");
+          setOtherIndustry(tier1Data.other_industry || "");
+          setCurrentState(tier1Data.current_state || "");
           setNeeds(tier1Data.needs_array || []);
-          setWebsiteScope(tier1Data.website_scope || '');
-          setMarketingTiming(tier1Data.marketing_timing || '');
-          setBudgetRange(tier1Data.budget_range || '');
-          setTimelineExpectation(tier1Data.timeline_expectation || '');
-          setTargetDate(tier1Data.target_date || '');
-          setPrimaryGoal(tier1Data.primary_goal || '');
+          setWebsiteScope(tier1Data.website_scope || "");
+          setMarketingTiming(tier1Data.marketing_timing || "");
+          setBudgetRange(tier1Data.budget_range || "");
+          setTimelineExpectation(tier1Data.timeline_expectation || "");
+          setTargetDate(tier1Data.target_date || "");
+          setPrimaryGoal(tier1Data.primary_goal || "");
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
       setLoading(false);
     };
@@ -125,19 +126,19 @@ export default function Tier1Form() {
   const validateForm = (): boolean => {
     const errors: string[] = [];
 
-    if (!projectName.trim()) errors.push('Project name is required');
-    if (!businessName.trim()) errors.push('Business name is required');
-    if (!industry) errors.push('Industry selection is required');
-    if (industry === 'Other' && !otherIndustry.trim())
-      errors.push('Please specify your industry');
-    if (!currentState) errors.push('Current digital presence is required');
-    if (needs.length === 0) errors.push('Select at least one need');
-    if (!websiteScope) errors.push('Website scope is required');
-    if (!marketingTiming) errors.push('Marketing timing is required');
-    if (!budgetRange) errors.push('Budget range is required');
-    if (!timelineExpectation) errors.push('Timeline expectation is required');
-    if (timelineExpectation === 'specific_date' && !targetDate) {
-      errors.push('Target launch date is required');
+    if (!projectName.trim()) errors.push("Project name is required");
+    if (!businessName.trim()) errors.push("Business name is required");
+    if (!industry) errors.push("Industry selection is required");
+    if (industry === "Other" && !otherIndustry.trim())
+      errors.push("Please specify your industry");
+    if (!currentState) errors.push("Current digital presence is required");
+    if (needs.length === 0) errors.push("Select at least one need");
+    if (!websiteScope) errors.push("Website scope is required");
+    if (!marketingTiming) errors.push("Marketing timing is required");
+    if (!budgetRange) errors.push("Budget range is required");
+    if (!timelineExpectation) errors.push("Timeline expectation is required");
+    if (timelineExpectation === "specific_date" && !targetDate) {
+      errors.push("Target launch date is required");
     }
 
     setValidationErrors(errors);
@@ -146,7 +147,7 @@ export default function Tier1Form() {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -156,7 +157,7 @@ export default function Tier1Form() {
     try {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) {
-        throw new Error('Not authenticated');
+        throw new Error("Not authenticated");
       }
 
       // Calculate recommendation for data storage
@@ -174,62 +175,61 @@ export default function Tier1Form() {
 
       // Delete any existing tier1 submission for this engagement and user
       await supabase
-        .from('tier1_temp')
+        .from("tier1_temp")
         .delete()
-        .eq('engagement_id', engagement.id)
-        .eq('user_id', user.user.id);
+        .eq("engagement_id", engagement.id)
+        .eq("user_id", user.user.id);
 
       // Save Tier 1 assessment to temporary table
-      const { error: tier1Error } = await supabase
-        .from('tier1_temp')
-        .insert({
-          user_id: user.user.id,
-          engagement_id: engagement.id,
-          project_name: projectName,
-          business_name: businessName,
-          industry: industry === 'Other' ? otherIndustry : industry,
-          current_state: currentState,
-          needs_array: needs,
-          website_scope: websiteScope,
-          marketing_timing: marketingTiming,
-          budget_range: budgetRange,
-          timeline_expectation: timelineExpectation,
-          target_date: targetDate || null,
-          primary_goal: primaryGoal,
-          recommended_package: result.recommendedPackage,
-          recommendation_confidence: result.confidenceLevel,
-          budget_aligned: result.budgetAligned,
-          has_mismatch: result.hasMismatch,
-          mismatch_type: result.mismatchType,
-          mismatch_resolved: true,
-          reasoning: result.reasoning,
-          internal_notes: result.internalNotes,
-        });
+      const { error: tier1Error } = await supabase.from("tier1_temp").insert({
+        user_id: user.user.id,
+        engagement_id: engagement.id,
+        project_name: projectName,
+        business_name: businessName,
+        industry: industry === "Other" ? otherIndustry : industry,
+        current_state: currentState,
+        needs_array: needs,
+        website_scope: websiteScope,
+        marketing_timing: marketingTiming,
+        budget_range: budgetRange,
+        timeline_expectation: timelineExpectation,
+        target_date: targetDate || null,
+        primary_goal: primaryGoal,
+        recommended_package: result.recommendedPackage,
+        recommendation_confidence: result.confidenceLevel,
+        budget_aligned: result.budgetAligned,
+        has_mismatch: result.hasMismatch,
+        mismatch_type: result.mismatchType,
+        mismatch_resolved: true,
+        reasoning: result.reasoning,
+        internal_notes: result.internalNotes,
+      });
 
       if (tier1Error) throw tier1Error;
 
       // Update engagement status and recommended package
       const { error: updateError } = await supabase
-        .from('crm_engagements')
+        .from("crm_engagements")
         .update({
-          status: 'tier1_submitted',
+          status: "tier1_submitted",
           tier1_submitted_at: new Date().toISOString(),
           recommended_package: result.recommendedPackage,
         })
-        .eq('id', engagement.id);
+        .eq("id", engagement.id);
 
       if (updateError) throw updateError;
 
       // Navigate directly to Tier 2 form
       navigate(`/crm/tier2/${engagement.id}`);
     } catch (error: any) {
-      console.error('Error:', error);
-      setValidationErrors([error?.message || 'An error occurred. Please try again.']);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.error("Error:", error);
+      setValidationErrors([
+        error?.message || "An error occurred. Please try again.",
+      ]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setSubmitting(false);
     }
   };
-
 
   const renderValidationErrors = () => {
     if (validationErrors.length === 0) return null;
@@ -257,7 +257,7 @@ export default function Tier1Form() {
     return <div className="text-center py-12">Unable to load engagement</div>;
   }
 
-  if (screen === 'complete') {
+  if (screen === "complete") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#FFFAEE] to-[#F5E6D3] flex items-center justify-center">
         <div className="text-center">
@@ -274,7 +274,6 @@ export default function Tier1Form() {
     );
   }
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FFFAEE] to-[#F5E6D3]">
       <div className="p-6">
@@ -288,7 +287,8 @@ export default function Tier1Form() {
               Let's Get Started!
             </h1>
             <p className="text-lg text-gray-600">
-              Tell us about your project so we can recommend the right approach for you.
+              Tell us about your project so we can recommend the right approach
+              for you.
             </p>
           </div>
 
@@ -296,10 +296,18 @@ export default function Tier1Form() {
           <div className="bg-white rounded-lg shadow-lg p-8">
             {renderValidationErrors()}
 
-            <form className="space-y-8" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+            <form
+              className="space-y-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
               {/* Section 1: Project Basics */}
               <div className="space-y-6 pb-8 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900">Project Basics</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Project Basics
+                </h2>
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -345,7 +353,7 @@ export default function Tier1Form() {
                   </select>
                 </div>
 
-                {industry === 'Other' && (
+                {industry === "Other" && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Please Specify *
@@ -378,7 +386,9 @@ export default function Tier1Form() {
                     <option value="no_online">No online presence</option>
                     <option value="outdated">Outdated website</option>
                     <option value="basic">Basic website</option>
-                    <option value="functional">Functional but needs improvement</option>
+                    <option value="functional">
+                      Functional but needs improvement
+                    </option>
                   </select>
                 </div>
 
@@ -413,7 +423,9 @@ export default function Tier1Form() {
                     <option value="">Select scope...</option>
                     <option value="compact">Compact (5-10 pages)</option>
                     <option value="standard">Standard (10-20 pages)</option>
-                    <option value="comprehensive">Comprehensive (20+ pages)</option>
+                    <option value="comprehensive">
+                      Comprehensive (20+ pages)
+                    </option>
                   </select>
                 </div>
 
@@ -436,7 +448,9 @@ export default function Tier1Form() {
 
               {/* Section 3: Timeline & Budget */}
               <div className="space-y-6 pb-8 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900">Timeline & Budget</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Timeline & Budget
+                </h2>
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -472,7 +486,7 @@ export default function Tier1Form() {
                   </select>
                 </div>
 
-                {timelineExpectation === 'specific_date' && (
+                {timelineExpectation === "specific_date" && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Target Launch Date *
@@ -509,7 +523,7 @@ export default function Tier1Form() {
               <div className="flex gap-4 pt-6 border-t border-gray-200">
                 <Button
                   type="button"
-                  onClick={() => navigate('/crm/dashboard')}
+                  onClick={() => navigate("/crm/dashboard")}
                   className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-900"
                 >
                   Cancel
@@ -519,7 +533,7 @@ export default function Tier1Form() {
                   disabled={submitting}
                   className="flex-1 bg-purple-600 hover:bg-purple-700 text-white disabled:bg-gray-400"
                 >
-                  {submitting ? 'Submitting...' : 'Submit Responses'}
+                  {submitting ? "Submitting..." : "Submit Responses"}
                 </Button>
               </div>
             </form>

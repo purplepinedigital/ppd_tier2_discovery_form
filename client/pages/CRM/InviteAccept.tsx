@@ -1,61 +1,70 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { acceptInvitationAndCreateAccount, verifyInvitation } from '@/lib/crm-client';
-import { supabase } from '@/lib/supabase';
-import { useEffect } from 'react';
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  acceptInvitationAndCreateAccount,
+  verifyInvitation,
+} from "@/lib/crm-client";
+import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
 
 export default function InviteAccept() {
   const { token } = useParams();
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState<any>(null);
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const verify = async () => {
       if (!token) {
-        setError('Invalid invitation link');
+        setError("Invalid invitation link");
         setLoading(false);
         return;
       }
 
       // Check if user is already logged in
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         // User is already logged in, just accept the invitation
         try {
           // Get the invitation
           const { data: invitation } = await supabase
-            .from('crm_invitations')
-            .select('*')
-            .eq('token', token)
-            .eq('status', 'pending')
+            .from("crm_invitations")
+            .select("*")
+            .eq("token", token)
+            .eq("status", "pending")
             .single();
 
           if (invitation) {
             // Update invitation status
             await supabase
-              .from('crm_invitations')
-              .update({ status: 'accepted', accepted_at: new Date().toISOString(), created_user_id: user.id })
-              .eq('id', invitation.id);
+              .from("crm_invitations")
+              .update({
+                status: "accepted",
+                accepted_at: new Date().toISOString(),
+                created_user_id: user.id,
+              })
+              .eq("id", invitation.id);
 
             // Update engagement with client user ID
             await supabase
-              .from('crm_engagements')
+              .from("crm_engagements")
               .update({ client_user_id: user.id })
-              .eq('id', invitation.engagement_id);
+              .eq("id", invitation.engagement_id);
           }
 
           // Redirect to projects
-          await new Promise(resolve => setTimeout(resolve, 500));
-          navigate('/crm/engagements');
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          navigate("/crm/engagements");
         } catch (err: any) {
-          setError(err.message || 'Failed to accept invitation');
+          setError(err.message || "Failed to accept invitation");
           setLoading(false);
         }
         return;
@@ -76,23 +85,28 @@ export default function InviteAccept() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setError('');
+    setError("");
 
     if (!token) {
-      setError('Invalid invitation token');
+      setError("Invalid invitation token");
       setSubmitting(false);
       return;
     }
 
-    const result = await acceptInvitationAndCreateAccount(token, password, firstName, lastName);
+    const result = await acceptInvitationAndCreateAccount(
+      token,
+      password,
+      firstName,
+      lastName,
+    );
 
     if (result.error) {
       setError(result.error);
       setSubmitting(false);
     } else {
       // Success - wait a moment for the session to be established, then redirect
-      await new Promise(resolve => setTimeout(resolve, 500));
-      navigate('/crm/dashboard');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      navigate("/crm/dashboard");
     }
   };
 
@@ -112,9 +126,11 @@ export default function InviteAccept() {
       <div className="min-h-screen flex items-center justify-center bg-[#FFFAEE]">
         <div className="max-w-md w-full bg-white rounded-lg shadow p-8 text-center">
           <div className="text-4xl mb-4">❌</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Invalid Invitation</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Invalid Invitation
+          </h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <Button onClick={() => navigate('/')} className="w-full">
+          <Button onClick={() => navigate("/")} className="w-full">
             Return to Home
           </Button>
         </div>
@@ -127,22 +143,33 @@ export default function InviteAccept() {
       <div className="max-w-md w-full bg-white rounded-lg shadow p-8">
         <div className="text-center mb-8">
           <div className="text-4xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
+          <h2
+            className="text-2xl font-bold text-gray-900"
+            style={{ fontFamily: "Epilogue, sans-serif" }}
+          >
             Welcome!
           </h2>
-          <p className="text-gray-600 mt-2">Create your account to get started</p>
+          <p className="text-gray-600 mt-2">
+            Create your account to get started
+          </p>
         </div>
 
         {invitationInfo && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <p className="text-sm font-semibold text-blue-900">Project: {invitationInfo.projectName}</p>
-            <p className="text-sm text-blue-700 mt-1">Email: {invitationInfo.email}</p>
+            <p className="text-sm font-semibold text-blue-900">
+              Project: {invitationInfo.projectName}
+            </p>
+            <p className="text-sm text-blue-700 mt-1">
+              Email: {invitationInfo.email}
+            </p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">First Name</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              First Name
+            </label>
             <input
               type="text"
               value={firstName}
@@ -154,7 +181,9 @@ export default function InviteAccept() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Last Name</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Last Name
+            </label>
             <input
               type="text"
               value={lastName}
@@ -166,17 +195,21 @@ export default function InviteAccept() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Email (read-only)</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Email (read-only)
+            </label>
             <input
               type="email"
-              value={invitationInfo?.email || ''}
+              value={invitationInfo?.email || ""}
               disabled
               className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Password
+            </label>
             <input
               type="password"
               value={password}
@@ -200,7 +233,7 @@ export default function InviteAccept() {
             disabled={submitting}
             className="w-full bg-purple-600 hover:bg-purple-700 text-white"
           >
-            {submitting ? 'Creating Account...' : 'Create Account'}
+            {submitting ? "Creating Account..." : "Create Account"}
           </Button>
         </form>
 

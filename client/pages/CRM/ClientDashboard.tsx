@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { getClientEngagements } from '@/lib/crm-client';
-import { supabase } from '@/lib/supabase';
-import { LogOut } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { getClientEngagements } from "@/lib/crm-client";
+import { supabase } from "@/lib/supabase";
+import { LogOut } from "lucide-react";
 
 export default function ClientDashboard() {
   const navigate = useNavigate();
   const [engagements, setEngagements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +24,7 @@ export default function ClientDashboard() {
           setEngagements(data);
         }
       } catch (error) {
-        console.error('Error fetching engagements:', error);
+        console.error("Error fetching engagements:", error);
       } finally {
         setLoading(false);
       }
@@ -35,42 +35,42 @@ export default function ClientDashboard() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/');
+    navigate("/");
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'awaiting_tier1':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'tier1_submitted':
-        return 'bg-blue-100 text-blue-800';
-      case 'awaiting_tier2':
-        return 'bg-purple-100 text-purple-800';
-      case 'tier2_submitted':
-        return 'bg-indigo-100 text-indigo-800';
-      case 'in_stages':
-        return 'bg-green-100 text-green-800';
-      case 'completed':
-        return 'bg-emerald-100 text-emerald-800';
+      case "awaiting_tier1":
+        return "bg-yellow-100 text-yellow-800";
+      case "tier1_submitted":
+        return "bg-blue-100 text-blue-800";
+      case "awaiting_tier2":
+        return "bg-purple-100 text-purple-800";
+      case "tier2_submitted":
+        return "bg-indigo-100 text-indigo-800";
+      case "in_stages":
+        return "bg-green-100 text-green-800";
+      case "completed":
+        return "bg-emerald-100 text-emerald-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'awaiting_tier1':
-        return '📋 Complete Tier 1 Form';
-      case 'tier1_submitted':
-        return '📋 Complete Tier 2 Form';
-      case 'awaiting_tier2':
-        return '📋 Complete Tier 2 Form';
-      case 'tier2_submitted':
-        return '✓ Forms Complete';
-      case 'in_stages':
-        return '🚀 In Progress';
-      case 'completed':
-        return '✅ Completed';
+      case "awaiting_tier1":
+        return "📋 Complete Tier 1 Form";
+      case "tier1_submitted":
+        return "📋 Complete Tier 2 Form";
+      case "awaiting_tier2":
+        return "📋 Complete Tier 2 Form";
+      case "tier2_submitted":
+        return "✓ Forms Complete";
+      case "in_stages":
+        return "🚀 In Progress";
+      case "completed":
+        return "✅ Completed";
       default:
         return status;
     }
@@ -93,7 +93,10 @@ export default function ClientDashboard() {
       <div className="bg-white shadow">
         <div className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900" style={{ fontFamily: 'Epilogue, sans-serif' }}>
+            <h1
+              className="text-4xl font-bold text-gray-900"
+              style={{ fontFamily: "Epilogue, sans-serif" }}
+            >
               My Projects
             </h1>
             <p className="text-gray-600 text-sm mt-2">Welcome, {email}</p>
@@ -114,7 +117,9 @@ export default function ClientDashboard() {
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📭</div>
             <p className="text-gray-600 text-lg">No projects assigned yet.</p>
-            <p className="text-gray-500">Please check back later or contact your administrator.</p>
+            <p className="text-gray-500">
+              Please check back later or contact your administrator.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -131,7 +136,9 @@ export default function ClientDashboard() {
 
                   {/* Status Badge */}
                   <div className="mb-4">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(engagement.status)}`}>
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(engagement.status)}`}
+                    >
                       {getStatusLabel(engagement.status)}
                     </span>
                   </div>
@@ -140,12 +147,22 @@ export default function ClientDashboard() {
                   <div className="space-y-2 mb-6 text-sm">
                     {engagement.program && (
                       <div>
-                        <p className="text-gray-600">Program: <span className="font-semibold text-gray-900">{engagement.program}</span></p>
+                        <p className="text-gray-600">
+                          Program:{" "}
+                          <span className="font-semibold text-gray-900">
+                            {engagement.program}
+                          </span>
+                        </p>
                       </div>
                     )}
                     {engagement.budget && (
                       <div>
-                        <p className="text-gray-600">Budget: <span className="font-semibold text-gray-900">${(engagement.budget).toLocaleString()}</span></p>
+                        <p className="text-gray-600">
+                          Budget:{" "}
+                          <span className="font-semibold text-gray-900">
+                            ${engagement.budget.toLocaleString()}
+                          </span>
+                        </p>
                       </div>
                     )}
                   </div>
@@ -159,13 +176,15 @@ export default function ClientDashboard() {
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-purple-600 h-2 rounded-full transition-all"
-                        style={{ width: `${(engagement.current_stage / 7) * 100}%` }}
+                        style={{
+                          width: `${(engagement.current_stage / 7) * 100}%`,
+                        }}
                       />
                     </div>
                   </div>
 
                   {/* Next Action */}
-                  {engagement.status === 'awaiting_tier1' && (
+                  {engagement.status === "awaiting_tier1" && (
                     <Button
                       onClick={() => navigate(`/crm/tier1/${engagement.id}`)}
                       className="w-full bg-purple-600 hover:bg-purple-700 text-white"
@@ -173,7 +192,8 @@ export default function ClientDashboard() {
                       Fill Tier 1 Form →
                     </Button>
                   )}
-                  {(engagement.status === 'tier1_submitted' || engagement.status === 'awaiting_tier2') && (
+                  {(engagement.status === "tier1_submitted" ||
+                    engagement.status === "awaiting_tier2") && (
                     <Button
                       onClick={() => navigate(`/crm/tier2/${engagement.id}`)}
                       className="w-full bg-purple-600 hover:bg-purple-700 text-white"
@@ -181,7 +201,9 @@ export default function ClientDashboard() {
                       Fill Tier 2 Form →
                     </Button>
                   )}
-                  {(engagement.status === 'tier2_submitted' || engagement.status === 'in_stages' || engagement.status === 'completed') && (
+                  {(engagement.status === "tier2_submitted" ||
+                    engagement.status === "in_stages" ||
+                    engagement.status === "completed") && (
                     <Button
                       onClick={() => navigate(`/crm/client/${engagement.id}`)}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white"

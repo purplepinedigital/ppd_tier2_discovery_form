@@ -47,7 +47,9 @@ export function createServer() {
 
       if (!SENDGRID_API_KEY) {
         console.warn("Sendgrid API key not configured");
-        return res.status(500).json({ error: "Sendgrid API key not configured" });
+        return res
+          .status(500)
+          .json({ error: "Sendgrid API key not configured" });
       }
 
       // Extract client name from full name if present
@@ -111,13 +113,15 @@ export function createServer() {
         },
       };
 
-      console.log(`[${new Date().toISOString()}] Sending invitation email via Sendgrid to ${email} for project ${projectName}`);
+      console.log(
+        `[${new Date().toISOString()}] Sending invitation email via Sendgrid to ${email} for project ${projectName}`,
+      );
 
       const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${SENDGRID_API_KEY}`,
+          Authorization: `Bearer ${SENDGRID_API_KEY}`,
         },
         body: JSON.stringify(payload),
       });
@@ -137,8 +141,16 @@ export function createServer() {
         });
 
         // Log the error but still return success - don't block engagement creation
-        console.log("Invitation email queued but Sendgrid response had error - continuing");
-        return res.status(200).json({ success: true, notification_sent: true, warning: "Email send attempted" });
+        console.log(
+          "Invitation email queued but Sendgrid response had error - continuing",
+        );
+        return res
+          .status(200)
+          .json({
+            success: true,
+            notification_sent: true,
+            warning: "Email send attempted",
+          });
       }
 
       console.log("Invitation email sent via Sendgrid successfully:", {
@@ -151,7 +163,13 @@ export function createServer() {
     } catch (error: any) {
       console.error("Send invitation email error:", error?.message);
       // Don't fail the request - email errors shouldn't block engagement creation
-      return res.status(200).json({ success: true, notification_sent: true, warning: "Email queuing attempted" });
+      return res
+        .status(200)
+        .json({
+          success: true,
+          notification_sent: true,
+          warning: "Email queuing attempted",
+        });
     }
   });
 
@@ -190,24 +208,32 @@ export function createServer() {
       }
 
       // Check if invitation has expired
-      if (invitation.expires_at && new Date(invitation.expires_at) < new Date()) {
+      if (
+        invitation.expires_at &&
+        new Date(invitation.expires_at) < new Date()
+      ) {
         return res.status(400).json({ error: "Invitation has expired" });
       }
 
       // Create user account with admin API (bypasses email confirmation)
-      const { data: userData, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: true, // Auto-confirm email to skip confirmation email
-        user_metadata: {
-          first_name: firstName || "",
-          last_name: lastName || "",
-        },
-      });
+      const { data: userData, error: createUserError } =
+        await supabaseAdmin.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true, // Auto-confirm email to skip confirmation email
+          user_metadata: {
+            first_name: firstName || "",
+            last_name: lastName || "",
+          },
+        });
 
       if (createUserError || !userData.user) {
         console.error("Error creating user:", createUserError);
-        return res.status(500).json({ error: createUserError?.message || "Failed to create account" });
+        return res
+          .status(500)
+          .json({
+            error: createUserError?.message || "Failed to create account",
+          });
       }
 
       const userId = userData.user.id;
@@ -224,7 +250,9 @@ export function createServer() {
 
       if (updateInviteError) {
         console.error("Error updating invitation:", updateInviteError);
-        return res.status(500).json({ error: "Failed to update invitation status" });
+        return res
+          .status(500)
+          .json({ error: "Failed to update invitation status" });
       }
 
       // Update engagement with client user ID
@@ -238,10 +266,14 @@ export function createServer() {
 
       if (engagementError) {
         console.error("Error updating engagement:", engagementError);
-        return res.status(500).json({ error: "Failed to link engagement to user" });
+        return res
+          .status(500)
+          .json({ error: "Failed to link engagement to user" });
       }
 
-      console.log(`User ${userId} created from invitation ${token} and linked to engagement ${invitation.engagement_id}`);
+      console.log(
+        `User ${userId} created from invitation ${token} and linked to engagement ${invitation.engagement_id}`,
+      );
 
       return res.status(200).json({
         success: true,
@@ -263,7 +295,9 @@ export function createServer() {
       const { token, userId } = req.body;
 
       if (!token || !userId) {
-        return res.status(400).json({ error: "Missing required fields: token and userId" });
+        return res
+          .status(400)
+          .json({ error: "Missing required fields: token and userId" });
       }
 
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
@@ -298,7 +332,10 @@ export function createServer() {
         });
         console.log(`Email confirmed for user ${userId}`);
       } catch (confirmError: any) {
-        console.warn(`Warning: Could not auto-confirm email:`, confirmError.message);
+        console.warn(
+          `Warning: Could not auto-confirm email:`,
+          confirmError.message,
+        );
         // Don't fail the entire process if confirmation fails
       }
 
@@ -314,7 +351,9 @@ export function createServer() {
 
       if (updateInviteError) {
         console.error("Error updating invitation:", updateInviteError);
-        return res.status(500).json({ error: "Failed to update invitation status" });
+        return res
+          .status(500)
+          .json({ error: "Failed to update invitation status" });
       }
 
       // Update engagement with client user ID
@@ -328,10 +367,14 @@ export function createServer() {
 
       if (engagementError) {
         console.error("Error updating engagement:", engagementError);
-        return res.status(500).json({ error: "Failed to link engagement to user" });
+        return res
+          .status(500)
+          .json({ error: "Failed to link engagement to user" });
       }
 
-      console.log(`Invitation ${token} accepted and engagement ${invitation.engagement_id} linked to user ${userId}`);
+      console.log(
+        `Invitation ${token} accepted and engagement ${invitation.engagement_id} linked to user ${userId}`,
+      );
 
       return res.status(200).json({
         success: true,
