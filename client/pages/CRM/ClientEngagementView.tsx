@@ -140,12 +140,57 @@ export default function ClientEngagementView() {
     }
   };
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#FFFAEE] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="text-4xl mb-4">❌</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Project</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <div className="flex gap-2 justify-center">
+            <Button onClick={() => navigate('/crm')} className="bg-blue-600 hover:bg-blue-700">
+              Back to Projects
+            </Button>
+            <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 flex items-center gap-2">
+              <LogOut size={18} />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
-    return <div className="text-center py-12">Loading your project...</div>;
+    return (
+      <div className="min-h-screen bg-[#FFFAEE] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <p className="text-gray-600">Loading your project...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!engagement) {
-    return <div className="text-center py-12">Unable to load your project</div>;
+    return (
+      <div className="min-h-screen bg-[#FFFAEE] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="text-4xl mb-4">📭</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h2>
+          <p className="text-gray-600 mb-6">The project you're looking for doesn't exist.</p>
+          <div className="flex gap-2 justify-center">
+            <Button onClick={() => navigate('/crm')} className="bg-blue-600 hover:bg-blue-700">
+              Back to Projects
+            </Button>
+            <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 flex items-center gap-2">
+              <LogOut size={18} />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const stageLabels = [
