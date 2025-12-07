@@ -427,10 +427,11 @@ function Tier2ResponsesDisplay({ engagementId, engagementTitle }: { engagementId
           .from('tier2_temp')
           .select('*')
           .eq('engagement_id', engagementId)
-          .maybeSingle();
+          .order('created_at', { ascending: false })
+          .limit(1);
 
-        if (!error && data) {
-          setFormData(data);
+        if (!error && data && data.length > 0) {
+          setFormData(data[0]);
         } else if (error) {
           console.error('Error fetching Tier 2 responses:', error);
         }
