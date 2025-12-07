@@ -27,6 +27,24 @@ export default function EngagementsManagement() {
     }
   };
 
+  const handleDelete = async (engagementId: string, title: string) => {
+    if (!window.confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingId(engagementId);
+    try {
+      const { error } = await deleteEngagement(engagementId);
+      if (error) {
+        alert('Error deleting engagement: ' + error.message);
+      } else {
+        setEngagements(engagements.filter(e => e.id !== engagementId));
+      }
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   useEffect(() => {
     loadEngagements();
   }, [statusFilter, refetch]);
