@@ -62,9 +62,15 @@ export default function NewEngagementModal({ isOpen, onClose, onSuccess }: NewEn
         return;
       }
 
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) {
-        setError('You must be logged in to create an engagement');
+      if (!isAdminAuthenticated()) {
+        setError('You must be logged in as an admin to create an engagement');
+        setLoading(false);
+        return;
+      }
+
+      const adminEmail = getAdminEmail();
+      if (!adminEmail) {
+        setError('Unable to identify admin user');
         setLoading(false);
         return;
       }
@@ -78,7 +84,7 @@ export default function NewEngagementModal({ isOpen, onClose, onSuccess }: NewEn
           assigned_to: formData.assigned_to || undefined,
           assigned_to_email: formData.assigned_to_email || undefined,
         },
-        user.user.id
+        adminEmail
       );
 
       if (createError) {
