@@ -373,7 +373,18 @@ function Tier1AssessmentDisplay({ engagementId, engagementTitle }: { engagementI
       {assessment.reasoning && (
         <div>
           <span className="text-gray-600">Reasoning:</span>
-          <p className="mt-1 text-gray-700 bg-gray-50 p-2 rounded">{assessment.reasoning}</p>
+          <div className="mt-1 text-gray-700 bg-gray-50 p-2 rounded text-xs space-y-1">
+            {typeof assessment.reasoning === 'object' ? (
+              <>
+                {assessment.reasoning.scopeFit && <p>• Scope Fit: {assessment.reasoning.scopeFit}</p>}
+                {assessment.reasoning.budgetFit && <p>• Budget Fit: {assessment.reasoning.budgetFit}</p>}
+                {assessment.reasoning.timelineFit && <p>• Timeline Fit: {assessment.reasoning.timelineFit}</p>}
+                {assessment.reasoning.primaryFactor && <p>• Primary Factor: {assessment.reasoning.primaryFactor}</p>}
+              </>
+            ) : (
+              <p>{assessment.reasoning}</p>
+            )}
+          </div>
         </div>
       )}
 
