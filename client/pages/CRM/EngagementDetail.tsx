@@ -75,16 +75,25 @@ export default function EngagementDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/admin/crm/engagements')} className="text-gray-600 hover:text-gray-900">
-          ← Back
-        </button>
-        <h2 className="text-3xl font-bold" style={{ fontFamily: 'Epilogue, sans-serif' }}>
-          {engagement.title}
-        </h2>
-        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-          {engagement.status}
-        </span>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <button onClick={() => navigate('/admin/crm/engagements')} className="text-gray-600 hover:text-gray-900">
+            ← Back
+          </button>
+          <h2 className="text-3xl font-bold" style={{ fontFamily: 'Epilogue, sans-serif' }}>
+            {engagement.title}
+          </h2>
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+            {engagement.status}
+          </span>
+        </div>
+        <Button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="bg-red-600 hover:bg-red-700 text-white"
+        >
+          {deleting ? 'Deleting...' : 'Delete Engagement'}
+        </Button>
       </div>
 
       {/* Tabs */}
