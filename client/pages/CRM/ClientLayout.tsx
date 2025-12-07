@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { getClientEngagement } from '@/lib/crm-client';
 import { supabase } from '@/lib/supabase';
+import { LayoutDashboard, FileText, BookOpen, CheckSquare, LogOut } from 'lucide-react';
 
 export default function ClientLayout() {
   const navigate = useNavigate();
