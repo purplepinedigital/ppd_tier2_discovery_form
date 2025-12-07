@@ -135,7 +135,7 @@ export default function EngagementDetail() {
 
           {activeTab === 'tier1' && (
             <div className="space-y-4">
-              {engagement.tier1_assessment_id ? (
+              {engagement.status && ['tier1_submitted', 'awaiting_tier2', 'tier2_submitted', 'in_stages', 'completed'].includes(engagement.status) ? (
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
