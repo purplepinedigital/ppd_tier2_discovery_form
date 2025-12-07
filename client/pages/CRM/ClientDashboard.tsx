@@ -11,14 +11,30 @@ export default function ClientDashboard() {
 
   useEffect(() => {
     const fetchEngagement = async () => {
-      const { data } = await getClientEngagement();
-      if (data) {
-        setEngagement(data);
+      try {
+        const { data: user } = await supabase.auth.getUser();
+        if (!user.user) {
+          setLoading(false);
+          return;
+        }
+
+        const { data } = await getClientEngagements();
+        if (data && data.length > 0) {
+          if (data.length > 1) {
+            // Multiple engagements - redirect to list
+            navigate('/crm/engagements');
+            return;
+          }
+          // Single engagement - show it
+          setEngagement(data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching engagement:', error);
       }
       setLoading(false);
     };
     fetchEngagement();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (
