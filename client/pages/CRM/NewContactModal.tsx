@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createContact } from '@/lib/crm-admin';
 import { getAdminId, isAdminAuthenticated } from '@/lib/admin-auth';
+import { INDUSTRIES } from '@/lib/crm-constants';
 
 interface NewContactModalProps {
   isOpen: boolean;
