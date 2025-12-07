@@ -295,10 +295,11 @@ function Tier1AssessmentDisplay({ engagementId, engagementTitle }: { engagementI
           .from('tier1_temp')
           .select('*')
           .eq('engagement_id', engagementId)
-          .maybeSingle();
+          .order('created_at', { ascending: false })
+          .limit(1);
 
-        if (!error && data) {
-          setAssessment(data);
+        if (!error && data && data.length > 0) {
+          setAssessment(data[0]);
         } else if (error) {
           console.error('Error fetching Tier 1 assessment:', error);
         }
