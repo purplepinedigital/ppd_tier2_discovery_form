@@ -133,19 +133,38 @@ export default function EngagementDetail() {
 
           {activeTab === 'tier1' && (
             <div className="space-y-4">
-              <div>
-                <label className="font-semibold text-gray-700">Submitted At</label>
-                <p className="text-gray-600">{engagement.tier1_submitted_at ? new Date(engagement.tier1_submitted_at).toLocaleString() : 'Not submitted'}</p>
-              </div>
-              <div>
-                <label className="font-semibold text-gray-700">Feedback</label>
-                <textarea
-                  value={engagement.tier1_feedback || ''}
-                  readOnly
-                  className="w-full p-3 border rounded-lg bg-gray-50 text-gray-600"
-                  rows={4}
-                />
-              </div>
+              {engagement.tier1_assessment_id ? (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="font-semibold text-gray-700">Submitted At</label>
+                      <p className="text-gray-600">{engagement.tier1_submitted_at ? new Date(engagement.tier1_submitted_at).toLocaleString() : 'Not submitted'}</p>
+                    </div>
+                    <div>
+                      <label className="font-semibold text-gray-700">Recommended Package</label>
+                      <p className="text-gray-600 font-bold text-purple-600">{engagement.recommended_package?.toUpperCase() || 'N/A'}</p>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4 mt-4">
+                    <h4 className="font-semibold text-gray-900 mb-3">Assessment Details</h4>
+                    <Tier1AssessmentDisplay engagementId={engagement.id} />
+                  </div>
+
+                  <div>
+                    <label className="font-semibold text-gray-700">Feedback</label>
+                    <textarea
+                      value={engagement.tier1_feedback || ''}
+                      readOnly
+                      className="w-full p-3 border rounded-lg bg-gray-50 text-gray-600"
+                      rows={4}
+                      placeholder="No feedback yet"
+                    />
+                  </div>
+                </>
+              ) : (
+                <p className="text-gray-500">No Tier 1 assessment submitted yet</p>
+              )}
             </div>
           )}
 
