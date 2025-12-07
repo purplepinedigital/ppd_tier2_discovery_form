@@ -42,14 +42,8 @@ export default function NewContactModal({ isOpen, onClose, onSuccess }: NewConta
         return;
       }
 
-      const adminEmail = getAdminEmail();
-      if (!adminEmail) {
-        setError('Unable to identify admin user');
-        setLoading(false);
-        return;
-      }
-
-      const { error: createError } = await createContact(formData, adminEmail);
+      const adminId = getAdminId();
+      const { error: createError } = await createContact(formData, adminId);
       if (createError) {
         setError(createError.message);
       } else {
