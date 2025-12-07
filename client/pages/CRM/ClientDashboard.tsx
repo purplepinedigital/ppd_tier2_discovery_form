@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { getClientEngagement, isAwaitingTier1, isAwaitingTier2, getNextAction } from '@/lib/crm-client';
+import { getClientEngagements, isAwaitingTier1, isAwaitingTier2, getNextAction } from '@/lib/crm-client';
+import { supabase } from '@/lib/supabase';
 
 export default function ClientDashboard() {
   const navigate = useNavigate();
