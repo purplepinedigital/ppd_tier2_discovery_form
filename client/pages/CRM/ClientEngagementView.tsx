@@ -84,6 +84,74 @@ export default function ClientEngagementView() {
         </p>
       </div>
 
+      {/* Tier 1 Assessment */}
+      {tier1Assessment && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🎯 Tier 1 Assessment</h3>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-gray-600">Business Name</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.business_name}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">Industry</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.industry}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">Current State</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.current_state}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">Budget Range</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.budget_range}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">Website Scope</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.website_scope}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">Timeline</p>
+              <p className="font-semibold text-gray-900">{tier1Assessment.timeline_expectation}</p>
+            </div>
+          </div>
+
+          {tier1Assessment.needs_array && tier1Assessment.needs_array.length > 0 && (
+            <div className="mt-4">
+              <p className="text-gray-600 mb-2">Your Needs</p>
+              <div className="flex flex-wrap gap-2">
+                {tier1Assessment.needs_array.map((need: string) => (
+                  <span key={need} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                    {need}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tier1Assessment.primary_goal && (
+            <div className="mt-4 p-3 bg-blue-50 rounded">
+              <p className="text-gray-600 text-sm">Primary Goal</p>
+              <p className="text-gray-700 mt-1">{tier1Assessment.primary_goal}</p>
+            </div>
+          )}
+
+          {tier1Assessment.recommended_package && (
+            <div className="mt-4 p-3 bg-purple-50 rounded">
+              <p className="text-gray-600 text-sm">Recommended Package</p>
+              <p className="text-lg font-bold text-purple-600">{tier1Assessment.recommended_package.toUpperCase()}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tier 2 Discovery Form */}
+      {tier2Responses && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">📋 Tier 2 Discovery Responses</h3>
+          <Tier2ResponsesClientView responses={tier2Responses.responses || []} />
+        </div>
+      )}
+
       {/* Deliverables */}
       {deliverables.length > 0 && (
         <div className="bg-white rounded-lg shadow p-6">
