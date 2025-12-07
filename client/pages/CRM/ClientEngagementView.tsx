@@ -71,6 +71,39 @@ export default function ClientEngagementView() {
     fetchData();
   }, [id]);
 
+  const handleSaveChanges = async () => {
+    if (!engagement || !id) return;
+
+    setSaveLoading(true);
+    try {
+      const { error } = await supabase
+        .from('crm_engagements')
+        .update({
+          title: editedTitle,
+          program: editedProgram,
+          budget: editedBudget ? parseFloat(editedBudget) : null,
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      // Update local engagement state
+      setEngagement({
+        ...engagement,
+        title: editedTitle,
+        program: editedProgram,
+        budget: editedBudget ? parseFloat(editedBudget) : null,
+      });
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      alert('Failed to save changes');
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   if (loading) {
     return <div className="text-center py-12">Loading your project...</div>;
   }
@@ -78,6 +111,8 @@ export default function ClientEngagementView() {
   if (!engagement) {
     return <div className="text-center py-12">Unable to load your project</div>;
   }
+
+  const canEdit = engagement.current_stage === 0;
 
   return (
     <div className="min-h-screen bg-[#FFFAEE]">
