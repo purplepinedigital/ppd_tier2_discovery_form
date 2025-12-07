@@ -434,7 +434,7 @@ export async function getInternalNotes(engagementId?: string) {
 
 export async function generateInvitation(engagementId: string, email: string, userId: string) {
   const client = getAdminSupabase();
-  const token = uuidv4().replace(/-/g, '');
+  const token = crypto.randomUUID().replace(/-/g, '');
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + 30); // 30 day expiration
 
