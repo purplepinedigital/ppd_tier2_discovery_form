@@ -1,0 +1,33 @@
+export const INDUSTRIES = [
+  'Technology',
+  'Healthcare',
+  'Finance',
+  'Retail',
+  'Manufacturing',
+  'Real Estate',
+  'Hospitality',
+  'Transportation',
+  'Education',
+  'Media & Entertainment',
+  'Telecommunications',
+  'Energy & Utilities',
+  'Agriculture',
+  'Construction',
+  'Legal Services',
+  'Consulting',
+  'Insurance',
+  'E-Commerce',
+  'Food & Beverage',
+  'Non-Profit',
+  'Other',
+];
+
+export const PROGRAMS = [
+  'Hub + Ecom',
+  'Hub Only',
+  'Ecom Only',
+  'Standard Program',
+  'Premium Program',
+  'Enterprise Program',
+  'Custom Program',
+];
