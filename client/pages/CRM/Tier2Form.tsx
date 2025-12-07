@@ -16,7 +16,7 @@ export default function Tier2Form() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [responses, setResponses] = useState<(string | null)[]>(new Array(30).fill(''));
+  const [responses, setResponses] = useState<(string | null)[]>(new Array(tier2Questions.length).fill(''));
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
