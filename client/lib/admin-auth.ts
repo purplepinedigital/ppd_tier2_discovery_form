@@ -37,3 +37,7 @@ export function getAdminEmail(): string | null {
     return null;
   }
 }
+
+export function getAdminId(): string {
+  return ADMIN_UUID;
+}
