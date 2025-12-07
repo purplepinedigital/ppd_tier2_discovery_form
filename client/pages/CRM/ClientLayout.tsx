@@ -2,20 +2,39 @@ import { useNavigate, Outlet, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { getClientEngagement } from '@/lib/crm-client';
+import { supabase } from '@/lib/supabase';
 
 export default function ClientLayout() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [engagement, setEngagement] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchEngagement = async () => {
-      const { data } = await getClientEngagement();
-      if (data) {
-        setEngagement(data);
+      try {
+        const { data: user } = await supabase.auth.getUser();
+
+        if (!user.user) {
+          setError('You need to accept an invitation to access your project. Check your email for the invitation link.');
+          setLoading(false);
+          return;
+        }
+
+        const { data, error: fetchError } = await getClientEngagement();
+        if (fetchError) {
+          setError(fetchError);
+        } else if (data) {
+          setEngagement(data);
+        } else {
+          setError('No project found. Please check that you have accepted the correct invitation link.');
+        }
+      } catch (err: any) {
+        setError(err.message || 'An unexpected error occurred');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchEngagement();
   }, []);
