@@ -15,6 +15,13 @@ export default function ClientEngagementView() {
   const [tier2Responses, setTier2Responses] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // Editing state for stage 0
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedProgram, setEditedProgram] = useState('');
+  const [editedBudget, setEditedBudget] = useState('');
+  const [saveLoading, setSaveLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
