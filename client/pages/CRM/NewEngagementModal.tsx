@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { createEngagement, getContacts } from '@/lib/crm-admin';
-import { supabase } from '@/lib/supabase';
+import { getAdminEmail, isAdminAuthenticated } from '@/lib/admin-auth';
 
 interface NewEngagementModalProps {
   isOpen: boolean;
