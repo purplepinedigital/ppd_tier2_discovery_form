@@ -12,6 +12,7 @@ type Tier1Screen = 'form' | 'loading' | 'complete';
 
 export default function Tier1Form() {
   const navigate = useNavigate();
+  const { engagementId } = useParams();
   const [engagement, setEngagement] = useState<any>(null);
   const [screen, setScreen] = useState<Tier1Screen>('form');
 
