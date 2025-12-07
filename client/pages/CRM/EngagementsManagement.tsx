@@ -83,18 +83,54 @@ export default function EngagementsManagement() {
         {loading ? (
           <div className="text-center py-8">Loading engagements...</div>
         ) : engagements.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {engagements.map((eng) => (
-              <div key={eng.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => navigate(`/admin/crm/engagements/${eng.id}`)}>
-                <h3 className="font-bold text-lg mb-2">{eng.title}</h3>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>Client: {eng.client_email || 'Not assigned'}</p>
-                  <p>Status: <span className="font-semibold">{eng.status}</span></p>
-                  <p>Stage: {eng.current_stage}/7</p>
-                </div>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left px-4 py-3 font-semibold text-gray-900">Title</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-900">Client Email</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-900">Status</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-900">Stage</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-900">Budget</th>
+                  <th className="text-center px-4 py-3 font-semibold text-gray-900">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {engagements.map((eng) => (
+                  <tr key={eng.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-900 font-medium cursor-pointer hover:text-purple-600" onClick={() => navigate(`/admin/crm/engagements/${eng.id}`)}>
+                      {eng.title}
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">{eng.client_email || '-'}</td>
+                    <td className="px-4 py-3">
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                        {eng.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">{eng.current_stage}/7</td>
+                    <td className="px-4 py-3 text-gray-600">{eng.budget ? `$${(eng.budget).toLocaleString()}` : '-'}</td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex justify-center gap-2">
+                        <Button
+                          onClick={() => navigate(`/admin/crm/engagements/${eng.id}`)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1"
+                        >
+                          View
+                        </Button>
+                        <button
+                          onClick={() => handleDelete(eng.id, eng.title)}
+                          disabled={deletingId === eng.id}
+                          className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
+                          title="Delete engagement"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="text-center py-8 text-gray-500">No engagements found</div>
