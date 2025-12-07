@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getClientEngagement } from '@/lib/crm-client';
 import { supabase } from '@/lib/supabase';
-import { formSections } from '@/client/data/discovery-form';
+import { formSections } from '@/data/discovery-form';
 
 // Extract questions from form sections
 const tier2Questions = formSections.flatMap(section =>
