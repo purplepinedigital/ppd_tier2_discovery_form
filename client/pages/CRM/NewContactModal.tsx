@@ -140,14 +140,19 @@ export default function NewContactModal({ isOpen, onClose, onSuccess }: NewConta
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Industry
               </label>
-              <input
-                type="text"
+              <select
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
-                placeholder="Tech"
-              />
+              >
+                <option value="">Select an industry...</option>
+                {INDUSTRIES.map((industry) => (
+                  <option key={industry} value={industry}>
+                    {industry}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
