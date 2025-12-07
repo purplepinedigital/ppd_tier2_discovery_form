@@ -59,6 +59,17 @@ export default function Tier2Form() {
 
       if (tier2Error) throw tier2Error;
 
+      // Update engagement status
+      const { error: updateError } = await supabase
+        .from('crm_engagements')
+        .update({
+          status: 'tier2_submitted',
+          tier2_submitted_at: new Date().toISOString(),
+        })
+        .eq('id', engagement.id);
+
+      if (updateError) throw updateError;
+
       navigate('/crm/dashboard');
     } catch (err: any) {
       console.error('Error submitting Tier 2 form:', err);
