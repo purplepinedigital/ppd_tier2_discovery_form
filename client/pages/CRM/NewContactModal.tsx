@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createContact } from '@/lib/crm-admin';
-import { getAdminEmail, isAdminAuthenticated } from '@/lib/admin-auth';
+import { getAdminId, isAdminAuthenticated } from '@/lib/admin-auth';
 
 interface NewContactModalProps {
   isOpen: boolean;
