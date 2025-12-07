@@ -386,9 +386,33 @@ function Tier1AssessmentDisplay({ engagementId, engagementTitle }: { engagementI
 }
 
 // Helper component to display Tier 2 form responses
-function Tier2ResponsesDisplay({ engagementId }: { engagementId: string }) {
+function Tier2ResponsesDisplay({ engagementId, engagementTitle }: { engagementId: string; engagementTitle?: string }) {
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const exportToCSV = () => {
+    if (!formData || !formData.responses) return;
+
+    const responses = formData.responses || [];
+    const headers = ['Question #', 'Question', 'Response'];
+    const tier2Questions = formSections.flatMap(section =>
+      section.questions.map(q => q.prompt)
+    );
+
+    const data = tier2Questions.map((question, index) => [
+      index + 1,
+      question,
+      responses[index] || 'No response'
+    ]);
+
+    const csv = [headers, ...data].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${engagementTitle}-tier2-discovery.csv`;
+    link.click();
+  };
 
   const tier2Questions = formSections.flatMap(section =>
     section.questions.map(q => q.prompt)
