@@ -18,6 +18,23 @@ import ProjectLifecycle from "./pages/ProjectLifecycle";
 import ProjectFormTier1 from "./pages/ProjectFormTier1";
 import ClientNotifications from "./pages/ClientNotifications";
 
+// CRM Pages - Admin
+import CRMLayout from "./pages/CRM/CRMLayout";
+import CRMDashboard from "./pages/CRM/CRMDashboard";
+import ContactsManagement from "./pages/CRM/ContactsManagement";
+import ContactDetail from "./pages/CRM/ContactDetail";
+import EngagementsManagement from "./pages/CRM/EngagementsManagement";
+import EngagementDetail from "./pages/CRM/EngagementDetail";
+import ActivityTimeline from "./pages/CRM/ActivityTimeline";
+
+// CRM Pages - Client
+import ClientLayout from "./pages/CRM/ClientLayout";
+import InviteAccept from "./pages/CRM/InviteAccept";
+import ClientDashboard from "./pages/CRM/ClientDashboard";
+import Tier1Form from "./pages/CRM/Tier1Form";
+import Tier2Form from "./pages/CRM/Tier2Form";
+import ClientEngagementView from "./pages/CRM/ClientEngagementView";
+
 const queryClient = new QueryClient();
 
 const App = () => (
